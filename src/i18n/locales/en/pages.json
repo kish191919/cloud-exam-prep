@@ -190,7 +190,13 @@
     "toPass": "to pass",
     "startExam": "Start Exam",
     "resume": "Resume",
-    "comingSoon": "Coming Soon"
+    "comingSoon": "Coming Soon",
+    "selectSet": "Select Exam Set",
+    "loadingSets": "Loading sets...",
+    "noSets": "No sets available.",
+    "sampleBadge": "Sample",
+    "fullBadge": "Full",
+    "starting": "Starting..."
   },
   "examSession": {
     "questionOf": "Question",

@@ -13,6 +13,17 @@ export interface Question {
   difficulty: 1 | 2 | 3;
 }
 
+export interface ExamSet {
+  id: string;
+  examId: string;
+  name: string;
+  type: 'full' | 'sample';
+  description?: string;
+  questionCount: number;
+  sortOrder: number;
+  isActive: boolean;
+}
+
 export interface ExamConfig {
   id: string;
   title: string;

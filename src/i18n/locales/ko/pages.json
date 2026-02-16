@@ -190,7 +190,13 @@
     "toPass": "합격",
     "startExam": "시험 시작",
     "resume": "계속하기",
-    "comingSoon": "곧 출시"
+    "comingSoon": "곧 출시",
+    "selectSet": "시험 세트 선택",
+    "loadingSets": "세트 불러오는 중...",
+    "noSets": "준비된 세트가 없습니다.",
+    "sampleBadge": "샘플",
+    "fullBadge": "전체",
+    "starting": "시작 중..."
   },
   "examSession": {
     "questionOf": "문제",

@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import type { Question } from '@/types/exam';
+import type { Question, ExamSet } from '@/types/exam';
 
 interface QuestionRow {
   id: string;
@@ -146,6 +146,76 @@ export async function getQuestionsByDifficulty(
     tags: q.question_tags.map(t => t.tag),
     difficulty: q.difficulty as 1 | 2 | 3,
   }));
+}
+
+export async function getSetsForExam(examId: string): Promise<ExamSet[]> {
+  const { data, error } = await supabase
+    .from('exam_sets_view')
+    .select('*')
+    .eq('exam_id', examId)
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching exam sets:', error);
+    return [];
+  }
+
+  return (data || []).map((s: any) => ({
+    id: s.id,
+    examId: s.exam_id,
+    name: s.name,
+    type: s.type as 'full' | 'sample',
+    description: s.description,
+    questionCount: s.question_count || 0,
+    sortOrder: s.sort_order,
+    isActive: s.is_active,
+  }));
+}
+
+export async function getQuestionsForSet(setId: string): Promise<Question[]> {
+  const { data, error } = await supabase
+    .from('exam_set_questions')
+    .select(`
+      sort_order,
+      questions!inner (
+        id,
+        text,
+        correct_option_id,
+        explanation,
+        difficulty,
+        question_options (
+          option_id,
+          text,
+          sort_order
+        ),
+        question_tags (
+          tag
+        )
+      )
+    `)
+    .eq('set_id', setId)
+    .order('sort_order', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching questions for set:', error);
+    return [];
+  }
+
+  return (data || []).map((row: any) => {
+    const q = row.questions;
+    return {
+      id: q.id,
+      text: q.text,
+      options: (q.question_options as any[])
+        .sort((a: any, b: any) => a.sort_order - b.sort_order)
+        .map((opt: any) => ({ id: opt.option_id, text: opt.text })),
+      correctOptionId: q.correct_option_id,
+      explanation: q.explanation,
+      tags: (q.question_tags as any[]).map((t: any) => t.tag),
+      difficulty: q.difficulty as 1 | 2 | 3,
+    };
+  });
 }
 
 export async function getQuestionsByTag(examId: string, tag: string): Promise<Question[]> {
