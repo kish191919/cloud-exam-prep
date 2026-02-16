@@ -3,6 +3,7 @@ import { Cloud, LayoutDashboard, BookOpen, RotateCcw, Settings2 } from 'lucide-r
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useAuth } from '@/contexts/AuthContext';
+import { isAdmin } from '@/lib/admin';
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -13,7 +14,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
     { to: '/dashboard', icon: LayoutDashboard, label: t('navigation.dashboard') },
     { to: '/exams', icon: BookOpen, label: t('navigation.exams') },
     { to: '/review', icon: RotateCcw, label: t('navigation.review') },
-    ...(user ? [{ to: '/admin', icon: Settings2, label: '관리자' }] : []),
+    ...(isAdmin(user?.email) ? [{ to: '/admin', icon: Settings2, label: '관리자' }] : []),
   ];
 
   return (

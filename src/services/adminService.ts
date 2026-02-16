@@ -1,5 +1,7 @@
 import { supabase } from '@/lib/supabase';
 
+// ─── Exam Set CRUD ────────────────────────────────────────────────────────────
+
 export interface ExamSetInput {
   examId: string;
   name: string;
@@ -61,25 +63,135 @@ export async function getSetQuestionIds(setId: string): Promise<string[]> {
 }
 
 export async function updateSetQuestions(setId: string, questionIds: string[]): Promise<void> {
-  // Delete all existing assignments for this set
   const { error: delError } = await supabase
     .from('exam_set_questions')
     .delete()
     .eq('set_id', setId);
 
   if (delError) throw delError;
-
   if (questionIds.length === 0) return;
-
-  const rows = questionIds.map((qId, idx) => ({
-    set_id: setId,
-    question_id: qId,
-    sort_order: idx + 1,
-  }));
 
   const { error: insError } = await supabase
     .from('exam_set_questions')
-    .insert(rows);
+    .insert(questionIds.map((qId, idx) => ({ set_id: setId, question_id: qId, sort_order: idx + 1 })));
 
   if (insError) throw insError;
+}
+
+// ─── Question CRUD ────────────────────────────────────────────────────────────
+
+export interface QuestionInput {
+  examId: string;
+  text: string;
+  options: { id: 'a' | 'b' | 'c' | 'd'; text: string }[];
+  correctOptionId: 'a' | 'b' | 'c' | 'd';
+  explanation: string;
+  difficulty: 1 | 2 | 3;
+  tags: string[];
+}
+
+/** Generate a unique question ID */
+function genQuestionId(examId: string): string {
+  const prefix = examId.replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 8);
+  return `${prefix}-q${Date.now()}`;
+}
+
+export async function createQuestion(input: QuestionInput): Promise<string> {
+  const questionId = genQuestionId(input.examId);
+
+  const { error: qErr } = await supabase
+    .from('questions')
+    .insert({
+      id: questionId,
+      exam_id: input.examId,
+      text: input.text,
+      correct_option_id: input.correctOptionId,
+      explanation: input.explanation,
+      difficulty: input.difficulty,
+    });
+  if (qErr) throw qErr;
+
+  const { error: optErr } = await supabase
+    .from('question_options')
+    .insert(input.options.map((opt, idx) => ({
+      question_id: questionId,
+      option_id: opt.id,
+      text: opt.text,
+      sort_order: idx + 1,
+    })));
+  if (optErr) throw optErr;
+
+  const trimmedTags = input.tags.map(t => t.trim()).filter(Boolean);
+  if (trimmedTags.length > 0) {
+    const { error: tagErr } = await supabase
+      .from('question_tags')
+      .insert(trimmedTags.map(tag => ({ question_id: questionId, tag })));
+    if (tagErr) throw tagErr;
+  }
+
+  return questionId;
+}
+
+export async function updateQuestion(questionId: string, input: Omit<QuestionInput, 'examId'>): Promise<void> {
+  const { error: qErr } = await supabase
+    .from('questions')
+    .update({
+      text: input.text,
+      correct_option_id: input.correctOptionId,
+      explanation: input.explanation,
+      difficulty: input.difficulty,
+    })
+    .eq('id', questionId);
+  if (qErr) throw qErr;
+
+  // Re-insert options
+  await supabase.from('question_options').delete().eq('question_id', questionId);
+  const { error: optErr } = await supabase
+    .from('question_options')
+    .insert(input.options.map((opt, idx) => ({
+      question_id: questionId,
+      option_id: opt.id,
+      text: opt.text,
+      sort_order: idx + 1,
+    })));
+  if (optErr) throw optErr;
+
+  // Re-insert tags
+  await supabase.from('question_tags').delete().eq('question_id', questionId);
+  const trimmedTags = input.tags.map(t => t.trim()).filter(Boolean);
+  if (trimmedTags.length > 0) {
+    const { error: tagErr } = await supabase
+      .from('question_tags')
+      .insert(trimmedTags.map(tag => ({ question_id: questionId, tag })));
+    if (tagErr) throw tagErr;
+  }
+}
+
+export async function deleteQuestion(questionId: string): Promise<void> {
+  const { error } = await supabase
+    .from('questions')
+    .delete()
+    .eq('id', questionId);
+  if (error) throw error;
+}
+
+export async function bulkCreateQuestions(
+  examId: string,
+  questions: Omit<QuestionInput, 'examId'>[],
+  onProgress?: (done: number, total: number) => void,
+): Promise<{ success: number; errors: string[] }> {
+  let success = 0;
+  const errors: string[] = [];
+
+  for (let i = 0; i < questions.length; i++) {
+    try {
+      await createQuestion({ ...questions[i], examId });
+      success++;
+    } catch (e: any) {
+      errors.push(`Row ${i + 2}: ${e.message ?? String(e)}`);
+    }
+    onProgress?.(i + 1, questions.length);
+  }
+
+  return { success, errors };
 }

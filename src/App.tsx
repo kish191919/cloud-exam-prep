@@ -10,6 +10,7 @@ import ExamSession from "./pages/ExamSession";
 import ExamResults from "./pages/ExamResults";
 import ReviewPage from "./pages/ReviewPage";
 import AdminPage from "./pages/AdminPage";
+import AdminQuestionsPage from "./pages/AdminQuestionsPage";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./contexts/AuthContext";
 import AuthModal from "./components/AuthModal";
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/results/:sessionId" element={<ExamResults />} />
             <Route path="/review" element={<ReviewPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/questions" element={<AdminQuestionsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

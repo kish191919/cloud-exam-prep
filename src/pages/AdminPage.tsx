@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import AppLayout from '@/components/AppLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -26,7 +27,7 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   Plus, Pencil, Trash2, BookOpen, FlaskConical,
-  Loader2, ListChecks, Save,
+  Loader2, ListChecks, Save, FileText,
 } from 'lucide-react';
 import { getAllExams } from '@/services/examService';
 import { getSetsForExam, getQuestionsForExam } from '@/services/questionService';
@@ -40,6 +41,7 @@ import {
 import type { ExamConfig, ExamSet, Question } from '@/types/exam';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { isAdmin } from '@/lib/admin';
 
 // ─── Set form dialog ────────────────────────────────────────────────────────
 interface SetFormDialogProps {
@@ -291,9 +293,9 @@ const AdminPage = () => {
   const [deleteTarget, setDeleteTarget] = useState<ExamSet | null>(null);
   const [questionPickerSet, setQuestionPickerSet] = useState<ExamSet | null>(null);
 
-  // Redirect if not logged in
+  // Redirect if not admin
   useEffect(() => {
-    if (user === null) navigate('/');
+    if (user !== undefined && !isAdmin(user?.email)) navigate('/');
   }, [user, navigate]);
 
   // Load exams
@@ -351,6 +353,11 @@ const AdminPage = () => {
             <h1 className="text-2xl font-bold">시험 세트 관리</h1>
             <p className="text-muted-foreground text-sm mt-1">시험별 세트를 추가·편집·삭제하고 문제를 배정하세요.</p>
           </div>
+          <Link to="/admin/questions">
+            <Button variant="outline">
+              <FileText className="h-4 w-4 mr-2" />문제 관리
+            </Button>
+          </Link>
         </div>
 
         <Tabs value={activeExamId} onValueChange={setActiveExamId}>
