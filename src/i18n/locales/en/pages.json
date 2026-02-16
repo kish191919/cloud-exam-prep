@@ -1,0 +1,252 @@
+{
+  "index": {
+    "hero": {
+      "badge": "AWS AIF-C01 practice exam now available",
+      "title": "Master Cloud Certifications",
+      "titleAccent": "With Confidence",
+      "subtitle": "Practice with realistic CBT exams for AWS, GCP & Azure. Track your progress, review mistakes, and pass on your first try.",
+      "ctaPrimary": "Start Free Practice",
+      "ctaSecondary": "Learn More",
+      "stats": {
+        "questions": {
+          "value": "500+",
+          "label": "Questions"
+        },
+        "passRate": {
+          "value": "95%",
+          "label": "Pass Rate"
+        },
+        "providers": {
+          "value": "3",
+          "label": "Cloud Providers"
+        }
+      }
+    },
+    "featuresSection": {
+      "title": "Everything You Need to Pass",
+      "subtitle": "Built by certified professionals who understand what it takes to ace cloud exams."
+    },
+    "features": [
+      {
+        "icon": "Shield",
+        "title": "Realistic CBT Experience",
+        "desc": "Timed exams with auto-save, bookmarks, pause/resume, and question navigation — just like the real test."
+      },
+      {
+        "icon": "BarChart3",
+        "title": "Smart Analytics",
+        "desc": "Track scores by topic, identify weak areas, and review wrong answers with detailed explanations."
+      },
+      {
+        "icon": "Clock",
+        "title": "Realistic Time Management",
+        "desc": "Practice under real exam conditions and build confidence to finish within time limits."
+      },
+      {
+        "icon": "BookOpen",
+        "title": "Detailed Explanations",
+        "desc": "Learn from comprehensive explanations for every question to understand concepts and improve."
+      },
+      {
+        "icon": "Target",
+        "title": "Topic-Based Study",
+        "desc": "Focus on specific domains and target your weak areas for efficient learning."
+      },
+      {
+        "icon": "Users",
+        "title": "Multi-Cloud Coverage",
+        "desc": "AWS, GCP, and Azure certifications in one platform. Always updated for the latest exam versions."
+      }
+    ],
+    "howItWorks": {
+      "title": "How It Works"
+    },
+    "steps": [
+      {
+        "num": "01",
+        "title": "Choose Your Exam",
+        "desc": "Select from AWS, GCP, or Azure certification practice tests."
+      },
+      {
+        "num": "02",
+        "title": "Take the Test",
+        "desc": "Experience a realistic CBT environment with timer and auto-save."
+      },
+      {
+        "num": "03",
+        "title": "Review & Improve",
+        "desc": "Analyze results, study explanations, and retake weak areas."
+      }
+    ],
+    "pricing": {
+      "title": "Simple, Transparent Pricing",
+      "subtitle": "Start free, upgrade when you're ready.",
+      "popularBadge": "Most Popular",
+      "plans": [
+        {
+          "name": "Free",
+          "price": "$0",
+          "period": "/forever",
+          "desc": "Try before you buy",
+          "features": [
+            "10 sample questions",
+            "1 practice exam",
+            "Basic results"
+          ],
+          "cta": "Get Started"
+        },
+        {
+          "name": "Pro",
+          "price": "$19",
+          "period": "/month",
+          "desc": "For serious learners",
+          "popular": true,
+          "features": [
+            "Full question bank",
+            "Unlimited exams",
+            "Detailed analytics",
+            "Wrong answer drills",
+            "Bookmark & notes"
+          ],
+          "cta": "Start Pro Trial"
+        },
+        {
+          "name": "Team",
+          "price": "$49",
+          "period": "/month",
+          "desc": "For teams & bootcamps",
+          "features": [
+            "Everything in Pro",
+            "Team management",
+            "Progress tracking",
+            "Bulk licensing",
+            "Priority support"
+          ],
+          "cta": "Contact Sales"
+        }
+      ]
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "questions": [
+        {
+          "q": "What certifications are covered?",
+          "a": "We currently offer practice exams for AWS certifications including AIF-C01, SAA-C03, and DEA-C01. GCP and Azure exams are coming soon."
+        },
+        {
+          "q": "How realistic are the practice exams?",
+          "a": "Our CBT interface mirrors the actual exam experience with timed sessions, question navigation panels, bookmarking, and the same question formats you'll encounter on test day."
+        },
+        {
+          "q": "Can I access on mobile?",
+          "a": "Yes! CloudMaster is fully responsive and works on desktop, tablet, and mobile devices. Study anywhere, anytime."
+        },
+        {
+          "q": "What happens if I lose connection during an exam?",
+          "a": "Your progress is auto-saved after every answer. If you lose connection or close your browser, you can resume exactly where you left off."
+        },
+        {
+          "q": "How do I track my progress?",
+          "a": "Your dashboard shows score trends, topic-by-topic breakdowns, and identifies your weakest areas so you can focus your study time effectively."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Get Certified?",
+      "subtitle": "Join thousands of cloud professionals who passed their exams with CloudMaster.",
+      "button": "Start Practicing Now"
+    },
+    "footer": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "community": "Community",
+      "copyright": "© 2026 CloudMaster. All rights reserved."
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back! Track your certification progress.",
+    "stats": {
+      "examsTaken": "Exams Taken",
+      "averageScore": "Average Score",
+      "inProgress": "In Progress"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "startNewExam": "Start New Exam",
+      "reviewWrongAnswers": "Review Wrong Answers"
+    },
+    "recentSessions": {
+      "title": "Recent Sessions",
+      "noExams": "No exams taken yet. Start your first practice!",
+      "inProgress": "In Progress"
+    }
+  },
+  "examList": {
+    "title": "Practice Exams",
+    "subtitle": "Choose a certification exam to practice.",
+    "questions": "questions",
+    "minutes": "min",
+    "toPass": "to pass",
+    "startExam": "Start Exam",
+    "resume": "Resume",
+    "comingSoon": "Coming Soon"
+  },
+  "examSession": {
+    "questionOf": "Question",
+    "of": "of",
+    "bookmark": "Bookmark",
+    "bookmarked": "Bookmarked",
+    "sessionNotFound": "Session not found",
+    "sessionExpired": "This exam session may have expired or doesn't exist.",
+    "backToExams": "Back to Exams",
+    "submit": "Submit",
+    "prev": "Prev",
+    "next": "Next",
+    "questionCounter": "{{current}} / {{total}}",
+    "submitDialog": {
+      "title": "Submit Exam?",
+      "description": "Once submitted, you cannot change your answers.",
+      "unansweredWarning": "You have <strong>{{count}}</strong> unanswered question(s): #{{indices}}",
+      "cancel": "Cancel",
+      "confirm": "Confirm Submit"
+    }
+  },
+  "examResults": {
+    "notFound": "Results not found",
+    "passed": "PASSED",
+    "failed": "NOT PASSED",
+    "score": "Score",
+    "summary": "Summary",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "unanswered": "Unanswered",
+    "timeSpent": "Time Spent",
+    "topicBreakdown": "Performance by Topic",
+    "questionReview": "Question Review",
+    "correctOutOf": "{{correct}} correct out of {{total}} questions",
+    "questionNumber": "Q{{number}}.",
+    "explanation": "Explanation:",
+    "actions": {
+      "title": "Next Steps",
+      "retryAll": "Retry All",
+      "retryWrong": "Retry Wrong Only",
+      "retakeExam": "Retake Exam",
+      "reviewWrong": "Review Wrong Answers",
+      "backToDashboard": "Back to Dashboard"
+    }
+  },
+  "review": {
+    "title": "Review",
+    "subtitle": "Study your wrong answers and bookmarked questions.",
+    "wrongAnswers": "Wrong Answers",
+    "bookmarked": "Bookmarked",
+    "noWrong": "No wrong answers yet. Take an exam first!",
+    "noBookmarked": "No bookmarked questions yet. Bookmark questions during an exam!"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Sorry! Page not found",
+    "returnHome": "Return Home"
+  }
+}

@@ -8,13 +8,15 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from '@/components/ui/dialog';
-import { ChevronLeft, ChevronRight, Menu, Send, Cloud, AlertTriangle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Menu, Send, Cloud, AlertTriangle, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const ExamSession = () => {
+  const { t } = useTranslation('pages');
   const { sessionId } = useParams();
   const navigate = useNavigate();
-  const { session, selectAnswer, toggleBookmark, goToQuestion, submitExam } = useExamSession(sessionId || null);
+  const { session, loading, selectAnswer, toggleBookmark, goToQuestion, submitExam } = useExamSession(sessionId || null);
   const [showPanel, setShowPanel] = useState(true);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
 
@@ -23,14 +25,22 @@ const ExamSession = () => {
     if (sessionId) navigate(`/results/${sessionId}`, { replace: true });
   }, [submitExam, sessionId, navigate]);
 
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   if (!session) {
     return (
       <div className="h-screen flex items-center justify-center bg-background">
         <div className="text-center">
           <AlertTriangle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h2 className="text-lg font-semibold mb-2">Session not found</h2>
-          <p className="text-sm text-muted-foreground mb-4">This exam session may have expired or doesn't exist.</p>
-          <Link to="/exams"><Button>Back to Exams</Button></Link>
+          <h2 className="text-lg font-semibold mb-2">{t('examSession.sessionNotFound')}</h2>
+          <p className="text-sm text-muted-foreground mb-4">{t('examSession.sessionExpired')}</p>
+          <Link to="/exams"><Button>{t('examSession.backToExams')}</Button></Link>
         </div>
       </div>
     );
@@ -66,7 +76,7 @@ const ExamSession = () => {
         </div>
         <ExamTimer startedAt={session.startedAt} timeLimitSec={session.timeLimitSec} onTimeUp={handleTimeUp} />
         <Button size="sm" onClick={() => setShowSubmitDialog(true)} className="bg-accent text-accent-foreground hover:bg-accent/90">
-          <Send className="h-4 w-4 mr-1" /> Submit
+          <Send className="h-4 w-4 mr-1" /> {t('examSession.submit')}
         </Button>
       </div>
 
@@ -120,17 +130,17 @@ const ExamSession = () => {
           disabled={session.currentIndex === 0}
           onClick={() => goToQuestion(session.currentIndex - 1)}
         >
-          <ChevronLeft className="h-4 w-4 mr-1" /> Prev
+          <ChevronLeft className="h-4 w-4 mr-1" /> {t('examSession.prev')}
         </Button>
         <span className="text-sm text-muted-foreground font-medium">
-          {session.currentIndex + 1} / {session.questions.length}
+          {t('examSession.questionCounter', { current: session.currentIndex + 1, total: session.questions.length })}
         </span>
         <Button
           variant="outline"
           disabled={session.currentIndex === session.questions.length - 1}
           onClick={() => goToQuestion(session.currentIndex + 1)}
         >
-          Next <ChevronRight className="h-4 w-4 ml-1" />
+          {t('examSession.next')} <ChevronRight className="h-4 w-4 ml-1" />
         </Button>
       </div>
 
@@ -138,23 +148,23 @@ const ExamSession = () => {
       <Dialog open={showSubmitDialog} onOpenChange={setShowSubmitDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Submit Exam?</DialogTitle>
+            <DialogTitle>{t('examSession.submitDialog.title')}</DialogTitle>
             <DialogDescription>
-              Once submitted, you cannot change your answers.
+              {t('examSession.submitDialog.description')}
             </DialogDescription>
           </DialogHeader>
           {unansweredIndices.length > 0 && (
             <div className="flex items-start gap-2 p-3 rounded-lg bg-destructive/10 text-sm">
               <AlertTriangle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
               <span>
-                You have <strong>{unansweredIndices.length}</strong> unanswered question(s): #{unansweredIndices.join(', #')}
+                {t('examSession.submitDialog.unansweredWarning', { count: unansweredIndices.length, indices: unansweredIndices.join(', #') })}
               </span>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowSubmitDialog(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setShowSubmitDialog(false)}>{t('examSession.submitDialog.cancel')}</Button>
             <Button onClick={handleSubmit} className="bg-accent text-accent-foreground hover:bg-accent/90">
-              Confirm Submit
+              {t('examSession.submitDialog.confirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

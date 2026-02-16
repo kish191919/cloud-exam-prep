@@ -10,6 +10,8 @@ import ExamSession from "./pages/ExamSession";
 import ExamResults from "./pages/ExamResults";
 import ReviewPage from "./pages/ReviewPage";
 import NotFound from "./pages/NotFound";
+import { AuthProvider } from "./contexts/AuthContext";
+import AuthModal from "./components/AuthModal";
 
 const queryClient = new QueryClient();
 
@@ -19,15 +21,18 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/exams" element={<ExamList />} />
-          <Route path="/session/:sessionId" element={<ExamSession />} />
-          <Route path="/results/:sessionId" element={<ExamResults />} />
-          <Route path="/review" element={<ReviewPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <AuthModal />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/exams" element={<ExamList />} />
+            <Route path="/session/:sessionId" element={<ExamSession />} />
+            <Route path="/results/:sessionId" element={<ExamResults />} />
+            <Route path="/review" element={<ReviewPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

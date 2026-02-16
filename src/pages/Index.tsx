@@ -11,129 +11,87 @@ import {
   Shield, BarChart3, Clock, BookOpen, CheckCircle, ArrowRight,
   Cloud, Zap, Target, Star, Users,
 } from 'lucide-react';
-
-const features = [
-  {
-    icon: Clock,
-    title: 'Realistic CBT Experience',
-    desc: 'Timed exams with auto-save, bookmarks, pause/resume, and question navigation — just like the real test.',
-  },
-  {
-    icon: BarChart3,
-    title: 'Smart Analytics',
-    desc: 'Track scores by topic, identify weak areas, and review wrong answers with detailed explanations.',
-  },
-  {
-    icon: Shield,
-    title: 'Multi-Cloud Coverage',
-    desc: 'AWS, GCP, and Azure certifications in one platform. Always updated for the latest exam versions.',
-  },
-];
-
-const steps = [
-  { num: '01', title: 'Choose Your Exam', desc: 'Select from AWS, GCP, or Azure certification practice tests.' },
-  { num: '02', title: 'Take the Test', desc: 'Experience a realistic CBT environment with timer and auto-save.' },
-  { num: '03', title: 'Review & Improve', desc: 'Analyze results, study explanations, and retake weak areas.' },
-];
-
-const plans = [
-  {
-    name: 'Free',
-    price: '$0',
-    period: 'forever',
-    desc: 'Try before you buy',
-    features: ['10 sample questions', '1 practice exam', 'Basic results'],
-    cta: 'Get Started',
-    popular: false,
-  },
-  {
-    name: 'Pro',
-    price: '$19',
-    period: '/month',
-    desc: 'For serious learners',
-    features: ['Full question bank', 'Unlimited exams', 'Detailed analytics', 'Wrong answer drills', 'Bookmark & notes'],
-    cta: 'Start Pro Trial',
-    popular: true,
-  },
-  {
-    name: 'Team',
-    price: '$49',
-    period: '/month',
-    desc: 'For teams & bootcamps',
-    features: ['Everything in Pro', 'Team management', 'Progress tracking', 'Bulk licensing', 'Priority support'],
-    cta: 'Contact Sales',
-    popular: false,
-  },
-];
-
-const faqs = [
-  {
-    q: 'What certifications are covered?',
-    a: 'We currently offer practice exams for AWS certifications including AIF-C01, SAA-C03, and DEA-C01. GCP and Azure exams are coming soon.',
-  },
-  {
-    q: 'How realistic are the practice exams?',
-    a: 'Our CBT interface mirrors the actual exam experience with timed sessions, question navigation panels, bookmarking, and the same question formats you\'ll encounter on test day.',
-  },
-  {
-    q: 'Can I access on mobile?',
-    a: 'Yes! CloudMaster is fully responsive and works on desktop, tablet, and mobile devices. Study anywhere, anytime.',
-  },
-  {
-    q: 'What happens if I lose connection during an exam?',
-    a: 'Your progress is auto-saved after every answer. If you lose connection or close your browser, you can resume exactly where you left off.',
-  },
-  {
-    q: 'How do I track my progress?',
-    a: 'Your dashboard shows score trends, topic-by-topic breakdowns, and identifies your weakest areas so you can focus your study time effectively.',
-  },
-];
+import { useTranslation } from 'react-i18next';
 
 const Index = () => {
+  const { t } = useTranslation(['pages', 'common']);
+
+  const features = t('index.features', { returnObjects: true }) as Array<{ title: string; desc: string; icon: string }>;
+  const steps = t('index.steps', { returnObjects: true }) as Array<{ num: string; title: string; desc: string }>;
+  const plans = t('index.pricing.plans', { returnObjects: true }) as Array<{ name: string; desc: string; price: string; period: string; features: string[]; cta: string; popular?: boolean }>;
+  const faqs = t('index.faq.questions', { returnObjects: true }) as Array<{ q: string; a: string }>;
+
+  const iconMap: Record<string, any> = {
+    Shield, BarChart3, Clock, BookOpen, Target, Users,
+  };
+
   return (
     <div className="min-h-screen">
       <Navbar />
 
       {/* Hero */}
-      <section className="hero-gradient text-primary-foreground pt-32 pb-20 px-4">
-        <div className="container mx-auto text-center max-w-4xl">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary-foreground/20 text-sm mb-8 bg-primary-foreground/5">
-            <Zap className="h-4 w-4 text-accent" />
-            <span>AWS AIF-C01 practice exam now available</span>
+      <section className="relative hero-gradient text-primary-foreground pt-24 md:pt-32 pb-24 md:pb-32 px-4 overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-accent rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="container mx-auto text-center max-w-5xl relative z-10">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-accent/30 text-sm mb-8 bg-accent/10 backdrop-blur-sm shadow-lg">
+            <Zap className="h-4 w-4 text-accent animate-pulse" />
+            <span className="font-semibold">{t('index.hero.badge')}</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
-            Master Cloud Certifications
+
+          {/* Main Title */}
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.15] mt-4 mb-10 tracking-tight">
+            {t('index.hero.title')}
             <br />
-            <span className="text-accent">With Confidence</span>
+            <span className="bg-gradient-to-r from-accent via-accent/80 to-accent bg-clip-text text-transparent">
+              {t('index.hero.titleAccent')}
+            </span>
           </h1>
-          <p className="text-lg md:text-xl text-primary-foreground/70 max-w-2xl mx-auto mb-10">
-            Practice with realistic CBT exams for AWS, GCP & Azure. Track your progress, review mistakes, and pass on your first try.
+
+          {/* Subtitle */}
+          <p className="text-xl md:text-2xl text-primary-foreground/80 max-w-2xl mx-auto mb-14 leading-relaxed font-medium" style={{ wordBreak: 'keep-all' }}>
+            {t('index.hero.subtitle')}
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-20">
             <Link to="/exams">
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-6 accent-glow">
-                Start Free Practice <ArrowRight className="ml-2 h-5 w-5" />
+              <Button
+                size="lg"
+                className="bg-accent text-accent-foreground hover:bg-accent/90 text-lg font-bold px-10 py-7 rounded-xl shadow-2xl hover:shadow-accent/50 transition-all duration-300 hover:scale-105 accent-glow w-full sm:w-auto"
+              >
+                {t('index.hero.ctaPrimary')} <ArrowRight className="ml-2 h-6 w-6" />
               </Button>
             </Link>
             <a href="#features">
-              <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 text-base px-8 py-6">
-                Learn More
+              <Button
+                size="lg"
+                variant="ghost"
+                className="border-2 border-primary-foreground/50 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground text-lg font-semibold px-10 py-7 rounded-xl backdrop-blur-sm transition-all duration-300 hover:scale-105 w-full sm:w-auto"
+              >
+                {t('index.hero.ctaSecondary')}
               </Button>
             </a>
           </div>
 
-          <div className="mt-16 grid grid-cols-3 gap-8 max-w-md mx-auto">
-            <div>
-              <div className="text-3xl font-bold text-accent">500+</div>
-              <div className="text-sm text-primary-foreground/60">Questions</div>
+          {/* Stats Section */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-8 border border-primary-foreground/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+              <div className="text-5xl md:text-6xl font-black text-accent mb-2 tracking-tight">{t('index.hero.stats.questions.value')}</div>
+              <div className="text-base text-primary-foreground/70 font-semibold uppercase tracking-wide">{t('index.hero.stats.questions.label')}</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-accent">95%</div>
-              <div className="text-sm text-primary-foreground/60">Pass Rate</div>
+            <div className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-8 border border-primary-foreground/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+              <div className="text-5xl md:text-6xl font-black text-accent mb-2 tracking-tight">{t('index.hero.stats.passRate.value')}</div>
+              <div className="text-base text-primary-foreground/70 font-semibold uppercase tracking-wide">{t('index.hero.stats.passRate.label')}</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-accent">3</div>
-              <div className="text-sm text-primary-foreground/60">Cloud Providers</div>
+            <div className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-8 border border-primary-foreground/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+              <div className="text-5xl md:text-6xl font-black text-accent mb-2 tracking-tight">{t('index.hero.stats.providers.value')}</div>
+              <div className="text-base text-primary-foreground/70 font-semibold uppercase tracking-wide">{t('index.hero.stats.providers.label')}</div>
             </div>
           </div>
         </div>
@@ -143,21 +101,24 @@ const Index = () => {
       <section id="features" className="py-20 px-4">
         <div className="container mx-auto max-w-5xl">
           <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Everything You Need to Pass</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('index.featuresSection.title')}</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Built by certified professionals who understand what it takes to ace cloud exams.
+              {t('index.featuresSection.subtitle')}
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {features.map((f, i) => (
-              <div key={i} className="bg-card rounded-xl p-6 border card-hover" style={{ animationDelay: `${i * 100}ms` }}>
-                <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
-                  <f.icon className="h-6 w-6 text-accent" />
+            {features.map((f, i) => {
+              const IconComponent = iconMap[f.icon];
+              return (
+                <div key={i} className="bg-card rounded-xl p-6 border card-hover" style={{ animationDelay: `${i * 100}ms` }}>
+                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                    {IconComponent && <IconComponent className="h-6 w-6 text-accent" />}
+                  </div>
+                  <h3 className="font-semibold text-lg mb-2">{f.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
                 </div>
-                <h3 className="font-semibold text-lg mb-2">{f.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -165,7 +126,7 @@ const Index = () => {
       {/* How it works */}
       <section className="py-20 px-4 bg-card">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-14">How It Works</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-14">{t('index.howItWorks.title')}</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {steps.map((s, i) => (
               <div key={i} className="text-center">
@@ -181,8 +142,8 @@ const Index = () => {
       {/* Pricing */}
       <section id="pricing" className="py-20 px-4">
         <div className="container mx-auto max-w-5xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-muted-foreground text-center mb-14 text-lg">Start free, upgrade when you're ready.</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">{t('index.pricing.title')}</h2>
+          <p className="text-muted-foreground text-center mb-14 text-lg">{t('index.pricing.subtitle')}</p>
           <div className="grid md:grid-cols-3 gap-6">
             {plans.map((plan, i) => (
               <div
@@ -193,7 +154,7 @@ const Index = () => {
               >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
-                    Most Popular
+                    {t('index.pricing.popularBadge')}
                   </div>
                 )}
                 <h3 className="font-semibold text-lg">{plan.name}</h3>
@@ -227,7 +188,7 @@ const Index = () => {
       {/* FAQ */}
       <section id="faq" className="py-20 px-4 bg-card">
         <div className="container mx-auto max-w-3xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-14">Frequently Asked Questions</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-14">{t('index.faq.title')}</h2>
           <Accordion type="single" collapsible className="space-y-3">
             {faqs.map((faq, i) => (
               <AccordionItem key={i} value={`faq-${i}`} className="bg-background rounded-lg border px-4">
@@ -242,13 +203,13 @@ const Index = () => {
       {/* CTA */}
       <section className="hero-gradient text-primary-foreground py-20 px-4">
         <div className="container mx-auto text-center max-w-2xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Get Certified?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('index.cta.title')}</h2>
           <p className="text-primary-foreground/70 mb-8 text-lg">
-            Join thousands of cloud professionals who passed their exams with CloudMaster.
+            {t('index.cta.subtitle')}
           </p>
           <Link to="/exams">
             <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-6 accent-glow">
-              Start Practicing Now <ArrowRight className="ml-2 h-5 w-5" />
+              {t('index.cta.button')} <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
         </div>
@@ -259,14 +220,14 @@ const Index = () => {
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 font-bold">
             <Cloud className="h-5 w-5 text-accent" />
-            CloudMaster
+            {t('common:brand')}
           </div>
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-foreground transition-colors">Community</a>
+            <a href="#" className="hover:text-foreground transition-colors">{t('index.footer.privacy')}</a>
+            <a href="#" className="hover:text-foreground transition-colors">{t('index.footer.terms')}</a>
+            <a href="#" className="hover:text-foreground transition-colors">{t('index.footer.community')}</a>
           </div>
-          <p className="text-xs text-muted-foreground">© 2026 CloudMaster. All rights reserved.</p>
+          <p className="text-xs text-muted-foreground">{t('index.footer.copyright')}</p>
         </div>
       </footer>
     </div>

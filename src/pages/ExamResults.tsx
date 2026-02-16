@@ -7,8 +7,10 @@ import {
   CheckCircle, XCircle, RotateCcw, ArrowLeft, BookOpen, Trophy, Target,
 } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
+import { useTranslation } from 'react-i18next';
 
 const ExamResults = () => {
+  const { t } = useTranslation('pages');
   const { sessionId } = useParams();
   const navigate = useNavigate();
   const session = sessionId ? getSession(sessionId) : null;
@@ -17,8 +19,8 @@ const ExamResults = () => {
     return (
       <AppLayout>
         <div className="text-center py-20">
-          <p className="text-muted-foreground">Results not found.</p>
-          <Link to="/exams"><Button className="mt-4">Back to Exams</Button></Link>
+          <p className="text-muted-foreground">{t('examResults.notFound')}</p>
+          <Link to="/exams"><Button className="mt-4">{t('examSession.backToExams')}</Button></Link>
         </div>
       </AppLayout>
     );
@@ -51,18 +53,18 @@ const ExamResults = () => {
             </div>
             <h1 className="text-3xl font-bold mb-1">{session.score}%</h1>
             <p className={`text-lg font-semibold ${passed ? 'text-success' : 'text-destructive'}`}>
-              {passed ? 'PASSED' : 'NOT PASSED'}
+              {passed ? t('examResults.passed') : t('examResults.failed')}
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              {session.correctCount} correct out of {session.totalCount} questions
+              {t('examResults.correctOutOf', { correct: session.correctCount, total: session.totalCount })}
             </p>
             <div className="flex gap-3 justify-center mt-6">
               <Button variant="outline" onClick={handleRetry}>
-                <RotateCcw className="h-4 w-4 mr-1" /> Retry All
+                <RotateCcw className="h-4 w-4 mr-1" /> {t('examResults.actions.retryAll')}
               </Button>
               {(session.totalCount || 0) - (session.correctCount || 0) > 0 && (
                 <Button onClick={handleRetryWrong} className="bg-accent text-accent-foreground hover:bg-accent/90">
-                  <BookOpen className="h-4 w-4 mr-1" /> Retry Wrong Only
+                  <BookOpen className="h-4 w-4 mr-1" /> {t('examResults.actions.retryWrong')}
                 </Button>
               )}
             </div>
@@ -72,7 +74,7 @@ const ExamResults = () => {
         {/* Tag breakdown */}
         {session.tagBreakdown && Object.keys(session.tagBreakdown).length > 0 && (
           <Card className="mb-6">
-            <CardHeader><CardTitle className="text-lg">Performance by Topic</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-lg">{t('examResults.topicBreakdown')}</CardTitle></CardHeader>
             <CardContent className="space-y-4">
               {Object.entries(session.tagBreakdown).map(([tag, data]) => {
                 const pct = Math.round((data.correct / data.total) * 100);
@@ -92,7 +94,7 @@ const ExamResults = () => {
 
         {/* Question review */}
         <Card>
-          <CardHeader><CardTitle className="text-lg">Question Review</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="text-lg">{t('examResults.questionReview')}</CardTitle></CardHeader>
           <CardContent className="space-y-6">
             {session.questions.map((q, i) => {
               const userAnswer = session.answers[q.id];
@@ -104,7 +106,7 @@ const ExamResults = () => {
                       ? <CheckCircle className="h-5 w-5 text-success flex-shrink-0 mt-0.5" />
                       : <XCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />}
                     <div>
-                      <p className="text-sm font-semibold mb-1">Q{i + 1}. {q.text}</p>
+                      <p className="text-sm font-semibold mb-1">{t('examResults.questionNumber', { number: i + 1 })} {q.text}</p>
                       <div className="space-y-1">
                         {q.options.map(opt => {
                           const isUserPick = opt.id === userAnswer;
@@ -129,7 +131,7 @@ const ExamResults = () => {
                         })}
                       </div>
                       <div className="mt-3 p-3 rounded bg-muted text-sm text-muted-foreground">
-                        <strong>Explanation:</strong> {q.explanation}
+                        <strong>{t('examResults.explanation')}</strong> {q.explanation}
                       </div>
                     </div>
                   </div>
@@ -140,7 +142,7 @@ const ExamResults = () => {
         </Card>
 
         <div className="text-center mt-6 mb-10">
-          <Link to="/dashboard"><Button variant="outline"><ArrowLeft className="h-4 w-4 mr-1" /> Back to Dashboard</Button></Link>
+          <Link to="/dashboard"><Button variant="outline"><ArrowLeft className="h-4 w-4 mr-1" /> {t('examResults.actions.backToDashboard')}</Button></Link>
         </div>
       </div>
     </AppLayout>

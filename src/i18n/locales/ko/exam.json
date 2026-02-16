@@ -1,0 +1,13 @@
+{
+  "certifications": {
+    "AWS": "AWS",
+    "GCP": "GCP",
+    "Azure": "Azure"
+  },
+  "status": {
+    "inProgress": "진행 중",
+    "submitted": "제출됨",
+    "passed": "합격",
+    "failed": "불합격"
+  }
+}

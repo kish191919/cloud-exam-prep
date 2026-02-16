@@ -1,14 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Cloud, LayoutDashboard, BookOpen, RotateCcw } from 'lucide-react';
-
-const navItems = [
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/exams', icon: BookOpen, label: 'Exams' },
-  { to: '/review', icon: RotateCcw, label: 'Review' },
-];
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
+  const { t } = useTranslation('common');
+
+  const navItems = [
+    { to: '/dashboard', icon: LayoutDashboard, label: t('navigation.dashboard') },
+    { to: '/exams', icon: BookOpen, label: t('navigation.exams') },
+    { to: '/review', icon: RotateCcw, label: t('navigation.review') },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -16,7 +19,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         <div className="container mx-auto flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 font-bold text-lg">
             <Cloud className="h-6 w-6 text-accent" />
-            CloudMaster
+            {t('brand')}
           </Link>
           <nav className="flex items-center gap-1">
             {navItems.map(item => (
@@ -33,6 +36,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 <span className="hidden sm:inline">{item.label}</span>
               </Link>
             ))}
+            <LanguageSwitcher />
           </nav>
         </div>
       </header>

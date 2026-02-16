@@ -4,8 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { XCircle, Bookmark, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const ReviewPage = () => {
+  const { t } = useTranslation('pages');
   const sessions = getAllSessions().filter(s => s.status === 'submitted');
 
   const wrongQuestions = sessions.flatMap(s =>
@@ -35,19 +37,19 @@ const ReviewPage = () => {
     <AppLayout>
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold mb-2">Review</h1>
-          <p className="text-muted-foreground">Study your wrong answers and bookmarked questions.</p>
+          <h1 className="text-2xl font-bold mb-2">{t('review.title')}</h1>
+          <p className="text-muted-foreground">{t('review.subtitle')}</p>
         </div>
 
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              <XCircle className="h-5 w-5 text-destructive" /> Wrong Answers ({wrongQuestions.length})
+              <XCircle className="h-5 w-5 text-destructive" /> {t('review.wrongAnswers')} ({wrongQuestions.length})
             </CardTitle>
           </CardHeader>
           <CardContent>
             {wrongQuestions.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-4 text-center">No wrong answers yet. Take an exam first!</p>
+              <p className="text-sm text-muted-foreground py-4 text-center">{t('review.noWrong')}</p>
             ) : (
               <div className="space-y-3">
                 {wrongQuestions.slice(0, 20).map((q, i) => (
@@ -78,12 +80,12 @@ const ReviewPage = () => {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              <Bookmark className="h-5 w-5 text-accent" /> Bookmarked ({bookmarkedQuestions.length})
+              <Bookmark className="h-5 w-5 text-accent" /> {t('review.bookmarked')} ({bookmarkedQuestions.length})
             </CardTitle>
           </CardHeader>
           <CardContent>
             {bookmarkedQuestions.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-4 text-center">No bookmarked questions yet. Bookmark questions during exams!</p>
+              <p className="text-sm text-muted-foreground py-4 text-center">{t('review.noBookmarked')}</p>
             ) : (
               <div className="space-y-3">
                 {bookmarkedQuestions.slice(0, 20).map((q) => (

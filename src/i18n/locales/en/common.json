@@ -1,0 +1,33 @@
+{
+  "brand": "CloudMaster",
+  "navigation": {
+    "features": "Features",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "signIn": "Sign In",
+    "dashboard": "Dashboard",
+    "exams": "Exams",
+    "review": "Review",
+    "startFree": "Start Free"
+  },
+  "buttons": {
+    "start": "Start",
+    "resume": "Resume",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "learnMore": "Learn More",
+    "backToHome": "Back to Home",
+    "backToExams": "Back to Exams",
+    "previous": "Prev",
+    "next": "Next"
+  },
+  "loading": "Loading...",
+  "error": "An error occurred",
+  "footer": {
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "community": "Community",
+    "copyright": "© 2026 CloudMaster. All rights reserved."
+  }
+}

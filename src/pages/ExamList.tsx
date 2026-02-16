@@ -1,10 +1,14 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import AppLayout from '@/components/AppLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { examConfigs, getQuestionsForExam } from '@/data/mockQuestions';
+import { getAllExams } from '@/services/examService';
+import { getQuestionsForExam } from '@/services/questionService';
 import { createSession, getAllSessions } from '@/hooks/useExamSession';
-import { Clock, HelpCircle, Target, Play, ArrowRight } from 'lucide-react';
+import { Clock, HelpCircle, Target, Play, ArrowRight, Loader2 } from 'lucide-react';
+import type { ExamConfig } from '@/types/exam';
+import { useTranslation } from 'react-i18next';
 
 const certColors: Record<string, string> = {
   AWS: 'bg-accent text-accent-foreground',
@@ -14,15 +18,36 @@ const certColors: Record<string, string> = {
 
 const ExamList = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation('pages');
+  const [exams, setExams] = useState<ExamConfig[]>([]);
+  const [loading, setLoading] = useState(true);
   const sessions = getAllSessions();
 
-  const handleStart = (examId: string) => {
-    const config = examConfigs.find(e => e.id === examId);
+  useEffect(() => {
+    async function loadExams() {
+      try {
+        const examData = await getAllExams();
+        setExams(examData);
+      } catch (error) {
+        console.error('Error loading exams:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadExams();
+  }, []);
+
+  const handleStart = async (examId: string) => {
+    const config = exams.find(e => e.id === examId);
     if (!config) return;
-    const questions = getQuestionsForExam(examId);
-    if (questions.length === 0) return;
-    const sessionId = createSession(examId, config.title, questions, config.timeLimitMinutes);
-    navigate(`/session/${sessionId}`);
+    try {
+      const questions = await getQuestionsForExam(examId);
+      if (questions.length === 0) return;
+      const sessionId = await createSession(examId, config.title, questions, config.timeLimitMinutes);
+      navigate(`/session/${sessionId}`);
+    } catch (error) {
+      console.error('Error starting exam:', error);
+    }
   };
 
   const getInProgressSession = (examId: string) =>
@@ -32,12 +57,17 @@ const ExamList = () => {
     <AppLayout>
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold mb-2">Practice Exams</h1>
-          <p className="text-muted-foreground">Choose a certification exam to practice.</p>
+          <h1 className="text-2xl font-bold mb-2">{t('examList.title')}</h1>
+          <p className="text-muted-foreground">{t('examList.subtitle')}</p>
         </div>
 
-        <div className="space-y-4">
-          {examConfigs.map(exam => {
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {exams.map(exam => {
             const inProgress = getInProgressSession(exam.id);
             const available = exam.questionCount > 0;
 
@@ -56,15 +86,15 @@ const ExamList = () => {
                       <h3 className="font-semibold text-lg mb-1">{exam.title}</h3>
                       <p className="text-sm text-muted-foreground mb-3">{exam.description}</p>
                       <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1"><HelpCircle className="h-3.5 w-3.5" /> {exam.questionCount} questions</span>
-                        <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {exam.timeLimitMinutes} min</span>
-                        <span className="flex items-center gap-1"><Target className="h-3.5 w-3.5" /> {exam.passingScore}% to pass</span>
+                        <span className="flex items-center gap-1"><HelpCircle className="h-3.5 w-3.5" /> {exam.questionCount} {t('examList.questions')}</span>
+                        <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {exam.timeLimitMinutes} {t('examList.minutes')}</span>
+                        <span className="flex items-center gap-1"><Target className="h-3.5 w-3.5" /> {exam.passingScore}% {t('examList.toPass')}</span>
                       </div>
                     </div>
                     <div className="flex gap-2">
                       {inProgress && (
                         <Button variant="outline" onClick={() => navigate(`/session/${inProgress.id}`)}>
-                          Resume <ArrowRight className="h-4 w-4 ml-1" />
+                          {t('examList.resume')} <ArrowRight className="h-4 w-4 ml-1" />
                         </Button>
                       )}
                       <Button
@@ -72,15 +102,16 @@ const ExamList = () => {
                         onClick={() => handleStart(exam.id)}
                         className={available ? 'bg-accent text-accent-foreground hover:bg-accent/90' : ''}
                       >
-                        {available ? <><Play className="h-4 w-4 mr-1" /> Start Exam</> : 'Coming Soon'}
+                        {available ? <><Play className="h-4 w-4 mr-1" /> {t('examList.startExam')}</> : t('examList.comingSoon')}
                       </Button>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             );
-          })}
-        </div>
+            })}
+          </div>
+        )}
       </div>
     </AppLayout>
   );
