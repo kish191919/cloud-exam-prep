@@ -17,15 +17,16 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   Plus, Pencil, Trash2, Loader2, Upload, Download,
-  Save, CheckCircle2, AlertTriangle, ArrowLeft,
+  Save, CheckCircle2, AlertTriangle, ArrowLeft, Layers,
 } from 'lucide-react';
 import { getAllExams } from '@/services/examService';
-import { getQuestionsForExam } from '@/services/questionService';
+import { getQuestionsForExam, getSetsForExam } from '@/services/questionService';
 import {
   createQuestion, updateQuestion, deleteQuestion,
   bulkCreateQuestions, QuestionInput,
+  getExamSetQuestionMap, moveQuestionToSet,
 } from '@/services/adminService';
-import type { ExamConfig, Question } from '@/types/exam';
+import type { ExamConfig, ExamSet, Question } from '@/types/exam';
 import { useAuth } from '@/contexts/AuthContext';
 import { isAdmin } from '@/lib/admin';
 
@@ -438,6 +439,55 @@ const CsvUploadDialog = ({ examId, open, onClose, onSaved }: CsvDialogProps) => 
   );
 };
 
+// ─── Set assignment inline selector ─────────────────────────────────────────
+interface SetSelectorProps {
+  questionId: string;
+  currentSetIds: string[];
+  sets: ExamSet[];
+  onChanged: () => void;
+}
+
+const SetSelector = ({ questionId, currentSetIds, sets, onChanged }: SetSelectorProps) => {
+  const [changing, setChanging] = useState(false);
+
+  const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newSetId = e.target.value;
+    if (!newSetId) return;
+    setChanging(true);
+    try {
+      const oldSetId = currentSetIds[0]; // current primary set
+      await moveQuestionToSet(questionId, newSetId, oldSetId !== newSetId ? oldSetId : undefined);
+      onChanged();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setChanging(false);
+    }
+  };
+
+  const currentSetId = currentSetIds[0] ?? '';
+
+  return (
+    <div className="flex items-center gap-1.5">
+      <Layers className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+      {changing ? (
+        <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
+      ) : (
+        <select
+          value={currentSetId}
+          onChange={handleChange}
+          className="text-xs border border-border rounded px-1.5 py-0.5 bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-accent cursor-pointer"
+        >
+          <option value="">-- 미배정 --</option>
+          {sets.map(s => (
+            <option key={s.id} value={s.id}>{s.name}</option>
+          ))}
+        </select>
+      )}
+    </div>
+  );
+};
+
 // ─── Main Page ────────────────────────────────────────────────────────────────
 const AdminQuestionsPage = () => {
   const navigate = useNavigate();
@@ -446,6 +496,8 @@ const AdminQuestionsPage = () => {
   const [exams, setExams] = useState<ExamConfig[]>([]);
   const [activeExamId, setActiveExamId] = useState('');
   const [questionsMap, setQuestionsMap] = useState<Record<string, Question[]>>({});
+  const [setsMap, setSetsMap] = useState<Record<string, ExamSet[]>>({});
+  const [setQMap, setSetQMap] = useState<Record<string, Record<string, string[]>>>({});
   const [loadingExams, setLoadingExams] = useState(true);
   const [loadingQ, setLoadingQ] = useState(false);
 
@@ -466,18 +518,26 @@ const AdminQuestionsPage = () => {
 
   useEffect(() => {
     if (!activeExamId) return;
-    setLoadingQ(true);
-    getQuestionsForExam(activeExamId)
-      .then(qs => setQuestionsMap(prev => ({ ...prev, [activeExamId]: qs })))
-      .finally(() => setLoadingQ(false));
+    loadData(activeExamId);
   }, [activeExamId]);
 
-  const refresh = () => {
+  const loadData = async (examId: string) => {
     setLoadingQ(true);
-    getQuestionsForExam(activeExamId)
-      .then(qs => setQuestionsMap(prev => ({ ...prev, [activeExamId]: qs })))
-      .finally(() => setLoadingQ(false));
+    try {
+      const [qs, sets, qSetMap] = await Promise.all([
+        getQuestionsForExam(examId),
+        getSetsForExam(examId),
+        getExamSetQuestionMap(examId),
+      ]);
+      setQuestionsMap(prev => ({ ...prev, [examId]: qs }));
+      setSetsMap(prev => ({ ...prev, [examId]: sets }));
+      setSetQMap(prev => ({ ...prev, [examId]: qSetMap }));
+    } finally {
+      setLoadingQ(false);
+    }
   };
+
+  const refresh = () => loadData(activeExamId);
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
@@ -487,6 +547,9 @@ const AdminQuestionsPage = () => {
   };
 
   const questions = questionsMap[activeExamId] ?? [];
+  const sets = setsMap[activeExamId] ?? [];
+  const qSetMap = setQMap[activeExamId] ?? {};
+
   const diffLabel = (d: number) => d === 1 ? '쉬움' : d === 2 ? '보통' : '어려움';
   const diffColor = (d: number) => d === 1 ? 'bg-green-100 text-green-700' : d === 2 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700';
 
@@ -552,51 +615,78 @@ const AdminQuestionsPage = () => {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {questions.map((q, idx) => (
-                    <div
-                      key={q.id}
-                      className="flex items-start gap-4 p-4 rounded-xl border border-border hover:border-accent/30 transition-colors"
-                    >
-                      {/* Index */}
-                      <span className="shrink-0 text-sm font-bold text-muted-foreground w-8 pt-0.5">
-                        Q{idx + 1}.
-                      </span>
+                  {questions.map((q, idx) => {
+                    const assignedSetIds = qSetMap[q.id] ?? [];
+                    const assignedSets = sets.filter(s => assignedSetIds.includes(s.id));
+                    return (
+                      <div
+                        key={q.id}
+                        className="flex items-start gap-4 p-4 rounded-xl border border-border hover:border-accent/30 transition-colors"
+                      >
+                        {/* Index */}
+                        <span className="shrink-0 text-sm font-bold text-muted-foreground w-8 pt-0.5">
+                          Q{idx + 1}.
+                        </span>
 
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium leading-snug line-clamp-2">{q.text}</p>
-                        <div className="flex items-center gap-2 mt-2 flex-wrap">
-                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${diffColor(q.difficulty)}`}>
-                            {diffLabel(q.difficulty)}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            정답: <strong>{q.correctOptionId.toUpperCase()}</strong>
-                          </span>
-                          {q.tags.map(tag => (
-                            <Badge key={tag} variant="outline" className="text-xs px-1.5 py-0 h-5">
-                              {tag}
-                            </Badge>
-                          ))}
+                        {/* Content */}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium leading-snug line-clamp-2">{q.text}</p>
+                          <div className="flex items-center gap-2 mt-2 flex-wrap">
+                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${diffColor(q.difficulty)}`}>
+                              {diffLabel(q.difficulty)}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              정답: <strong>{q.correctOptionId.toUpperCase()}</strong>
+                            </span>
+                            {q.tags.map(tag => (
+                              <Badge key={tag} variant="outline" className="text-xs px-1.5 py-0 h-5">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                          {/* Set assignment row */}
+                          <div className="mt-2 flex items-center gap-2 flex-wrap">
+                            {assignedSets.length > 0 ? (
+                              assignedSets.map(s => (
+                                <Badge
+                                  key={s.id}
+                                  variant="outline"
+                                  className="text-xs border-accent/40 text-accent gap-1"
+                                >
+                                  <Layers className="h-3 w-3" />
+                                  {s.name}
+                                </Badge>
+                              ))
+                            ) : (
+                              <span className="text-xs text-muted-foreground italic">미배정</span>
+                            )}
+                            <SetSelector
+                              questionId={q.id}
+                              currentSetIds={assignedSetIds}
+                              sets={sets}
+                              onChanged={refresh}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex gap-1 shrink-0">
+                          <Button
+                            variant="ghost" size="icon"
+                            onClick={() => { setEditQ(q); setFormOpen(true); }}
+                          >
+                            <Pencil className="h-4 w-4 text-muted-foreground" />
+                          </Button>
+                          <Button
+                            variant="ghost" size="icon"
+                            onClick={() => setDeleteTarget(q)}
+                          >
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
                         </div>
                       </div>
-
-                      {/* Actions */}
-                      <div className="flex gap-1 shrink-0">
-                        <Button
-                          variant="ghost" size="icon"
-                          onClick={() => { setEditQ(q); setFormOpen(true); }}
-                        >
-                          <Pencil className="h-4 w-4 text-muted-foreground" />
-                        </Button>
-                        <Button
-                          variant="ghost" size="icon"
-                          onClick={() => setDeleteTarget(q)}
-                        >
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </TabsContent>

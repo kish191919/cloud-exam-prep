@@ -33,22 +33,28 @@ ALTER TABLE exam_sets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE exam_set_questions ENABLE ROW LEVEL SECURITY;
 
 -- Public read
+DROP POLICY IF EXISTS "exam_sets_public_read" ON exam_sets;
 CREATE POLICY "exam_sets_public_read"
   ON exam_sets FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "exam_set_questions_public_read" ON exam_set_questions;
 CREATE POLICY "exam_set_questions_public_read"
   ON exam_set_questions FOR SELECT USING (true);
 
 -- Authenticated write (admin operations)
+DROP POLICY IF EXISTS "exam_sets_auth_insert" ON exam_sets;
 CREATE POLICY "exam_sets_auth_insert"
   ON exam_sets FOR INSERT TO authenticated WITH CHECK (true);
 
+DROP POLICY IF EXISTS "exam_sets_auth_update" ON exam_sets;
 CREATE POLICY "exam_sets_auth_update"
   ON exam_sets FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
 
+DROP POLICY IF EXISTS "exam_sets_auth_delete" ON exam_sets;
 CREATE POLICY "exam_sets_auth_delete"
   ON exam_sets FOR DELETE TO authenticated USING (true);
 
+DROP POLICY IF EXISTS "exam_set_questions_auth_all" ON exam_set_questions;
 CREATE POLICY "exam_set_questions_auth_all"
   ON exam_set_questions FOR ALL TO authenticated
   USING (true) WITH CHECK (true);

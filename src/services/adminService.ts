@@ -175,6 +175,52 @@ export async function deleteQuestion(questionId: string): Promise<void> {
   if (error) throw error;
 }
 
+/**
+ * Returns a map of questionId -> setId[] for all questions in an exam.
+ */
+export async function getExamSetQuestionMap(examId: string): Promise<Record<string, string[]>> {
+  // First get all set IDs for this exam
+  const { data: sets, error: setsErr } = await supabase
+    .from('exam_sets')
+    .select('id')
+    .eq('exam_id', examId);
+  if (setsErr) throw setsErr;
+  const setIds = (sets || []).map((s: any) => s.id);
+  if (setIds.length === 0) return {};
+
+  const { data, error } = await supabase
+    .from('exam_set_questions')
+    .select('question_id, set_id')
+    .in('set_id', setIds);
+  if (error) throw error;
+
+  const map: Record<string, string[]> = {};
+  for (const row of (data || []) as any[]) {
+    if (!map[row.question_id]) map[row.question_id] = [];
+    map[row.question_id].push(row.set_id);
+  }
+  return map;
+}
+
+/**
+ * Move a question from one set to another.
+ * Removes from oldSetId (if provided) and adds to newSetId.
+ */
+export async function moveQuestionToSet(
+  questionId: string,
+  newSetId: string,
+  oldSetId?: string,
+): Promise<void> {
+  if (oldSetId) {
+    const oldIds = await getSetQuestionIds(oldSetId);
+    await updateSetQuestions(oldSetId, oldIds.filter(id => id !== questionId));
+  }
+  const newIds = await getSetQuestionIds(newSetId);
+  if (!newIds.includes(questionId)) {
+    await updateSetQuestions(newSetId, [...newIds, questionId]);
+  }
+}
+
 export async function bulkCreateQuestions(
   examId: string,
   questions: Omit<QuestionInput, 'examId'>[],

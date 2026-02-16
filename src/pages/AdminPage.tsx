@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
@@ -27,23 +26,27 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   Plus, Pencil, Trash2, BookOpen, FlaskConical,
-  Loader2, ListChecks, Save, FileText,
+  Loader2, Save, FileText, AlertTriangle, X,
 } from 'lucide-react';
 import { getAllExams } from '@/services/examService';
-import { getSetsForExam, getQuestionsForExam } from '@/services/questionService';
+import { getSetsForExam, getQuestionsForSet } from '@/services/questionService';
 import {
   createExamSet,
   updateExamSet,
   deleteExamSet,
   getSetQuestionIds,
   updateSetQuestions,
+  createQuestion,
+  updateQuestion,
+  deleteQuestion,
+  QuestionInput,
 } from '@/services/adminService';
 import type { ExamConfig, ExamSet, Question } from '@/types/exam';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { isAdmin } from '@/lib/admin';
 
-// ─── Set form dialog ────────────────────────────────────────────────────────
+// ─── Set form dialog ─────────────────────────────────────────────────────────
 interface SetFormDialogProps {
   examId: string;
   editSet?: ExamSet | null;
@@ -104,7 +107,6 @@ const SetFormDialog = ({ examId, editSet, existingSets, open, onClose, onSaved }
         </DialogHeader>
 
         <div className="space-y-4 py-2">
-          {/* Name */}
           <div>
             <label className="text-sm font-medium mb-1.5 block">세트 이름 *</label>
             <Input
@@ -114,7 +116,6 @@ const SetFormDialog = ({ examId, editSet, existingSets, open, onClose, onSaved }
             />
           </div>
 
-          {/* Type */}
           <div>
             <label className="text-sm font-medium mb-1.5 block">세트 유형</label>
             <div className="flex gap-3">
@@ -138,7 +139,6 @@ const SetFormDialog = ({ examId, editSet, existingSets, open, onClose, onSaved }
             </div>
           </div>
 
-          {/* Description */}
           <div>
             <label className="text-sm font-medium mb-1.5 block">설명 (선택)</label>
             <Textarea
@@ -166,117 +166,403 @@ const SetFormDialog = ({ examId, editSet, existingSets, open, onClose, onSaved }
   );
 };
 
-// ─── Question picker dialog ──────────────────────────────────────────────────
-interface QuestionPickerDialogProps {
-  set: ExamSet;
-  allQuestions: Question[];
-  open: boolean;
-  onClose: () => void;
-  onSaved: () => void;
+// ─── Question form (embedded in SetQuestionsDialog) ───────────────────────────
+const OPTION_LABELS = ['A', 'B', 'C', 'D'] as const;
+
+interface QuestionFormProps {
+  examId: string;
+  edit?: Question | null;
+  onSave: (input: Omit<QuestionInput, 'examId'>) => Promise<void>;
+  onCancel: () => void;
 }
 
-const QuestionPickerDialog = ({ set, allQuestions, open, onClose, onSaved }: QuestionPickerDialogProps) => {
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [loading, setLoading] = useState(true);
+const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormProps) => {
+  const empty = { text: '', a: '', b: '', c: '', d: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', difficulty: 1 as 1|2|3, tags: '' };
+  const [form, setFormState] = useState(empty);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!open) return;
-    setLoading(true);
-    getSetQuestionIds(set.id)
-      .then(ids => setSelected(new Set(ids)))
-      .finally(() => setLoading(false));
-  }, [open, set.id]);
+    if (edit) {
+      const opts: Record<string, string> = {};
+      edit.options.forEach(o => { opts[o.id] = o.text; });
+      setFormState({
+        text: edit.text,
+        a: opts['a'] ?? '',
+        b: opts['b'] ?? '',
+        c: opts['c'] ?? '',
+        d: opts['d'] ?? '',
+        correct: edit.correctOptionId as 'a'|'b'|'c'|'d',
+        explanation: edit.explanation,
+        difficulty: edit.difficulty,
+        tags: edit.tags.join(', '),
+      });
+    } else {
+      setFormState(empty);
+    }
+    setError('');
+  }, [edit]);
 
-  const toggle = (qId: string) => {
-    setSelected(prev => {
-      const next = new Set(prev);
-      next.has(qId) ? next.delete(qId) : next.add(qId);
-      return next;
-    });
-  };
+  const set = (key: string, val: any) => setFormState(f => ({ ...f, [key]: val }));
 
   const handleSave = async () => {
+    if (!form.text.trim() || !form.a.trim() || !form.b.trim()) {
+      setError('문제 텍스트와 보기 A, B는 필수입니다.');
+      return;
+    }
     setSaving(true);
+    setError('');
     try {
-      await updateSetQuestions(set.id, Array.from(selected));
-      onSaved();
-      onClose();
-    } catch (e) {
-      console.error(e);
+      const input: Omit<QuestionInput, 'examId'> = {
+        text: form.text.trim(),
+        options: [
+          { id: 'a', text: form.a.trim() },
+          { id: 'b', text: form.b.trim() },
+          { id: 'c', text: form.c.trim() },
+          { id: 'd', text: form.d.trim() },
+        ].filter(o => o.text),
+        correctOptionId: form.correct,
+        explanation: form.explanation.trim(),
+        difficulty: form.difficulty,
+        tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
+      };
+      await onSave(input);
+    } catch (e: any) {
+      setError(e.message ?? '저장에 실패했습니다.');
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={v => !v && onClose()}>
-      <DialogContent className="sm:max-w-xl max-h-[80vh] flex flex-col">
-        <DialogHeader>
-          <DialogTitle>
-            문제 편집 — {set.name}
-            <span className="ml-2 text-sm font-normal text-muted-foreground">
-              ({selected.size}문제 선택됨)
-            </span>
-          </DialogTitle>
-        </DialogHeader>
+    <div className="border rounded-xl p-4 bg-card space-y-4">
+      <div>
+        <label className="text-sm font-medium mb-1.5 block">문제 텍스트 *</label>
+        <Textarea
+          placeholder="문제를 입력하세요..."
+          rows={3}
+          value={form.text}
+          onChange={e => set('text', e.target.value)}
+        />
+      </div>
 
-        {loading ? (
-          <div className="flex items-center justify-center py-8">
-            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-          </div>
-        ) : (
-          <div className="flex-1 overflow-y-auto space-y-2 pr-1">
-            {allQuestions.map((q, idx) => (
-              <div
-                key={q.id}
-                className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
-                  selected.has(q.id)
-                    ? 'border-accent bg-accent/5'
-                    : 'border-border hover:border-accent/30'
+      <div>
+        <label className="text-sm font-medium mb-1.5 block">보기 (A~D)</label>
+        <div className="space-y-2">
+          {(['a','b','c','d'] as const).map((id, i) => (
+            <div key={id} className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => set('correct', id)}
+                className={`h-7 w-7 rounded-full border-2 text-xs font-bold shrink-0 transition-all ${
+                  form.correct === id
+                    ? 'border-accent bg-accent text-accent-foreground'
+                    : 'border-muted-foreground/40 text-muted-foreground hover:border-accent/60'
                 }`}
-                onClick={() => toggle(q.id)}
               >
-                <Checkbox
-                  checked={selected.has(q.id)}
-                  onCheckedChange={() => toggle(q.id)}
-                  className="mt-0.5 shrink-0"
-                />
-                <div className="flex-1 min-w-0">
-                  <span className="text-xs font-semibold text-muted-foreground mr-2">Q{idx + 1}.</span>
-                  <span className="text-sm">{q.text}</span>
-                  {q.tags.length > 0 && (
-                    <div className="flex gap-1 mt-1 flex-wrap">
-                      {q.tags.map(tag => (
-                        <span key={tag} className="text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
+                {OPTION_LABELS[i]}
+              </button>
+              <Input
+                placeholder={`보기 ${OPTION_LABELS[i]}${i < 2 ? ' *' : ''}`}
+                value={form[id]}
+                onChange={e => set(id, e.target.value)}
+              />
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-muted-foreground mt-1">동그라미 클릭 → 정답 선택 (주황색 = 정답)</p>
+      </div>
+
+      <div>
+        <label className="text-sm font-medium mb-1.5 block">해설</label>
+        <Textarea
+          placeholder="정답 설명을 입력하세요..."
+          rows={2}
+          value={form.explanation}
+          onChange={e => set('explanation', e.target.value)}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="text-sm font-medium mb-1.5 block">난이도</label>
+          <div className="flex gap-2">
+            {([1,2,3] as const).map(d => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => set('difficulty', d)}
+                className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-all ${
+                  form.difficulty === d
+                    ? 'border-accent bg-accent/10 text-accent'
+                    : 'border-border text-muted-foreground hover:border-accent/40'
+                }`}
+              >
+                {d === 1 ? '쉬움' : d === 2 ? '보통' : '어려움'}
+              </button>
             ))}
           </div>
-        )}
+        </div>
+        <div>
+          <label className="text-sm font-medium mb-1.5 block">태그 (쉼표 구분)</label>
+          <Input
+            placeholder="예: AI, ML, SageMaker"
+            value={form.tags}
+            onChange={e => set('tags', e.target.value)}
+          />
+        </div>
+      </div>
 
-        <DialogFooter className="mt-4">
-          <Button variant="outline" onClick={onClose}>취소</Button>
-          <Button
-            disabled={saving}
-            onClick={handleSave}
-            className="bg-accent text-accent-foreground hover:bg-accent/90"
-          >
-            {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-            저장
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      {error && (
+        <div className="flex items-center gap-2 text-destructive text-sm bg-destructive/10 p-3 rounded-lg">
+          <AlertTriangle className="h-4 w-4 shrink-0" />
+          {error}
+        </div>
+      )}
+
+      <div className="flex justify-end gap-2 pt-1">
+        <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
+        <Button
+          size="sm"
+          disabled={saving}
+          onClick={handleSave}
+          className="bg-accent text-accent-foreground hover:bg-accent/90"
+        >
+          {saving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+          저장
+        </Button>
+      </div>
+    </div>
   );
 };
 
-// ─── Main Admin Page ─────────────────────────────────────────────────────────
+// ─── Set questions dialog ─────────────────────────────────────────────────────
+interface SetQuestionsDialogProps {
+  set: ExamSet;
+  examId: string;
+  open: boolean;
+  onClose: () => void;
+  onSaved: () => void;
+}
+
+const SetQuestionsDialog = ({ set, examId, open, onClose, onSaved }: SetQuestionsDialogProps) => {
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState<string | null>(null);   // question id being edited
+  const [addingNew, setAddingNew] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<Question | null>(null);
+
+  const loadQuestions = async () => {
+    setLoading(true);
+    const qs = await getQuestionsForSet(set.id);
+    setQuestions(qs);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    loadQuestions();
+    setEditingId(null);
+    setAddingNew(false);
+  }, [open, set.id]);
+
+  // Save edit of an existing question
+  const handleUpdateQuestion = async (input: Omit<QuestionInput, 'examId'>) => {
+    if (!editingId) return;
+    await updateQuestion(editingId, input);
+    setEditingId(null);
+    await loadQuestions();
+  };
+
+  // Create a new question and add it to this set
+  const handleAddQuestion = async (input: Omit<QuestionInput, 'examId'>) => {
+    const newId = await createQuestion({ ...input, examId });
+    const existingIds = await getSetQuestionIds(set.id);
+    await updateSetQuestions(set.id, [...existingIds, newId]);
+    setAddingNew(false);
+    await loadQuestions();
+    onSaved(); // refresh set question count
+  };
+
+  // Remove question from set (and delete the question record)
+  const handleDeleteQuestion = async () => {
+    if (!deleteTarget) return;
+    const existingIds = await getSetQuestionIds(set.id);
+    await updateSetQuestions(set.id, existingIds.filter(id => id !== deleteTarget.id));
+    await deleteQuestion(deleteTarget.id);
+    setDeleteTarget(null);
+    await loadQuestions();
+    onSaved();
+  };
+
+  const diffLabel = (d: number) => d === 1 ? '쉬움' : d === 2 ? '보통' : '어려움';
+  const diffColor = (d: number) => d === 1 ? 'text-green-600' : d === 2 ? 'text-yellow-600' : 'text-red-600';
+
+  return (
+    <>
+      <Dialog open={open} onOpenChange={v => !v && onClose()}>
+        <DialogContent className="sm:max-w-2xl max-h-[85vh] flex flex-col">
+          <DialogHeader>
+            <div className="flex items-center justify-between">
+              <DialogTitle>
+                {set.name} — 문제 목록
+                <span className="ml-2 text-sm font-normal text-muted-foreground">
+                  ({questions.length}문제)
+                </span>
+              </DialogTitle>
+            </div>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-y-auto space-y-3 pr-1 py-2">
+            {loading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <>
+                {questions.map((q, idx) => (
+                  <div key={q.id}>
+                    {editingId === q.id ? (
+                      <QuestionForm
+                        examId={examId}
+                        edit={q}
+                        onSave={handleUpdateQuestion}
+                        onCancel={() => setEditingId(null)}
+                      />
+                    ) : (
+                      <div className="border rounded-xl p-4 hover:border-accent/30 transition-colors">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-xs font-bold text-muted-foreground">Q{idx + 1}</span>
+                              <span className={`text-xs font-medium ${diffColor(q.difficulty)}`}>
+                                {diffLabel(q.difficulty)}
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                정답: <strong className="text-accent">{q.correctOptionId.toUpperCase()}</strong>
+                              </span>
+                            </div>
+                            <p className="text-sm font-medium mb-2 leading-relaxed">{q.text}</p>
+                            <div className="space-y-1 mb-2">
+                              {q.options.map(opt => (
+                                <div
+                                  key={opt.id}
+                                  className={`flex items-start gap-2 text-xs p-1.5 rounded ${
+                                    opt.id === q.correctOptionId
+                                      ? 'bg-accent/10 text-accent font-medium'
+                                      : 'text-muted-foreground'
+                                  }`}
+                                >
+                                  <span className={`w-5 h-5 rounded-full border flex items-center justify-center text-xs font-bold shrink-0 ${
+                                    opt.id === q.correctOptionId
+                                      ? 'border-accent bg-accent text-accent-foreground'
+                                      : 'border-muted-foreground/30'
+                                  }`}>
+                                    {opt.id.toUpperCase()}
+                                  </span>
+                                  {opt.text}
+                                </div>
+                              ))}
+                            </div>
+                            {q.explanation && (
+                              <p className="text-xs text-muted-foreground italic border-l-2 border-accent/30 pl-2">
+                                {q.explanation}
+                              </p>
+                            )}
+                            {q.tags.length > 0 && (
+                              <div className="flex gap-1 mt-2 flex-wrap">
+                                {q.tags.map(tag => (
+                                  <span key={tag} className="text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+                                    {tag}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex flex-col gap-1 shrink-0">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => { setAddingNew(false); setEditingId(q.id); }}
+                            >
+                              <Pencil className="h-4 w-4 text-muted-foreground" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => setDeleteTarget(q)}
+                            >
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+
+                {questions.length === 0 && !addingNew && (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <BookOpen className="h-10 w-10 mx-auto mb-3 opacity-30" />
+                    <p className="text-sm">이 세트에 문제가 없습니다. 아래에서 추가하세요.</p>
+                  </div>
+                )}
+
+                {/* New question form */}
+                {addingNew && (
+                  <QuestionForm
+                    examId={examId}
+                    onSave={handleAddQuestion}
+                    onCancel={() => setAddingNew(false)}
+                  />
+                )}
+              </>
+            )}
+          </div>
+
+          <div className="border-t pt-3 flex justify-between items-center">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={addingNew || editingId !== null}
+              onClick={() => { setAddingNew(true); setEditingId(null); }}
+            >
+              <Plus className="h-4 w-4 mr-2" />새 문제 추가
+            </Button>
+            <Button variant="outline" onClick={onClose}>
+              <X className="h-4 w-4 mr-2" />닫기
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete confirmation */}
+      <AlertDialog open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>문제를 삭제하시겠습니까?</AlertDialogTitle>
+            <AlertDialogDescription>
+              이 문제가 세트에서 제거되고 완전히 삭제됩니다. 되돌릴 수 없습니다.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>취소</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteQuestion}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              삭제
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
+};
+
+// ─── Main Admin Page ──────────────────────────────────────────────────────────
 const AdminPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -284,21 +570,17 @@ const AdminPage = () => {
   const [exams, setExams] = useState<ExamConfig[]>([]);
   const [activeExamId, setActiveExamId] = useState<string>('');
   const [setsMap, setSetsMap] = useState<Record<string, ExamSet[]>>({});
-  const [questionsMap, setQuestionsMap] = useState<Record<string, Question[]>>({});
   const [loadingExams, setLoadingExams] = useState(true);
 
-  // Dialog state
   const [setFormOpen, setSetFormOpen] = useState(false);
   const [editingSet, setEditingSet] = useState<ExamSet | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<ExamSet | null>(null);
-  const [questionPickerSet, setQuestionPickerSet] = useState<ExamSet | null>(null);
+  const [questionsSet, setQuestionsSet] = useState<ExamSet | null>(null);
 
-  // Redirect if not admin
   useEffect(() => {
     if (user !== undefined && !isAdmin(user?.email)) navigate('/');
   }, [user, navigate]);
 
-  // Load exams
   useEffect(() => {
     getAllExams()
       .then(data => {
@@ -308,15 +590,9 @@ const AdminPage = () => {
       .finally(() => setLoadingExams(false));
   }, []);
 
-  // Load sets & questions when active exam changes
   useEffect(() => {
     if (!activeExamId) return;
     loadSets(activeExamId);
-    if (!questionsMap[activeExamId]) {
-      getQuestionsForExam(activeExamId).then(qs => {
-        setQuestionsMap(prev => ({ ...prev, [activeExamId]: qs }));
-      });
-    }
   }, [activeExamId]);
 
   const loadSets = async (examId: string) => {
@@ -324,7 +600,7 @@ const AdminPage = () => {
     setSetsMap(prev => ({ ...prev, [examId]: sets }));
   };
 
-  const handleDelete = async () => {
+  const handleDeleteSet = async () => {
     if (!deleteTarget) return;
     await deleteExamSet(deleteTarget.id);
     setDeleteTarget(null);
@@ -332,7 +608,6 @@ const AdminPage = () => {
   };
 
   const currentSets = setsMap[activeExamId] ?? [];
-  const currentQuestions = questionsMap[activeExamId] ?? [];
 
   if (loadingExams) {
     return (
@@ -347,11 +622,10 @@ const AdminPage = () => {
   return (
     <AppLayout>
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">시험 세트 관리</h1>
-            <p className="text-muted-foreground text-sm mt-1">시험별 세트를 추가·편집·삭제하고 문제를 배정하세요.</p>
+            <p className="text-muted-foreground text-sm mt-1">시험별 세트를 추가·편집·삭제하고 문제를 관리하세요.</p>
           </div>
           <Link to="/admin/questions">
             <Button variant="outline">
@@ -361,7 +635,6 @@ const AdminPage = () => {
         </div>
 
         <Tabs value={activeExamId} onValueChange={setActiveExamId}>
-          {/* Exam tabs */}
           <TabsList className="mb-6 flex-wrap h-auto gap-1">
             {exams.map(exam => (
               <TabsTrigger key={exam.id} value={exam.id} className="text-xs sm:text-sm">
@@ -377,7 +650,7 @@ const AdminPage = () => {
                   <div>
                     <CardTitle className="text-lg">{exam.title}</CardTitle>
                     <p className="text-sm text-muted-foreground mt-0.5">
-                      {exam.code} · {exam.questionCount}문제 · {currentSets.length}개 세트
+                      {exam.code} · {currentSets.length}개 세트
                     </p>
                   </div>
                   <Button
@@ -401,7 +674,6 @@ const AdminPage = () => {
                           key={set.id}
                           className="flex items-center gap-4 p-4 rounded-xl border border-border hover:border-accent/30 transition-colors"
                         >
-                          {/* Icon */}
                           <div className={`p-2 rounded-lg ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
                             {set.type === 'sample'
                               ? <FlaskConical className="h-5 w-5 text-primary" />
@@ -409,7 +681,6 @@ const AdminPage = () => {
                             }
                           </div>
 
-                          {/* Info */}
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-0.5">
                               <span className="font-semibold">{set.name}</span>
@@ -429,15 +700,14 @@ const AdminPage = () => {
                             </p>
                           </div>
 
-                          {/* Actions */}
                           <div className="flex items-center gap-2 shrink-0">
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => setQuestionPickerSet(set)}
+                              onClick={() => setQuestionsSet(set)}
                               className="text-xs"
                             >
-                              <ListChecks className="h-3.5 w-3.5 mr-1" />문제 편집
+                              <FileText className="h-3.5 w-3.5 mr-1" />문제 편집
                             </Button>
                             <Button
                               variant="ghost"
@@ -465,7 +735,7 @@ const AdminPage = () => {
         </Tabs>
       </div>
 
-      {/* Set form dialog (create / edit) */}
+      {/* Set form dialog */}
       <SetFormDialog
         examId={activeExamId}
         editSet={editingSet}
@@ -475,18 +745,18 @@ const AdminPage = () => {
         onSaved={() => loadSets(activeExamId)}
       />
 
-      {/* Question picker dialog */}
-      {questionPickerSet && (
-        <QuestionPickerDialog
-          set={questionPickerSet}
-          allQuestions={currentQuestions}
-          open={!!questionPickerSet}
-          onClose={() => setQuestionPickerSet(null)}
+      {/* Set questions dialog */}
+      {questionsSet && (
+        <SetQuestionsDialog
+          set={questionsSet}
+          examId={activeExamId}
+          open={!!questionsSet}
+          onClose={() => setQuestionsSet(null)}
           onSaved={() => loadSets(activeExamId)}
         />
       )}
 
-      {/* Delete confirmation */}
+      {/* Delete set confirmation */}
       <AlertDialog open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -498,7 +768,7 @@ const AdminPage = () => {
           <AlertDialogFooter>
             <AlertDialogCancel>취소</AlertDialogCancel>
             <AlertDialogAction
-              onClick={handleDelete}
+              onClick={handleDeleteSet}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               삭제
