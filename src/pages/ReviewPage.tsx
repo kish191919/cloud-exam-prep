@@ -29,55 +29,65 @@ const ReviewPage = () => {
   const [creatingSession, setCreatingSession] = useState(false);
 
   // Load sessions and questions efficiently
-  useEffect(() => {
-    async function loadSessionsAndQuestions() {
-      try {
-        // 1. Load all sessions (without questions)
-        const allSessions = await getAllSessions();
-        console.log('📊 Sessions loaded:', allSessions.length);
+  const loadSessionsAndQuestions = async () => {
+    setLoading(true);
+    try {
+      // 1. Load all sessions (without questions)
+      const allSessions = await getAllSessions();
+      console.log('📊 Sessions loaded:', allSessions.length);
 
-        // 2. Filter sessions that have answers or bookmarks
-        const filteredSessions = allSessions.filter(s =>
-          Object.keys(s.answers).length > 0 || s.bookmarks.length > 0
-        );
+      // 2. Filter sessions that have answers or bookmarks
+      const filteredSessions = allSessions.filter(s =>
+        Object.keys(s.answers).length > 0 || s.bookmarks.length > 0
+      );
 
-        if (filteredSessions.length === 0) {
-          setSessions([]);
-          setLoading(false);
-          return;
-        }
-
-        // 3. Collect all unique question IDs from answers and bookmarks
-        const questionIds = new Set<string>();
-        filteredSessions.forEach(s => {
-          Object.keys(s.answers).forEach(qid => questionIds.add(qid));
-          s.bookmarks.forEach(qid => questionIds.add(qid));
-        });
-
-        console.log('📊 Unique questions to load:', questionIds.size);
-
-        // 4. Fetch all questions at once (only the ones we need!)
-        const questions = await getQuestionsByIds(Array.from(questionIds));
-        const questionMap = new Map(questions.map(q => [q.id, q]));
-
-        console.log('📊 Questions loaded:', questions.length);
-
-        // 5. Attach questions to sessions
-        const sessionsWithQuestions = filteredSessions.map(s => ({
-          ...s,
-          questions: Array.from(new Set([...Object.keys(s.answers), ...s.bookmarks]))
-            .map(qid => questionMap.get(qid))
-            .filter((q): q is Question => q !== undefined)
-        }));
-
-        setSessions(sessionsWithQuestions);
-      } catch (error) {
-        console.error('❌ Failed to load sessions:', error);
-      } finally {
+      if (filteredSessions.length === 0) {
+        setSessions([]);
         setLoading(false);
+        return;
       }
+
+      // 3. Collect all unique question IDs from answers and bookmarks
+      const questionIds = new Set<string>();
+      filteredSessions.forEach(s => {
+        Object.keys(s.answers).forEach(qid => questionIds.add(qid));
+        s.bookmarks.forEach(qid => questionIds.add(qid));
+      });
+
+      console.log('📊 Unique questions to load:', questionIds.size);
+
+      // 4. Fetch all questions at once (only the ones we need!)
+      const questions = await getQuestionsByIds(Array.from(questionIds));
+      const questionMap = new Map(questions.map(q => [q.id, q]));
+
+      console.log('📊 Questions loaded:', questions.length);
+
+      // 5. Attach questions to sessions
+      const sessionsWithQuestions = filteredSessions.map(s => ({
+        ...s,
+        questions: Array.from(new Set([...Object.keys(s.answers), ...s.bookmarks]))
+          .map(qid => questionMap.get(qid))
+          .filter((q): q is Question => q !== undefined)
+      }));
+
+      setSessions(sessionsWithQuestions);
+    } catch (error) {
+      console.error('❌ Failed to load sessions:', error);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
     loadSessionsAndQuestions();
+
+    // Reload data when window regains focus (user returns to this page)
+    const handleFocus = () => {
+      loadSessionsAndQuestions();
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
   }, []);
 
 
