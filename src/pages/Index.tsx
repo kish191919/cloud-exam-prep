@@ -8,7 +8,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import {
-  Shield, BarChart3, Clock, BookOpen, CheckCircle, ArrowRight,
+  Shield, BarChart3, Clock, BookOpen, ArrowRight,
   Cloud, Zap, Target, Star, Users,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -18,8 +18,7 @@ const Index = () => {
 
   const features = t('index.features', { returnObjects: true }) as Array<{ title: string; desc: string; icon: string }>;
   const steps = t('index.steps', { returnObjects: true }) as Array<{ num: string; title: string; desc: string }>;
-  const plans = t('index.pricing.plans', { returnObjects: true }) as Array<{ name: string; desc: string; price: string; period: string; features: string[]; cta: string; popular?: boolean }>;
-  const faqs = t('index.faq.questions', { returnObjects: true }) as Array<{ q: string; a: string }>;
+const faqs = t('index.faq.questions', { returnObjects: true }) as Array<{ q: string; a: string }>;
 
   const iconMap: Record<string, any> = {
     Shield, BarChart3, Clock, BookOpen, Target, Users,
@@ -139,51 +138,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="py-20 px-4">
-        <div className="container mx-auto max-w-5xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">{t('index.pricing.title')}</h2>
-          <p className="text-muted-foreground text-center mb-14 text-lg">{t('index.pricing.subtitle')}</p>
-          <div className="grid md:grid-cols-3 gap-6">
-            {plans.map((plan, i) => (
-              <div
-                key={i}
-                className={`rounded-xl p-6 border-2 card-hover ${
-                  plan.popular ? 'border-accent bg-card shadow-lg relative' : 'border-border bg-card'
-                }`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
-                    {t('index.pricing.popularBadge')}
-                  </div>
-                )}
-                <h3 className="font-semibold text-lg">{plan.name}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{plan.desc}</p>
-                <div className="mb-6">
-                  <span className="text-4xl font-bold">{plan.price}</span>
-                  <span className="text-muted-foreground text-sm">{plan.period}</span>
-                </div>
-                <ul className="space-y-3 mb-6">
-                  {plan.features.map((f, j) => (
-                    <li key={j} className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="h-4 w-4 text-success flex-shrink-0" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link to="/exams">
-                  <Button
-                    className={`w-full ${plan.popular ? 'bg-accent text-accent-foreground hover:bg-accent/90' : ''}`}
-                    variant={plan.popular ? 'default' : 'outline'}
-                  >
-                    {plan.cta}
-                  </Button>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Pricing — hidden during beta */}
 
       {/* FAQ */}
       <section id="faq" className="py-20 px-4 bg-card">
