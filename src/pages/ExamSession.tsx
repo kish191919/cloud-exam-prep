@@ -28,7 +28,6 @@ const ExamSession = () => {
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
   const [navDirection, setNavDirection] = useState<'next' | 'prev'>('next');
   const touchStartX = useRef<number | null>(null);
-  const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const mode = session?.mode ?? 'exam';
   const isExamMode = mode === 'exam';
@@ -61,27 +60,10 @@ const ExamSession = () => {
     goToQuestion(index);
   }, [session, goToQuestion]);
 
-  // Practice mode: auto-advance to next question after answering
+  // Handle answer selection
   const handleSelectAnswer = useCallback((questionId: string, optionId: string) => {
     selectAnswer(questionId, optionId);
-
-    if (mode === 'practice' && session) {
-      if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current);
-      if (session.currentIndex < session.questions.length - 1) {
-        autoAdvanceTimer.current = setTimeout(() => {
-          setNavDirection('next');
-          goToQuestion(session.currentIndex + 1);
-        }, 1500);
-      }
-    }
-  }, [selectAnswer, mode, session, goToQuestion]);
-
-  // Clean up auto-advance timer on unmount or question change
-  useEffect(() => {
-    return () => {
-      if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current);
-    };
-  }, [session?.currentIndex]);
+  }, [selectAnswer]);
 
   // Swipe gesture handlers
   const handleTouchStart = useCallback((e: React.TouchEvent) => {

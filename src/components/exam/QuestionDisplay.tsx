@@ -79,13 +79,13 @@ const QuestionDisplay = ({
       const isCorrect = selectedOptionId === question.correctOptionId;
       setFeedbackAnimation(isCorrect ? 'correct' : 'wrong');
 
-      // Haptic feedback (mobile)
+      // Haptic feedback (mobile) - stronger vibration for better feel
       if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
-        navigator.vibrate(isCorrect ? 15 : [25, 10, 25]);
+        navigator.vibrate(isCorrect ? [30] : [40, 15, 40]);
       }
 
-      // Clear animation after it completes
-      const timer = setTimeout(() => setFeedbackAnimation(null), 500);
+      // Clear animation after it completes (matches animation duration)
+      const timer = setTimeout(() => setFeedbackAnimation(null), isCorrect ? 500 : 600);
       return () => clearTimeout(timer);
     }
   }, [selectedOptionId, isPractice, question.correctOptionId]);
