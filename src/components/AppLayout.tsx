@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Cloud, LayoutDashboard, BookOpen, RotateCcw, Settings2 } from 'lucide-react';
+import { Cloud, BookOpen, RotateCcw, Settings2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useAuth } from '@/contexts/AuthContext';
@@ -11,7 +11,6 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
 
   const navItems = [
-    { to: '/dashboard', icon: LayoutDashboard, label: t('navigation.dashboard') },
     { to: '/exams', icon: BookOpen, label: t('navigation.exams') },
     { to: '/review', icon: RotateCcw, label: t('navigation.review') },
     ...(isAdmin(user?.email) ? [{ to: '/admin', icon: Settings2, label: '관리자' }] : []),
