@@ -137,7 +137,7 @@ const ReviewPage = () => {
       );
 
       // Navigate to the new session
-      navigate(`/exam/${sessionId}`);
+      navigate(`/session/${sessionId}`);
     } catch (error) {
       console.error('Failed to create review session:', error);
       alert(isKo ? '복습 세션 생성에 실패했습니다.' : 'Failed to create review session.');
