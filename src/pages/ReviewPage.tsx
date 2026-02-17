@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import AppLayout from '@/components/AppLayout';
 import { getAllSessions } from '@/hooks/useExamSession';
+import { getQuestionsByIds } from '@/services/questionService';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -31,42 +32,56 @@ const ReviewPage = () => {
   const [showReviewed, setShowReviewed] = useState(false);
   const [expandedExams, setExpandedExams] = useState<Record<string, boolean>>({});
 
-  // Load sessions from Supabase/localStorage
+  // Load sessions and questions efficiently
   useEffect(() => {
-    async function loadSessions() {
+    async function loadSessionsAndQuestions() {
       try {
+        // 1. Load all sessions (without questions)
         const allSessions = await getAllSessions();
-        console.log('📊 All sessions loaded:', allSessions.length);
-        console.log('📊 Sessions data:', allSessions);
+        console.log('📊 Sessions loaded:', allSessions.length);
 
-        // Include all sessions that have answers or bookmarks (not just submitted ones)
-        const filteredSessions = allSessions.filter(s => {
-          const hasAnswers = Object.keys(s.answers).length > 0;
-          const hasBookmarks = s.bookmarks.length > 0;
-          const hasQuestions = s.questions && s.questions.length > 0;
+        // 2. Filter sessions that have answers or bookmarks
+        const filteredSessions = allSessions.filter(s =>
+          Object.keys(s.answers).length > 0 || s.bookmarks.length > 0
+        );
 
-          console.log(`📊 Session ${s.id}:`, {
-            examTitle: s.examTitle,
-            hasAnswers,
-            hasBookmarks,
-            hasQuestions,
-            answersCount: Object.keys(s.answers).length,
-            bookmarksCount: s.bookmarks.length,
-            questionsCount: s.questions?.length || 0
-          });
+        if (filteredSessions.length === 0) {
+          setSessions([]);
+          setLoading(false);
+          return;
+        }
 
-          return hasAnswers || hasBookmarks;
+        // 3. Collect all unique question IDs from answers and bookmarks
+        const questionIds = new Set<string>();
+        filteredSessions.forEach(s => {
+          Object.keys(s.answers).forEach(qid => questionIds.add(qid));
+          s.bookmarks.forEach(qid => questionIds.add(qid));
         });
 
-        console.log('📊 Filtered sessions:', filteredSessions.length);
-        setSessions(filteredSessions);
+        console.log('📊 Unique questions to load:', questionIds.size);
+
+        // 4. Fetch all questions at once (only the ones we need!)
+        const questions = await getQuestionsByIds(Array.from(questionIds));
+        const questionMap = new Map(questions.map(q => [q.id, q]));
+
+        console.log('📊 Questions loaded:', questions.length);
+
+        // 5. Attach questions to sessions
+        const sessionsWithQuestions = filteredSessions.map(s => ({
+          ...s,
+          questions: Array.from(new Set([...Object.keys(s.answers), ...s.bookmarks]))
+            .map(qid => questionMap.get(qid))
+            .filter((q): q is Question => q !== undefined)
+        }));
+
+        setSessions(sessionsWithQuestions);
       } catch (error) {
         console.error('❌ Failed to load sessions:', error);
       } finally {
         setLoading(false);
       }
     }
-    loadSessions();
+    loadSessionsAndQuestions();
   }, []);
 
   // Load reviewed questions from localStorage

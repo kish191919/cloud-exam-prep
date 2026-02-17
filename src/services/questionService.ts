@@ -114,6 +114,52 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
   };
 }
 
+export async function getQuestionsByIds(questionIds: string[]): Promise<Question[]> {
+  if (questionIds.length === 0) return [];
+
+  const { data, error } = await supabase
+    .from('questions')
+    .select(`
+      *,
+      question_options (
+        id,
+        option_id,
+        text,
+        explanation,
+        sort_order
+      ),
+      question_tags (
+        tag
+      )
+    `)
+    .in('id', questionIds);
+
+  if (error) {
+    console.error('Error fetching questions by IDs:', error);
+    throw error;
+  }
+
+  if (!data) return [];
+
+  return (data as unknown as QuestionRow[]).map(q => ({
+    id: q.id,
+    text: q.text,
+    options: q.question_options
+      .sort((a, b) => a.sort_order - b.sort_order)
+      .map(opt => ({
+        id: opt.option_id,
+        text: opt.text,
+        explanation: opt.explanation ?? undefined,
+      })),
+    correctOptionId: q.correct_option_id,
+    explanation: q.explanation,
+    tags: q.question_tags.map(t => t.tag),
+    difficulty: q.difficulty as 1 | 2 | 3,
+    keyPoints: q.key_points ?? undefined,
+    refLinks: q.ref_links ?? undefined,
+  }));
+}
+
 export async function getQuestionsByDifficulty(
   examId: string,
   difficulty: 1 | 2 | 3

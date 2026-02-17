@@ -108,20 +108,9 @@ export async function getAllSessions(userId?: string): Promise<ExamSession[]> {
     throw error;
   }
 
-  // Load questions for each session
-  const sessionsWithQuestions = await Promise.all(
-    (data || []).map(async (s) => {
-      try {
-        const questions = await getQuestionsForExam(s.exam_id);
-        return dbToExamSession(s, questions);
-      } catch (error) {
-        console.error(`Error loading questions for session ${s.id}:`, error);
-        return dbToExamSession(s, []);
-      }
-    })
-  );
-
-  return sessionsWithQuestions;
+  // Return sessions without questions - questions will be loaded separately when needed
+  // This avoids fetching the same questions multiple times
+  return (data || []).map(s => dbToExamSession(s, []));
 }
 
 export async function updateSession(session: ExamSession): Promise<void> {
