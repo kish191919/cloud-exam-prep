@@ -26,6 +26,7 @@ const ExamSession = () => {
   const { session, loading, selectAnswer, toggleBookmark, goToQuestion, submitExam, saveSession } = useExamSession(sessionId || null);
   const [showPanel, setShowPanel] = useState(true);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
+  const [navDirection, setNavDirection] = useState<'next' | 'prev'>('next');
   const touchStartX = useRef<number | null>(null);
   const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -53,16 +54,22 @@ const ExamSession = () => {
     navigate(exitDestination);
   }, [saveSession, navigate, exitDestination]);
 
+  // Direction-aware navigation (sets slide direction before moving)
+  const navigateTo = useCallback((index: number) => {
+    if (!session) return;
+    setNavDirection(index >= session.currentIndex ? 'next' : 'prev');
+    goToQuestion(index);
+  }, [session, goToQuestion]);
+
   // Practice mode: auto-advance to next question after answering
   const handleSelectAnswer = useCallback((questionId: string, optionId: string) => {
     selectAnswer(questionId, optionId);
 
     if (mode === 'practice' && session) {
-      // Clear any existing timer
       if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current);
-      // Auto-advance after 1.5s if not on the last question
       if (session.currentIndex < session.questions.length - 1) {
         autoAdvanceTimer.current = setTimeout(() => {
+          setNavDirection('next');
           goToQuestion(session.currentIndex + 1);
         }, 1500);
       }
@@ -86,24 +93,21 @@ const ExamSession = () => {
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
     touchStartX.current = null;
 
-    const SWIPE_THRESHOLD = 60; // px
+    const SWIPE_THRESHOLD = 60;
     if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
 
     if (deltaX < 0 && session.currentIndex < session.questions.length - 1) {
-      // Swipe left → next question
-      goToQuestion(session.currentIndex + 1);
+      navigateTo(session.currentIndex + 1);
     } else if (deltaX > 0 && session.currentIndex > 0) {
-      // Swipe right → previous question
-      goToQuestion(session.currentIndex - 1);
+      navigateTo(session.currentIndex - 1);
     }
-  }, [session, goToQuestion]);
+  }, [session, navigateTo]);
 
   // Keyboard shortcuts: 1-4 for options, Arrow keys for navigation
   useEffect(() => {
     if (!session || session.status === 'submitted') return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger when typing in an input
       if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') return;
 
       const q = session.questions[session.currentIndex];
@@ -112,30 +116,26 @@ const ExamSession = () => {
         const idx = parseInt(e.key) - 1;
         const option = q?.options[idx];
         if (!option) return;
-
-        // Study mode: no selection needed
         if (mode === 'study') return;
-        // Practice mode: can only select once per question
         if (mode === 'practice' && session.answers[q.id]) return;
-
         selectAnswer(q.id, option.id);
         e.preventDefault();
       }
 
       if (e.key === 'ArrowLeft') {
-        if (session.currentIndex > 0) goToQuestion(session.currentIndex - 1);
+        if (session.currentIndex > 0) navigateTo(session.currentIndex - 1);
         e.preventDefault();
       }
 
       if (e.key === 'ArrowRight') {
-        if (session.currentIndex < session.questions.length - 1) goToQuestion(session.currentIndex + 1);
+        if (session.currentIndex < session.questions.length - 1) navigateTo(session.currentIndex + 1);
         e.preventDefault();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [session, mode, selectAnswer, goToQuestion]);
+  }, [session, mode, selectAnswer, navigateTo]);
 
   if (loading) {
     return (
@@ -228,7 +228,7 @@ const ExamSession = () => {
             answers={session.answers}
             bookmarks={session.bookmarks}
             currentIndex={session.currentIndex}
-            onSelect={goToQuestion}
+            onSelect={navigateTo}
           />
         )}
         <div
@@ -236,17 +236,22 @@ const ExamSession = () => {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          <QuestionDisplay
-            question={currentQuestion}
-            questionNumber={session.currentIndex + 1}
-            totalQuestions={session.questions.length}
-            selectedOptionId={session.answers[currentQuestion.id]}
-            isBookmarked={session.bookmarks.includes(currentQuestion.id)}
-            onSelectOption={(optionId) => handleSelectAnswer(currentQuestion.id, optionId)}
-            onToggleBookmark={() => toggleBookmark(currentQuestion.id)}
-            mode={mode}
-            randomizeOptions={session.randomizeOptions}
-          />
+          <div
+            key={session.currentIndex}
+            className={navDirection === 'next' ? 'animate-slide-from-right' : 'animate-slide-from-left'}
+          >
+            <QuestionDisplay
+              question={currentQuestion}
+              questionNumber={session.currentIndex + 1}
+              totalQuestions={session.questions.length}
+              selectedOptionId={session.answers[currentQuestion.id]}
+              isBookmarked={session.bookmarks.includes(currentQuestion.id)}
+              onSelectOption={(optionId) => handleSelectAnswer(currentQuestion.id, optionId)}
+              onToggleBookmark={() => toggleBookmark(currentQuestion.id)}
+              mode={mode}
+              randomizeOptions={session.randomizeOptions}
+            />
+          </div>
         </div>
       </div>
 
@@ -256,7 +261,7 @@ const ExamSession = () => {
           {session.questions.map((q, i) => (
             <button
               key={q.id}
-              onClick={() => goToQuestion(i)}
+              onClick={() => navigateTo(i)}
               className={`flex-shrink-0 w-8 h-8 rounded text-xs font-semibold ${
                 i === session.currentIndex
                   ? 'bg-accent text-accent-foreground'
@@ -277,7 +282,7 @@ const ExamSession = () => {
           variant="outline"
           size="sm"
           disabled={session.currentIndex === 0}
-          onClick={() => goToQuestion(session.currentIndex - 1)}
+          onClick={() => navigateTo(session.currentIndex - 1)}
           className="text-xs sm:text-sm px-2 sm:px-4"
         >
           <ChevronLeft className="h-4 w-4 sm:mr-1" />
@@ -292,7 +297,7 @@ const ExamSession = () => {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => goToQuestion(session.currentIndex + 1)}
+            onClick={() => navigateTo(session.currentIndex + 1)}
             className="text-xs sm:text-sm px-2 sm:px-4"
           >
             <span className="hidden sm:inline">{t('examSession.next')}</span>
