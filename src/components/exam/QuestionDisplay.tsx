@@ -122,10 +122,6 @@ const QuestionDisplay = ({
               {tag}
             </span>
           ))}
-          {/* Difficulty */}
-          <span className="text-xs px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
-            {'★'.repeat(question.difficulty)}{'☆'.repeat(3 - question.difficulty)}
-          </span>
         </div>
         <Button
           variant="ghost"

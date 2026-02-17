@@ -122,10 +122,10 @@ const ExamSession = () => {
               <Menu className="h-5 w-5" />
             </Button>
           )}
-          <div className="flex items-center gap-2 min-w-0">
+          <Link to="/exams" className="flex items-center gap-2 min-w-0 hover:opacity-80 transition-opacity">
             <Cloud className="h-5 w-5 text-accent flex-shrink-0" />
             <span className="font-semibold text-sm truncate">{session.examTitle}</span>
-          </div>
+          </Link>
           {/* Mode badge */}
           <span className={`text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 ${modeInfo.color}`}>
             {isKo ? modeInfo.ko : modeInfo.en}
