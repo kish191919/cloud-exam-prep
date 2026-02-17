@@ -120,6 +120,11 @@ const ExamList = () => {
     const config = exams.find(ex => ex.id === expandedId);
     if (!config) return;
 
+    // Find the selected set to include its name in session title
+    const sets = setsMap[expandedId] ?? [];
+    const selectedSet = sets.find(s => s.id === selectedSetId);
+    const setName = selectedSet?.name || '';
+
     setStarting(true);
     try {
       const questions = await getQuestionsForSet(selectedSetId);
@@ -166,9 +171,12 @@ const ExamList = () => {
       const questionIds = new Set(questions.map(q => q.id));
       const initialBookmarks = Array.from(questionIds).filter(qid => latestBookmarkStatus[qid] === true);
 
+      // Include set name in session title for better organization in review page
+      const sessionTitle = setName ? `${config.title} - ${setName}` : config.title;
+
       const sessionId = await createSession(
         expandedId,
-        config.title,
+        sessionTitle,
         questions,
         config.timeLimitMinutes,
         selectedMode,
