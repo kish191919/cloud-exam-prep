@@ -101,13 +101,20 @@ const ReviewPage = () => {
         ? (mode === 'study' ? ` - ${sessionType} 복습` : ` - ${sessionType} 테스트`)
         : (mode === 'study' ? ` - ${sessionType} Review` : ` - ${sessionType} Test`);
 
+      // For bookmark sessions, initialize bookmarks with all question IDs
+      const initialBookmarks = sessionType === '북마크' || sessionType === 'Bookmarks'
+        ? questions.map(q => q.id)
+        : [];
+
       const sessionId = await createSession(
         examId,
         examTitle + suffix,
         questions,
         timeLimitMinutes,
         mode,
-        false // don't randomize for review
+        false, // don't randomize for review
+        undefined, // userId
+        initialBookmarks
       );
 
       // Navigate to the new session

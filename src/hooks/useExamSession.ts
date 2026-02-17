@@ -29,7 +29,8 @@ export async function createSession(
   timeLimitMinutes: number,
   mode: ExamMode = 'exam',
   randomizeOptions: boolean = false,
-  userId?: string
+  userId?: string,
+  initialBookmarks: string[] = []
 ): Promise<string> {
   try {
     // Try to create in Supabase first
@@ -40,6 +41,24 @@ export async function createSession(
       timeLimitMinutes,
       userId
     );
+
+    // If there are initial bookmarks, update the session
+    if (initialBookmarks.length > 0) {
+      await sessionService.updateSession({
+        id: sessionId,
+        examId,
+        examTitle,
+        status: 'in_progress',
+        startedAt: Date.now(),
+        pausedElapsed: 0,
+        timeLimitSec: timeLimitMinutes * 60,
+        answers: {},
+        bookmarks: initialBookmarks,
+        currentIndex: 0,
+        questions,
+      });
+    }
+
     // Store mode, randomizeOptions, and question IDs in localStorage (DB doesn't have these columns)
     localStorage.setItem(modeKey(sessionId), mode);
     if (randomizeOptions) {
@@ -63,7 +82,7 @@ export async function createSession(
       pausedElapsed: 0,
       timeLimitSec: timeLimitMinutes * 60,
       answers: {},
-      bookmarks: [],
+      bookmarks: initialBookmarks,
       currentIndex: 0,
       questions,
     };

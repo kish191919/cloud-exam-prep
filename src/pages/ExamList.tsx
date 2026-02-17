@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getAllExams } from '@/services/examService';
 import { getSetsForExam, getQuestionsForSet } from '@/services/questionService';
-import { createSession } from '@/hooks/useExamSession';
+import { createSession, getAllSessions } from '@/hooks/useExamSession';
 import {
   Clock, HelpCircle, Target, Play, Loader2,
   ChevronDown, ChevronUp, BookOpen, FlaskConical, CheckCircle2,
@@ -122,13 +122,30 @@ const ExamList = () => {
     try {
       const questions = await getQuestionsForSet(selectedSetId);
       if (questions.length === 0) return;
+
+      // Load previous bookmarks for this exam
+      const allSessions = await getAllSessions();
+      const previousBookmarks = new Set<string>();
+
+      allSessions
+        .filter(s => s.examId === expandedId)
+        .forEach(s => {
+          s.bookmarks.forEach(qid => previousBookmarks.add(qid));
+        });
+
+      // Filter bookmarks to only include questions in this session
+      const questionIds = new Set(questions.map(q => q.id));
+      const initialBookmarks = Array.from(previousBookmarks).filter(qid => questionIds.has(qid));
+
       const sessionId = await createSession(
         expandedId,
         config.title,
         questions,
         config.timeLimitMinutes,
         selectedMode,
-        randomizeOptions
+        randomizeOptions,
+        undefined, // userId
+        initialBookmarks
       );
       navigate(`/session/${sessionId}`);
     } catch (error) {
