@@ -27,6 +27,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   Plus, Pencil, Trash2, BookOpen, FlaskConical,
   Loader2, Save, FileText, AlertTriangle, X,
+  ChevronUp, ChevronDown,
 } from 'lucide-react';
 import { getAllExams } from '@/services/examService';
 import { getSetsForExam, getQuestionsForSet } from '@/services/questionService';
@@ -680,6 +681,22 @@ const AdminPage = () => {
     loadSets(activeExamId);
   };
 
+  const handleMoveSet = async (index: number, direction: 'up' | 'down') => {
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    if (newIndex < 0 || newIndex >= currentSets.length) return;
+
+    const setA = currentSets[index];
+    const setB = currentSets[newIndex];
+
+    // Swap sort orders
+    await Promise.all([
+      updateExamSet(setA.id, { sortOrder: setB.sortOrder }),
+      updateExamSet(setB.id, { sortOrder: setA.sortOrder }),
+    ]);
+
+    loadSets(activeExamId);
+  };
+
   const currentSets = setsMap[activeExamId] ?? [];
 
   if (loadingExams) {
@@ -742,11 +759,33 @@ const AdminPage = () => {
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      {currentSets.map(set => (
+                      {currentSets.map((set, index) => (
                         <div
                           key={set.id}
                           className="flex items-center gap-4 p-4 rounded-xl border border-border hover:border-accent/30 transition-colors"
                         >
+                          {/* Move up/down buttons */}
+                          <div className="flex flex-col gap-1 shrink-0">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              disabled={index === 0}
+                              onClick={() => handleMoveSet(index, 'up')}
+                              className="h-7 w-7"
+                            >
+                              <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              disabled={index === currentSets.length - 1}
+                              onClick={() => handleMoveSet(index, 'down')}
+                              className="h-7 w-7"
+                            >
+                              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                            </Button>
+                          </div>
+
                           <div className={`p-2 rounded-lg ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
                             {set.type === 'sample'
                               ? <FlaskConical className="h-5 w-5 text-primary" />
