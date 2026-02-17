@@ -47,11 +47,21 @@ const ReviewPage = () => {
         return;
       }
 
-      // 3. Collect all unique question IDs from answers and bookmarks
+      // 3. Collect all unique question IDs from answers, bookmarks, and stored question IDs (for review sessions)
       const questionIds = new Set<string>();
       filteredSessions.forEach(s => {
         Object.keys(s.answers).forEach(qid => questionIds.add(qid));
         s.bookmarks.forEach(qid => questionIds.add(qid));
+        // Also load question IDs stored in localStorage for review sessions
+        // This ensures un-bookmarked questions are still tracked
+        try {
+          const storedIds = localStorage.getItem(`cloudmaster_questionids_${s.id}`);
+          if (storedIds) {
+            (JSON.parse(storedIds) as string[]).forEach(qid => questionIds.add(qid));
+          }
+        } catch {
+          // ignore
+        }
       });
 
       console.log('📊 Unique questions to load:', questionIds.size);
@@ -62,13 +72,25 @@ const ReviewPage = () => {
 
       console.log('📊 Questions loaded:', questions.length);
 
-      // 5. Attach questions to sessions
-      const sessionsWithQuestions = filteredSessions.map(s => ({
-        ...s,
-        questions: Array.from(new Set([...Object.keys(s.answers), ...s.bookmarks]))
-          .map(qid => questionMap.get(qid))
-          .filter((q): q is Question => q !== undefined)
-      }));
+      // 5. Attach questions to sessions (include stored question IDs for review sessions)
+      const sessionsWithQuestions = filteredSessions.map(s => {
+        const qidSet = new Set([...Object.keys(s.answers), ...s.bookmarks]);
+        // Add question IDs from localStorage (for review sessions with un-bookmarked questions)
+        try {
+          const storedIds = localStorage.getItem(`cloudmaster_questionids_${s.id}`);
+          if (storedIds) {
+            (JSON.parse(storedIds) as string[]).forEach(qid => qidSet.add(qid));
+          }
+        } catch {
+          // ignore
+        }
+        return {
+          ...s,
+          questions: Array.from(qidSet)
+            .map(qid => questionMap.get(qid))
+            .filter((q): q is Question => q !== undefined)
+        };
+      });
 
       setSessions(sessionsWithQuestions);
     } catch (error) {
@@ -164,13 +186,30 @@ const ReviewPage = () => {
 
     // Track the most recent bookmark status for each question
     const timestamp = s.submittedAt || s.startedAt;
+
+    // Track all questions in the session (most reliable: covers bookmarked + answered + un-bookmarked)
     s.questions.forEach(q => {
       const isBookmarked = s.bookmarks.includes(q.id);
-
-      // Update if this is the most recent session for this question
       if (!questionLastUpdated[q.id] || timestamp > questionLastUpdated[q.id]) {
         questionLastUpdated[q.id] = timestamp;
         latestBookmarkStatus[q.id] = isBookmarked;
+      }
+    });
+
+    // Also track bookmarked questions that may not be in s.questions yet
+    s.bookmarks.forEach(qid => {
+      if (!questionLastUpdated[qid] || timestamp > questionLastUpdated[qid]) {
+        questionLastUpdated[qid] = timestamp;
+        latestBookmarkStatus[qid] = true;
+      }
+    });
+
+    // Also track questions with answers (to catch any edge cases)
+    Object.keys(s.answers).forEach(qid => {
+      const isBookmarked = s.bookmarks.includes(qid);
+      if (!questionLastUpdated[qid] || timestamp > questionLastUpdated[qid]) {
+        questionLastUpdated[qid] = timestamp;
+        latestBookmarkStatus[qid] = isBookmarked;
       }
     });
   });
