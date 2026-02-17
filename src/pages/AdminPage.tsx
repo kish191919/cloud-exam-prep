@@ -177,7 +177,7 @@ interface QuestionFormProps {
 }
 
 const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormProps) => {
-  const empty = { text: '', a: '', b: '', c: '', d: '', a_exp: '', b_exp: '', c_exp: '', d_exp: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', difficulty: 1 as 1|2|3, tags: '' };
+  const empty = { text: '', a: '', b: '', c: '', d: '', a_exp: '', b_exp: '', c_exp: '', d_exp: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', difficulty: 1 as 1|2|3, tags: '', keyPoints: '', refLinks: [] as { name: string; url: string }[] };
   const [form, setFormState] = useState(empty);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -195,6 +195,8 @@ const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormP
         explanation: edit.explanation,
         difficulty: edit.difficulty,
         tags: edit.tags.join(', '),
+        keyPoints: edit.keyPoints ?? '',
+        refLinks: edit.refLinks ?? [],
       });
     } else {
       setFormState(empty);
@@ -224,6 +226,8 @@ const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormP
         explanation: form.explanation.trim(),
         difficulty: form.difficulty,
         tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
+        keyPoints: form.keyPoints.trim() || undefined,
+        refLinks: form.refLinks.filter(r => r.name.trim() && r.url.trim()),
       };
       await onSave(input);
     } catch (e: any) {
@@ -321,6 +325,64 @@ const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormP
             value={form.tags}
             onChange={e => set('tags', e.target.value)}
           />
+        </div>
+      </div>
+
+      <div>
+        <label className="text-sm font-medium mb-1.5 block">핵심 암기사항 (선택)</label>
+        <Textarea
+          placeholder="이 문제와 관련하여 반드시 암기해야 할 핵심 사항을 입력하세요..."
+          rows={3}
+          value={form.keyPoints}
+          onChange={e => set('keyPoints', e.target.value)}
+        />
+      </div>
+
+      <div>
+        <label className="text-sm font-medium mb-1.5 block">참고자료 (선택)</label>
+        <div className="space-y-2">
+          {form.refLinks.map((link, idx) => (
+            <div key={idx} className="flex gap-2">
+              <Input
+                placeholder="자료 이름"
+                value={link.name}
+                onChange={e => {
+                  const updated = [...form.refLinks];
+                  updated[idx] = { ...updated[idx], name: e.target.value };
+                  set('refLinks', updated);
+                }}
+                className="flex-1"
+              />
+              <Input
+                placeholder="URL"
+                value={link.url}
+                onChange={e => {
+                  const updated = [...form.refLinks];
+                  updated[idx] = { ...updated[idx], url: e.target.value };
+                  set('refLinks', updated);
+                }}
+                className="flex-[2]"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => set('refLinks', form.refLinks.filter((_, i) => i !== idx))}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => set('refLinks', [...form.refLinks, { name: '', url: '' }])}
+            className="w-full"
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            참고자료 추가
+          </Button>
         </div>
       </div>
 

@@ -88,6 +88,8 @@ export interface QuestionInput {
   explanation: string;
   difficulty: 1 | 2 | 3;
   tags: string[];
+  keyPoints?: string;
+  refLinks?: { name: string; url: string }[];
 }
 
 /** Generate a unique question ID */
@@ -108,6 +110,8 @@ export async function createQuestion(input: QuestionInput): Promise<string> {
       correct_option_id: input.correctOptionId,
       explanation: input.explanation,
       difficulty: input.difficulty,
+      key_points: input.keyPoints ?? null,
+      ref_links: input.refLinks ?? [],
     });
   if (qErr) throw qErr;
 
@@ -142,6 +146,8 @@ export async function updateQuestion(questionId: string, input: Omit<QuestionInp
       correct_option_id: input.correctOptionId,
       explanation: input.explanation,
       difficulty: input.difficulty,
+      key_points: input.keyPoints ?? null,
+      ref_links: input.refLinks ?? [],
     })
     .eq('id', questionId);
   if (qErr) throw qErr;

@@ -1,6 +1,7 @@
 import { Question, ExamMode } from '@/types/exam';
-import { Bookmark, BookmarkCheck, CheckCircle2, XCircle } from 'lucide-react';
+import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface QuestionDisplayProps {
   question: Question;
@@ -65,9 +66,12 @@ const QuestionDisplay = ({
   const canSelect = !showFeedback;
 
   return (
-    <div className="max-w-3xl mx-auto animate-fade-in">
-      {/* Header row: question number + tags + difficulty + bookmark */}
-      <div className="flex items-start justify-between mb-5 gap-3">
+    <div className="w-full animate-fade-in">
+      <div className={`${showFeedback ? 'flex gap-6 max-w-6xl mx-auto' : 'max-w-3xl mx-auto'}`}>
+        {/* Main question content */}
+        <div className={showFeedback ? 'flex-1 min-w-0' : ''}>
+          {/* Header row: question number + tags + difficulty + bookmark */}
+          <div className="flex items-start justify-between mb-5 gap-3">
         <div className="flex items-center flex-wrap gap-2 min-w-0">
           <span className="text-sm font-medium text-muted-foreground shrink-0">
             Question {questionNumber} of {totalQuestions}
@@ -120,7 +124,9 @@ const QuestionDisplay = ({
                     {OPTION_LABELS[option.id] ?? option.id.toUpperCase()}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <span className="text-sm leading-relaxed pt-1 block">{option.text}</span>
+                    <span className={`text-sm leading-relaxed pt-1 block ${
+                      showFeedback && !isCorrect ? 'text-red-600 dark:text-red-400' : ''
+                    }`}>{option.text}</span>
                     {/* Per-option explanation (shown in feedback state) */}
                     {showFeedback && perOptionExplanation && (
                       <p className={`text-xs mt-2 leading-relaxed ${
@@ -141,6 +147,59 @@ const QuestionDisplay = ({
             </div>
           );
         })}
+      </div>
+        </div>
+
+        {/* Right panel - Key points and references (shown when feedback is visible) */}
+        {showFeedback && (question.keyPoints || (question.refLinks && question.refLinks.length > 0)) && (
+          <div className="w-80 shrink-0">
+            <Card className="sticky top-4">
+              {question.keyPoints && (
+                <>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                      <Lightbulb className="h-4 w-4 text-amber-500" />
+                      핵심 암기사항
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <p className="text-xs leading-relaxed text-muted-foreground whitespace-pre-line">
+                      {question.keyPoints}
+                    </p>
+                  </CardContent>
+                </>
+              )}
+
+              {question.refLinks && question.refLinks.length > 0 && (
+                <>
+                  <CardHeader className={question.keyPoints ? 'pt-4 pb-3 border-t' : 'pb-3'}>
+                    <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                      <ExternalLink className="h-4 w-4 text-blue-500" />
+                      참고자료
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <ul className="space-y-2">
+                      {question.refLinks.map((link, idx) => (
+                        <li key={idx}>
+                          <a
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                          >
+                            <span>{link.name}</span>
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </>
+              )}
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );

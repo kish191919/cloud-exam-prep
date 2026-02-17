@@ -12,6 +12,8 @@ export interface Question {
   explanation: string;
   tags: string[];
   difficulty: 1 | 2 | 3;
+  keyPoints?: string;
+  refLinks?: { name: string; url: string }[];
 }
 
 export interface ExamSet {

@@ -8,6 +8,8 @@ interface QuestionRow {
   correct_option_id: string;
   explanation: string;
   difficulty: number;
+  key_points: string | null;
+  ref_links: any;
   question_options: Array<{
     id: string;
     option_id: string;
@@ -60,6 +62,8 @@ export async function getQuestionsForExam(examId: string): Promise<Question[]> {
     explanation: q.explanation,
     tags: q.question_tags.map(t => t.tag),
     difficulty: q.difficulty as 1 | 2 | 3,
+    keyPoints: q.key_points ?? undefined,
+    refLinks: q.ref_links ?? undefined,
   }));
 }
 
@@ -105,6 +109,8 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
     explanation: q.explanation,
     tags: q.question_tags.map(t => t.tag),
     difficulty: q.difficulty as 1 | 2 | 3,
+    keyPoints: q.key_points ?? undefined,
+    refLinks: q.ref_links ?? undefined,
   };
 }
 
@@ -152,6 +158,8 @@ export async function getQuestionsByDifficulty(
     explanation: q.explanation,
     tags: q.question_tags.map(t => t.tag),
     difficulty: q.difficulty as 1 | 2 | 3,
+    keyPoints: q.key_points ?? undefined,
+    refLinks: q.ref_links ?? undefined,
   }));
 }
 
@@ -191,6 +199,8 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
         correct_option_id,
         explanation,
         difficulty,
+        key_points,
+        ref_links,
         question_options (
           option_id,
           text,
@@ -222,6 +232,8 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
       explanation: q.explanation,
       tags: (q.question_tags as any[]).map((t: any) => t.tag),
       difficulty: q.difficulty as 1 | 2 | 3,
+      keyPoints: q.key_points ?? undefined,
+      refLinks: q.ref_links ?? undefined,
     };
   });
 }
@@ -267,5 +279,7 @@ export async function getQuestionsByTag(examId: string, tag: string): Promise<Qu
     explanation: q.explanation,
     tags: q.question_tags.map(t => t.tag),
     difficulty: q.difficulty as 1 | 2 | 3,
+    keyPoints: q.key_points ?? undefined,
+    refLinks: q.ref_links ?? undefined,
   }));
 }
