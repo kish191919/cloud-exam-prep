@@ -16,8 +16,6 @@ interface QuestionDisplayProps {
   randomizeOptions?: boolean;
 }
 
-const OPTION_LABELS: Record<string, string> = { a: '1', b: '2', c: '3', d: '4' };
-
 // Simple seeded shuffle function for deterministic randomization
 function seededShuffle<T>(array: T[], seed: string): T[] {
   if (!array || array.length === 0) return array;
@@ -143,7 +141,7 @@ const QuestionDisplay = ({
       <h2 className="text-lg font-semibold leading-relaxed mb-6 whitespace-pre-line">{question.text}</h2>
 
       <div className="space-y-3">
-        {displayOptions.map((option) => {
+        {displayOptions.map((option, index) => {
           const isSelected = selectedOptionId === option.id;
           const isCorrect = option.id === question.correctOptionId;
 
@@ -163,7 +161,7 @@ const QuestionDisplay = ({
               >
                 <div className="flex items-start gap-3">
                   <span className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${getCircleStyle(option.id)}`}>
-                    {OPTION_LABELS[option.id] ?? option.id.toUpperCase()}
+                    {index + 1}
                   </span>
                   <div className="flex-1 min-w-0">
                     <span className={`text-sm leading-relaxed pt-1 block ${
