@@ -9,7 +9,7 @@ import { createSession } from '@/hooks/useExamSession';
 import {
   Clock, HelpCircle, Target, Play, Loader2,
   ChevronDown, ChevronUp, BookOpen, FlaskConical, CheckCircle2,
-  Pencil, Eye, Timer,
+  Pencil, Eye, Timer, Shuffle,
 } from 'lucide-react';
 import type { ExamConfig, ExamSet, ExamMode } from '@/types/exam';
 import { useTranslation } from 'react-i18next';
@@ -73,6 +73,7 @@ const ExamList = () => {
   const [loadingSets, setLoadingSets] = useState<Record<string, boolean>>({});
   const [selectedSetId, setSelectedSetId] = useState<string | null>(null);
   const [selectedMode, setSelectedMode] = useState<ExamMode | null>(null);
+  const [randomizeOptions, setRandomizeOptions] = useState(false);
   const [starting, setStarting] = useState(false);
 
   useEffect(() => {
@@ -94,11 +95,13 @@ const ExamList = () => {
       setExpandedId(null);
       setSelectedSetId(null);
       setSelectedMode(null);
+      setRandomizeOptions(false);
       return;
     }
     setExpandedId(examId);
     setSelectedSetId(null);
     setSelectedMode(null);
+    setRandomizeOptions(false);
 
     if (!setsMap[examId]) {
       setLoadingSets(prev => ({ ...prev, [examId]: true }));
@@ -124,7 +127,8 @@ const ExamList = () => {
         config.title,
         questions,
         config.timeLimitMinutes,
-        selectedMode
+        selectedMode,
+        randomizeOptions
       );
       navigate(`/session/${sessionId}`);
     } catch (error) {
@@ -312,6 +316,31 @@ const ExamList = () => {
                               </button>
                             );
                           })}
+                        </div>
+
+                        {/* Randomize options checkbox */}
+                        <div className="mb-6">
+                          <label className="flex items-center gap-3 p-4 rounded-lg border cursor-pointer hover:bg-muted/40 transition-colors">
+                            <input
+                              type="checkbox"
+                              checked={randomizeOptions}
+                              onChange={e => setRandomizeOptions(e.target.checked)}
+                              className="h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent"
+                            />
+                            <div className="flex items-center gap-2 flex-1">
+                              <Shuffle className="h-4 w-4 text-muted-foreground" />
+                              <div>
+                                <p className="text-sm font-medium">
+                                  {isKo ? '보기 순서 랜덤화' : 'Randomize Options'}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  {isKo
+                                    ? '매 문제마다 보기의 순서가 바뀌어 집중력을 높입니다'
+                                    : 'Options appear in different order for each question'}
+                                </p>
+                              </div>
+                            </div>
+                          </label>
                         </div>
 
                         {/* Start button */}

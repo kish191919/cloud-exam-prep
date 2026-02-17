@@ -2,6 +2,7 @@ import { Question, ExamMode } from '@/types/exam';
 import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useMemo } from 'react';
 
 interface QuestionDisplayProps {
   question: Question;
@@ -12,9 +13,27 @@ interface QuestionDisplayProps {
   onSelectOption: (optionId: string) => void;
   onToggleBookmark: () => void;
   mode?: ExamMode;
+  randomizeOptions?: boolean;
 }
 
 const OPTION_LABELS: Record<string, string> = { a: '1', b: '2', c: '3', d: '4' };
+
+// Simple seeded shuffle function for deterministic randomization
+function seededShuffle<T>(array: T[], seed: string): T[] {
+  const arr = [...array];
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+    hash = hash & hash;
+  }
+
+  for (let i = arr.length - 1; i > 0; i--) {
+    hash = (hash * 9301 + 49297) % 233280;
+    const j = Math.floor((hash / 233280) * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 const QuestionDisplay = ({
   question,
@@ -25,6 +44,7 @@ const QuestionDisplay = ({
   onSelectOption,
   onToggleBookmark,
   mode = 'exam',
+  randomizeOptions = false,
 }: QuestionDisplayProps) => {
   const isStudy = mode === 'study';
   const isPractice = mode === 'practice';
@@ -32,6 +52,14 @@ const QuestionDisplay = ({
 
   // Whether to show answer feedback (correct/wrong colors, icons, explanations)
   const showFeedback = isStudy || (isPractice && isAnswered);
+
+  // Randomize options if enabled (deterministic based on question ID)
+  const displayOptions = useMemo(() => {
+    if (randomizeOptions) {
+      return seededShuffle(question.options, question.id);
+    }
+    return question.options;
+  }, [question.options, question.id, randomizeOptions]);
 
   // Determine option border/bg styling based on mode
   const getOptionStyle = (optionId: string) => {
@@ -101,7 +129,7 @@ const QuestionDisplay = ({
       <h2 className="text-lg font-semibold leading-relaxed mb-6 whitespace-pre-line">{question.text}</h2>
 
       <div className="space-y-3">
-        {question.options.map((option) => {
+        {displayOptions.map((option) => {
           const isSelected = selectedOptionId === option.id;
           const isCorrect = option.id === question.correctOptionId;
 
@@ -152,7 +180,7 @@ const QuestionDisplay = ({
 
         {/* Right panel - Key points and references (shown when feedback is visible) */}
         {showFeedback && (question.keyPoints || (question.refLinks && question.refLinks.length > 0)) && (
-          <div className="w-96 shrink-0">
+          <div className="w-[28rem] shrink-0">
             <Card className="sticky top-4">
               {question.keyPoints && (
                 <>

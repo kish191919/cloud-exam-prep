@@ -176,6 +176,7 @@ const ExamSession = () => {
             onSelectOption={(optionId) => selectAnswer(currentQuestion.id, optionId)}
             onToggleBookmark={() => toggleBookmark(currentQuestion.id)}
             mode={mode}
+            randomizeOptions={session.randomizeOptions}
           />
         </div>
       </div>

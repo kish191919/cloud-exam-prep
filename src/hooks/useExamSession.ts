@@ -5,6 +5,7 @@ import * as sessionService from '@/services/sessionService';
 // Keep localStorage as fallback for offline support
 const SESSIONS_KEY = 'cloudmaster_sessions';
 const modeKey = (id: string) => `cloudmaster_mode_${id}`;
+const randomizeKey = (id: string) => `cloudmaster_randomize_${id}`;
 
 function loadSessionsFromLocalStorage(): Record<string, ExamSession> {
   try {
@@ -25,6 +26,7 @@ export async function createSession(
   questions: Question[],
   timeLimitMinutes: number,
   mode: ExamMode = 'exam',
+  randomizeOptions: boolean = false,
   userId?: string
 ): Promise<string> {
   try {
@@ -36,8 +38,11 @@ export async function createSession(
       timeLimitMinutes,
       userId
     );
-    // Store mode in localStorage (DB doesn't have a mode column)
+    // Store mode and randomizeOptions in localStorage (DB doesn't have these columns)
     localStorage.setItem(modeKey(sessionId), mode);
+    if (randomizeOptions) {
+      localStorage.setItem(randomizeKey(sessionId), 'true');
+    }
     return sessionId;
   } catch (error) {
     console.warn('Failed to create session in Supabase, using localStorage:', error);
@@ -49,6 +54,7 @@ export async function createSession(
       examTitle,
       status: 'in_progress',
       mode,
+      randomizeOptions,
       startedAt: Date.now(),
       pausedElapsed: 0,
       timeLimitSec: timeLimitMinutes * 60,
@@ -76,16 +82,18 @@ export async function getSession(
     // Try Supabase first
     const session = await sessionService.getSession(sessionId);
     if (session) {
-      // Attach mode from localStorage
+      // Attach mode and randomizeOptions from localStorage
       const storedMode = localStorage.getItem(modeKey(sessionId)) as ExamMode | null;
       if (storedMode) session.mode = storedMode;
+      const storedRandomize = localStorage.getItem(randomizeKey(sessionId));
+      if (storedRandomize === 'true') session.randomizeOptions = true;
       return session;
     }
   } catch (error) {
     console.warn('Failed to fetch session from Supabase, using localStorage:', error);
   }
 
-  // Fallback to localStorage (mode already in session object)
+  // Fallback to localStorage (mode and randomizeOptions already in session object)
   return loadSessionsFromLocalStorage()[sessionId] || null;
 }
 
