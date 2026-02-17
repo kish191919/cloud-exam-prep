@@ -112,7 +112,7 @@ const QuestionDisplay = ({
   return (
     <div className="w-full animate-fade-in">
       {/* On mobile: stack vertically. On lg+: side by side when feedback is shown */}
-      <div className={`${showFeedback ? 'flex flex-col lg:flex-row gap-6 max-w-6xl mx-auto' : 'max-w-3xl mx-auto'}`}>
+      <div className={`${hasRightPanel ? 'flex flex-col lg:flex-row gap-6 max-w-6xl mx-auto' : 'max-w-3xl mx-auto'}`}>
         {/* Main question content */}
         <div className={hasRightPanel ? 'flex-1 min-w-0' : ''}>
           {/* Header row: question number + tags + bookmark */}
