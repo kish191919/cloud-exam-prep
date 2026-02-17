@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AppLayout from '@/components/AppLayout';
 import { getAllSessions, createSession } from '@/hooks/useExamSession';
 import { getQuestionsByIds } from '@/services/questionService';
@@ -26,6 +26,7 @@ const ReviewPage = () => {
   const isKo = i18n.language === 'ko';
   const navigate = useNavigate();
   const { user } = useAuth();
+  const location = useLocation();
   const [sessions, setSessions] = useState<ExamSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [creatingSession, setCreatingSession] = useState(false);
@@ -105,7 +106,7 @@ const ReviewPage = () => {
   useEffect(() => {
     loadSessionsAndQuestions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id]); // Reload when user changes (login/logout)
+  }, [user?.id, location.key]); // Reload when user changes OR every time this page is navigated to
 
 
   // Create a review session with specific questions
@@ -170,8 +171,22 @@ const ReviewPage = () => {
            title.includes(' - Test');
   };
 
-  // Track questions that were answered correctly in review sessions
-  const reviewedCorrectQuestionIds = new Set<string>();
+  // Get the base exam key from a review session title (strip review suffix)
+  const getBaseExamKey = (reviewTitle: string): string => {
+    const suffixes = [
+      ' - 오답 복습', ' - 오답 테스트',
+      ' - 북마크 복습', ' - 북마크 테스트',
+      ' - Wrong Answers Review', ' - Wrong Answers Test',
+      ' - Bookmarks Review', ' - Bookmarks Test',
+    ];
+    for (const suffix of suffixes) {
+      if (reviewTitle.endsWith(suffix)) return reviewTitle.slice(0, -suffix.length);
+    }
+    return reviewTitle;
+  };
+
+  // Track questions answered correctly in review sessions, scoped per base exam key
+  const reviewedCorrectByExam: Record<string, Set<string>> = {};
 
   // Track the most recent bookmark status for each question
   const latestBookmarkStatus: Record<string, boolean> = {};
@@ -179,10 +194,12 @@ const ReviewPage = () => {
 
   sessions.forEach(s => {
     if (isReviewSession(s.examTitle)) {
-      // Track questions answered correctly in review sessions
+      // Track questions answered correctly in review sessions, scoped to the base exam key
+      const baseKey = getBaseExamKey(s.examTitle);
+      if (!reviewedCorrectByExam[baseKey]) reviewedCorrectByExam[baseKey] = new Set();
       s.questions.forEach(q => {
         if (s.answers[q.id] === q.correctOptionId) {
-          reviewedCorrectQuestionIds.add(q.id);
+          reviewedCorrectByExam[baseKey].add(q.id);
         }
       });
     }
@@ -235,7 +252,7 @@ const ReviewPage = () => {
       .filter(q =>
         s.answers[q.id] !== undefined && // Must be answered (skip unanswered questions)
         s.answers[q.id] !== q.correctOptionId && // And answered incorrectly
-        !reviewedCorrectQuestionIds.has(q.id) // Exclude if answered correctly in review
+        !reviewedCorrectByExam[examKey]?.has(q.id) // Exclude if answered correctly in review (scoped to this exam/set)
       )
       .forEach(q => {
         if (!wrongQuestionsMap[examKey]) wrongQuestionsMap[examKey] = new Map();
