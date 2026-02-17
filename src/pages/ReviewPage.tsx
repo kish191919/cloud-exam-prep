@@ -146,11 +146,26 @@ const ReviewPage = () => {
     }
   };
 
-  // Group questions by exam
+  // Group questions by exam (excluding review sessions)
   const wrongByExam: Record<string, QuestionWithMeta[]> = {};
   const bookmarksByExam: Record<string, QuestionWithMeta[]> = {};
 
+  // Filter out review sessions (those created from review page)
+  const isReviewSession = (title: string) => {
+    return title.includes(' - 오답') ||
+           title.includes(' - 북마크') ||
+           title.includes(' - 복습') ||
+           title.includes(' - 테스트') ||
+           title.includes(' - Wrong') ||
+           title.includes(' - Bookmark') ||
+           title.includes(' - Review') ||
+           title.includes(' - Test');
+  };
+
   sessions.forEach(s => {
+    // Skip review sessions to avoid infinite loop
+    if (isReviewSession(s.examTitle)) return;
+
     const examKey = s.examTitle;
 
     // Wrong answers
@@ -347,14 +362,26 @@ const ReviewPage = () => {
 
               return (
                 <Card key={examTitle}>
-                  <CardHeader
-                    className="cursor-pointer hover:bg-muted/50 transition-colors"
-                    onClick={() => toggleExam(examTitle)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <CardTitle className="text-lg">{examTitle}</CardTitle>
-                        <div className="flex gap-2">
+                  <CardHeader>
+                    <div className="flex items-center justify-between gap-3">
+                      {/* Clickable title area - starts review directly */}
+                      <button
+                        className="flex items-center gap-3 flex-1 min-w-0 text-left hover:opacity-80 transition-opacity"
+                        onClick={() => {
+                          if (wrong.length > 0) {
+                            startReviewSession(
+                              wrong[0].examId,
+                              examTitle,
+                              wrong,
+                              'study',
+                              isKo ? '오답' : 'Wrong Answers'
+                            );
+                          }
+                        }}
+                        disabled={wrong.length === 0 || creatingSession}
+                      >
+                        <CardTitle className="text-lg truncate">{examTitle}</CardTitle>
+                        <div className="flex gap-2 shrink-0">
                           {wrong.length > 0 && (
                             <Badge variant="outline" className="border-destructive/40 text-destructive">
                               <XCircle className="h-3 w-3 mr-1" />
@@ -368,11 +395,18 @@ const ReviewPage = () => {
                             </Badge>
                           )}
                         </div>
-                      </div>
-                      {isExpanded
-                        ? <ChevronUp className="h-5 w-5 text-muted-foreground" />
-                        : <ChevronDown className="h-5 w-5 text-muted-foreground" />
-                      }
+                      </button>
+
+                      {/* Expand/collapse toggle */}
+                      <button
+                        onClick={() => toggleExam(examTitle)}
+                        className="p-2 hover:bg-muted rounded-md transition-colors shrink-0"
+                      >
+                        {isExpanded
+                          ? <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                          : <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                        }
+                      </button>
                     </div>
                   </CardHeader>
 
