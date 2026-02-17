@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
-  XCircle, Bookmark, Loader2, BookOpen, PenTool, ChevronDown, ChevronUp,
+  XCircle, Bookmark, Loader2, PenTool, ChevronDown, ChevronUp,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
@@ -441,64 +441,34 @@ const ReviewPage = () => {
                           {/* Action buttons */}
                           <div className="flex flex-wrap gap-1.5">
                             {setGroup.wrong.length > 0 && (
-                              <>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="h-7 text-xs px-2.5"
-                                  disabled={creatingSession}
-                                  onClick={() => startReviewSession(
-                                    setGroup.examId, setGroup.examKey, setGroup.wrong,
-                                    'study', isKo ? '오답' : 'Wrong Answers'
-                                  )}
-                                >
-                                  <BookOpen className="h-3 w-3 mr-1" />
-                                  {isKo ? '오답 복습' : 'Review'}
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="h-7 text-xs px-2.5"
-                                  disabled={creatingSession}
-                                  onClick={() => startReviewSession(
-                                    setGroup.examId, setGroup.examKey, setGroup.wrong,
-                                    'practice', isKo ? '오답' : 'Wrong Answers'
-                                  )}
-                                >
-                                  <PenTool className="h-3 w-3 mr-1" />
-                                  {isKo ? '오답 테스트' : 'Test'}
-                                </Button>
-                              </>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-7 text-xs px-2.5"
+                                disabled={creatingSession}
+                                onClick={() => startReviewSession(
+                                  setGroup.examId, setGroup.examKey, setGroup.wrong,
+                                  'practice', isKo ? '오답' : 'Wrong Answers'
+                                )}
+                              >
+                                <PenTool className="h-3 w-3 mr-1" />
+                                {isKo ? '오답 테스트' : 'Wrong Test'}
+                              </Button>
                             )}
                             {setGroup.bookmarks.length > 0 && (
-                              <>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="h-7 text-xs px-2.5"
-                                  disabled={creatingSession}
-                                  onClick={() => startReviewSession(
-                                    setGroup.examId, setGroup.examKey, setGroup.bookmarks,
-                                    'study', isKo ? '북마크' : 'Bookmarks'
-                                  )}
-                                >
-                                  <BookOpen className="h-3 w-3 mr-1" />
-                                  {isKo ? '북마크 복습' : 'Bookmarks Review'}
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="h-7 text-xs px-2.5"
-                                  disabled={creatingSession}
-                                  onClick={() => startReviewSession(
-                                    setGroup.examId, setGroup.examKey, setGroup.bookmarks,
-                                    'practice', isKo ? '북마크' : 'Bookmarks'
-                                  )}
-                                >
-                                  <PenTool className="h-3 w-3 mr-1" />
-                                  {isKo ? '북마크 테스트' : 'Bookmarks Test'}
-                                </Button>
-                              </>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-7 text-xs px-2.5"
+                                disabled={creatingSession}
+                                onClick={() => startReviewSession(
+                                  setGroup.examId, setGroup.examKey, setGroup.bookmarks,
+                                  'practice', isKo ? '북마크' : 'Bookmarks'
+                                )}
+                              >
+                                <PenTool className="h-3 w-3 mr-1" />
+                                {isKo ? '북마크 테스트' : 'Bookmarks Test'}
+                              </Button>
                             )}
                           </div>
                         </div>
