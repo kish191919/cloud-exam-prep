@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppLayout from '@/components/AppLayout';
-import { getAllSessions } from '@/hooks/useExamSession';
+import { getAllSessions, createSession } from '@/hooks/useExamSession';
 import { getQuestionsByIds } from '@/services/questionService';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Link } from 'react-router-dom';
 import {
   XCircle, Bookmark, ArrowRight, ChevronDown, ChevronUp,
-  CheckCircle2, Eye, EyeOff, Loader2,
+  CheckCircle2, Eye, EyeOff, Loader2, BookOpen, PenTool, RefreshCw,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { Question, ExamSession } from '@/types/exam';
@@ -25,12 +26,15 @@ interface QuestionWithMeta extends Question {
 const REVIEWED_KEY = 'cloudmaster_reviewed_questions';
 
 const ReviewPage = () => {
-  const { t } = useTranslation('pages');
+  const { t, i18n } = useTranslation('pages');
+  const isKo = i18n.language === 'ko';
+  const navigate = useNavigate();
   const [sessions, setSessions] = useState<ExamSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [reviewedQuestions, setReviewedQuestions] = useState<Record<string, boolean>>({});
   const [showReviewed, setShowReviewed] = useState(false);
   const [expandedExams, setExpandedExams] = useState<Record<string, boolean>>({});
+  const [creatingSession, setCreatingSession] = useState(false);
 
   // Load sessions and questions efficiently
   useEffect(() => {
@@ -101,6 +105,45 @@ const ReviewPage = () => {
     const updated = { ...reviewedQuestions, [questionId]: !reviewedQuestions[questionId] };
     setReviewedQuestions(updated);
     localStorage.setItem(REVIEWED_KEY, JSON.stringify(updated));
+  };
+
+  // Create a review session with specific questions
+  const startReviewSession = async (
+    examId: string,
+    examTitle: string,
+    questions: Question[],
+    mode: 'study' | 'practice',
+    sessionType: string
+  ) => {
+    if (questions.length === 0) return;
+
+    setCreatingSession(true);
+    try {
+      // Calculate time limit: 2 minutes per question
+      const timeLimitMinutes = questions.length * 2;
+
+      // Create session with suffix based on type and mode
+      const suffix = isKo
+        ? (mode === 'study' ? ` - ${sessionType} 복습` : ` - ${sessionType} 테스트`)
+        : (mode === 'study' ? ` - ${sessionType} Review` : ` - ${sessionType} Test`);
+
+      const sessionId = await createSession(
+        examId,
+        examTitle + suffix,
+        questions,
+        timeLimitMinutes,
+        mode,
+        false // don't randomize for review
+      );
+
+      // Navigate to the new session
+      navigate(`/exam/${sessionId}`);
+    } catch (error) {
+      console.error('Failed to create review session:', error);
+      alert(isKo ? '복습 세션 생성에 실패했습니다.' : 'Failed to create review session.');
+    } finally {
+      setCreatingSession(false);
+    }
   };
 
   // Group questions by exam
@@ -335,6 +378,64 @@ const ReviewPage = () => {
 
                   {isExpanded && (
                     <CardContent>
+                      {/* Review session buttons */}
+                      <div className="flex flex-wrap gap-2 mb-4 pb-4 border-b">
+                        {wrong.length > 0 && (
+                          <>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => startReviewSession(
+                                wrong[0].examId,
+                                examTitle,
+                                wrong,
+                                'study',
+                                isKo ? '오답' : 'Wrong Answers'
+                              )}
+                              disabled={creatingSession}
+                              className="flex-1 sm:flex-none"
+                            >
+                              <BookOpen className="h-4 w-4 mr-2" />
+                              {isKo ? '오답 복습하기' : 'Review Wrong Answers'}
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => startReviewSession(
+                                wrong[0].examId,
+                                examTitle,
+                                wrong,
+                                'practice',
+                                isKo ? '오답' : 'Wrong Answers'
+                              )}
+                              disabled={creatingSession}
+                              className="flex-1 sm:flex-none"
+                            >
+                              <PenTool className="h-4 w-4 mr-2" />
+                              {isKo ? '오답 테스트' : 'Test Wrong Answers'}
+                            </Button>
+                          </>
+                        )}
+                        {bookmarks.length > 0 && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => startReviewSession(
+                              bookmarks[0].examId,
+                              examTitle,
+                              bookmarks,
+                              'study',
+                              isKo ? '북마크' : 'Bookmarks'
+                            )}
+                            disabled={creatingSession}
+                            className="flex-1 sm:flex-none"
+                          >
+                            <RefreshCw className="h-4 w-4 mr-2" />
+                            {isKo ? '북마크 복습하기' : 'Review Bookmarks'}
+                          </Button>
+                        )}
+                      </div>
+
                       <Tabs defaultValue="wrong" className="w-full">
                         <TabsList className="w-full">
                           <TabsTrigger value="wrong" className="flex-1">
