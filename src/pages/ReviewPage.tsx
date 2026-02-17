@@ -138,7 +138,6 @@ const ReviewPage = () => {
 
   // Track questions that were answered correctly in review sessions
   const reviewedCorrectQuestionIds = new Set<string>();
-  const unbookmarkedQuestionIds = new Set<string>();
 
   sessions.forEach(s => {
     if (isReviewSession(s.examTitle)) {
@@ -146,14 +145,6 @@ const ReviewPage = () => {
       s.questions.forEach(q => {
         if (s.answers[q.id] === q.correctOptionId) {
           reviewedCorrectQuestionIds.add(q.id);
-        }
-      });
-
-      // Track questions that were unbookmarked in review sessions
-      // If a question is not in bookmarks anymore, it was unbookmarked
-      s.questions.forEach(q => {
-        if (!s.bookmarks.includes(q.id)) {
-          unbookmarkedQuestionIds.add(q.id);
         }
       });
     }
@@ -190,12 +181,9 @@ const ReviewPage = () => {
         }
       });
 
-    // Bookmarked - deduplicate by question ID and exclude unbookmarked
+    // Bookmarked - deduplicate by question ID
     s.questions
-      .filter(q =>
-        s.bookmarks.includes(q.id) &&
-        !unbookmarkedQuestionIds.has(q.id) // Exclude if unbookmarked in review
-      )
+      .filter(q => s.bookmarks.includes(q.id))
       .forEach(q => {
         if (!bookmarkQuestionsMap[examKey]) bookmarkQuestionsMap[examKey] = new Map();
         // Only add if not already present
