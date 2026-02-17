@@ -10,6 +10,7 @@ import {
   XCircle, Bookmark, Loader2, BookOpen, PenTool,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/contexts/AuthContext';
 import type { Question, ExamSession } from '@/types/exam';
 
 interface QuestionWithMeta extends Question {
@@ -24,6 +25,7 @@ const ReviewPage = () => {
   const { t, i18n } = useTranslation('pages');
   const isKo = i18n.language === 'ko';
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [sessions, setSessions] = useState<ExamSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [creatingSession, setCreatingSession] = useState(false);
@@ -32,9 +34,9 @@ const ReviewPage = () => {
   const loadSessionsAndQuestions = async () => {
     setLoading(true);
     try {
-      // 1. Load all sessions (without questions)
-      const allSessions = await getAllSessions();
-      console.log('📊 Sessions loaded:', allSessions.length);
+      // 1. Load all sessions for current user (without questions)
+      const allSessions = await getAllSessions(user?.id);
+      console.log('📊 Sessions loaded for user:', user?.id, '- Count:', allSessions.length);
 
       // 2. Filter sessions that have answers or bookmarks
       const filteredSessions = allSessions.filter(s =>
@@ -102,7 +104,8 @@ const ReviewPage = () => {
 
   useEffect(() => {
     loadSessionsAndQuestions();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]); // Reload when user changes (login/logout)
 
 
   // Create a review session with specific questions
@@ -137,7 +140,7 @@ const ReviewPage = () => {
         timeLimitMinutes,
         mode,
         false, // don't randomize for review
-        undefined, // userId
+        user?.id || null, // userId - associate with logged-in user
         initialBookmarks
       );
 

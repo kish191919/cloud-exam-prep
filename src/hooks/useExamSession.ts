@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { ExamSession, ExamMode, Question } from '@/types/exam';
 import * as sessionService from '@/services/sessionService';
 import { getQuestionsByIds } from '@/services/questionService';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Keep localStorage as fallback for offline support
 const SESSIONS_KEY = 'cloudmaster_sessions';
@@ -29,7 +30,7 @@ export async function createSession(
   timeLimitMinutes: number,
   mode: ExamMode = 'exam',
   randomizeOptions: boolean = false,
-  userId?: string,
+  userId: string | null = null,
   initialBookmarks: string[] = []
 ): Promise<string> {
   try {
@@ -39,7 +40,7 @@ export async function createSession(
       examTitle,
       questions,
       timeLimitMinutes,
-      userId
+      userId || undefined
     );
 
     // If there are initial bookmarks, update the session
@@ -95,10 +96,10 @@ export async function createSession(
   }
 }
 
-export async function getAllSessions(): Promise<ExamSession[]> {
+export async function getAllSessions(userId?: string): Promise<ExamSession[]> {
   try {
-    // Try to get sessions from Supabase
-    const sessions = await sessionService.getAllSessions();
+    // Try to get sessions from Supabase (filtered by userId)
+    const sessions = await sessionService.getAllSessions(userId);
     return sessions;
   } catch (error) {
     console.warn('Failed to fetch sessions from Supabase, using localStorage:', error);

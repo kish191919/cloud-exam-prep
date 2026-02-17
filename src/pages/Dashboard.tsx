@@ -1,14 +1,26 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import AppLayout from '@/components/AppLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getAllSessions } from '@/hooks/useExamSession';
 import { BookOpen, Target, TrendingUp, Clock, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/contexts/AuthContext';
+import type { ExamSession } from '@/types/exam';
 
 const Dashboard = () => {
   const { t } = useTranslation('pages');
-  const sessions = getAllSessions();
+  const { user } = useAuth();
+  const [sessions, setSessions] = useState<ExamSession[]>([]);
+
+  useEffect(() => {
+    async function loadSessions() {
+      const userSessions = await getAllSessions(user?.id);
+      setSessions(userSessions);
+    }
+    loadSessions();
+  }, [user?.id]);
   const submitted = sessions.filter(s => s.status === 'submitted');
   const inProgress = sessions.filter(s => s.status === 'in_progress');
   const avgScore = submitted.length > 0

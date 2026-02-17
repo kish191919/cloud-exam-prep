@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import type { ExamConfig, ExamSet, ExamMode } from '@/types/exam';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/contexts/AuthContext';
 
 const certColors: Record<string, string> = {
   AWS: 'bg-accent text-accent-foreground',
@@ -64,6 +65,7 @@ const ExamList = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation('pages');
   const isKo = i18n.language === 'ko';
+  const { user } = useAuth();
 
   const [exams, setExams] = useState<ExamConfig[]>([]);
   const [loading, setLoading] = useState(true);
@@ -125,7 +127,7 @@ const ExamList = () => {
 
       // Load previous bookmarks for this exam using latest-state logic
       // (same as ReviewPage) so that un-bookmarks in review sessions are respected.
-      const allSessions = await getAllSessions();
+      const allSessions = await getAllSessions(user?.id);
 
       const questionLastUpdated: Record<string, number> = {};
       const latestBookmarkStatus: Record<string, boolean> = {};
@@ -171,7 +173,7 @@ const ExamList = () => {
         config.timeLimitMinutes,
         selectedMode,
         randomizeOptions,
-        undefined, // userId
+        user?.id || null, // userId - associate with logged-in user
         initialBookmarks
       );
       navigate(`/session/${sessionId}`);
