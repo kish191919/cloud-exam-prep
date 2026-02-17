@@ -4,23 +4,33 @@ import * as sessionService from '@/services/sessionService';
 import { getQuestionsByIds } from '@/services/questionService';
 import { useAuth } from '@/contexts/AuthContext';
 
-// Keep localStorage as fallback for offline support
 const SESSIONS_KEY = 'cloudmaster_sessions';
 const modeKey = (id: string) => `cloudmaster_mode_${id}`;
 const randomizeKey = (id: string) => `cloudmaster_randomize_${id}`;
 const questionIdsKey = (id: string) => `cloudmaster_questionids_${id}`;
 
-function loadSessionsFromLocalStorage(): Record<string, ExamSession> {
+// Anonymous sessions use IDs starting with 'session_'.
+// They are stored in sessionStorage so they vanish when the tab/browser is closed.
+// Logged-in sessions use UUID IDs from Supabase.
+function isAnonymousSession(sessionId: string): boolean {
+  return sessionId.startsWith('session_');
+}
+
+function getStorageForSession(sessionId: string): Storage {
+  return isAnonymousSession(sessionId) ? sessionStorage : localStorage;
+}
+
+function loadSessionsFromStorage(storage: Storage): Record<string, ExamSession> {
   try {
-    const raw = localStorage.getItem(SESSIONS_KEY);
+    const raw = storage.getItem(SESSIONS_KEY);
     return raw ? JSON.parse(raw) : {};
   } catch {
     return {};
   }
 }
 
-function saveSessionsToLocalStorage(sessions: Record<string, ExamSession>) {
-  localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
+function saveSessionsToStorage(sessions: Record<string, ExamSession>, storage: Storage) {
+  storage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
 }
 
 export async function createSession(
@@ -33,44 +43,8 @@ export async function createSession(
   userId: string | null = null,
   initialBookmarks: string[] = []
 ): Promise<string> {
-  try {
-    // Try to create in Supabase first
-    const sessionId = await sessionService.createSession(
-      examId,
-      examTitle,
-      questions,
-      timeLimitMinutes,
-      userId || undefined
-    );
-
-    // If there are initial bookmarks, update the session
-    if (initialBookmarks.length > 0) {
-      await sessionService.updateSession({
-        id: sessionId,
-        examId,
-        examTitle,
-        status: 'in_progress',
-        startedAt: Date.now(),
-        pausedElapsed: 0,
-        timeLimitSec: timeLimitMinutes * 60,
-        answers: {},
-        bookmarks: initialBookmarks,
-        currentIndex: 0,
-        questions,
-      });
-    }
-
-    // Store mode, randomizeOptions, and question IDs in localStorage (DB doesn't have these columns)
-    localStorage.setItem(modeKey(sessionId), mode);
-    if (randomizeOptions) {
-      localStorage.setItem(randomizeKey(sessionId), 'true');
-    }
-    // Store question IDs to ensure review sessions only include specific questions
-    localStorage.setItem(questionIdsKey(sessionId), JSON.stringify(questions.map(q => q.id)));
-    return sessionId;
-  } catch (error) {
-    console.warn('Failed to create session in Supabase, using localStorage:', error);
-    // Fallback to localStorage
+  // ── Anonymous user: skip Supabase, use sessionStorage (clears on tab close) ──
+  if (!userId) {
     const sessionId = `session_${Date.now()}`;
     const session: ExamSession = {
       id: sessionId,
@@ -87,32 +61,85 @@ export async function createSession(
       currentIndex: 0,
       questions,
     };
-    const sessions = loadSessionsFromLocalStorage();
+    const sessions = loadSessionsFromStorage(sessionStorage);
     sessions[sessionId] = session;
-    saveSessionsToLocalStorage(sessions);
-    // Store question IDs for review sessions
+    saveSessionsToStorage(sessions, sessionStorage);
+    sessionStorage.setItem(modeKey(sessionId), mode);
+    if (randomizeOptions) sessionStorage.setItem(randomizeKey(sessionId), 'true');
+    sessionStorage.setItem(questionIdsKey(sessionId), JSON.stringify(questions.map(q => q.id)));
+    return sessionId;
+  }
+
+  // ── Logged-in user: save to Supabase ─────────────────────────────────────
+  try {
+    const sessionId = await sessionService.createSession(
+      examId, examTitle, questions, timeLimitMinutes, userId
+    );
+
+    if (initialBookmarks.length > 0) {
+      await sessionService.updateSession({
+        id: sessionId, examId, examTitle,
+        status: 'in_progress', startedAt: Date.now(), pausedElapsed: 0,
+        timeLimitSec: timeLimitMinutes * 60, answers: {}, bookmarks: initialBookmarks,
+        currentIndex: 0, questions,
+      });
+    }
+
+    localStorage.setItem(modeKey(sessionId), mode);
+    if (randomizeOptions) localStorage.setItem(randomizeKey(sessionId), 'true');
+    localStorage.setItem(questionIdsKey(sessionId), JSON.stringify(questions.map(q => q.id)));
+    return sessionId;
+  } catch (error) {
+    console.warn('Failed to create session in Supabase, using localStorage:', error);
+    // Network fallback for logged-in users: localStorage (persists, unlike sessionStorage)
+    const sessionId = `session_${Date.now()}`;
+    const session: ExamSession = {
+      id: sessionId, examId, examTitle,
+      status: 'in_progress', mode, randomizeOptions,
+      startedAt: Date.now(), pausedElapsed: 0,
+      timeLimitSec: timeLimitMinutes * 60,
+      answers: {}, bookmarks: initialBookmarks, currentIndex: 0, questions,
+    };
+    const sessions = loadSessionsFromStorage(localStorage);
+    sessions[sessionId] = session;
+    saveSessionsToStorage(sessions, localStorage);
     localStorage.setItem(questionIdsKey(sessionId), JSON.stringify(questions.map(q => q.id)));
     return sessionId;
   }
 }
 
 export async function getAllSessions(userId?: string): Promise<ExamSession[]> {
+  // Anonymous: load from sessionStorage only (no Supabase)
+  if (!userId) {
+    return Object.values(loadSessionsFromStorage(sessionStorage))
+      .sort((a, b) => b.startedAt - a.startedAt);
+  }
+
+  // Logged-in: load from Supabase
   try {
-    // Try to get sessions from Supabase (filtered by userId)
-    const sessions = await sessionService.getAllSessions(userId);
-    return sessions;
+    return await sessionService.getAllSessions(userId);
   } catch (error) {
     console.warn('Failed to fetch sessions from Supabase, using localStorage:', error);
-    // Fallback to localStorage
-    return Object.values(loadSessionsFromLocalStorage()).sort((a, b) => b.startedAt - a.startedAt);
+    return Object.values(loadSessionsFromStorage(localStorage))
+      .sort((a, b) => b.startedAt - a.startedAt);
   }
 }
 
-export async function getSession(
-  sessionId: string
-): Promise<ExamSession | null> {
+export async function getSession(sessionId: string): Promise<ExamSession | null> {
+  // ── Anonymous session: load from sessionStorage ───────────────────────────
+  if (isAnonymousSession(sessionId)) {
+    const session = loadSessionsFromStorage(sessionStorage)[sessionId] || null;
+    if (session) {
+      const storedMode = sessionStorage.getItem(modeKey(sessionId)) as ExamMode | null;
+      if (storedMode) session.mode = storedMode;
+      const storedRandomize = sessionStorage.getItem(randomizeKey(sessionId));
+      if (storedRandomize === 'true') session.randomizeOptions = true;
+    }
+    return session;
+  }
+
+  // ── Logged-in session: load from Supabase ────────────────────────────────
   try {
-    // Check if there are specific question IDs stored (for review sessions)
     const storedQuestionIdsStr = localStorage.getItem(questionIdsKey(sessionId));
     let questions: Question[] | undefined = undefined;
 
@@ -125,10 +152,8 @@ export async function getSession(
       }
     }
 
-    // Try Supabase first (pass questions if we have specific ones)
     const session = await sessionService.getSession(sessionId, questions);
     if (session) {
-      // Attach mode and randomizeOptions from localStorage
       const storedMode = localStorage.getItem(modeKey(sessionId)) as ExamMode | null;
       if (storedMode) session.mode = storedMode;
       const storedRandomize = localStorage.getItem(randomizeKey(sessionId));
@@ -139,8 +164,7 @@ export async function getSession(
     console.warn('Failed to fetch session from Supabase, using localStorage:', error);
   }
 
-  // Fallback to localStorage (mode and randomizeOptions already in session object)
-  return loadSessionsFromLocalStorage()[sessionId] || null;
+  return loadSessionsFromStorage(localStorage)[sessionId] || null;
 }
 
 export function useExamSession(sessionId: string | null) {
@@ -149,46 +173,45 @@ export function useExamSession(sessionId: string | null) {
 
   useEffect(() => {
     async function loadSession() {
-      if (!sessionId) {
-        setLoading(false);
-        return;
-      }
-
+      if (!sessionId) { setLoading(false); return; }
       try {
         const s = await getSession(sessionId);
         setSession(s);
       } catch (error) {
         console.error('Error loading session:', error);
-        // Fallback to localStorage
-        const localSession = loadSessionsFromLocalStorage()[sessionId] || null;
-        setSession(localSession);
+        const storage = isAnonymousSession(sessionId) ? sessionStorage : localStorage;
+        setSession(loadSessionsFromStorage(storage)[sessionId] || null);
       } finally {
         setLoading(false);
       }
     }
-
     loadSession();
   }, [sessionId]);
 
   useEffect(() => {
-    async function saveSession() {
+    async function persist() {
       if (!session) return;
 
+      // Anonymous session: update sessionStorage only (no Supabase)
+      if (isAnonymousSession(session.id)) {
+        const sessions = loadSessionsFromStorage(sessionStorage);
+        sessions[session.id] = session;
+        saveSessionsToStorage(sessions, sessionStorage);
+        return;
+      }
+
+      // Logged-in session: save to Supabase
       try {
-        // Try to save to Supabase
         await sessionService.updateSession(session);
       } catch (error) {
         console.warn('Failed to update session in Supabase, using localStorage:', error);
-        // Fallback to localStorage
-        const sessions = loadSessionsFromLocalStorage();
+        const sessions = loadSessionsFromStorage(localStorage);
         sessions[session.id] = session;
-        saveSessionsToLocalStorage(sessions);
+        saveSessionsToStorage(sessions, localStorage);
       }
     }
 
-    if (!loading && session) {
-      saveSession();
-    }
+    if (!loading && session) persist();
   }, [session, loading]);
 
   const selectAnswer = useCallback((questionId: string, optionId: string) => {
@@ -239,16 +262,24 @@ export function useExamSession(sessionId: string | null) {
     });
   }, []);
 
-  // Explicit save for use before navigation (avoids timing race with auto-save useEffect)
+  // Explicit save before navigation (avoids timing race with auto-save useEffect)
   const saveSession = useCallback(async (currentSession?: ExamSession | null) => {
     const s = currentSession ?? session;
     if (!s) return;
+
+    if (isAnonymousSession(s.id)) {
+      const sessions = loadSessionsFromStorage(sessionStorage);
+      sessions[s.id] = s;
+      saveSessionsToStorage(sessions, sessionStorage);
+      return;
+    }
+
     try {
       await sessionService.updateSession(s);
     } catch {
-      const sessions = loadSessionsFromLocalStorage();
+      const sessions = loadSessionsFromStorage(localStorage);
       sessions[s.id] = s;
-      saveSessionsToLocalStorage(sessions);
+      saveSessionsToStorage(sessions, localStorage);
     }
   }, [session]);
 
