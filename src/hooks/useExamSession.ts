@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ExamSession, ExamMode, Question } from '@/types/exam';
 import * as sessionService from '@/services/sessionService';
+import { getQuestionsByIds } from '@/services/questionService';
 
 // Keep localStorage as fallback for offline support
 const SESSIONS_KEY = 'cloudmaster_sessions';
 const modeKey = (id: string) => `cloudmaster_mode_${id}`;
 const randomizeKey = (id: string) => `cloudmaster_randomize_${id}`;
+const questionIdsKey = (id: string) => `cloudmaster_questionids_${id}`;
 
 function loadSessionsFromLocalStorage(): Record<string, ExamSession> {
   try {
@@ -38,11 +40,13 @@ export async function createSession(
       timeLimitMinutes,
       userId
     );
-    // Store mode and randomizeOptions in localStorage (DB doesn't have these columns)
+    // Store mode, randomizeOptions, and question IDs in localStorage (DB doesn't have these columns)
     localStorage.setItem(modeKey(sessionId), mode);
     if (randomizeOptions) {
       localStorage.setItem(randomizeKey(sessionId), 'true');
     }
+    // Store question IDs to ensure review sessions only include specific questions
+    localStorage.setItem(questionIdsKey(sessionId), JSON.stringify(questions.map(q => q.id)));
     return sessionId;
   } catch (error) {
     console.warn('Failed to create session in Supabase, using localStorage:', error);
@@ -66,6 +70,8 @@ export async function createSession(
     const sessions = loadSessionsFromLocalStorage();
     sessions[sessionId] = session;
     saveSessionsToLocalStorage(sessions);
+    // Store question IDs for review sessions
+    localStorage.setItem(questionIdsKey(sessionId), JSON.stringify(questions.map(q => q.id)));
     return sessionId;
   }
 }
@@ -86,8 +92,21 @@ export async function getSession(
   sessionId: string
 ): Promise<ExamSession | null> {
   try {
-    // Try Supabase first
-    const session = await sessionService.getSession(sessionId);
+    // Check if there are specific question IDs stored (for review sessions)
+    const storedQuestionIdsStr = localStorage.getItem(questionIdsKey(sessionId));
+    let questions: Question[] | undefined = undefined;
+
+    if (storedQuestionIdsStr) {
+      try {
+        const questionIds = JSON.parse(storedQuestionIdsStr) as string[];
+        questions = await getQuestionsByIds(questionIds);
+      } catch (error) {
+        console.error('Failed to load specific questions for session:', error);
+      }
+    }
+
+    // Try Supabase first (pass questions if we have specific ones)
+    const session = await sessionService.getSession(sessionId, questions);
     if (session) {
       // Attach mode and randomizeOptions from localStorage
       const storedMode = localStorage.getItem(modeKey(sessionId)) as ExamMode | null;
