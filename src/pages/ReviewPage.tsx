@@ -80,14 +80,6 @@ const ReviewPage = () => {
 
   useEffect(() => {
     loadSessionsAndQuestions();
-
-    // Reload data when window regains focus (user returns to this page)
-    const handleFocus = () => {
-      loadSessionsAndQuestions();
-    };
-
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
   }, []);
 
 
@@ -156,8 +148,9 @@ const ReviewPage = () => {
   // Track questions that were answered correctly in review sessions
   const reviewedCorrectQuestionIds = new Set<string>();
 
-  // Track current bookmarks from bookmark review sessions
-  const bookmarkReviewSessionsByExam: Record<string, Set<string>> = {};
+  // Track the most recent bookmark status for each question
+  const latestBookmarkStatus: Record<string, boolean> = {};
+  const questionLastUpdated: Record<string, number> = {};
 
   sessions.forEach(s => {
     if (isReviewSession(s.examTitle)) {
@@ -167,22 +160,19 @@ const ReviewPage = () => {
           reviewedCorrectQuestionIds.add(q.id);
         }
       });
-
-      // Track current bookmarks from bookmark review sessions
-      if (s.examTitle.includes('북마크') || s.examTitle.includes('Bookmark')) {
-        // Extract original exam title
-        const originalTitle = s.examTitle
-          .replace(/ - 북마크.*/, '')
-          .replace(/ - Bookmark.*/, '');
-
-        if (!bookmarkReviewSessionsByExam[originalTitle]) {
-          bookmarkReviewSessionsByExam[originalTitle] = new Set();
-        }
-
-        // Add all current bookmarks from this review session
-        s.bookmarks.forEach(qid => bookmarkReviewSessionsByExam[originalTitle].add(qid));
-      }
     }
+
+    // Track the most recent bookmark status for each question
+    const timestamp = s.submittedAt || s.startedAt;
+    s.questions.forEach(q => {
+      const isBookmarked = s.bookmarks.includes(q.id);
+
+      // Update if this is the most recent session for this question
+      if (!questionLastUpdated[q.id] || timestamp > questionLastUpdated[q.id]) {
+        questionLastUpdated[q.id] = timestamp;
+        latestBookmarkStatus[q.id] = isBookmarked;
+      }
+    });
   });
 
   // Use Maps to deduplicate questions by ID
@@ -216,21 +206,9 @@ const ReviewPage = () => {
         }
       });
 
-    // Bookmarked - deduplicate by question ID
-    // If there's a bookmark review session for this exam, use its current bookmarks
-    const activeBookmarks = bookmarkReviewSessionsByExam[examKey];
-
+    // Bookmarked - use the most recent bookmark status for each question
     s.questions
-      .filter(q => {
-        const inOriginalBookmarks = s.bookmarks.includes(q.id);
-
-        // If there's a bookmark review session, only include bookmarks that are still active
-        if (activeBookmarks) {
-          return inOriginalBookmarks && activeBookmarks.has(q.id);
-        }
-
-        return inOriginalBookmarks;
-      })
+      .filter(q => latestBookmarkStatus[q.id] === true)
       .forEach(q => {
         if (!bookmarkQuestionsMap[examKey]) bookmarkQuestionsMap[examKey] = new Map();
         // Only add if not already present
