@@ -3,11 +3,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import AppLayout from '@/components/AppLayout';
 import { getAllSessions, createSession } from '@/hooks/useExamSession';
 import { getQuestionsByIds } from '@/services/questionService';
+import { getAllExams } from '@/services/examService';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
-  XCircle, Bookmark, Loader2, BookOpen, PenTool,
+  XCircle, Bookmark, Loader2, BookOpen, PenTool, ChevronDown, ChevronUp,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
@@ -21,6 +22,20 @@ interface QuestionWithMeta extends Question {
   date: number;
 }
 
+interface SetGroup {
+  examKey: string;    // full session title e.g. "AWS Certified AI Practitioner - 세트 1"
+  setLabel: string;   // just the set label e.g. "세트 1"
+  examId: string;
+  wrong: QuestionWithMeta[];
+  bookmarks: QuestionWithMeta[];
+}
+
+interface ExamGroup {
+  examId: string;
+  examTitle: string;
+  sets: SetGroup[];
+}
+
 const ReviewPage = () => {
   const { t, i18n } = useTranslation('pages');
   const isKo = i18n.language === 'ko';
@@ -28,18 +43,25 @@ const ReviewPage = () => {
   const { user } = useAuth();
   const location = useLocation();
   const [sessions, setSessions] = useState<ExamSession[]>([]);
+  const [examTitleMap, setExamTitleMap] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [creatingSession, setCreatingSession] = useState(false);
+  const [expandedExams, setExpandedExams] = useState<Set<string>>(new Set());
 
-  // Load sessions and questions efficiently
   const loadSessionsAndQuestions = async () => {
     setLoading(true);
     try {
-      // 1. Load all sessions for current user (without questions)
-      const allSessions = await getAllSessions(user?.id);
-      console.log('📊 Sessions loaded for user:', user?.id, '- Count:', allSessions.length);
+      const [allSessions, allExams] = await Promise.all([
+        getAllSessions(user?.id),
+        getAllExams(),
+      ]);
 
-      // 2. Filter sessions that have answers or bookmarks
+      // Build examId → base title map
+      const titleMap: Record<string, string> = {};
+      allExams.forEach(e => { titleMap[e.id] = e.title; });
+      setExamTitleMap(titleMap);
+
+      // Filter sessions that have answers or bookmarks
       const filteredSessions = allSessions.filter(s =>
         Object.keys(s.answers).length > 0 || s.bookmarks.length > 0
       );
@@ -50,52 +72,43 @@ const ReviewPage = () => {
         return;
       }
 
-      // 3. Collect all unique question IDs from answers, bookmarks, and stored question IDs (for review sessions)
+      // Collect all unique question IDs
       const questionIds = new Set<string>();
       filteredSessions.forEach(s => {
         Object.keys(s.answers).forEach(qid => questionIds.add(qid));
         s.bookmarks.forEach(qid => questionIds.add(qid));
-        // Also load question IDs stored in localStorage for review sessions
-        // This ensures un-bookmarked questions are still tracked
         try {
           const storedIds = localStorage.getItem(`cloudmaster_questionids_${s.id}`);
           if (storedIds) {
             (JSON.parse(storedIds) as string[]).forEach(qid => questionIds.add(qid));
           }
-        } catch {
-          // ignore
-        }
+        } catch { /* ignore */ }
       });
 
-      console.log('📊 Unique questions to load:', questionIds.size);
-
-      // 4. Fetch all questions at once (only the ones we need!)
       const questions = await getQuestionsByIds(Array.from(questionIds));
       const questionMap = new Map(questions.map(q => [q.id, q]));
 
-      console.log('📊 Questions loaded:', questions.length);
-
-      // 5. Attach questions to sessions (include stored question IDs for review sessions)
       const sessionsWithQuestions = filteredSessions.map(s => {
         const qidSet = new Set([...Object.keys(s.answers), ...s.bookmarks]);
-        // Add question IDs from localStorage (for review sessions with un-bookmarked questions)
         try {
           const storedIds = localStorage.getItem(`cloudmaster_questionids_${s.id}`);
           if (storedIds) {
             (JSON.parse(storedIds) as string[]).forEach(qid => qidSet.add(qid));
           }
-        } catch {
-          // ignore
-        }
+        } catch { /* ignore */ }
         return {
           ...s,
           questions: Array.from(qidSet)
             .map(qid => questionMap.get(qid))
-            .filter((q): q is Question => q !== undefined)
+            .filter((q): q is Question => q !== undefined),
         };
       });
 
       setSessions(sessionsWithQuestions);
+
+      // Auto-expand all exam groups on first load
+      const examIds = new Set(filteredSessions.map(s => s.examId));
+      setExpandedExams(examIds);
     } catch (error) {
       console.error('❌ Failed to load sessions:', error);
     } finally {
@@ -106,10 +119,8 @@ const ReviewPage = () => {
   useEffect(() => {
     loadSessionsAndQuestions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id, location.key]); // Reload when user changes OR every time this page is navigated to
+  }, [user?.id, location.key]);
 
-
-  // Create a review session with specific questions
   const startReviewSession = async (
     examId: string,
     examTitle: string,
@@ -118,34 +129,19 @@ const ReviewPage = () => {
     sessionType: string
   ) => {
     if (questions.length === 0) return;
-
     setCreatingSession(true);
     try {
-      // Calculate time limit: 2 minutes per question
       const timeLimitMinutes = questions.length * 2;
-
-      // Create session with suffix based on type and mode
       const suffix = isKo
         ? (mode === 'study' ? ` - ${sessionType} 복습` : ` - ${sessionType} 테스트`)
         : (mode === 'study' ? ` - ${sessionType} Review` : ` - ${sessionType} Test`);
-
-      // For bookmark sessions, initialize bookmarks with all question IDs
       const initialBookmarks = sessionType === '북마크' || sessionType === 'Bookmarks'
         ? questions.map(q => q.id)
         : [];
-
       const sessionId = await createSession(
-        examId,
-        examTitle + suffix,
-        questions,
-        timeLimitMinutes,
-        mode,
-        false, // don't randomize for review
-        user?.id || null, // userId - associate with logged-in user
-        initialBookmarks
+        examId, examTitle + suffix, questions, timeLimitMinutes,
+        mode, false, user?.id || null, initialBookmarks
       );
-
-      // Navigate to the new session
       navigate(`/session/${sessionId}`);
     } catch (error) {
       console.error('Failed to create review session:', error);
@@ -155,27 +151,16 @@ const ReviewPage = () => {
     }
   };
 
-  // Group questions by exam (excluding review sessions)
-  const wrongByExam: Record<string, QuestionWithMeta[]> = {};
-  const bookmarksByExam: Record<string, QuestionWithMeta[]> = {};
+  // ── Identify review sessions ──────────────────────────────────────────────
+  const isReviewSession = (title: string) =>
+    title.includes(' - 오답') || title.includes(' - 북마크') ||
+    title.includes(' - 복습') || title.includes(' - 테스트') ||
+    title.includes(' - Wrong') || title.includes(' - Bookmark') ||
+    title.includes(' - Review') || title.includes(' - Test');
 
-  // Filter out review sessions (those created from review page)
-  const isReviewSession = (title: string) => {
-    return title.includes(' - 오답') ||
-           title.includes(' - 북마크') ||
-           title.includes(' - 복습') ||
-           title.includes(' - 테스트') ||
-           title.includes(' - Wrong') ||
-           title.includes(' - Bookmark') ||
-           title.includes(' - Review') ||
-           title.includes(' - Test');
-  };
-
-  // Get the base exam key from a review session title (strip review suffix)
   const getBaseExamKey = (reviewTitle: string): string => {
     const suffixes = [
-      ' - 오답 복습', ' - 오답 테스트',
-      ' - 북마크 복습', ' - 북마크 테스트',
+      ' - 오답 복습', ' - 오답 테스트', ' - 북마크 복습', ' - 북마크 테스트',
       ' - Wrong Answers Review', ' - Wrong Answers Test',
       ' - Bookmarks Review', ' - Bookmarks Test',
     ];
@@ -185,32 +170,48 @@ const ReviewPage = () => {
     return reviewTitle;
   };
 
-  // Track questions answered correctly in review sessions, scoped per base exam key
+  // ── Track questions answered correctly in review sessions (per exam key) ──
   const reviewedCorrectByExam: Record<string, Set<string>> = {};
+  sessions.forEach(s => {
+    if (!isReviewSession(s.examTitle)) return;
+    const baseKey = getBaseExamKey(s.examTitle);
+    if (!reviewedCorrectByExam[baseKey]) reviewedCorrectByExam[baseKey] = new Set();
+    s.questions.forEach(q => {
+      if (s.answers[q.id] === q.correctOptionId) reviewedCorrectByExam[baseKey].add(q.id);
+    });
+  });
 
-  // Track the most recent bookmark status for each question
+  // ── Track LATEST answer per question per exam key (bug fix) ───────────────
+  // Uses the most recent session's answer, so if you answered correctly in a
+  // newer attempt it won't show as wrong from an older attempt.
+  const latestAnswerPerExam: Record<string, Map<string, {
+    answer: string; timestamp: number; question: Question; sessionId: string; examId: string;
+  }>> = {};
+
+  sessions
+    .filter(s => !isReviewSession(s.examTitle))
+    .forEach(s => {
+      const examKey = s.examTitle;
+      const timestamp = s.startedAt;
+      if (!latestAnswerPerExam[examKey]) latestAnswerPerExam[examKey] = new Map();
+      s.questions.forEach(q => {
+        const answer = s.answers[q.id];
+        if (answer === undefined) return;
+        const existing = latestAnswerPerExam[examKey].get(q.id);
+        if (!existing || timestamp > existing.timestamp) {
+          latestAnswerPerExam[examKey].set(q.id, {
+            answer, timestamp, question: q, sessionId: s.id, examId: s.examId,
+          });
+        }
+      });
+    });
+
+  // ── Track latest bookmark status per question ─────────────────────────────
   const latestBookmarkStatus: Record<string, boolean> = {};
   const questionLastUpdated: Record<string, number> = {};
 
   sessions.forEach(s => {
-    if (isReviewSession(s.examTitle)) {
-      // Track questions answered correctly in review sessions, scoped to the base exam key
-      const baseKey = getBaseExamKey(s.examTitle);
-      if (!reviewedCorrectByExam[baseKey]) reviewedCorrectByExam[baseKey] = new Set();
-      s.questions.forEach(q => {
-        if (s.answers[q.id] === q.correctOptionId) {
-          reviewedCorrectByExam[baseKey].add(q.id);
-        }
-      });
-    }
-
-    // Track the most recent bookmark status for each question.
-    // Use startedAt (not submittedAt) so that a newer in-progress session always
-    // wins over an older submitted session (e.g. a review session submitted later
-    // but started earlier should not override a newer exam session's bookmarks).
     const timestamp = s.startedAt;
-
-    // Track all questions in the session (most reliable: covers bookmarked + answered + un-bookmarked)
     s.questions.forEach(q => {
       const isBookmarked = s.bookmarks.includes(q.id);
       if (!questionLastUpdated[q.id] || timestamp > questionLastUpdated[q.id]) {
@@ -218,16 +219,12 @@ const ReviewPage = () => {
         latestBookmarkStatus[q.id] = isBookmarked;
       }
     });
-
-    // Also track bookmarked questions that may not be in s.questions yet
     s.bookmarks.forEach(qid => {
       if (!questionLastUpdated[qid] || timestamp > questionLastUpdated[qid]) {
         questionLastUpdated[qid] = timestamp;
         latestBookmarkStatus[qid] = true;
       }
     });
-
-    // Also track questions with answers (to catch any edge cases)
     Object.keys(s.answers).forEach(qid => {
       const isBookmarked = s.bookmarks.includes(qid);
       if (!questionLastUpdated[qid] || timestamp > questionLastUpdated[qid]) {
@@ -237,68 +234,99 @@ const ReviewPage = () => {
     });
   });
 
-  // Use Maps to deduplicate questions by ID
-  const wrongQuestionsMap: Record<string, Map<string, QuestionWithMeta>> = {};
-  const bookmarkQuestionsMap: Record<string, Map<string, QuestionWithMeta>> = {};
+  // ── Build wrong / bookmark maps from latest answers ───────────────────────
+  const wrongByExam: Record<string, Map<string, QuestionWithMeta>> = {};
+  const bookmarksByExam: Record<string, Map<string, QuestionWithMeta>> = {};
 
-  sessions.forEach(s => {
-    // Skip review sessions to avoid infinite loop
-    if (isReviewSession(s.examTitle)) return;
+  Object.entries(latestAnswerPerExam).forEach(([examKey, answerMap]) => {
+    answerMap.forEach(({ answer, question, sessionId, examId, timestamp }, qid) => {
+      // Wrong answers: latest answer is wrong AND not mastered in review
+      if (answer !== question.correctOptionId && !reviewedCorrectByExam[examKey]?.has(qid)) {
+        if (!wrongByExam[examKey]) wrongByExam[examKey] = new Map();
+        wrongByExam[examKey].set(qid, {
+          ...question, sessionId, examTitle: examKey, examId, userAnswer: answer, date: timestamp,
+        });
+      }
+    });
 
-    const examKey = s.examTitle;
-
-    // Wrong answers - deduplicate by question ID and exclude reviewed correct answers
-    s.questions
-      .filter(q =>
-        s.answers[q.id] !== undefined && // Must be answered (skip unanswered questions)
-        s.answers[q.id] !== q.correctOptionId && // And answered incorrectly
-        !reviewedCorrectByExam[examKey]?.has(q.id) // Exclude if answered correctly in review (scoped to this exam/set)
-      )
-      .forEach(q => {
-        if (!wrongQuestionsMap[examKey]) wrongQuestionsMap[examKey] = new Map();
-        // Only add if not already present (keeps the most recent attempt)
-        if (!wrongQuestionsMap[examKey].has(q.id)) {
-          wrongQuestionsMap[examKey].set(q.id, {
-            ...q,
-            sessionId: s.id,
-            examTitle: s.examTitle,
-            examId: s.examId,
-            userAnswer: s.answers[q.id],
-            date: s.submittedAt || s.startedAt,
+    // Bookmarks: based on latest bookmark status, for questions seen in this exam key
+    answerMap.forEach(({ question, sessionId, examId, timestamp }) => {
+      if (latestBookmarkStatus[question.id] === true) {
+        if (!bookmarksByExam[examKey]) bookmarksByExam[examKey] = new Map();
+        if (!bookmarksByExam[examKey].has(question.id)) {
+          bookmarksByExam[examKey].set(question.id, {
+            ...question, sessionId, examTitle: examKey, examId, date: timestamp,
           });
         }
-      });
+      }
+    });
+  });
 
-    // Bookmarked - use the most recent bookmark status for each question
-    s.questions
-      .filter(q => latestBookmarkStatus[q.id] === true)
-      .forEach(q => {
-        if (!bookmarkQuestionsMap[examKey]) bookmarkQuestionsMap[examKey] = new Map();
-        // Only add if not already present
-        if (!bookmarkQuestionsMap[examKey].has(q.id)) {
-          bookmarkQuestionsMap[examKey].set(q.id, {
-            ...q,
-            sessionId: s.id,
-            examTitle: s.examTitle,
-            examId: s.examId,
-            date: s.submittedAt || s.startedAt,
-          });
+  // Also include bookmarks from sessions even if no answers (bookmark-only sessions)
+  sessions
+    .filter(s => !isReviewSession(s.examTitle))
+    .forEach(s => {
+      const examKey = s.examTitle;
+      s.questions.forEach(q => {
+        if (latestBookmarkStatus[q.id] === true) {
+          if (!bookmarksByExam[examKey]) bookmarksByExam[examKey] = new Map();
+          if (!bookmarksByExam[examKey].has(q.id)) {
+            bookmarksByExam[examKey].set(q.id, {
+              ...q, sessionId: s.id, examTitle: examKey, examId: s.examId,
+              date: s.startedAt,
+            });
+          }
         }
       });
+    });
+
+  // ── Build hierarchical ExamGroup structure ────────────────────────────────
+  const examGroupMap: Record<string, ExamGroup> = {};
+  const allExamKeys = Array.from(new Set([
+    ...Object.keys(wrongByExam),
+    ...Object.keys(bookmarksByExam),
+  ]));
+
+  allExamKeys.forEach(examKey => {
+    // Find any session with this examKey to get examId
+    const refSession = sessions.find(
+      s => s.examTitle === examKey && !isReviewSession(s.examTitle)
+    );
+    if (!refSession) return;
+
+    const examId = refSession.examId;
+    const baseTitle = examTitleMap[examId] || examKey;
+    const setLabel = examKey === baseTitle
+      ? (isKo ? '전체' : 'All')
+      : examKey.replace(baseTitle + ' - ', '');
+
+    if (!examGroupMap[examId]) {
+      examGroupMap[examId] = { examId, examTitle: baseTitle, sets: [] };
+    }
+
+    examGroupMap[examId].sets.push({
+      examKey,
+      setLabel,
+      examId,
+      wrong: Array.from(wrongByExam[examKey]?.values() ?? []),
+      bookmarks: Array.from(bookmarksByExam[examKey]?.values() ?? []),
+    });
   });
 
-  // Convert Maps to arrays
-  Object.keys(wrongQuestionsMap).forEach(examKey => {
-    wrongByExam[examKey] = Array.from(wrongQuestionsMap[examKey].values());
-  });
-  Object.keys(bookmarkQuestionsMap).forEach(examKey => {
-    bookmarksByExam[examKey] = Array.from(bookmarkQuestionsMap[examKey].values());
-  });
+  const examGroups = Object.values(examGroupMap);
+  const totalWrong = examGroups.reduce((sum, eg) =>
+    sum + eg.sets.reduce((s2, set) => s2 + set.wrong.length, 0), 0);
+  const totalBookmarks = examGroups.reduce((sum, eg) =>
+    sum + eg.sets.reduce((s2, set) => s2 + set.bookmarks.length, 0), 0);
 
-  const examTitles = Array.from(new Set([...Object.keys(wrongByExam), ...Object.keys(bookmarksByExam)]));
-
-  const totalWrong = Object.values(wrongByExam).flat().length;
-  const totalBookmarks = Object.values(bookmarksByExam).flat().length;
+  const toggleExam = (examId: string) => {
+    setExpandedExams(prev => {
+      const next = new Set(prev);
+      if (next.has(examId)) next.delete(examId);
+      else next.add(examId);
+      return next;
+    });
+  };
 
   if (loading) {
     return (
@@ -324,19 +352,18 @@ const ReviewPage = () => {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">오답 문제</p>
+                  <p className="text-sm text-muted-foreground">{isKo ? '오답 문제' : 'Wrong Answers'}</p>
                   <p className="text-2xl font-bold text-destructive">{totalWrong}</p>
                 </div>
                 <XCircle className="h-8 w-8 text-destructive" />
               </div>
             </CardContent>
           </Card>
-
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">북마크</p>
+                  <p className="text-sm text-muted-foreground">{isKo ? '북마크' : 'Bookmarks'}</p>
                   <p className="text-2xl font-bold text-accent">{totalBookmarks}</p>
                 </div>
                 <Bookmark className="h-8 w-8 text-accent" />
@@ -346,114 +373,138 @@ const ReviewPage = () => {
         </div>
 
         {/* Exam groups */}
-        {examTitles.length === 0 ? (
+        {examGroups.length === 0 ? (
           <Card>
             <CardContent className="py-12 text-center text-muted-foreground">
-              <p>아직 오답이 없습니다. 먼저 시험을 응시하세요!</p>
+              <p>{isKo ? '아직 오답이 없습니다. 먼저 시험을 응시하세요!' : 'No data yet. Take an exam first!'}</p>
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-4">
-            {examTitles.map(examTitle => {
-              const wrong = wrongByExam[examTitle] || [];
-              const bookmarks = bookmarksByExam[examTitle] || [];
+          <div className="space-y-3">
+            {examGroups.map(examGroup => {
+              const totalWrongForExam = examGroup.sets.reduce((s, set) => s + set.wrong.length, 0);
+              const totalBmForExam = examGroup.sets.reduce((s, set) => s + set.bookmarks.length, 0);
+              const isExpanded = expandedExams.has(examGroup.examId);
 
               return (
-                <Card key={examTitle}>
-                  <CardContent className="pt-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      {/* Exam title and badges */}
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold truncate">{examTitle}</h3>
-                        <div className="flex gap-2 shrink-0">
-                          {wrong.length > 0 && (
-                            <Badge variant="outline" className="border-destructive/40 text-destructive">
-                              <XCircle className="h-3 w-3 mr-1" />
-                              {wrong.length}
-                            </Badge>
-                          )}
-                          {bookmarks.length > 0 && (
-                            <Badge variant="outline" className="border-accent/40 text-accent">
-                              <Bookmark className="h-3 w-3 mr-1" />
-                              {bookmarks.length}
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Action buttons */}
-                      <div className="flex flex-wrap gap-2 shrink-0">
-                        {wrong.length > 0 && (
-                          <>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => startReviewSession(
-                                wrong[0].examId,
-                                examTitle,
-                                wrong,
-                                'study',
-                                isKo ? '오답' : 'Wrong Answers'
-                              )}
-                              disabled={creatingSession}
-                            >
-                              <BookOpen className="h-4 w-4 mr-2" />
-                              {isKo ? '오답 복습' : 'Review'}
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => startReviewSession(
-                                wrong[0].examId,
-                                examTitle,
-                                wrong,
-                                'practice',
-                                isKo ? '오답' : 'Wrong Answers'
-                              )}
-                              disabled={creatingSession}
-                            >
-                              <PenTool className="h-4 w-4 mr-2" />
-                              {isKo ? '오답 테스트' : 'Test'}
-                            </Button>
-                          </>
+                <Card key={examGroup.examId} className="overflow-hidden">
+                  {/* Exam header — clickable to expand/collapse */}
+                  <button
+                    className="w-full text-left px-5 py-4 flex items-center justify-between hover:bg-muted/30 transition-colors"
+                    onClick={() => toggleExam(examGroup.examId)}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="font-bold text-base truncate">{examGroup.examTitle}</span>
+                      <div className="flex gap-1.5 shrink-0">
+                        {totalWrongForExam > 0 && (
+                          <Badge variant="outline" className="border-destructive/40 text-destructive text-xs">
+                            <XCircle className="h-3 w-3 mr-1" />{totalWrongForExam}
+                          </Badge>
                         )}
-                        {bookmarks.length > 0 && (
-                          <>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => startReviewSession(
-                                bookmarks[0].examId,
-                                examTitle,
-                                bookmarks,
-                                'study',
-                                isKo ? '북마크' : 'Bookmarks'
-                              )}
-                              disabled={creatingSession}
-                            >
-                              <BookOpen className="h-4 w-4 mr-2" />
-                              {isKo ? '북마크 복습' : 'Bookmarks Review'}
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => startReviewSession(
-                                bookmarks[0].examId,
-                                examTitle,
-                                bookmarks,
-                                'practice',
-                                isKo ? '북마크' : 'Bookmarks'
-                              )}
-                              disabled={creatingSession}
-                            >
-                              <PenTool className="h-4 w-4 mr-2" />
-                              {isKo ? '북마크 테스트' : 'Bookmarks Test'}
-                            </Button>
-                          </>
+                        {totalBmForExam > 0 && (
+                          <Badge variant="outline" className="border-accent/40 text-accent text-xs">
+                            <Bookmark className="h-3 w-3 mr-1" />{totalBmForExam}
+                          </Badge>
                         )}
                       </div>
                     </div>
-                  </CardContent>
+                    {isExpanded
+                      ? <ChevronUp className="h-4 w-4 text-muted-foreground shrink-0" />
+                      : <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />}
+                  </button>
+
+                  {/* Set rows */}
+                  {isExpanded && (
+                    <div className="border-t divide-y">
+                      {examGroup.sets.map(setGroup => (
+                        <div
+                          key={setGroup.examKey}
+                          className="px-5 py-3 flex flex-col sm:flex-row sm:items-center gap-3"
+                        >
+                          {/* Set label + badges */}
+                          <div className="flex items-center gap-2 sm:w-48 shrink-0">
+                            <span className="text-sm font-medium text-foreground">{setGroup.setLabel}</span>
+                            <div className="flex gap-1">
+                              {setGroup.wrong.length > 0 && (
+                                <Badge variant="outline" className="border-destructive/40 text-destructive text-xs px-1.5">
+                                  <XCircle className="h-2.5 w-2.5 mr-0.5" />{setGroup.wrong.length}
+                                </Badge>
+                              )}
+                              {setGroup.bookmarks.length > 0 && (
+                                <Badge variant="outline" className="border-accent/40 text-accent text-xs px-1.5">
+                                  <Bookmark className="h-2.5 w-2.5 mr-0.5" />{setGroup.bookmarks.length}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Action buttons */}
+                          <div className="flex flex-wrap gap-1.5">
+                            {setGroup.wrong.length > 0 && (
+                              <>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-7 text-xs px-2.5"
+                                  disabled={creatingSession}
+                                  onClick={() => startReviewSession(
+                                    setGroup.examId, setGroup.examKey, setGroup.wrong,
+                                    'study', isKo ? '오답' : 'Wrong Answers'
+                                  )}
+                                >
+                                  <BookOpen className="h-3 w-3 mr-1" />
+                                  {isKo ? '오답 복습' : 'Review'}
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-7 text-xs px-2.5"
+                                  disabled={creatingSession}
+                                  onClick={() => startReviewSession(
+                                    setGroup.examId, setGroup.examKey, setGroup.wrong,
+                                    'practice', isKo ? '오답' : 'Wrong Answers'
+                                  )}
+                                >
+                                  <PenTool className="h-3 w-3 mr-1" />
+                                  {isKo ? '오답 테스트' : 'Test'}
+                                </Button>
+                              </>
+                            )}
+                            {setGroup.bookmarks.length > 0 && (
+                              <>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-7 text-xs px-2.5"
+                                  disabled={creatingSession}
+                                  onClick={() => startReviewSession(
+                                    setGroup.examId, setGroup.examKey, setGroup.bookmarks,
+                                    'study', isKo ? '북마크' : 'Bookmarks'
+                                  )}
+                                >
+                                  <BookOpen className="h-3 w-3 mr-1" />
+                                  {isKo ? '북마크 복습' : 'Bookmarks Review'}
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-7 text-xs px-2.5"
+                                  disabled={creatingSession}
+                                  onClick={() => startReviewSession(
+                                    setGroup.examId, setGroup.examKey, setGroup.bookmarks,
+                                    'practice', isKo ? '북마크' : 'Bookmarks'
+                                  )}
+                                >
+                                  <PenTool className="h-3 w-3 mr-1" />
+                                  {isKo ? '북마크 테스트' : 'Bookmarks Test'}
+                                </Button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </Card>
               );
             })}
