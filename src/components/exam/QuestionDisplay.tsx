@@ -24,17 +24,28 @@ function seededShuffle<T>(array: T[], seed: string): T[] {
 
   const arr = [...array];
   let hash = 0;
+
+  // Create hash from seed
   for (let i = 0; i < seed.length; i++) {
-    hash = ((hash << 5) - hash) + seed.charCodeAt(i);
-    hash = hash & hash;
+    const chr = seed.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash = hash | 0; // Convert to 32-bit integer
   }
 
+  // Fisher-Yates shuffle with seeded random
   for (let i = arr.length - 1; i > 0; i--) {
-    hash = (hash * 9301 + 49297) % 233280;
-    // Ensure j is always within valid range [0, i]
-    const j = Math.min(i, Math.floor((hash / 233280) * (i + 1)));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+    // Generate next hash value using LCG algorithm
+    hash = (hash * 1664525 + 1013904223) | 0;
+
+    // Get random index in range [0, i] - guaranteed to be valid
+    const j = Math.abs(hash) % (i + 1);
+
+    // Defensive check to ensure no undefined values
+    if (j >= 0 && j <= i && arr[i] !== undefined && arr[j] !== undefined) {
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
   }
+
   return arr;
 }
 
