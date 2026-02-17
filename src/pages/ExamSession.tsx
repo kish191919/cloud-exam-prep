@@ -112,6 +112,18 @@ const ExamSession = () => {
 
   const modeInfo = MODE_LABEL[mode] ?? MODE_LABEL.exam;
 
+  // Detect if this is a review session created from the review page
+  const isFromReviewPage = session.examTitle.includes(' - 오답') ||
+    session.examTitle.includes(' - 북마크') ||
+    session.examTitle.includes(' - 복습') ||
+    session.examTitle.includes(' - 테스트') ||
+    session.examTitle.includes(' - Wrong') ||
+    session.examTitle.includes(' - Bookmark') ||
+    session.examTitle.includes(' - Review') ||
+    session.examTitle.includes(' - Test');
+
+  const exitDestination = isFromReviewPage ? '/review' : '/exams';
+
   return (
     <div className="h-screen flex flex-col bg-background">
       {/* Header */}
@@ -122,7 +134,7 @@ const ExamSession = () => {
               <Menu className="h-5 w-5" />
             </Button>
           )}
-          <Link to="/exams" className="flex items-center gap-2 min-w-0 hover:opacity-80 transition-opacity">
+          <Link to={exitDestination} className="flex items-center gap-2 min-w-0 hover:opacity-80 transition-opacity">
             <Cloud className="h-5 w-5 text-accent flex-shrink-0" />
             <span className="font-semibold text-sm truncate">{session.examTitle}</span>
           </Link>
@@ -147,7 +159,7 @@ const ExamSession = () => {
 
           {/* Finish button for practice/study modes */}
           {!isExamMode && (
-            <Button size="sm" variant="outline" onClick={() => navigate('/exams')}>
+            <Button size="sm" variant="outline" onClick={() => navigate(exitDestination)}>
               {isKo ? '종료' : 'Finish'}
             </Button>
           )}
@@ -232,7 +244,7 @@ const ExamSession = () => {
               <Send className="h-4 w-4 mr-1" /> {t('examSession.submit')}
             </Button>
           ) : (
-            <Button variant="outline" onClick={() => navigate('/exams')}>
+            <Button variant="outline" onClick={() => navigate(exitDestination)}>
               {isKo ? '종료' : 'Finish'}
             </Button>
           )
