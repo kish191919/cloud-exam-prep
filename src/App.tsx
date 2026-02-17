@@ -8,6 +8,8 @@ import ExamList from "./pages/ExamList";
 import ExamSession from "./pages/ExamSession";
 import ExamResults from "./pages/ExamResults";
 import ReviewPage from "./pages/ReviewPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import TermsPage from "./pages/TermsPage";
 import AdminPage from "./pages/AdminPage";
 import AdminQuestionsPage from "./pages/AdminQuestionsPage";
 import NotFound from "./pages/NotFound";
@@ -31,6 +33,8 @@ const App = () => (
             <Route path="/session/:sessionId" element={<ExamSession />} />
             <Route path="/results/:sessionId" element={<ExamResults />} />
             <Route path="/review" element={<ReviewPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/admin/questions" element={<AdminQuestionsPage />} />
             <Route path="*" element={<NotFound />} />
