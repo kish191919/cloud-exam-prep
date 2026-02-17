@@ -125,26 +125,26 @@ const ExamSession = () => {
   const exitDestination = isFromReviewPage ? '/review' : '/exams';
 
   return (
-    <div className="h-screen flex flex-col bg-background">
+    <div className="h-[100dvh] flex flex-col bg-background overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b bg-card gap-2">
-        <div className="flex items-center gap-2 min-w-0">
+      <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b bg-card gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
           {isExamMode && (
-            <Button variant="ghost" size="icon" className="flex-shrink-0" onClick={() => setShowPanel(!showPanel)}>
-              <Menu className="h-5 w-5" />
+            <Button variant="ghost" size="icon" className="flex-shrink-0 h-8 w-8 sm:h-9 sm:w-9" onClick={() => setShowPanel(!showPanel)}>
+              <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
           )}
-          <Link to={exitDestination} className="flex items-center gap-2 min-w-0 hover:opacity-80 transition-opacity">
-            <Cloud className="h-5 w-5 text-accent flex-shrink-0" />
-            <span className="font-semibold text-sm truncate">{session.examTitle}</span>
+          <Link to={exitDestination} className="flex items-center gap-1.5 min-w-0 hover:opacity-80 transition-opacity">
+            <Cloud className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0" />
+            <span className="font-semibold text-xs sm:text-sm truncate max-w-[140px] sm:max-w-xs md:max-w-none">{session.examTitle}</span>
           </Link>
           {/* Mode badge */}
-          <span className={`text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 ${modeInfo.color}`}>
+          <span className={`text-xs font-semibold px-1.5 sm:px-2 py-0.5 rounded-full shrink-0 ${modeInfo.color}`}>
             {isKo ? modeInfo.ko : modeInfo.en}
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Timer: only in exam mode */}
           {isExamMode && (
             <ExamTimer startedAt={session.startedAt} timeLimitSec={session.timeLimitSec} onTimeUp={handleTimeUp} />
@@ -152,14 +152,16 @@ const ExamSession = () => {
 
           {/* Submit: only in exam mode */}
           {isExamMode && (
-            <Button size="sm" onClick={() => setShowSubmitDialog(true)} className="bg-accent text-accent-foreground hover:bg-accent/90">
-              <Send className="h-4 w-4 mr-1" /> {t('examSession.submit')}
+            <Button size="sm" onClick={() => setShowSubmitDialog(true)} className="bg-accent text-accent-foreground hover:bg-accent/90 text-xs sm:text-sm px-2 sm:px-3">
+              <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1" />
+              <span className="hidden xs:inline">{t('examSession.submit')}</span>
+              <span className="xs:hidden">{isKo ? '제출' : 'Submit'}</span>
             </Button>
           )}
 
           {/* Finish button for practice/study modes */}
           {!isExamMode && (
-            <Button size="sm" variant="outline" onClick={() => navigate(exitDestination)}>
+            <Button size="sm" variant="outline" onClick={() => navigate(exitDestination)} className="text-xs sm:text-sm px-2 sm:px-3">
               {isKo ? '종료' : 'Finish'}
             </Button>
           )}
@@ -167,7 +169,7 @@ const ExamSession = () => {
       </div>
 
       {/* Body */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden min-h-0">
         {/* Question panel: only in exam mode */}
         {isExamMode && showPanel && (
           <QuestionPanel
@@ -178,7 +180,7 @@ const ExamSession = () => {
             onSelect={goToQuestion}
           />
         )}
-        <div className="flex-1 overflow-auto p-4 md:p-8">
+        <div className="flex-1 overflow-auto p-3 sm:p-5 md:p-8">
           <QuestionDisplay
             question={currentQuestion}
             questionNumber={session.currentIndex + 1}
@@ -215,36 +217,44 @@ const ExamSession = () => {
       )}
 
       {/* Footer nav: arrow buttons (all modes) */}
-      <div className="flex items-center justify-between px-4 py-3 border-t bg-card">
+      <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-t bg-card shrink-0">
         <Button
           variant="outline"
+          size="sm"
           disabled={session.currentIndex === 0}
           onClick={() => goToQuestion(session.currentIndex - 1)}
+          className="text-xs sm:text-sm px-2 sm:px-4"
         >
-          <ChevronLeft className="h-4 w-4 mr-1" /> {t('examSession.prev')}
+          <ChevronLeft className="h-4 w-4 sm:mr-1" />
+          <span className="hidden sm:inline">{t('examSession.prev')}</span>
         </Button>
 
-        <span className="text-sm text-muted-foreground font-medium">
-          {t('examSession.questionCounter', { current: session.currentIndex + 1, total: session.questions.length })}
+        <span className="text-xs sm:text-sm text-muted-foreground font-medium">
+          {session.currentIndex + 1} / {session.questions.length}
         </span>
 
         {session.currentIndex < session.questions.length - 1 ? (
           <Button
             variant="outline"
+            size="sm"
             onClick={() => goToQuestion(session.currentIndex + 1)}
+            className="text-xs sm:text-sm px-2 sm:px-4"
           >
-            {t('examSession.next')} <ChevronRight className="h-4 w-4 ml-1" />
+            <span className="hidden sm:inline">{t('examSession.next')}</span>
+            <ChevronRight className="h-4 w-4 sm:ml-1" />
           </Button>
         ) : (
           isExamMode ? (
             <Button
+              size="sm"
               onClick={() => setShowSubmitDialog(true)}
-              className="bg-accent text-accent-foreground hover:bg-accent/90"
+              className="bg-accent text-accent-foreground hover:bg-accent/90 text-xs sm:text-sm px-2 sm:px-4"
             >
-              <Send className="h-4 w-4 mr-1" /> {t('examSession.submit')}
+              <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4 sm:mr-1" />
+              <span className="hidden sm:inline">{t('examSession.submit')}</span>
             </Button>
           ) : (
-            <Button variant="outline" onClick={() => navigate(exitDestination)}>
+            <Button variant="outline" size="sm" onClick={() => navigate(exitDestination)} className="text-xs sm:text-sm px-2 sm:px-4">
               {isKo ? '종료' : 'Finish'}
             </Button>
           )
