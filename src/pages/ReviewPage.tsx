@@ -233,7 +233,8 @@ const ReviewPage = () => {
     // Wrong answers - deduplicate by question ID and exclude reviewed correct answers
     s.questions
       .filter(q =>
-        s.answers[q.id] !== q.correctOptionId &&
+        s.answers[q.id] !== undefined && // Must be answered (skip unanswered questions)
+        s.answers[q.id] !== q.correctOptionId && // And answered incorrectly
         !reviewedCorrectQuestionIds.has(q.id) // Exclude if answered correctly in review
       )
       .forEach(q => {
