@@ -20,6 +20,8 @@ const OPTION_LABELS: Record<string, string> = { a: '1', b: '2', c: '3', d: '4' }
 
 // Simple seeded shuffle function for deterministic randomization
 function seededShuffle<T>(array: T[], seed: string): T[] {
+  if (!array || array.length === 0) return array;
+
   const arr = [...array];
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
@@ -29,7 +31,8 @@ function seededShuffle<T>(array: T[], seed: string): T[] {
 
   for (let i = arr.length - 1; i > 0; i--) {
     hash = (hash * 9301 + 49297) % 233280;
-    const j = Math.floor((hash / 233280) * (i + 1));
+    // Ensure j is always within valid range [0, i]
+    const j = Math.min(i, Math.floor((hash / 233280) * (i + 1)));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
   return arr;
