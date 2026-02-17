@@ -111,8 +111,8 @@ const QuestionDisplay = ({
 
   return (
     <div className="w-full animate-fade-in">
-      {/* On mobile: stack vertically. On lg+: side by side when feedback is shown */}
-      <div className={`${hasRightPanel ? 'flex flex-col lg:flex-row gap-6 max-w-6xl mx-auto' : 'max-w-3xl mx-auto'}`}>
+      {/* On mobile/tablet: stack vertically. On xl+: side by side when feedback is shown */}
+      <div className={`${hasRightPanel ? 'flex flex-col xl:flex-row gap-6 max-w-6xl mx-auto' : 'max-w-3xl mx-auto'}`}>
         {/* Main question content */}
         <div className={hasRightPanel ? 'flex-1 min-w-0' : ''}>
           {/* Header row: question number + tags + bookmark */}
@@ -197,10 +197,10 @@ const QuestionDisplay = ({
         </div>
 
         {/* Right panel - Key points and references (shown when feedback is visible) */}
-        {/* On mobile: shown below question. On lg+: fixed-width sidebar */}
+        {/* On mobile/tablet: shown below question. On xl+: fixed-width sidebar */}
         {hasRightPanel && (
-          <div className="w-full lg:w-80 xl:w-[28rem] lg:shrink-0">
-            <Card className="lg:sticky lg:top-4">
+          <div className="w-full xl:w-80 2xl:w-[28rem] xl:shrink-0">
+            <Card className="xl:sticky xl:top-4">
               {question.keyPoints && (
                 <>
                   <CardHeader className="pb-3">
