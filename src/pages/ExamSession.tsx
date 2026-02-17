@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useExamSession } from '@/hooks/useExamSession';
 import QuestionPanel from '@/components/exam/QuestionPanel';
@@ -23,17 +23,80 @@ const ExamSession = () => {
   const isKo = i18n.language === 'ko';
   const { sessionId } = useParams();
   const navigate = useNavigate();
-  const { session, loading, selectAnswer, toggleBookmark, goToQuestion, submitExam } = useExamSession(sessionId || null);
+  const { session, loading, selectAnswer, toggleBookmark, goToQuestion, submitExam, saveSession } = useExamSession(sessionId || null);
   const [showPanel, setShowPanel] = useState(true);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const mode = session?.mode ?? 'exam';
   const isExamMode = mode === 'exam';
+
+  // Compute early (needed by handleFinish before the null guard)
+  const exitDestination = (() => {
+    const t = session?.examTitle ?? '';
+    return (t.includes(' - 오답') || t.includes(' - 북마크') || t.includes(' - 복습') ||
+            t.includes(' - 테스트') || t.includes(' - Wrong') || t.includes(' - Bookmark') ||
+            t.includes(' - Review') || t.includes(' - Test'))
+      ? '/review' : '/exams';
+  })();
 
   const handleTimeUp = useCallback(() => {
     submitExam();
     if (sessionId) navigate(`/results/${sessionId}`, { replace: true });
   }, [submitExam, sessionId, navigate]);
+
+  // Save session before navigating away (practice/study modes don't call submitExam,
+  // so we need to ensure answers are persisted before ReviewPage loads)
+  const handleFinish = useCallback(async () => {
+    await saveSession();
+    navigate(exitDestination);
+  }, [saveSession, navigate, exitDestination]);
+
+  // Practice mode: auto-advance to next question after answering
+  const handleSelectAnswer = useCallback((questionId: string, optionId: string) => {
+    selectAnswer(questionId, optionId);
+
+    if (mode === 'practice' && session) {
+      // Clear any existing timer
+      if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current);
+      // Auto-advance after 1.5s if not on the last question
+      if (session.currentIndex < session.questions.length - 1) {
+        autoAdvanceTimer.current = setTimeout(() => {
+          goToQuestion(session.currentIndex + 1);
+        }, 1500);
+      }
+    }
+  }, [selectAnswer, mode, session, goToQuestion]);
+
+  // Clean up auto-advance timer on unmount or question change
+  useEffect(() => {
+    return () => {
+      if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current);
+    };
+  }, [session?.currentIndex]);
+
+  // Swipe gesture handlers
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (touchStartX.current === null || !session) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+
+    const SWIPE_THRESHOLD = 60; // px
+    if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
+
+    if (deltaX < 0 && session.currentIndex < session.questions.length - 1) {
+      // Swipe left → next question
+      goToQuestion(session.currentIndex + 1);
+    } else if (deltaX > 0 && session.currentIndex > 0) {
+      // Swipe right → previous question
+      goToQuestion(session.currentIndex - 1);
+    }
+  }, [session, goToQuestion]);
 
   // Keyboard shortcuts: 1-4 for options, Arrow keys for navigation
   useEffect(() => {
@@ -112,18 +175,6 @@ const ExamSession = () => {
 
   const modeInfo = MODE_LABEL[mode] ?? MODE_LABEL.exam;
 
-  // Detect if this is a review session created from the review page
-  const isFromReviewPage = session.examTitle.includes(' - 오답') ||
-    session.examTitle.includes(' - 북마크') ||
-    session.examTitle.includes(' - 복습') ||
-    session.examTitle.includes(' - 테스트') ||
-    session.examTitle.includes(' - Wrong') ||
-    session.examTitle.includes(' - Bookmark') ||
-    session.examTitle.includes(' - Review') ||
-    session.examTitle.includes(' - Test');
-
-  const exitDestination = isFromReviewPage ? '/review' : '/exams';
-
   return (
     <div className="h-[100dvh] flex flex-col bg-background overflow-hidden">
       {/* Header */}
@@ -161,7 +212,7 @@ const ExamSession = () => {
 
           {/* Finish button for practice/study modes */}
           {!isExamMode && (
-            <Button size="sm" variant="outline" onClick={() => navigate(exitDestination)} className="text-xs sm:text-sm px-2 sm:px-3">
+            <Button size="sm" variant="outline" onClick={handleFinish} className="text-xs sm:text-sm px-2 sm:px-3">
               {isKo ? '종료' : 'Finish'}
             </Button>
           )}
@@ -180,14 +231,18 @@ const ExamSession = () => {
             onSelect={goToQuestion}
           />
         )}
-        <div className="flex-1 overflow-auto p-3 sm:p-5 md:p-8">
+        <div
+          className="flex-1 overflow-auto p-3 sm:p-5 md:p-8"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           <QuestionDisplay
             question={currentQuestion}
             questionNumber={session.currentIndex + 1}
             totalQuestions={session.questions.length}
             selectedOptionId={session.answers[currentQuestion.id]}
             isBookmarked={session.bookmarks.includes(currentQuestion.id)}
-            onSelectOption={(optionId) => selectAnswer(currentQuestion.id, optionId)}
+            onSelectOption={(optionId) => handleSelectAnswer(currentQuestion.id, optionId)}
             onToggleBookmark={() => toggleBookmark(currentQuestion.id)}
             mode={mode}
             randomizeOptions={session.randomizeOptions}
@@ -254,7 +309,7 @@ const ExamSession = () => {
               <span className="hidden sm:inline">{t('examSession.submit')}</span>
             </Button>
           ) : (
-            <Button variant="outline" size="sm" onClick={() => navigate(exitDestination)} className="text-xs sm:text-sm px-2 sm:px-4">
+            <Button variant="outline" size="sm" onClick={handleFinish} className="text-xs sm:text-sm px-2 sm:px-4">
               {isKo ? '종료' : 'Finish'}
             </Button>
           )

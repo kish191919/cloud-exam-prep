@@ -238,5 +238,18 @@ export function useExamSession(sessionId: string | null) {
     });
   }, []);
 
-  return { session, loading, selectAnswer, toggleBookmark, goToQuestion, submitExam };
+  // Explicit save for use before navigation (avoids timing race with auto-save useEffect)
+  const saveSession = useCallback(async (currentSession?: ExamSession | null) => {
+    const s = currentSession ?? session;
+    if (!s) return;
+    try {
+      await sessionService.updateSession(s);
+    } catch {
+      const sessions = loadSessionsFromLocalStorage();
+      sessions[s.id] = s;
+      saveSessionsToLocalStorage(sessions);
+    }
+  }, [session]);
+
+  return { session, loading, selectAnswer, toggleBookmark, goToQuestion, submitExam, saveSession };
 }
