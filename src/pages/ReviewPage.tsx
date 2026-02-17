@@ -146,6 +146,9 @@ const ReviewPage = () => {
   // Track questions that were answered correctly in review sessions
   const reviewedCorrectQuestionIds = new Set<string>();
 
+  // Track current bookmarks from bookmark review sessions
+  const bookmarkReviewSessionsByExam: Record<string, Set<string>> = {};
+
   sessions.forEach(s => {
     if (isReviewSession(s.examTitle)) {
       // Track questions answered correctly in review sessions
@@ -154,6 +157,21 @@ const ReviewPage = () => {
           reviewedCorrectQuestionIds.add(q.id);
         }
       });
+
+      // Track current bookmarks from bookmark review sessions
+      if (s.examTitle.includes('북마크') || s.examTitle.includes('Bookmark')) {
+        // Extract original exam title
+        const originalTitle = s.examTitle
+          .replace(/ - 북마크.*/, '')
+          .replace(/ - Bookmark.*/, '');
+
+        if (!bookmarkReviewSessionsByExam[originalTitle]) {
+          bookmarkReviewSessionsByExam[originalTitle] = new Set();
+        }
+
+        // Add all current bookmarks from this review session
+        s.bookmarks.forEach(qid => bookmarkReviewSessionsByExam[originalTitle].add(qid));
+      }
     }
   });
 
@@ -189,8 +207,20 @@ const ReviewPage = () => {
       });
 
     // Bookmarked - deduplicate by question ID
+    // If there's a bookmark review session for this exam, use its current bookmarks
+    const activeBookmarks = bookmarkReviewSessionsByExam[examKey];
+
     s.questions
-      .filter(q => s.bookmarks.includes(q.id))
+      .filter(q => {
+        const inOriginalBookmarks = s.bookmarks.includes(q.id);
+
+        // If there's a bookmark review session, only include bookmarks that are still active
+        if (activeBookmarks) {
+          return inOriginalBookmarks && activeBookmarks.has(q.id);
+        }
+
+        return inOriginalBookmarks;
+      })
       .forEach(q => {
         if (!bookmarkQuestionsMap[examKey]) bookmarkQuestionsMap[examKey] = new Map();
         // Only add if not already present
