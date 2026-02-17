@@ -2,7 +2,7 @@ import { Question, ExamMode } from '@/types/exam';
 import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 interface QuestionDisplayProps {
   question: Question;
@@ -64,6 +64,37 @@ const QuestionDisplay = ({
 
   // Whether to show answer feedback (correct/wrong colors, icons, explanations)
   const showFeedback = isStudy || (isPractice && isAnswered);
+
+  // Feedback animation state (for practice mode when answer is first selected)
+  const [feedbackAnimation, setFeedbackAnimation] = useState<'correct' | 'wrong' | null>(null);
+  const prevAnswerRef = useRef<string | undefined>(undefined);
+
+  // Trigger feedback animation when answer is first selected in practice mode
+  useEffect(() => {
+    const prev = prevAnswerRef.current;
+    prevAnswerRef.current = selectedOptionId;
+
+    // First time selecting an answer on this question (practice mode only)
+    if (selectedOptionId !== undefined && prev === undefined && isPractice) {
+      const isCorrect = selectedOptionId === question.correctOptionId;
+      setFeedbackAnimation(isCorrect ? 'correct' : 'wrong');
+
+      // Haptic feedback (mobile)
+      if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        navigator.vibrate(isCorrect ? 15 : [25, 10, 25]);
+      }
+
+      // Clear animation after it completes
+      const timer = setTimeout(() => setFeedbackAnimation(null), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedOptionId, isPractice, question.correctOptionId]);
+
+  // Reset animation state when question changes
+  useEffect(() => {
+    prevAnswerRef.current = undefined;
+    setFeedbackAnimation(null);
+  }, [question.id]);
 
   // Randomize options if enabled (deterministic based on question ID)
   const displayOptions = useMemo(() => {
@@ -149,6 +180,11 @@ const QuestionDisplay = ({
               const perOptionExplanation = option.explanation
                 || (showFeedback && isCorrect ? question.explanation : undefined);
 
+              // Apply feedback animation to the selected option (practice mode only)
+              const animationClass = (feedbackAnimation && isSelected)
+                ? (feedbackAnimation === 'correct' ? 'animate-answer-correct' : 'animate-answer-wrong')
+                : '';
+
               return (
                 <div key={option.id}>
                   <button
@@ -156,7 +192,7 @@ const QuestionDisplay = ({
                     disabled={!canSelect}
                     className={`w-full text-left p-3 sm:p-4 rounded-lg border-2 transition-all ${getOptionStyle(option.id)} ${
                       canSelect ? 'cursor-pointer' : 'cursor-default'
-                    }`}
+                    } ${animationClass}`}
                   >
                     <div className="flex items-start gap-2 sm:gap-3">
                       <span className={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-sm font-semibold ${getCircleStyle(option.id)}`}>
