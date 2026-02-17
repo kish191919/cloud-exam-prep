@@ -3,6 +3,7 @@ import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { seededShuffle } from '@/utils/shuffle';
 
 interface QuestionDisplayProps {
   question: Question;
@@ -16,36 +17,6 @@ interface QuestionDisplayProps {
   randomizeOptions?: boolean;
 }
 
-// Simple seeded shuffle function for deterministic randomization
-function seededShuffle<T>(array: T[], seed: string): T[] {
-  if (!array || array.length === 0) return array;
-
-  const arr = [...array];
-  let hash = 0;
-
-  // Create hash from seed
-  for (let i = 0; i < seed.length; i++) {
-    const chr = seed.charCodeAt(i);
-    hash = ((hash << 5) - hash) + chr;
-    hash = hash | 0; // Convert to 32-bit integer
-  }
-
-  // Fisher-Yates shuffle with seeded random
-  for (let i = arr.length - 1; i > 0; i--) {
-    // Generate next hash value using LCG algorithm
-    hash = (hash * 1664525 + 1013904223) | 0;
-
-    // Get random index in range [0, i] - guaranteed to be valid
-    const j = Math.abs(hash) % (i + 1);
-
-    // Defensive check to ensure no undefined values
-    if (j >= 0 && j <= i && arr[i] !== undefined && arr[j] !== undefined) {
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-  }
-
-  return arr;
-}
 
 const QuestionDisplay = ({
   question,

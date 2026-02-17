@@ -11,6 +11,7 @@ import {
 import { ChevronLeft, ChevronRight, Menu, Send, Cloud, AlertTriangle, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { seededShuffle } from '@/utils/shuffle';
 
 const MODE_LABEL: Record<string, { ko: string; en: string; color: string }> = {
   practice: { ko: '연습모드', en: 'Practice', color: 'bg-green-100 text-green-700' },
@@ -96,7 +97,11 @@ const ExamSession = () => {
 
       if (['1', '2', '3', '4'].includes(e.key)) {
         const idx = parseInt(e.key) - 1;
-        const option = q?.options[idx];
+        // Use the same shuffled order the user sees on screen
+        const options = session.randomizeOptions
+          ? seededShuffle(q.options, q.id)
+          : q.options;
+        const option = options[idx];
         if (!option) return;
         if (mode === 'study') return;
         if (mode === 'practice' && session.answers[q.id]) return;
