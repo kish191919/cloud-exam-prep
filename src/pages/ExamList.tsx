@@ -123,19 +123,46 @@ const ExamList = () => {
       const questions = await getQuestionsForSet(selectedSetId);
       if (questions.length === 0) return;
 
-      // Load previous bookmarks for this exam
+      // Load previous bookmarks for this exam using latest-state logic
+      // (same as ReviewPage) so that un-bookmarks in review sessions are respected.
       const allSessions = await getAllSessions();
-      const previousBookmarks = new Set<string>();
+
+      const questionLastUpdated: Record<string, number> = {};
+      const latestBookmarkStatus: Record<string, boolean> = {};
 
       allSessions
         .filter(s => s.examId === expandedId)
         .forEach(s => {
-          s.bookmarks.forEach(qid => previousBookmarks.add(qid));
+          const timestamp = s.startedAt;
+
+          // Track explicitly bookmarked questions
+          s.bookmarks.forEach(qid => {
+            if (!questionLastUpdated[qid] || timestamp > questionLastUpdated[qid]) {
+              questionLastUpdated[qid] = timestamp;
+              latestBookmarkStatus[qid] = true;
+            }
+          });
+
+          // Read stored question IDs from localStorage to detect un-bookmarked questions
+          try {
+            const storedIds = localStorage.getItem(`cloudmaster_questionids_${s.id}`);
+            if (storedIds) {
+              (JSON.parse(storedIds) as string[]).forEach(qid => {
+                const isBookmarked = s.bookmarks.includes(qid);
+                if (!questionLastUpdated[qid] || timestamp > questionLastUpdated[qid]) {
+                  questionLastUpdated[qid] = timestamp;
+                  latestBookmarkStatus[qid] = isBookmarked;
+                }
+              });
+            }
+          } catch {
+            // ignore
+          }
         });
 
-      // Filter bookmarks to only include questions in this session
+      // Only pre-select bookmarks that are still active in the latest session
       const questionIds = new Set(questions.map(q => q.id));
-      const initialBookmarks = Array.from(previousBookmarks).filter(qid => questionIds.has(qid));
+      const initialBookmarks = Array.from(questionIds).filter(qid => latestBookmarkStatus[qid] === true);
 
       const sessionId = await createSession(
         expandedId,
