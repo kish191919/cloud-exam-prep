@@ -25,7 +25,10 @@ const REVIEWED_KEY = 'cloudmaster_reviewed_questions';
 
 const ReviewPage = () => {
   const { t } = useTranslation('pages');
-  const sessions = getAllSessions().filter(s => s.status === 'submitted');
+  // Include all sessions that have answers or bookmarks (not just submitted ones)
+  const sessions = getAllSessions().filter(s =>
+    Object.keys(s.answers).length > 0 || s.bookmarks.length > 0
+  );
 
   const [reviewedQuestions, setReviewedQuestions] = useState<Record<string, boolean>>({});
   const [showReviewed, setShowReviewed] = useState(false);
