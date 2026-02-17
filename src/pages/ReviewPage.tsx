@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
-  XCircle, Bookmark, Loader2, BookOpen, PenTool, RefreshCw,
+  XCircle, Bookmark, Loader2, BookOpen, PenTool,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { Question, ExamSession } from '@/types/exam';
@@ -136,6 +136,29 @@ const ReviewPage = () => {
            title.includes(' - Test');
   };
 
+  // Track questions that were answered correctly in review sessions
+  const reviewedCorrectQuestionIds = new Set<string>();
+  const unbookmarkedQuestionIds = new Set<string>();
+
+  sessions.forEach(s => {
+    if (isReviewSession(s.examTitle)) {
+      // Track questions answered correctly in review sessions
+      s.questions.forEach(q => {
+        if (s.answers[q.id] === q.correctOptionId) {
+          reviewedCorrectQuestionIds.add(q.id);
+        }
+      });
+
+      // Track questions that were unbookmarked in review sessions
+      // If a question is not in bookmarks anymore, it was unbookmarked
+      s.questions.forEach(q => {
+        if (!s.bookmarks.includes(q.id)) {
+          unbookmarkedQuestionIds.add(q.id);
+        }
+      });
+    }
+  });
+
   // Use Maps to deduplicate questions by ID
   const wrongQuestionsMap: Record<string, Map<string, QuestionWithMeta>> = {};
   const bookmarkQuestionsMap: Record<string, Map<string, QuestionWithMeta>> = {};
@@ -146,9 +169,12 @@ const ReviewPage = () => {
 
     const examKey = s.examTitle;
 
-    // Wrong answers - deduplicate by question ID
+    // Wrong answers - deduplicate by question ID and exclude reviewed correct answers
     s.questions
-      .filter(q => s.answers[q.id] !== q.correctOptionId)
+      .filter(q =>
+        s.answers[q.id] !== q.correctOptionId &&
+        !reviewedCorrectQuestionIds.has(q.id) // Exclude if answered correctly in review
+      )
       .forEach(q => {
         if (!wrongQuestionsMap[examKey]) wrongQuestionsMap[examKey] = new Map();
         // Only add if not already present (keeps the most recent attempt)
@@ -164,9 +190,12 @@ const ReviewPage = () => {
         }
       });
 
-    // Bookmarked - deduplicate by question ID
+    // Bookmarked - deduplicate by question ID and exclude unbookmarked
     s.questions
-      .filter(q => s.bookmarks.includes(q.id))
+      .filter(q =>
+        s.bookmarks.includes(q.id) &&
+        !unbookmarkedQuestionIds.has(q.id) // Exclude if unbookmarked in review
+      )
       .forEach(q => {
         if (!bookmarkQuestionsMap[examKey]) bookmarkQuestionsMap[examKey] = new Map();
         // Only add if not already present
@@ -313,21 +342,38 @@ const ReviewPage = () => {
                           </>
                         )}
                         {bookmarks.length > 0 && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => startReviewSession(
-                              bookmarks[0].examId,
-                              examTitle,
-                              bookmarks,
-                              'study',
-                              isKo ? '북마크' : 'Bookmarks'
-                            )}
-                            disabled={creatingSession}
-                          >
-                            <RefreshCw className="h-4 w-4 mr-2" />
-                            {isKo ? '북마크 복습' : 'Bookmarks'}
-                          </Button>
+                          <>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => startReviewSession(
+                                bookmarks[0].examId,
+                                examTitle,
+                                bookmarks,
+                                'study',
+                                isKo ? '북마크' : 'Bookmarks'
+                              )}
+                              disabled={creatingSession}
+                            >
+                              <BookOpen className="h-4 w-4 mr-2" />
+                              {isKo ? '북마크 복습' : 'Bookmarks Review'}
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => startReviewSession(
+                                bookmarks[0].examId,
+                                examTitle,
+                                bookmarks,
+                                'practice',
+                                isKo ? '북마크' : 'Bookmarks'
+                              )}
+                              disabled={creatingSession}
+                            >
+                              <PenTool className="h-4 w-4 mr-2" />
+                              {isKo ? '북마크 테스트' : 'Bookmarks Test'}
+                            </Button>
+                          </>
                         )}
                       </div>
                     </div>
