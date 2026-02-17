@@ -14,7 +14,7 @@ interface QuestionDisplayProps {
   mode?: ExamMode;
 }
 
-const OPTION_LABELS: Record<string, string> = { a: 'A', b: 'B', c: 'C', d: 'D' };
+const OPTION_LABELS: Record<string, string> = { a: '1', b: '2', c: '3', d: '4' };
 
 const QuestionDisplay = ({
   question,
@@ -130,7 +130,7 @@ const QuestionDisplay = ({
                     {/* Per-option explanation (shown in feedback state) */}
                     {showFeedback && perOptionExplanation && (
                       <p className={`text-xs mt-2 leading-relaxed ${
-                        isCorrect ? 'text-green-700 dark:text-green-400' : 'text-muted-foreground'
+                        isCorrect ? 'text-green-700 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                       }`}>
                         {perOptionExplanation}
                       </p>
@@ -152,7 +152,7 @@ const QuestionDisplay = ({
 
         {/* Right panel - Key points and references (shown when feedback is visible) */}
         {showFeedback && (question.keyPoints || (question.refLinks && question.refLinks.length > 0)) && (
-          <div className="w-80 shrink-0">
+          <div className="w-96 shrink-0">
             <Card className="sticky top-4">
               {question.keyPoints && (
                 <>
@@ -163,7 +163,7 @@ const QuestionDisplay = ({
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <p className="text-xs leading-relaxed text-muted-foreground whitespace-pre-line">
+                    <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
                       {question.keyPoints}
                     </p>
                   </CardContent>
