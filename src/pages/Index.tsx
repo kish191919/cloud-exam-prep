@@ -225,7 +225,7 @@ const Index = () => {
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
             <Link to="/privacy" className="hover:text-foreground transition-colors">{t('index.footer.privacy')}</Link>
             <Link to="/terms" className="hover:text-foreground transition-colors">{t('index.footer.terms')}</Link>
-            <a href="#" className="hover:text-foreground transition-colors">{t('index.footer.community')}</a>
+            <a href="https://open.kakao.com/o/pnEbOZgi" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">{t('index.footer.community')}</a>
           </div>
           <p className="text-xs text-muted-foreground">{t('index.footer.copyright')}</p>
         </div>
