@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ExamSession, Question } from '@/types/exam';
+import { ExamSession, ExamMode, Question } from '@/types/exam';
 import * as sessionService from '@/services/sessionService';
 
 // Keep localStorage as fallback for offline support
 const SESSIONS_KEY = 'cloudmaster_sessions';
+const modeKey = (id: string) => `cloudmaster_mode_${id}`;
 
 function loadSessionsFromLocalStorage(): Record<string, ExamSession> {
   try {
@@ -23,6 +24,7 @@ export async function createSession(
   examTitle: string,
   questions: Question[],
   timeLimitMinutes: number,
+  mode: ExamMode = 'exam',
   userId?: string
 ): Promise<string> {
   try {
@@ -34,6 +36,8 @@ export async function createSession(
       timeLimitMinutes,
       userId
     );
+    // Store mode in localStorage (DB doesn't have a mode column)
+    localStorage.setItem(modeKey(sessionId), mode);
     return sessionId;
   } catch (error) {
     console.warn('Failed to create session in Supabase, using localStorage:', error);
@@ -44,6 +48,7 @@ export async function createSession(
       examId,
       examTitle,
       status: 'in_progress',
+      mode,
       startedAt: Date.now(),
       pausedElapsed: 0,
       timeLimitSec: timeLimitMinutes * 60,
@@ -70,12 +75,17 @@ export async function getSession(
   try {
     // Try Supabase first
     const session = await sessionService.getSession(sessionId);
-    if (session) return session;
+    if (session) {
+      // Attach mode from localStorage
+      const storedMode = localStorage.getItem(modeKey(sessionId)) as ExamMode | null;
+      if (storedMode) session.mode = storedMode;
+      return session;
+    }
   } catch (error) {
     console.warn('Failed to fetch session from Supabase, using localStorage:', error);
   }
 
-  // Fallback to localStorage
+  // Fallback to localStorage (mode already in session object)
   return loadSessionsFromLocalStorage()[sessionId] || null;
 }
 

@@ -37,11 +37,14 @@ export interface ExamConfig {
   questionCount: number;
 }
 
+export type ExamMode = 'practice' | 'study' | 'exam';
+
 export interface ExamSession {
   id: string;
   examId: string;
   examTitle: string;
   status: 'in_progress' | 'paused' | 'submitted';
+  mode?: ExamMode;
   startedAt: number;
   pausedElapsed: number;
   submittedAt?: number;

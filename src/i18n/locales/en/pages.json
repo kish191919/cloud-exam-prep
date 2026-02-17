@@ -196,7 +196,8 @@
     "noSets": "No sets available.",
     "sampleBadge": "Sample",
     "fullBadge": "Full",
-    "starting": "Starting..."
+    "starting": "Starting...",
+    "selectMode": "Select Study Mode"
   },
   "examSession": {
     "questionOf": "Question",

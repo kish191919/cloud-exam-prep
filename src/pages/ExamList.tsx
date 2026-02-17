@@ -9,8 +9,9 @@ import { createSession } from '@/hooks/useExamSession';
 import {
   Clock, HelpCircle, Target, Play, Loader2,
   ChevronDown, ChevronUp, BookOpen, FlaskConical, CheckCircle2,
+  Pencil, Eye, Timer,
 } from 'lucide-react';
-import type { ExamConfig, ExamSet } from '@/types/exam';
+import type { ExamConfig, ExamSet, ExamMode } from '@/types/exam';
 import { useTranslation } from 'react-i18next';
 
 const certColors: Record<string, string> = {
@@ -19,9 +20,50 @@ const certColors: Record<string, string> = {
   Azure: 'bg-primary text-primary-foreground',
 };
 
+type ModeOption = {
+  id: ExamMode;
+  labelKo: string;
+  labelEn: string;
+  descKo: string;
+  descEn: string;
+  Icon: React.ElementType;
+  color: string;
+};
+
+const MODE_OPTIONS: ModeOption[] = [
+  {
+    id: 'practice',
+    labelKo: '연습모드',
+    labelEn: 'Practice',
+    descKo: '보기 선택 즉시 정답/오답 확인. 해설 표시.',
+    descEn: 'Instant feedback on each answer. Explanation shown.',
+    Icon: Pencil,
+    color: 'text-green-600 bg-green-50 border-green-200',
+  },
+  {
+    id: 'study',
+    labelKo: '해설모드',
+    labelEn: 'Study',
+    descKo: '정답과 해설이 처음부터 표시. 개념 학습에 최적.',
+    descEn: 'Answer and explanation shown immediately. Best for learning.',
+    Icon: Eye,
+    color: 'text-blue-600 bg-blue-50 border-blue-200',
+  },
+  {
+    id: 'exam',
+    labelKo: '실전모드',
+    labelEn: 'Exam',
+    descKo: '시간제한, 제출 후 결과 확인. 실전처럼 연습.',
+    descEn: 'Timed, submit at end for results. Just like the real exam.',
+    Icon: Timer,
+    color: 'text-orange-600 bg-orange-50 border-orange-200',
+  },
+];
+
 const ExamList = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation('pages');
+  const { t, i18n } = useTranslation('pages');
+  const isKo = i18n.language === 'ko';
 
   const [exams, setExams] = useState<ExamConfig[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +72,7 @@ const ExamList = () => {
   const [setsMap, setSetsMap] = useState<Record<string, ExamSet[]>>({});
   const [loadingSets, setLoadingSets] = useState<Record<string, boolean>>({});
   const [selectedSetId, setSelectedSetId] = useState<string | null>(null);
+  const [selectedMode, setSelectedMode] = useState<ExamMode | null>(null);
   const [starting, setStarting] = useState(false);
 
   useEffect(() => {
@@ -50,10 +93,12 @@ const ExamList = () => {
     if (expandedId === examId) {
       setExpandedId(null);
       setSelectedSetId(null);
+      setSelectedMode(null);
       return;
     }
     setExpandedId(examId);
     setSelectedSetId(null);
+    setSelectedMode(null);
 
     if (!setsMap[examId]) {
       setLoadingSets(prev => ({ ...prev, [examId]: true }));
@@ -65,7 +110,7 @@ const ExamList = () => {
 
   const handleStart = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!selectedSetId || !expandedId || starting) return;
+    if (!selectedSetId || !selectedMode || !expandedId || starting) return;
 
     const config = exams.find(ex => ex.id === expandedId);
     if (!config) return;
@@ -74,7 +119,13 @@ const ExamList = () => {
     try {
       const questions = await getQuestionsForSet(selectedSetId);
       if (questions.length === 0) return;
-      const sessionId = await createSession(expandedId, config.title, questions, config.timeLimitMinutes);
+      const sessionId = await createSession(
+        expandedId,
+        config.title,
+        questions,
+        config.timeLimitMinutes,
+        selectedMode
+      );
       navigate(`/session/${sessionId}`);
     } catch (error) {
       console.error('Error starting exam:', error);
@@ -155,12 +206,13 @@ const ExamList = () => {
                       </div>
                     </div>
 
-                    {/* Expanded: set selection */}
+                    {/* Expanded: set + mode selection */}
                     {isExpanded && (
                       <div
                         className="mt-5 pt-5 border-t border-border"
                         onClick={e => e.stopPropagation()}
                       >
+                        {/* Set selection */}
                         <p className="text-sm font-semibold mb-3">{t('examList.selectSet')}</p>
 
                         {isLoadingSet ? (
@@ -171,7 +223,7 @@ const ExamList = () => {
                         ) : sets.length === 0 ? (
                           <p className="text-sm text-muted-foreground py-2">{t('examList.noSets')}</p>
                         ) : (
-                          <div className="space-y-2 mb-4">
+                          <div className="space-y-2 mb-6">
                             {sets.map(set => {
                               const isSelected = selectedSetId === set.id;
                               return (
@@ -233,14 +285,43 @@ const ExamList = () => {
                           </div>
                         )}
 
+                        {/* Mode selection */}
+                        <p className="text-sm font-semibold mb-3">{t('examList.selectMode')}</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                          {MODE_OPTIONS.map(m => {
+                            const isSelected = selectedMode === m.id;
+                            return (
+                              <button
+                                key={m.id}
+                                onClick={() => setSelectedMode(m.id)}
+                                className={`flex flex-col items-start gap-2 p-4 rounded-xl border-2 transition-all text-left ${
+                                  isSelected
+                                    ? `${m.color} ring-2 ring-offset-1`
+                                    : 'border-border hover:border-muted-foreground/40 bg-card'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <m.Icon className="h-4 w-4" />
+                                  <span className="font-semibold text-sm">
+                                    {isKo ? m.labelKo : m.labelEn}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-muted-foreground leading-relaxed">
+                                  {isKo ? m.descKo : m.descEn}
+                                </p>
+                              </button>
+                            );
+                          })}
+                        </div>
+
                         {/* Start button */}
                         <div className="flex justify-end">
                           <Button
                             size="lg"
-                            disabled={!selectedSetId || starting}
+                            disabled={!selectedSetId || !selectedMode || starting}
                             onClick={handleStart}
                             className={`font-semibold transition-all ${
-                              selectedSetId
+                              selectedSetId && selectedMode
                                 ? 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-md'
                                 : ''
                             }`}

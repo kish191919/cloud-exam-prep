@@ -196,7 +196,8 @@
     "noSets": "준비된 세트가 없습니다.",
     "sampleBadge": "샘플",
     "fullBadge": "전체",
-    "starting": "시작 중..."
+    "starting": "시작 중...",
+    "selectMode": "학습 모드 선택"
   },
   "examSession": {
     "questionOf": "문제",
