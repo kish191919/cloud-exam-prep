@@ -36,13 +36,32 @@ const ReviewPage = () => {
     async function loadSessions() {
       try {
         const allSessions = await getAllSessions();
+        console.log('📊 All sessions loaded:', allSessions.length);
+        console.log('📊 Sessions data:', allSessions);
+
         // Include all sessions that have answers or bookmarks (not just submitted ones)
-        const filteredSessions = allSessions.filter(s =>
-          Object.keys(s.answers).length > 0 || s.bookmarks.length > 0
-        );
+        const filteredSessions = allSessions.filter(s => {
+          const hasAnswers = Object.keys(s.answers).length > 0;
+          const hasBookmarks = s.bookmarks.length > 0;
+          const hasQuestions = s.questions && s.questions.length > 0;
+
+          console.log(`📊 Session ${s.id}:`, {
+            examTitle: s.examTitle,
+            hasAnswers,
+            hasBookmarks,
+            hasQuestions,
+            answersCount: Object.keys(s.answers).length,
+            bookmarksCount: s.bookmarks.length,
+            questionsCount: s.questions?.length || 0
+          });
+
+          return hasAnswers || hasBookmarks;
+        });
+
+        console.log('📊 Filtered sessions:', filteredSessions.length);
         setSessions(filteredSessions);
       } catch (error) {
-        console.error('Failed to load sessions:', error);
+        console.error('❌ Failed to load sessions:', error);
       } finally {
         setLoading(false);
       }
