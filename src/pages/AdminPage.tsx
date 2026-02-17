@@ -177,7 +177,7 @@ interface QuestionFormProps {
 }
 
 const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormProps) => {
-  const empty = { text: '', a: '', b: '', c: '', d: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', difficulty: 1 as 1|2|3, tags: '' };
+  const empty = { text: '', a: '', b: '', c: '', d: '', a_exp: '', b_exp: '', c_exp: '', d_exp: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', difficulty: 1 as 1|2|3, tags: '' };
   const [form, setFormState] = useState(empty);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -185,13 +185,12 @@ const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormP
   useEffect(() => {
     if (edit) {
       const opts: Record<string, string> = {};
-      edit.options.forEach(o => { opts[o.id] = o.text; });
+      const exps: Record<string, string> = {};
+      edit.options.forEach(o => { opts[o.id] = o.text; exps[o.id] = o.explanation ?? ''; });
       setFormState({
         text: edit.text,
-        a: opts['a'] ?? '',
-        b: opts['b'] ?? '',
-        c: opts['c'] ?? '',
-        d: opts['d'] ?? '',
+        a: opts['a'] ?? '', b: opts['b'] ?? '', c: opts['c'] ?? '', d: opts['d'] ?? '',
+        a_exp: exps['a'] ?? '', b_exp: exps['b'] ?? '', c_exp: exps['c'] ?? '', d_exp: exps['d'] ?? '',
         correct: edit.correctOptionId as 'a'|'b'|'c'|'d',
         explanation: edit.explanation,
         difficulty: edit.difficulty,
@@ -215,12 +214,12 @@ const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormP
     try {
       const input: Omit<QuestionInput, 'examId'> = {
         text: form.text.trim(),
-        options: [
-          { id: 'a', text: form.a.trim() },
-          { id: 'b', text: form.b.trim() },
-          { id: 'c', text: form.c.trim() },
-          { id: 'd', text: form.d.trim() },
-        ].filter(o => o.text),
+        options: ([
+          { id: 'a' as const, text: form.a.trim(), explanation: form.a_exp.trim() || undefined },
+          { id: 'b' as const, text: form.b.trim(), explanation: form.b_exp.trim() || undefined },
+          { id: 'c' as const, text: form.c.trim(), explanation: form.c_exp.trim() || undefined },
+          { id: 'd' as const, text: form.d.trim(), explanation: form.d_exp.trim() || undefined },
+        ] as { id: 'a'|'b'|'c'|'d'; text: string; explanation?: string }[]).filter(o => o.text),
         correctOptionId: form.correct,
         explanation: form.explanation.trim(),
         difficulty: form.difficulty,
@@ -248,25 +247,37 @@ const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormP
 
       <div>
         <label className="text-sm font-medium mb-1.5 block">보기 (A~D)</label>
-        <div className="space-y-2">
+        <div className="space-y-3">
           {(['a','b','c','d'] as const).map((id, i) => (
-            <div key={id} className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => set('correct', id)}
-                className={`h-7 w-7 rounded-full border-2 text-xs font-bold shrink-0 transition-all ${
-                  form.correct === id
-                    ? 'border-accent bg-accent text-accent-foreground'
-                    : 'border-muted-foreground/40 text-muted-foreground hover:border-accent/60'
-                }`}
-              >
-                {OPTION_LABELS[i]}
-              </button>
-              <Input
-                placeholder={`보기 ${OPTION_LABELS[i]}${i < 2 ? ' *' : ''}`}
-                value={form[id]}
-                onChange={e => set(id, e.target.value)}
-              />
+            <div key={id} className="space-y-1">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => set('correct', id)}
+                  className={`h-7 w-7 rounded-full border-2 text-xs font-bold shrink-0 transition-all ${
+                    form.correct === id
+                      ? 'border-accent bg-accent text-accent-foreground'
+                      : 'border-muted-foreground/40 text-muted-foreground hover:border-accent/60'
+                  }`}
+                >
+                  {OPTION_LABELS[i]}
+                </button>
+                <Input
+                  placeholder={`보기 ${OPTION_LABELS[i]}${i < 2 ? ' *' : ''}`}
+                  value={form[id]}
+                  onChange={e => set(id, e.target.value)}
+                />
+              </div>
+              {form[id].trim() && (
+                <div className="ml-9">
+                  <Input
+                    placeholder={`보기 ${OPTION_LABELS[i]} 설명 (선택) — 왜 이 보기가 맞거나 틀린지`}
+                    value={form[`${id}_exp` as keyof typeof form] as string}
+                    onChange={e => set(`${id}_exp`, e.target.value)}
+                    className="text-xs h-8"
+                  />
+                </div>
+              )}
             </div>
           ))}
         </div>

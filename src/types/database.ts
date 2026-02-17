@@ -85,6 +85,7 @@ export interface Database {
           question_id: string
           option_id: string
           text: string
+          explanation: string | null
           sort_order: number
         }
         Insert: {
@@ -92,6 +93,7 @@ export interface Database {
           question_id: string
           option_id: string
           text: string
+          explanation?: string | null
           sort_order: number
         }
         Update: {
@@ -99,6 +101,56 @@ export interface Database {
           question_id?: string
           option_id?: string
           text?: string
+          explanation?: string | null
+          sort_order?: number
+        }
+      }
+      exam_sets: {
+        Row: {
+          id: string
+          exam_id: string
+          name: string
+          type: 'full' | 'sample'
+          description: string | null
+          sort_order: number
+          is_active: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          exam_id: string
+          name: string
+          type: 'full' | 'sample'
+          description?: string | null
+          sort_order?: number
+          is_active?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          exam_id?: string
+          name?: string
+          type?: 'full' | 'sample'
+          description?: string | null
+          sort_order?: number
+          is_active?: boolean
+          created_at?: string
+        }
+      }
+      exam_set_questions: {
+        Row: {
+          set_id: string
+          question_id: string
+          sort_order: number
+        }
+        Insert: {
+          set_id: string
+          question_id: string
+          sort_order?: number
+        }
+        Update: {
+          set_id?: string
+          question_id?: string
           sort_order?: number
         }
       }
@@ -196,6 +248,19 @@ export interface Database {
           question_count: number
           created_at: string
           updated_at: string
+        }
+      }
+      exam_sets_view: {
+        Row: {
+          id: string
+          exam_id: string
+          name: string
+          type: 'full' | 'sample'
+          description: string | null
+          sort_order: number
+          is_active: boolean
+          created_at: string
+          question_count: number
         }
       }
     }

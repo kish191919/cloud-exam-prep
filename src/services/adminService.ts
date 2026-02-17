@@ -83,7 +83,7 @@ export async function updateSetQuestions(setId: string, questionIds: string[]): 
 export interface QuestionInput {
   examId: string;
   text: string;
-  options: { id: 'a' | 'b' | 'c' | 'd'; text: string }[];
+  options: { id: 'a' | 'b' | 'c' | 'd'; text: string; explanation?: string }[];
   correctOptionId: 'a' | 'b' | 'c' | 'd';
   explanation: string;
   difficulty: 1 | 2 | 3;
@@ -113,12 +113,14 @@ export async function createQuestion(input: QuestionInput): Promise<string> {
 
   const { error: optErr } = await supabase
     .from('question_options')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .insert(input.options.map((opt, idx) => ({
       question_id: questionId,
       option_id: opt.id,
       text: opt.text,
+      explanation: opt.explanation ?? null,
       sort_order: idx + 1,
-    })));
+    })) as any);
   if (optErr) throw optErr;
 
   const trimmedTags = input.tags.map(t => t.trim()).filter(Boolean);
@@ -148,12 +150,14 @@ export async function updateQuestion(questionId: string, input: Omit<QuestionInp
   await supabase.from('question_options').delete().eq('question_id', questionId);
   const { error: optErr } = await supabase
     .from('question_options')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .insert(input.options.map((opt, idx) => ({
       question_id: questionId,
       option_id: opt.id,
       text: opt.text,
+      explanation: opt.explanation ?? null,
       sort_order: idx + 1,
-    })));
+    })) as any);
   if (optErr) throw optErr;
 
   // Re-insert tags

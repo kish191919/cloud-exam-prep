@@ -106,7 +106,7 @@ const ExamResults = () => {
                       ? <CheckCircle className="h-5 w-5 text-success flex-shrink-0 mt-0.5" />
                       : <XCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />}
                     <div>
-                      <p className="text-sm font-semibold mb-1">{t('examResults.questionNumber', { number: i + 1 })} {q.text}</p>
+                      <p className="text-sm font-semibold mb-1 whitespace-pre-line">{t('examResults.questionNumber', { number: i + 1 })} {q.text}</p>
                       <div className="space-y-1">
                         {q.options.map(opt => {
                           const isUserPick = opt.id === userAnswer;
@@ -122,17 +122,26 @@ const ExamResults = () => {
                                   : 'text-muted-foreground'
                               }`}
                             >
-                              <span className="font-semibold mr-2">{opt.id.toUpperCase()}.</span>
-                              {opt.text}
-                              {isAnswer && ' ✓'}
-                              {isUserPick && !isAnswer && ' ✗'}
+                              <div className="flex items-start gap-1">
+                                <span className="font-semibold shrink-0">{opt.id.toUpperCase()}.</span>
+                                <div className="flex-1">
+                                  <span>{opt.text}</span>
+                                  {isAnswer && <span className="ml-1">✓</span>}
+                                  {isUserPick && !isAnswer && <span className="ml-1">✗</span>}
+                                  {opt.explanation && (
+                                    <p className="text-xs mt-0.5 opacity-80 italic">{opt.explanation}</p>
+                                  )}
+                                </div>
+                              </div>
                             </div>
                           );
                         })}
                       </div>
-                      <div className="mt-3 p-3 rounded bg-muted text-sm text-muted-foreground">
-                        <strong>{t('examResults.explanation')}</strong> {q.explanation}
-                      </div>
+                      {q.explanation && (
+                        <div className="mt-3 p-3 rounded bg-muted text-sm text-muted-foreground">
+                          <strong>{t('examResults.explanation')}</strong> {q.explanation}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

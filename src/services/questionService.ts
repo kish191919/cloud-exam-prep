@@ -12,6 +12,7 @@ interface QuestionRow {
     id: string;
     option_id: string;
     text: string;
+    explanation: string | null;
     sort_order: number;
   }>;
   question_tags: Array<{
@@ -28,6 +29,7 @@ export async function getQuestionsForExam(examId: string): Promise<Question[]> {
         id,
         option_id,
         text,
+        explanation,
         sort_order
       ),
       question_tags (
@@ -52,6 +54,7 @@ export async function getQuestionsForExam(examId: string): Promise<Question[]> {
       .map(opt => ({
         id: opt.option_id,
         text: opt.text,
+        explanation: opt.explanation ?? undefined,
       })),
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
@@ -69,6 +72,7 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
         id,
         option_id,
         text,
+        explanation,
         sort_order
       ),
       question_tags (
@@ -95,6 +99,7 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
       .map(opt => ({
         id: opt.option_id,
         text: opt.text,
+        explanation: opt.explanation ?? undefined,
       })),
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
@@ -115,6 +120,7 @@ export async function getQuestionsByDifficulty(
         id,
         option_id,
         text,
+        explanation,
         sort_order
       ),
       question_tags (
@@ -140,6 +146,7 @@ export async function getQuestionsByDifficulty(
       .map(opt => ({
         id: opt.option_id,
         text: opt.text,
+        explanation: opt.explanation ?? undefined,
       })),
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
@@ -187,6 +194,7 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
         question_options (
           option_id,
           text,
+          explanation,
           sort_order
         ),
         question_tags (
@@ -209,7 +217,7 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
       text: q.text,
       options: (q.question_options as any[])
         .sort((a: any, b: any) => a.sort_order - b.sort_order)
-        .map((opt: any) => ({ id: opt.option_id, text: opt.text })),
+        .map((opt: any) => ({ id: opt.option_id, text: opt.text, explanation: opt.explanation ?? undefined })),
       correctOptionId: q.correct_option_id,
       explanation: q.explanation,
       tags: (q.question_tags as any[]).map((t: any) => t.tag),
@@ -227,6 +235,7 @@ export async function getQuestionsByTag(examId: string, tag: string): Promise<Qu
         id,
         option_id,
         text,
+        explanation,
         sort_order
       ),
       question_tags!inner (
@@ -252,6 +261,7 @@ export async function getQuestionsByTag(examId: string, tag: string): Promise<Qu
       .map(opt => ({
         id: opt.option_id,
         text: opt.text,
+        explanation: opt.explanation ?? undefined,
       })),
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,

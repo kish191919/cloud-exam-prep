@@ -38,7 +38,7 @@ const QuestionDisplay = ({
         </Button>
       </div>
 
-      <h2 className="text-lg font-semibold leading-relaxed mb-6">{question.text}</h2>
+      <h2 className="text-lg font-semibold leading-relaxed mb-6 whitespace-pre-line">{question.text}</h2>
 
       <div className="space-y-3">
         {question.options.map((option) => {
