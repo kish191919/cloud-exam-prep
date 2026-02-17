@@ -184,8 +184,11 @@ const ReviewPage = () => {
       });
     }
 
-    // Track the most recent bookmark status for each question
-    const timestamp = s.submittedAt || s.startedAt;
+    // Track the most recent bookmark status for each question.
+    // Use startedAt (not submittedAt) so that a newer in-progress session always
+    // wins over an older submitted session (e.g. a review session submitted later
+    // but started earlier should not override a newer exam session's bookmarks).
+    const timestamp = s.startedAt;
 
     // Track all questions in the session (most reliable: covers bookmarked + answered + un-bookmarked)
     s.questions.forEach(q => {
