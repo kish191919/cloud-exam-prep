@@ -70,9 +70,16 @@ export async function createSession(
   }
 }
 
-export function getAllSessions(): ExamSession[] {
-  // For now, use localStorage (will be updated when auth is implemented)
-  return Object.values(loadSessionsFromLocalStorage()).sort((a, b) => b.startedAt - a.startedAt);
+export async function getAllSessions(): Promise<ExamSession[]> {
+  try {
+    // Try to get sessions from Supabase
+    const sessions = await sessionService.getAllSessions();
+    return sessions;
+  } catch (error) {
+    console.warn('Failed to fetch sessions from Supabase, using localStorage:', error);
+    // Fallback to localStorage
+    return Object.values(loadSessionsFromLocalStorage()).sort((a, b) => b.startedAt - a.startedAt);
+  }
 }
 
 export async function getSession(

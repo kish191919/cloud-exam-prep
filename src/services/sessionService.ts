@@ -108,8 +108,20 @@ export async function getAllSessions(userId?: string): Promise<ExamSession[]> {
     throw error;
   }
 
-  // Return sessions without questions for list view
-  return (data || []).map(s => dbToExamSession(s, []));
+  // Load questions for each session
+  const sessionsWithQuestions = await Promise.all(
+    (data || []).map(async (s) => {
+      try {
+        const questions = await getQuestionsForExam(s.exam_id);
+        return dbToExamSession(s, questions);
+      } catch (error) {
+        console.error(`Error loading questions for session ${s.id}:`, error);
+        return dbToExamSession(s, []);
+      }
+    })
+  );
+
+  return sessionsWithQuestions;
 }
 
 export async function updateSession(session: ExamSession): Promise<void> {

@@ -8,10 +8,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Link } from 'react-router-dom';
 import {
   XCircle, Bookmark, ArrowRight, ChevronDown, ChevronUp,
-  CheckCircle2, Eye, EyeOff,
+  CheckCircle2, Eye, EyeOff, Loader2,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import type { Question } from '@/types/exam';
+import type { Question, ExamSession } from '@/types/exam';
 
 interface QuestionWithMeta extends Question {
   sessionId: string;
@@ -25,14 +25,30 @@ const REVIEWED_KEY = 'cloudmaster_reviewed_questions';
 
 const ReviewPage = () => {
   const { t } = useTranslation('pages');
-  // Include all sessions that have answers or bookmarks (not just submitted ones)
-  const sessions = getAllSessions().filter(s =>
-    Object.keys(s.answers).length > 0 || s.bookmarks.length > 0
-  );
-
+  const [sessions, setSessions] = useState<ExamSession[]>([]);
+  const [loading, setLoading] = useState(true);
   const [reviewedQuestions, setReviewedQuestions] = useState<Record<string, boolean>>({});
   const [showReviewed, setShowReviewed] = useState(false);
   const [expandedExams, setExpandedExams] = useState<Record<string, boolean>>({});
+
+  // Load sessions from Supabase/localStorage
+  useEffect(() => {
+    async function loadSessions() {
+      try {
+        const allSessions = await getAllSessions();
+        // Include all sessions that have answers or bookmarks (not just submitted ones)
+        const filteredSessions = allSessions.filter(s =>
+          Object.keys(s.answers).length > 0 || s.bookmarks.length > 0
+        );
+        setSessions(filteredSessions);
+      } catch (error) {
+        console.error('Failed to load sessions:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadSessions();
+  }, []);
 
   // Load reviewed questions from localStorage
   useEffect(() => {
@@ -165,6 +181,16 @@ const ReviewPage = () => {
   const totalWrong = Object.values(wrongByExam).flat().length;
   const totalBookmarks = Object.values(bookmarksByExam).flat().length;
   const unreviewedWrong = Object.values(wrongByExam).flat().filter(q => !reviewedQuestions[q.id]).length;
+
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="max-w-5xl mx-auto flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
