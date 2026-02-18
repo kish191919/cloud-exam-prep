@@ -245,14 +245,7 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
     .select(`
       sort_order,
       questions!inner (
-        id,
-        text,
-        correct_option_id,
-        explanation,
-        difficulty,
-        key_points,
-        key_point_images,
-        ref_links,
+        *,
         question_options (
           option_id,
           text,
