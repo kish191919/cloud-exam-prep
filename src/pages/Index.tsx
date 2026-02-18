@@ -16,7 +16,7 @@ import { usePWAInstall } from '@/hooks/usePWAInstall';
 
 const Index = () => {
   const { t } = useTranslation(['pages', 'common']);
-  const { canInstall, isInstalled, install } = usePWAInstall();
+  const { canInstall, install } = usePWAInstall();
 
   const features = t('index.features', { returnObjects: true }) as Array<{ title: string; desc: string; icon: string }>;
   const steps = t('index.steps', { returnObjects: true }) as Array<{ num: string; title: string; desc: string }>;
@@ -170,15 +170,15 @@ const faqs = t('index.faq.questions', { returnObjects: true }) as Array<{ q: str
                 {t('index.cta.button')} <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            {!isInstalled && (
+            {canInstall && (
               <Button
                 size="lg"
                 variant="ghost"
-                onClick={canInstall ? install : () => window.open(window.location.origin, '_blank')}
+                onClick={install}
                 className="border-2 border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground text-base px-8 py-6 backdrop-blur-sm"
               >
                 <Smartphone className="mr-2 h-5 w-5" />
-                {canInstall ? '앱으로 설치' : '앱 열기'}
+                앱으로 설치
               </Button>
             )}
           </div>
