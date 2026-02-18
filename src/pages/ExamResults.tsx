@@ -42,13 +42,6 @@ const ExamResults = () => {
       const s = await getSession(sessionId);
       setSession(s);
       setLoading(false);
-      // Auto-expand wrong questions on load
-      if (s) {
-        const wrongIds = s.questions
-          .filter(q => s.answers[q.id] && s.answers[q.id] !== q.correctOptionId)
-          .map(q => q.id);
-        setExpandedIds(new Set(wrongIds));
-      }
     }
     load();
   }, [sessionId]);
@@ -258,7 +251,7 @@ const ExamResults = () => {
             </div>
           </CardHeader>
 
-          <CardContent className="space-y-2 pt-0">
+          <CardContent className="space-y-3 pt-0">
             {filteredQuestions.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-6">
                 {isKo ? '해당하는 문제가 없습니다.' : 'No questions match this filter.'}
@@ -272,10 +265,10 @@ const ExamResults = () => {
                 const isExpanded = expandedIds.has(q.id);
 
                 return (
-                  <div key={q.id} className="border rounded-lg overflow-hidden">
+                  <div key={q.id} className={`border rounded-lg overflow-hidden transition-shadow ${isExpanded ? 'shadow-md ring-1 ring-border' : ''}`}>
                     {/* Header — always visible, question text full when expanded */}
                     <button
-                      className="w-full text-left px-4 py-3 flex items-start gap-3 hover:bg-muted/30 transition-colors"
+                      className="w-full text-left px-4 py-3.5 flex items-start gap-3 hover:bg-muted/30 transition-colors"
                       onClick={() => toggleExpand(q.id)}
                     >
                       <div className="shrink-0 mt-0.5">
