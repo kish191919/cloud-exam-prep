@@ -9,6 +9,7 @@ interface QuestionRow {
   explanation: string;
   difficulty: number;
   key_points: string | null;
+  key_point_images: string[] | null;
   ref_links: any;
   question_options: Array<{
     id: string;
@@ -63,6 +64,7 @@ export async function getQuestionsForExam(examId: string): Promise<Question[]> {
     tags: q.question_tags.map(t => t.tag),
     difficulty: q.difficulty as 1 | 2 | 3,
     keyPoints: q.key_points ?? undefined,
+    keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   }));
 }
@@ -110,6 +112,7 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
     tags: q.question_tags.map(t => t.tag),
     difficulty: q.difficulty as 1 | 2 | 3,
     keyPoints: q.key_points ?? undefined,
+    keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   };
 }
@@ -156,6 +159,7 @@ export async function getQuestionsByIds(questionIds: string[]): Promise<Question
     tags: q.question_tags.map(t => t.tag),
     difficulty: q.difficulty as 1 | 2 | 3,
     keyPoints: q.key_points ?? undefined,
+    keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   }));
 }
@@ -205,6 +209,7 @@ export async function getQuestionsByDifficulty(
     tags: q.question_tags.map(t => t.tag),
     difficulty: q.difficulty as 1 | 2 | 3,
     keyPoints: q.key_points ?? undefined,
+    keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   }));
 }
@@ -246,6 +251,7 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
         explanation,
         difficulty,
         key_points,
+        key_point_images,
         ref_links,
         question_options (
           option_id,
@@ -326,6 +332,7 @@ export async function getQuestionsByTag(examId: string, tag: string): Promise<Qu
     tags: q.question_tags.map(t => t.tag),
     difficulty: q.difficulty as 1 | 2 | 3,
     keyPoints: q.key_points ?? undefined,
+    keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   }));
 }

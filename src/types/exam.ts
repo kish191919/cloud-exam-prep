@@ -13,6 +13,7 @@ export interface Question {
   tags: string[];
   difficulty: 1 | 2 | 3;
   keyPoints?: string;
+  keyPointImages?: string[];
   refLinks?: { name: string; url: string }[];
 }
 
