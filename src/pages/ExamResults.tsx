@@ -265,10 +265,10 @@ const ExamResults = () => {
                 const isExpanded = expandedIds.has(q.id);
 
                 return (
-                  <div key={q.id} className={`border rounded-lg overflow-hidden transition-shadow ${isExpanded ? 'shadow-md ring-1 ring-border' : ''}`}>
+                  <div key={q.id} className={`border rounded-lg overflow-hidden transition-all ${isExpanded ? 'ring-2 ring-accent' : ''}`}>
                     {/* Header — always visible, question text full when expanded */}
                     <button
-                      className="w-full text-left px-4 py-3.5 flex items-start gap-3 hover:bg-muted/30 transition-colors"
+                      className={`w-full text-left px-4 py-3.5 flex items-start gap-3 transition-colors ${isExpanded ? 'bg-accent/10 hover:bg-accent/20' : 'hover:bg-muted/30'}`}
                       onClick={() => toggleExpand(q.id)}
                     >
                       <div className="shrink-0 mt-0.5">
@@ -291,7 +291,7 @@ const ExamResults = () => {
 
                     {/* Expanded: options + explanation only (no repeated question text) */}
                     {isExpanded && (
-                      <div className="border-t px-4 py-4 space-y-4 bg-muted/20">
+                      <div className="border-t px-4 py-4 space-y-4 bg-muted/20 cursor-pointer" onClick={() => toggleExpand(q.id)}>
                         {/* Options */}
                         <div className="space-y-1.5">
                           {q.options.map((opt, oi) => {
