@@ -214,7 +214,7 @@
     "submitDialog": {
       "title": "Submit Exam?",
       "description": "Once submitted, you cannot change your answers.",
-      "unansweredWarning": "You have <strong>{{count}}</strong> unanswered question(s): #{{indices}}",
+      "unansweredWarning": "{{count}} question(s) not yet answered.",
       "cancel": "Cancel",
       "confirm": "Confirm Submit"
     }

@@ -360,11 +360,20 @@ const ExamSession = () => {
             </DialogDescription>
           </DialogHeader>
           {unansweredIndices.length > 0 && (
-            <div className="flex items-start gap-2 p-3 rounded-lg bg-destructive/10 text-sm">
-              <AlertTriangle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
-              <span>
-                {t('examSession.submitDialog.unansweredWarning', { count: unansweredIndices.length, indices: unansweredIndices.join(', #') })}
-              </span>
+            <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-destructive flex-shrink-0" />
+                <span className="text-sm font-medium text-destructive">
+                  {t('examSession.submitDialog.unansweredWarning', { count: unansweredIndices.length })}
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-1.5 pl-6">
+                {unansweredIndices.map(n => (
+                  <span key={n} className="text-xs px-2 py-1 rounded-md bg-destructive/15 text-destructive font-semibold">
+                    #{n}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
           <DialogFooter>
