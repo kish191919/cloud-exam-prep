@@ -9,14 +9,14 @@ import {
 } from '@/components/ui/accordion';
 import {
   Shield, BarChart3, Clock, BookOpen, ArrowRight,
-  Cloud, Zap, Target, Users, Download, Smartphone,
+  Cloud, Zap, Target, Users, Smartphone,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
 
 const Index = () => {
   const { t } = useTranslation(['pages', 'common']);
-  const { canInstall, install } = usePWAInstall();
+  const { canInstall, isInstalled, install } = usePWAInstall();
 
   const features = t('index.features', { returnObjects: true }) as Array<{ title: string; desc: string; icon: string }>;
   const steps = t('index.steps', { returnObjects: true }) as Array<{ num: string; title: string; desc: string }>;
@@ -157,55 +157,6 @@ const faqs = t('index.faq.questions', { returnObjects: true }) as Array<{ q: str
         </div>
       </section>
 
-      {/* App Install Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-3xl">
-          <div className="rounded-2xl border bg-card p-8 md:p-10 shadow-lg flex flex-col md:flex-row items-center gap-8">
-            {/* Icon */}
-            <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-accent/10 flex items-center justify-center shadow-inner">
-              <Smartphone className="h-10 w-10 text-accent" />
-            </div>
-
-            {/* Text */}
-            <div className="flex-1 text-center md:text-left">
-              <h2 className="text-2xl font-bold mb-1">앱으로 설치하기</h2>
-              <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
-                홈 화면에 추가하면 앱처럼 빠르게 실행할 수 있어요.<br />
-                인터넷 연결 없이도 최근 학습 내용을 이어갈 수 있습니다.
-              </p>
-
-              {canInstall ? (
-                <Button
-                  onClick={install}
-                  size="lg"
-                  className="bg-accent text-accent-foreground hover:bg-accent/90 font-bold px-8 gap-2"
-                >
-                  <Download className="h-5 w-5" />
-                  지금 설치하기
-                </Button>
-              ) : (
-                <div className="flex flex-col sm:flex-row gap-4 text-sm">
-                  <div className="flex items-start gap-3 bg-muted rounded-xl px-4 py-3 flex-1">
-                    <span className="text-xl leading-none">🤖</span>
-                    <div>
-                      <div className="font-semibold mb-0.5">Android / PC</div>
-                      <div className="text-muted-foreground">주소창 오른쪽 <span className="font-medium text-foreground">설치 아이콘</span> 클릭</div>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3 bg-muted rounded-xl px-4 py-3 flex-1">
-                    <span className="text-xl leading-none">🍎</span>
-                    <div>
-                      <div className="font-semibold mb-0.5">iPhone / iPad</div>
-                      <div className="text-muted-foreground">Safari 공유 버튼 → <span className="font-medium text-foreground">홈 화면에 추가</span></div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="hero-gradient text-primary-foreground py-20 px-4">
         <div className="container mx-auto text-center max-w-2xl">
@@ -213,11 +164,24 @@ const faqs = t('index.faq.questions', { returnObjects: true }) as Array<{ q: str
           <p className="text-primary-foreground/70 mb-8 text-lg">
             {t('index.cta.subtitle')}
           </p>
-          <Link to="/exams">
-            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-6 accent-glow">
-              {t('index.cta.button')} <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link to="/exams">
+              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-6 accent-glow">
+                {t('index.cta.button')} <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            {!isInstalled && (
+              <Button
+                size="lg"
+                variant="ghost"
+                onClick={canInstall ? install : () => window.open(window.location.origin, '_blank')}
+                className="border-2 border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground text-base px-8 py-6 backdrop-blur-sm"
+              >
+                <Smartphone className="mr-2 h-5 w-5" />
+                {canInstall ? '앱으로 설치' : '앱 열기'}
+              </Button>
+            )}
+          </div>
         </div>
       </section>
 
