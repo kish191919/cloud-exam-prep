@@ -86,6 +86,10 @@ const ExamResults = () => {
     return session.questions;
   })();
 
+  // 오답/복습/북마크 등 필터된 세션인지 판별
+  const isFilteredSession = [' - 오답', ' - 복습', ' - 북마크', ' - 테스트', ' - Wrong', ' - Review', ' - Bookmark', ' - Test']
+    .some(suffix => session.examTitle.includes(suffix));
+
   // ── Handlers ────────────────────────────────────────────────────────────
   const handlePracticeWrong = async () => {
     if (wrongQs.length === 0 || creating) return;
@@ -104,7 +108,12 @@ const ExamResults = () => {
     } finally { setCreating(false); }
   };
 
+  // 필터된 세션이면 시험 목록으로, 일반 세션이면 동일 문제 전체 재시도
   const handleRetryAll = async () => {
+    if (isFilteredSession) {
+      navigate('/exams');
+      return;
+    }
     if (creating) return;
     setCreating(true);
     try {
@@ -211,7 +220,9 @@ const ExamResults = () => {
               )}
               <Button onClick={handleRetryAll} disabled={creating} variant="outline">
                 <RotateCcw className="h-4 w-4 mr-1.5" />
-                {isKo ? '전체 재시도' : 'Retry All'}
+                {isFilteredSession
+                  ? (isKo ? '전체 시험 보기' : 'Full Exam')
+                  : (isKo ? '전체 재시도' : 'Retry All')}
               </Button>
               <Link to="/review">
                 <Button variant="ghost" className="text-muted-foreground">
