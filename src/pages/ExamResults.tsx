@@ -3,7 +3,6 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getSession, createSession } from '@/hooks/useExamSession';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import {
   CheckCircle2, XCircle, RotateCcw, ArrowLeft,
   Trophy, Target, Clock, Minus, Loader2, PenTool,
@@ -24,7 +23,7 @@ function formatTime(ms: number): string {
 }
 
 const ExamResults = () => {
-  const { t, i18n } = useTranslation('pages');
+  const { i18n } = useTranslation('pages');
   const isKo = i18n.language === 'ko';
   const { sessionId } = useParams();
   const navigate = useNavigate();
@@ -60,8 +59,8 @@ const ExamResults = () => {
     return (
       <AppLayout>
         <div className="text-center py-20">
-          <p className="text-muted-foreground">{t('examResults.notFound')}</p>
-          <Link to="/exams"><Button className="mt-4">{t('examSession.backToExams')}</Button></Link>
+          <p className="text-muted-foreground">{isKo ? '결과를 찾을 수 없습니다.' : 'Results not found.'}</p>
+          <Link to="/exams"><Button className="mt-4">{isKo ? '시험 목록으로' : 'Back to Exams'}</Button></Link>
         </div>
       </AppLayout>
     );
@@ -211,27 +210,32 @@ const ExamResults = () => {
             </div>
 
             {/* Action buttons */}
-            <div className="flex flex-wrap gap-2 mt-6 pt-5 border-t">
+            <div className="mt-6 pt-5 border-t space-y-2.5">
               {wrongQs.length > 0 && (
-                <Button onClick={handlePracticeWrong} disabled={creating} className="bg-accent text-accent-foreground hover:bg-accent/90">
+                <Button onClick={handlePracticeWrong} disabled={creating} className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
                   <PenTool className="h-4 w-4 mr-1.5" />
                   {isKo ? `오답 테스트 (${wrongQs.length}문제)` : `Wrong Test (${wrongQs.length})`}
                 </Button>
               )}
-              <Button onClick={() => handleRetryAll('exam')} disabled={creating} variant="outline">
-                <RotateCcw className="h-4 w-4 mr-1.5" />
-                {isFilteredSession
-                  ? (isKo ? '전체 시험 보기' : 'Full Exam')
-                  : (isKo ? '전체 재시도 (실전)' : 'Retry (Exam)')}
-              </Button>
-              {!isFilteredSession && (
-                <Button onClick={() => handleRetryAll('practice')} disabled={creating} variant="outline">
+              {isFilteredSession ? (
+                <Button onClick={() => handleRetryAll('exam')} disabled={creating} variant="outline" className="w-full">
                   <RotateCcw className="h-4 w-4 mr-1.5" />
-                  {isKo ? '전체 재시도 (연습)' : 'Retry (Practice)'}
+                  {isKo ? '전체 시험 보기' : 'Full Exam'}
                 </Button>
+              ) : (
+                <div className="grid grid-cols-2 gap-2">
+                  <Button onClick={() => handleRetryAll('exam')} disabled={creating} variant="outline" className="w-full">
+                    <RotateCcw className="h-4 w-4 mr-1.5 shrink-0" />
+                    {isKo ? '실전 재시도' : 'Retry (Exam)'}
+                  </Button>
+                  <Button onClick={() => handleRetryAll('practice')} disabled={creating} variant="outline" className="w-full">
+                    <RotateCcw className="h-4 w-4 mr-1.5 shrink-0" />
+                    {isKo ? '연습 재시도' : 'Retry (Practice)'}
+                  </Button>
+                </div>
               )}
-              <Link to="/review">
-                <Button variant="ghost" className="text-muted-foreground">
+              <Link to="/review" className="block">
+                <Button variant="ghost" className="w-full text-muted-foreground">
                   <ArrowLeft className="h-4 w-4 mr-1.5" />
                   {isKo ? '복습 페이지' : 'Review Page'}
                 </Button>
