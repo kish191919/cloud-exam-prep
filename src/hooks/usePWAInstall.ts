@@ -6,40 +6,45 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export function usePWAInstall() {
-  const [promptEvent, setPromptEvent] = useState<BeforeInstallPromptEvent | null>(null);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const [promptEvent, setPromptEvent] = useState<BeforeInstallPromptEvent | null>(
+    // Pick up event captured before React mounted
+    () => (window as any).__pwaInstallPrompt ?? null
+  );
+  const [isInstalled, setIsInstalled] = useState(
+    () => window.matchMedia('(display-mode: standalone)').matches
+  );
 
   useEffect(() => {
-    // Already installed (running in standalone mode)
-    if (window.matchMedia('(display-mode: standalone)').matches) {
+    if (isInstalled) return;
+
+    const onReady = () => {
+      const e = (window as any).__pwaInstallPrompt;
+      if (e) setPromptEvent(e);
+    };
+    window.addEventListener('pwaInstallReady', onReady);
+    window.addEventListener('appinstalled', () => {
       setIsInstalled(true);
-      return;
-    }
-
-    const handler = (e: Event) => {
-      e.preventDefault();
-      setPromptEvent(e as BeforeInstallPromptEvent);
-    };
-
-    window.addEventListener('beforeinstallprompt', handler);
-    window.addEventListener('appinstalled', () => setIsInstalled(true));
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handler);
-    };
-  }, []);
+      setPromptEvent(null);
+    });
+    return () => window.removeEventListener('pwaInstallReady', onReady);
+  }, [isInstalled]);
 
   const install = async () => {
-    if (!promptEvent) return;
+    if (!promptEvent) return false;
     await promptEvent.prompt();
     const { outcome } = await promptEvent.userChoice;
     if (outcome === 'accepted') {
       setPromptEvent(null);
       setIsInstalled(true);
+      (window as any).__pwaInstallPrompt = null;
+      return true;
     }
+    return false;
   };
 
-  const canInstall = !!promptEvent && !isInstalled;
-
-  return { canInstall, isInstalled, install };
+  return {
+    canInstall: !!promptEvent && !isInstalled,
+    isInstalled,
+    install,
+  };
 }

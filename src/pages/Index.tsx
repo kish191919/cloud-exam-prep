@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/accordion';
 import {
   Shield, BarChart3, Clock, BookOpen, ArrowRight,
-  Cloud, Zap, Target, Star, Users, Download, Smartphone,
+  Cloud, Zap, Target, Users, Download, Smartphone,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
@@ -79,27 +79,6 @@ const faqs = t('index.faq.questions', { returnObjects: true }) as Array<{ q: str
               </Button>
             </a>
           </div>
-
-          {/* PWA Install Banner */}
-          {canInstall && (
-            <div className="flex justify-center mb-10">
-              <button
-                onClick={install}
-                className="group flex items-center gap-3 px-6 py-3 rounded-2xl bg-primary-foreground/10 border border-primary-foreground/20 backdrop-blur-sm hover:bg-primary-foreground/20 transition-all duration-300 hover:scale-105 shadow-lg"
-              >
-                <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors">
-                  <Smartphone className="h-4 w-4 text-accent" />
-                </div>
-                <div className="text-left">
-                  <div className="text-xs text-primary-foreground/60 leading-none mb-0.5">앱으로 설치하기</div>
-                  <div className="text-sm font-semibold text-primary-foreground flex items-center gap-1.5">
-                    홈 화면에 추가
-                    <Download className="h-3.5 w-3.5 text-accent" />
-                  </div>
-                </div>
-              </button>
-            </div>
-          )}
 
           {/* Stats Section */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -175,6 +154,55 @@ const faqs = t('index.faq.questions', { returnObjects: true }) as Array<{ q: str
               </AccordionItem>
             ))}
           </Accordion>
+        </div>
+      </section>
+
+      {/* App Install Section */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-3xl">
+          <div className="rounded-2xl border bg-card p-8 md:p-10 shadow-lg flex flex-col md:flex-row items-center gap-8">
+            {/* Icon */}
+            <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-accent/10 flex items-center justify-center shadow-inner">
+              <Smartphone className="h-10 w-10 text-accent" />
+            </div>
+
+            {/* Text */}
+            <div className="flex-1 text-center md:text-left">
+              <h2 className="text-2xl font-bold mb-1">앱으로 설치하기</h2>
+              <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
+                홈 화면에 추가하면 앱처럼 빠르게 실행할 수 있어요.<br />
+                인터넷 연결 없이도 최근 학습 내용을 이어갈 수 있습니다.
+              </p>
+
+              {canInstall ? (
+                <Button
+                  onClick={install}
+                  size="lg"
+                  className="bg-accent text-accent-foreground hover:bg-accent/90 font-bold px-8 gap-2"
+                >
+                  <Download className="h-5 w-5" />
+                  지금 설치하기
+                </Button>
+              ) : (
+                <div className="flex flex-col sm:flex-row gap-4 text-sm">
+                  <div className="flex items-start gap-3 bg-muted rounded-xl px-4 py-3 flex-1">
+                    <span className="text-xl leading-none">🤖</span>
+                    <div>
+                      <div className="font-semibold mb-0.5">Android / PC</div>
+                      <div className="text-muted-foreground">주소창 오른쪽 <span className="font-medium text-foreground">설치 아이콘</span> 클릭</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 bg-muted rounded-xl px-4 py-3 flex-1">
+                    <span className="text-xl leading-none">🍎</span>
+                    <div>
+                      <div className="font-semibold mb-0.5">iPhone / iPad</div>
+                      <div className="text-muted-foreground">Safari 공유 버튼 → <span className="font-medium text-foreground">홈 화면에 추가</span></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 
