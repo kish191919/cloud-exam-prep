@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from '@/components/ui/dialog';
-import { ChevronLeft, ChevronRight, Menu, Send, Cloud, AlertTriangle, Loader2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Menu, Send, Cloud, AlertTriangle, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { seededShuffle } from '@/utils/shuffle';
@@ -265,6 +265,43 @@ const ExamSession = () => {
               {i + 1}
             </button>
           ))}
+        </div>
+      )}
+
+      {/* Practice mode: question status strip (correct/wrong indicators) */}
+      {!isExamMode && mode === 'practice' && (
+        <div className="flex gap-1 px-3 py-2 overflow-x-auto border-t bg-card shrink-0">
+          {session.questions.map((q, i) => {
+            const answered = session.answers[q.id];
+            const isCorrect = answered && answered === q.correctOptionId;
+            const isWrong = answered && answered !== q.correctOptionId;
+            const isCurrent = i === session.currentIndex;
+
+            return (
+              <button
+                key={q.id}
+                onClick={() => navigateTo(i)}
+                className={`relative flex-shrink-0 w-8 h-8 rounded text-xs font-semibold flex items-center justify-center transition-all ${
+                  isCurrent
+                    ? 'ring-2 ring-offset-1 ring-accent'
+                    : ''
+                } ${
+                  isCorrect
+                    ? 'bg-green-500 text-white'
+                    : isWrong
+                    ? 'bg-red-400 text-white'
+                    : 'bg-secondary text-secondary-foreground'
+                }`}
+              >
+                {isCorrect
+                  ? <CheckCircle2 className="h-4 w-4" />
+                  : isWrong
+                  ? <XCircle className="h-4 w-4" />
+                  : i + 1
+                }
+              </button>
+            );
+          })}
         </div>
       )}
 
