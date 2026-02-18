@@ -4,11 +4,10 @@ import { getSession, createSession } from '@/hooks/useExamSession';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
 import {
   CheckCircle2, XCircle, RotateCcw, ArrowLeft, BookOpen,
   Trophy, Target, Clock, Minus, Loader2, PenTool,
-  TrendingDown, ChevronDown, ChevronUp, Lightbulb,
+  ChevronDown, ChevronUp, Lightbulb,
 } from 'lucide-react';
 import AppLayout from '@/components/AppLayout';
 import { useTranslation } from 'react-i18next';
@@ -86,13 +85,6 @@ const ExamResults = () => {
     ? formatTime(session.submittedAt - session.startedAt)
     : null;
 
-  // Topic breakdown sorted by performance (weakest first)
-  const topicRows = session.tagBreakdown
-    ? Object.entries(session.tagBreakdown)
-        .map(([tag, data]) => ({ tag, ...data, pct: Math.round((data.correct / data.total) * 100) }))
-        .sort((a, b) => a.pct - b.pct)
-    : [];
-
   // ── Filtered question list ───────────────────────────────────────────────
   const filteredQuestions: Question[] = (() => {
     if (filter === 'wrong')      return wrongQs;
@@ -155,9 +147,6 @@ const ExamResults = () => {
       return next;
     });
   };
-
-  const topicColor = (pct: number) =>
-    pct >= 70 ? 'bg-green-500' : pct >= 50 ? 'bg-yellow-500' : 'bg-red-500';
 
   const FILTERS: { key: FilterType; label: string; count: number }[] = [
     { key: 'all',        label: isKo ? '전체'   : 'All',        count: total },
@@ -267,53 +256,6 @@ const ExamResults = () => {
             </div>
           </CardContent>
         </Card>
-
-        {/* ── Topic breakdown ── */}
-        {topicRows.length > 0 && (
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex items-center gap-2">
-                <TrendingDown className="h-5 w-5 text-destructive" />
-                <CardTitle className="text-base">
-                  {isKo ? '토픽별 분석 (취약 순)' : 'Topic Analysis (Weakest First)'}
-                </CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {topicRows.map(({ tag, correct, total: tot, pct }) => (
-                <div key={tag}>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium truncate max-w-[60%]">{tag}</span>
-                    <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-xs text-muted-foreground">{correct}/{tot}</span>
-                      <Badge
-                        variant="outline"
-                        className={`text-xs font-semibold ${
-                          pct >= 70 ? 'border-green-400 text-green-600'
-                          : pct >= 50 ? 'border-yellow-400 text-yellow-600'
-                          : 'border-red-400 text-red-600'
-                        }`}
-                      >
-                        {pct}%
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className="relative h-2 bg-muted rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full ${topicColor(pct)}`}
-                      style={{ width: `${pct}%` }}
-                    />
-                    {/* 70% threshold */}
-                    <div className="absolute top-0 bottom-0 w-px bg-yellow-400 opacity-70" style={{ left: '70%' }} />
-                  </div>
-                </div>
-              ))}
-              <p className="text-xs text-muted-foreground pt-1">
-                {isKo ? '노란 선 = 합격 기준 (70%)' : 'Yellow line = passing threshold (70%)'}
-              </p>
-            </CardContent>
-          </Card>
-        )}
 
         {/* ── Question review ── */}
         <Card>
