@@ -40,7 +40,6 @@ const Navbar = () => {
 
         <nav className="hidden md:flex items-center gap-6">
           <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('navigation.features')}</a>
-          <a href="#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('navigation.pricing')}</a>
           <a href="#faq" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('navigation.faq')}</a>
           <LanguageSwitcher />
           <ThemeToggle />
@@ -105,7 +104,6 @@ const Navbar = () => {
       {open && (
         <div className="md:hidden border-t border-border bg-card px-4 py-4 space-y-3">
           <a href="#features" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>{t('navigation.features')}</a>
-          <a href="#pricing" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>{t('navigation.pricing')}</a>
           <a href="#faq" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>{t('navigation.faq')}</a>
 
           {user ? (
