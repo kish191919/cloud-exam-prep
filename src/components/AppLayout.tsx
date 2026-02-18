@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Cloud, BookOpen, RotateCcw, Settings2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
+import ThemeToggle from './ThemeToggle';
 import { useAuth } from '@/contexts/AuthContext';
 import { isAdmin } from '@/lib/admin';
 
@@ -40,6 +41,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
               </Link>
             ))}
             <LanguageSwitcher />
+            <ThemeToggle />
           </nav>
         </div>
       </header>

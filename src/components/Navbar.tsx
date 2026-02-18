@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
+import ThemeToggle from './ThemeToggle';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   DropdownMenu,
@@ -42,6 +43,7 @@ const Navbar = () => {
           <a href="#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('navigation.pricing')}</a>
           <a href="#faq" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('navigation.faq')}</a>
           <LanguageSwitcher />
+          <ThemeToggle />
 
           {user ? (
             <DropdownMenu>
@@ -93,6 +95,7 @@ const Navbar = () => {
 
         <div className="md:hidden flex items-center gap-2">
           <LanguageSwitcher />
+          <ThemeToggle />
           <Button variant="ghost" size="icon" onClick={() => setOpen(!open)}>
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
