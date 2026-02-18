@@ -235,32 +235,52 @@ export function useExamSession(sessionId: string | null) {
     setSession(prev => prev ? { ...prev, currentIndex: index } : null);
   }, []);
 
-  const submitExam = useCallback(() => {
-    setSession(prev => {
-      if (!prev || prev.status === 'submitted') return prev;
-      let correct = 0;
-      const tagStats: Record<string, { correct: number; total: number }> = {};
-      prev.questions.forEach(q => {
-        q.tags.forEach(tag => {
-          if (!tagStats[tag]) tagStats[tag] = { correct: 0, total: 0 };
-          tagStats[tag].total++;
-        });
-        if (prev.answers[q.id] === q.correctOptionId) {
-          correct++;
-          q.tags.forEach(tag => { tagStats[tag].correct++; });
-        }
+  // submitExam: computes the final result, saves immediately (no race condition),
+  // then updates React state. Returns the submitted session for callers to use.
+  const submitExam = useCallback(async (): Promise<ExamSession | null> => {
+    if (!session || session.status === 'submitted') return session ?? null;
+
+    let correct = 0;
+    const tagStats: Record<string, { correct: number; total: number }> = {};
+    session.questions.forEach(q => {
+      q.tags.forEach(tag => {
+        if (!tagStats[tag]) tagStats[tag] = { correct: 0, total: 0 };
+        tagStats[tag].total++;
       });
-      return {
-        ...prev,
-        status: 'submitted' as const,
-        submittedAt: Date.now(),
-        score: Math.round((correct / prev.questions.length) * 100),
-        correctCount: correct,
-        totalCount: prev.questions.length,
-        tagBreakdown: tagStats,
-      };
+      if (session.answers[q.id] === q.correctOptionId) {
+        correct++;
+        q.tags.forEach(tag => { tagStats[tag].correct++; });
+      }
     });
-  }, []);
+
+    const submittedSession: ExamSession = {
+      ...session,
+      status: 'submitted' as const,
+      submittedAt: Date.now(),
+      score: Math.round((correct / session.questions.length) * 100),
+      correctCount: correct,
+      totalCount: session.questions.length,
+      tagBreakdown: tagStats,
+    };
+
+    // Save immediately so results page can read it right away
+    if (isAnonymousSession(submittedSession.id)) {
+      const sessions = loadSessionsFromStorage(sessionStorage);
+      sessions[submittedSession.id] = submittedSession;
+      saveSessionsToStorage(sessions, sessionStorage);
+    } else {
+      try {
+        await sessionService.updateSession(submittedSession);
+      } catch {
+        const sessions = loadSessionsFromStorage(localStorage);
+        sessions[submittedSession.id] = submittedSession;
+        saveSessionsToStorage(sessions, localStorage);
+      }
+    }
+
+    setSession(submittedSession);
+    return submittedSession;
+  }, [session]);
 
   // Explicit save before navigation (avoids timing race with auto-save useEffect)
   const saveSession = useCallback(async (currentSession?: ExamSession | null) => {

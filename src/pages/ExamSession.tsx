@@ -42,17 +42,22 @@ const ExamSession = () => {
       ? '/review' : '/exams';
   })();
 
-  const handleTimeUp = useCallback(() => {
-    submitExam();
+  const handleTimeUp = useCallback(async () => {
+    await submitExam();
     if (sessionId) navigate(`/results/${sessionId}`, { replace: true });
   }, [submitExam, sessionId, navigate]);
 
-  // Save session before navigating away (practice/study modes don't call submitExam,
-  // so we need to ensure answers are persisted before ReviewPage loads)
+  // Practice mode → submit & show results page
+  // Study mode    → just save & go to review
   const handleFinish = useCallback(async () => {
-    await saveSession();
-    navigate(exitDestination);
-  }, [saveSession, navigate, exitDestination]);
+    if (mode === 'practice') {
+      const submitted = await submitExam();
+      if (submitted) navigate(`/results/${submitted.id}`);
+    } else {
+      await saveSession();
+      navigate(exitDestination);
+    }
+  }, [mode, submitExam, saveSession, navigate, exitDestination]);
 
   // Direction-aware navigation (sets slide direction before moving)
   const navigateTo = useCallback((index: number) => {
@@ -155,9 +160,9 @@ const ExamSession = () => {
     .map((q, i) => (!session.answers[q.id] ? i + 1 : null))
     .filter((x): x is number => x !== null);
 
-  const handleSubmit = () => {
-    submitExam();
-    navigate(`/results/${session.id}`);
+  const handleSubmit = async () => {
+    const submitted = await submitExam();
+    if (submitted) navigate(`/results/${submitted.id}`);
   };
 
   const modeInfo = MODE_LABEL[mode] ?? MODE_LABEL.exam;
