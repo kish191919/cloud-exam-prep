@@ -9,12 +9,14 @@ import {
 } from '@/components/ui/accordion';
 import {
   Shield, BarChart3, Clock, BookOpen, ArrowRight,
-  Cloud, Zap, Target, Star, Users,
+  Cloud, Zap, Target, Star, Users, Download, Smartphone,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { usePWAInstall } from '@/hooks/usePWAInstall';
 
 const Index = () => {
   const { t } = useTranslation(['pages', 'common']);
+  const { canInstall, install } = usePWAInstall();
 
   const features = t('index.features', { returnObjects: true }) as Array<{ title: string; desc: string; icon: string }>;
   const steps = t('index.steps', { returnObjects: true }) as Array<{ num: string; title: string; desc: string }>;
@@ -77,6 +79,27 @@ const faqs = t('index.faq.questions', { returnObjects: true }) as Array<{ q: str
               </Button>
             </a>
           </div>
+
+          {/* PWA Install Banner */}
+          {canInstall && (
+            <div className="flex justify-center mb-10">
+              <button
+                onClick={install}
+                className="group flex items-center gap-3 px-6 py-3 rounded-2xl bg-primary-foreground/10 border border-primary-foreground/20 backdrop-blur-sm hover:bg-primary-foreground/20 transition-all duration-300 hover:scale-105 shadow-lg"
+              >
+                <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors">
+                  <Smartphone className="h-4 w-4 text-accent" />
+                </div>
+                <div className="text-left">
+                  <div className="text-xs text-primary-foreground/60 leading-none mb-0.5">앱으로 설치하기</div>
+                  <div className="text-sm font-semibold text-primary-foreground flex items-center gap-1.5">
+                    홈 화면에 추가
+                    <Download className="h-3.5 w-3.5 text-accent" />
+                  </div>
+                </div>
+              </button>
+            </div>
+          )}
 
           {/* Stats Section */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
