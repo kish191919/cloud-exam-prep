@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import {
-  CheckCircle2, XCircle, RotateCcw, ArrowLeft, BookOpen,
+  CheckCircle2, XCircle, RotateCcw, ArrowLeft,
   Trophy, Target, Clock, Minus, Loader2, PenTool,
   ChevronDown, ChevronUp, Lightbulb,
 } from 'lucide-react';
@@ -94,23 +94,6 @@ const ExamResults = () => {
   })();
 
   // ── Handlers ────────────────────────────────────────────────────────────
-  const handleReviewWrong = async () => {
-    if (wrongQs.length === 0 || creating) return;
-    setCreating(true);
-    try {
-      const id = await createSession(
-        session.examId,
-        `${session.examTitle} - ${isKo ? '오답' : 'Wrong Answers'}`,
-        wrongQs,
-        Math.ceil(wrongQs.length * 2),
-        'study',
-        false,
-        user?.id || null
-      );
-      navigate(`/session/${id}`);
-    } finally { setCreating(false); }
-  };
-
   const handlePracticeWrong = async () => {
     if (wrongQs.length === 0 || creating) return;
     setCreating(true);
@@ -228,20 +211,10 @@ const ExamResults = () => {
             {/* Action buttons */}
             <div className="flex flex-wrap gap-2 mt-6 pt-5 border-t">
               {wrongQs.length > 0 && (
-                <>
-                  <Button
-                    onClick={handleReviewWrong}
-                    disabled={creating}
-                    className="bg-accent text-accent-foreground hover:bg-accent/90"
-                  >
-                    <BookOpen className="h-4 w-4 mr-1.5" />
-                    {isKo ? `오답 복습 (${wrongQs.length}문제)` : `Review Wrong (${wrongQs.length})`}
-                  </Button>
-                  <Button onClick={handlePracticeWrong} disabled={creating} variant="outline">
-                    <PenTool className="h-4 w-4 mr-1.5" />
-                    {isKo ? '오답 테스트' : 'Wrong Test'}
-                  </Button>
-                </>
+                <Button onClick={handlePracticeWrong} disabled={creating} className="bg-accent text-accent-foreground hover:bg-accent/90">
+                  <PenTool className="h-4 w-4 mr-1.5" />
+                  {isKo ? `오답 테스트 (${wrongQs.length}문제)` : `Wrong Test (${wrongQs.length})`}
+                </Button>
               )}
               <Button onClick={handleRetryAll} disabled={creating} variant="outline">
                 <RotateCcw className="h-4 w-4 mr-1.5" />
