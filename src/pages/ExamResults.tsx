@@ -109,7 +109,7 @@ const ExamResults = () => {
   };
 
   // 필터된 세션이면 시험 목록으로, 일반 세션이면 동일 문제 전체 재시도
-  const handleRetryAll = async () => {
+  const handleRetryAll = async (mode: 'exam' | 'practice') => {
     if (isFilteredSession) {
       navigate('/exams');
       return;
@@ -119,7 +119,7 @@ const ExamResults = () => {
     try {
       const id = await createSession(
         session.examId, session.examTitle, session.questions,
-        session.timeLimitSec / 60, 'exam', false, user?.id || null
+        session.timeLimitSec / 60, mode, false, user?.id || null
       );
       navigate(`/session/${id}`);
     } finally { setCreating(false); }
@@ -218,12 +218,18 @@ const ExamResults = () => {
                   {isKo ? `오답 테스트 (${wrongQs.length}문제)` : `Wrong Test (${wrongQs.length})`}
                 </Button>
               )}
-              <Button onClick={handleRetryAll} disabled={creating} variant="outline">
+              <Button onClick={() => handleRetryAll('exam')} disabled={creating} variant="outline">
                 <RotateCcw className="h-4 w-4 mr-1.5" />
                 {isFilteredSession
                   ? (isKo ? '전체 시험 보기' : 'Full Exam')
-                  : (isKo ? '전체 재시도' : 'Retry All')}
+                  : (isKo ? '전체 재시도 (실전)' : 'Retry (Exam)')}
               </Button>
+              {!isFilteredSession && (
+                <Button onClick={() => handleRetryAll('practice')} disabled={creating} variant="outline">
+                  <RotateCcw className="h-4 w-4 mr-1.5" />
+                  {isKo ? '전체 재시도 (연습)' : 'Retry (Practice)'}
+                </Button>
+              )}
               <Link to="/review">
                 <Button variant="ghost" className="text-muted-foreground">
                   <ArrowLeft className="h-4 w-4 mr-1.5" />
