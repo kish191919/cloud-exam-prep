@@ -299,129 +299,123 @@ const ExamList = () => {
                           })}
                         </div>
 
-                        {/* Randomize options checkbox */}
-                        <div className="mb-6">
-                          <label className="flex items-center gap-3 p-4 rounded-lg border cursor-pointer hover:bg-muted/40 transition-colors">
-                            <input
-                              type="checkbox"
-                              checked={randomizeOptions}
-                              onChange={e => setRandomizeOptions(e.target.checked)}
-                              className="h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent"
-                            />
-                            <div className="flex items-center gap-2 flex-1">
-                              <Shuffle className="h-4 w-4 text-muted-foreground" />
-                              <div>
-                                <p className="text-sm font-medium">
-                                  {isKo ? '보기 순서 랜덤화' : 'Randomize Options'}
-                                </p>
-                                <p className="text-xs text-muted-foreground">
-                                  {isKo
-                                    ? '매 문제마다 보기의 순서가 바뀌어 집중력을 높입니다'
-                                    : 'Options appear in different order for each question'}
-                                </p>
-                              </div>
-                            </div>
-                          </label>
-                        </div>
-
-                        {/* Set selection */}
-                        <p className="text-sm font-semibold mb-3">{t('examList.selectSet')}</p>
-
-                        {isLoadingSet ? (
-                          <div className="flex items-center gap-2 py-4 text-muted-foreground text-sm">
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            {t('examList.loadingSets')}
-                          </div>
-                        ) : sets.length === 0 ? (
-                          <p className="text-sm text-muted-foreground py-2">{t('examList.noSets')}</p>
-                        ) : (
-                          <div className="space-y-2 mb-6">
-                            {sets.map(set => {
-                              const isSelected = selectedSetId === set.id;
-                              return (
-                                <div
-                                  key={set.id}
-                                  className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all duration-150 ${
-                                    isSelected
-                                      ? 'border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-400'
-                                      : 'border-border hover:border-green-400 hover:bg-muted/40'
-                                  }`}
-                                  onClick={() => setSelectedSetId(set.id)}
-                                >
-                                  {/* Custom radio indicator */}
-                                  <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                                    isSelected ? 'border-green-500' : 'border-muted-foreground/40'
-                                  }`}>
-                                    {isSelected && (
-                                      <div className="h-2.5 w-2.5 rounded-full bg-green-500" />
-                                    )}
+                        {/* Randomize + Set selection: shown only after mode is picked */}
+                        {selectedMode && (
+                          <div className="mt-2 space-y-6 animate-in fade-in slide-in-from-top-2 duration-200">
+                            {/* Randomize options checkbox */}
+                            <div>
+                              <label className="flex items-center gap-3 p-4 rounded-lg border cursor-pointer hover:bg-muted/40 transition-colors">
+                                <input
+                                  type="checkbox"
+                                  checked={randomizeOptions}
+                                  onChange={e => setRandomizeOptions(e.target.checked)}
+                                  className="h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent"
+                                />
+                                <div className="flex items-center gap-2 flex-1">
+                                  <Shuffle className="h-4 w-4 text-muted-foreground" />
+                                  <div>
+                                    <p className="text-sm font-medium">
+                                      {isKo ? '보기 순서 랜덤화' : 'Randomize Options'}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">
+                                      {isKo
+                                        ? '매 문제마다 보기의 순서가 바뀌어 집중력을 높입니다'
+                                        : 'Options appear in different order for each question'}
+                                    </p>
                                   </div>
-
-                                  {/* Type icon */}
-                                  <div className={`p-2 rounded-lg shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
-                                    {set.type === 'sample'
-                                      ? <FlaskConical className="h-4 w-4 text-primary" />
-                                      : <BookOpen className="h-4 w-4 text-accent" />
-                                    }
-                                  </div>
-
-                                  {/* Set info */}
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 flex-wrap">
-                                      <span className="font-medium text-sm">{set.name}</span>
-                                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                                        set.type === 'sample'
-                                          ? 'bg-primary/10 text-primary'
-                                          : 'bg-accent/10 text-accent'
-                                      }`}>
-                                        {set.type === 'sample' ? t('examList.sampleBadge') : t('examList.fullBadge')}
-                                      </span>
-                                    </div>
-                                    {set.description && (
-                                      <p className="text-xs text-muted-foreground mt-0.5 truncate">{set.description}</p>
-                                    )}
-                                  </div>
-
-                                  {/* Question count */}
-                                  <div className="text-right shrink-0">
-                                    <span className="text-sm font-semibold">{set.questionCount}</span>
-                                    <span className="text-xs text-muted-foreground ml-1">{t('examList.questions')}</span>
-                                  </div>
-
-                                  {isSelected && (
-                                    <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />
-                                  )}
                                 </div>
-                              );
-                            })}
+                              </label>
+                            </div>
+
+                            {/* Set selection */}
+                            <div>
+                              <p className="text-sm font-semibold mb-3">{t('examList.selectSet')}</p>
+                              {isLoadingSet ? (
+                                <div className="flex items-center gap-2 py-4 text-muted-foreground text-sm">
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                  {t('examList.loadingSets')}
+                                </div>
+                              ) : sets.length === 0 ? (
+                                <p className="text-sm text-muted-foreground py-2">{t('examList.noSets')}</p>
+                              ) : (
+                                <div className="space-y-2">
+                                  {sets.map(set => {
+                                    const isSelected = selectedSetId === set.id;
+                                    return (
+                                      <div
+                                        key={set.id}
+                                        className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all duration-150 ${
+                                          isSelected
+                                            ? 'border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-400'
+                                            : 'border-border hover:border-green-400 hover:bg-muted/40'
+                                        }`}
+                                        onClick={() => setSelectedSetId(set.id)}
+                                      >
+                                        <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
+                                          isSelected ? 'border-green-500' : 'border-muted-foreground/40'
+                                        }`}>
+                                          {isSelected && <div className="h-2.5 w-2.5 rounded-full bg-green-500" />}
+                                        </div>
+                                        <div className={`p-2 rounded-lg shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
+                                          {set.type === 'sample'
+                                            ? <FlaskConical className="h-4 w-4 text-primary" />
+                                            : <BookOpen className="h-4 w-4 text-accent" />
+                                          }
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <div className="flex items-center gap-2 flex-wrap">
+                                            <span className="font-medium text-sm">{set.name}</span>
+                                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                                              set.type === 'sample'
+                                                ? 'bg-primary/10 text-primary'
+                                                : 'bg-accent/10 text-accent'
+                                            }`}>
+                                              {set.type === 'sample' ? t('examList.sampleBadge') : t('examList.fullBadge')}
+                                            </span>
+                                          </div>
+                                          {set.description && (
+                                            <p className="text-xs text-muted-foreground mt-0.5 truncate">{set.description}</p>
+                                          )}
+                                        </div>
+                                        <div className="text-right shrink-0">
+                                          <span className="text-sm font-semibold">{set.questionCount}</span>
+                                          <span className="text-xs text-muted-foreground ml-1">{t('examList.questions')}</span>
+                                        </div>
+                                        {isSelected && <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Start button */}
+                            <div className="flex justify-end">
+                              <Button
+                                size="lg"
+                                disabled={!selectedSetId || starting}
+                                onClick={handleStart}
+                                className={`font-semibold transition-all ${
+                                  selectedSetId
+                                    ? 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-md'
+                                    : ''
+                                }`}
+                              >
+                                {starting ? (
+                                  <>
+                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                    {t('examList.starting')}
+                                  </>
+                                ) : (
+                                  <>
+                                    <Play className="h-4 w-4 mr-2" />
+                                    {t('examList.startExam')}
+                                  </>
+                                )}
+                              </Button>
+                            </div>
                           </div>
                         )}
-
-                        {/* Start button */}
-                        <div className="flex justify-end">
-                          <Button
-                            size="lg"
-                            disabled={!selectedSetId || !selectedMode || starting}
-                            onClick={handleStart}
-                            className={`font-semibold transition-all ${
-                              selectedSetId && selectedMode
-                                ? 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-md'
-                                : ''
-                            }`}
-                          >
-                            {starting ? (
-                              <>
-                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                                {t('examList.starting')}
-                              </>
-                            ) : (
-                              <>
-                                <Play className="h-4 w-4 mr-2" />
-                                {t('examList.startExam')}
-                              </>
-                            )}
-                          </Button>
-                        </div>
                       </div>
                     )}
                   </CardContent>
