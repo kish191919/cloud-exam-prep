@@ -285,13 +285,13 @@ const ExamResults = () => {
             </div>
           </CardHeader>
 
-          <CardContent className="space-y-3 pt-0">
+          <CardContent className="space-y-2 pt-0">
             {filteredQuestions.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-6">
                 {isKo ? '해당하는 문제가 없습니다.' : 'No questions match this filter.'}
               </p>
             ) : (
-              filteredQuestions.map((q, i) => {
+              filteredQuestions.map((q) => {
                 const userAnswer = session.answers[q.id];
                 const isCorrect  = userAnswer === q.correctOptionId;
                 const isSkipped  = !userAnswer;
@@ -299,87 +299,68 @@ const ExamResults = () => {
                 const isExpanded = expandedIds.has(q.id);
 
                 return (
-                  <div
-                    key={q.id}
-                    className={`border rounded-lg overflow-hidden ${
-                      isCorrect  ? 'border-green-200 dark:border-green-900' :
-                      isSkipped  ? 'border-border' :
-                                   'border-red-200 dark:border-red-900'
-                    }`}
-                  >
-                    {/* Question header — click to expand */}
+                  <div key={q.id} className="border rounded-lg overflow-hidden">
+                    {/* Header — always visible, question text full when expanded */}
                     <button
-                      className="w-full text-left p-4 flex items-start gap-3 hover:bg-muted/30 transition-colors"
+                      className="w-full text-left px-4 py-3 flex items-start gap-3 hover:bg-muted/30 transition-colors"
                       onClick={() => toggleExpand(q.id)}
                     >
                       <div className="shrink-0 mt-0.5">
-                        {isCorrect  ? <CheckCircle2 className="h-5 w-5 text-green-500" /> :
-                         isSkipped  ? <Minus className="h-5 w-5 text-muted-foreground" /> :
-                                      <XCircle className="h-5 w-5 text-destructive" />}
+                        {isCorrect ? <CheckCircle2 className="h-4 w-4 text-green-500" /> :
+                         isSkipped ? <Minus className="h-4 w-4 text-muted-foreground" /> :
+                                     <XCircle className="h-4 w-4 text-destructive" />}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-semibold text-muted-foreground">Q{globalIdx}</span>
-                          {q.tags.slice(0, 2).map(tag => (
-                            <span key={tag} className="text-xs px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <p className="text-sm font-medium leading-snug line-clamp-2">{q.text}</p>
+                        <span className="text-xs text-muted-foreground">Q{globalIdx}</span>
+                        <p className={`text-sm leading-relaxed mt-0.5 ${!isExpanded ? 'line-clamp-2' : 'whitespace-pre-line'}`}>
+                          {q.text}
+                        </p>
                       </div>
-                      <div className="shrink-0 ml-2">
+                      <div className="shrink-0 ml-2 mt-0.5">
                         {isExpanded
                           ? <ChevronUp className="h-4 w-4 text-muted-foreground" />
                           : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
                       </div>
                     </button>
 
-                    {/* Expanded detail */}
+                    {/* Expanded: options + explanation only (no repeated question text) */}
                     {isExpanded && (
-                      <div className="border-t px-4 py-4 space-y-4 bg-background">
-                        {/* Full question text */}
-                        <p className="text-sm leading-relaxed whitespace-pre-line">{q.text}</p>
-
+                      <div className="border-t px-4 py-4 space-y-4 bg-muted/20">
                         {/* Options */}
-                        <div className="space-y-2">
+                        <div className="space-y-1.5">
                           {q.options.map((opt, oi) => {
                             const isAnswer   = opt.id === q.correctOptionId;
                             const isUserPick = opt.id === userAnswer;
                             return (
                               <div
                                 key={opt.id}
-                                className={`text-sm px-3 py-2.5 rounded-lg border ${
-                                  isAnswer
-                                    ? 'bg-green-50 border-green-300 dark:bg-green-950/40 dark:border-green-700'
-                                    : isUserPick
-                                    ? 'bg-red-50 border-red-300 dark:bg-red-950/40 dark:border-red-700'
-                                    : 'border-border text-muted-foreground'
+                                className={`text-sm px-3 py-2.5 rounded-lg border-l-2 ${
+                                  isAnswer   ? 'border-l-green-500 bg-green-50/60 dark:bg-green-950/20 border border-border' :
+                                  isUserPick ? 'border-l-red-400 bg-red-50/60 dark:bg-red-950/20 border border-border' :
+                                               'border-l-transparent border border-border/50 text-muted-foreground'
                                 }`}
                               >
-                                <div className="flex items-start gap-2">
-                                  <span className={`shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
-                                    isAnswer   ? 'bg-green-500 text-white' :
-                                    isUserPick ? 'bg-red-400 text-white' :
-                                                 'bg-muted text-muted-foreground'
-                                  }`}>{oi + 1}</span>
+                                <div className="flex items-start gap-2.5">
+                                  <span className="shrink-0 text-xs text-muted-foreground w-4 pt-px">{oi + 1}.</span>
                                   <div className="flex-1">
-                                    <span className={isAnswer ? 'text-green-700 dark:text-green-400 font-medium' :
-                                                      isUserPick ? 'text-red-600 dark:text-red-400' : ''}>
+                                    <span className={
+                                      isAnswer   ? 'text-green-800 dark:text-green-300 font-medium' :
+                                      isUserPick ? 'text-red-700 dark:text-red-400' : ''
+                                    }>
                                       {opt.text}
                                     </span>
                                     {isAnswer && (
-                                      <span className="ml-2 text-xs text-green-600 font-semibold">
+                                      <span className="ml-2 text-xs text-green-600 dark:text-green-400 font-medium">
                                         ✓ {isKo ? '정답' : 'Correct'}
                                       </span>
                                     )}
                                     {isUserPick && !isAnswer && (
-                                      <span className="ml-2 text-xs text-red-500 font-semibold">
+                                      <span className="ml-2 text-xs text-red-500 font-medium">
                                         ✗ {isKo ? '내 선택' : 'Your pick'}
                                       </span>
                                     )}
                                     {opt.explanation && (
-                                      <p className="text-xs mt-1 opacity-75 italic">{opt.explanation}</p>
+                                      <p className="text-xs mt-1 text-muted-foreground italic">{opt.explanation}</p>
                                     )}
                                   </div>
                                 </div>
@@ -388,26 +369,26 @@ const ExamResults = () => {
                           })}
                         </div>
 
-                        {/* Overall explanation */}
+                        {/* Explanation */}
                         {q.explanation && (
-                          <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800">
-                            <p className="text-xs font-semibold text-blue-700 dark:text-blue-400 mb-1">
+                          <div className="pl-3 border-l-2 border-l-border">
+                            <p className="text-xs font-semibold text-muted-foreground mb-1">
                               {isKo ? '해설' : 'Explanation'}
                             </p>
-                            <p className="text-xs text-blue-800 dark:text-blue-300 leading-relaxed">{q.explanation}</p>
+                            <p className="text-xs text-foreground/80 leading-relaxed">{q.explanation}</p>
                           </div>
                         )}
 
                         {/* Key points */}
                         {q.keyPoints && (
-                          <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
+                          <div className="pl-3 border-l-2 border-l-accent/60">
                             <div className="flex items-center gap-1.5 mb-1">
-                              <Lightbulb className="h-3.5 w-3.5 text-amber-600" />
-                              <p className="text-xs font-semibold text-amber-700 dark:text-amber-400">
+                              <Lightbulb className="h-3 w-3 text-accent" />
+                              <p className="text-xs font-semibold text-accent">
                                 {isKo ? '핵심 암기사항' : 'Key Points'}
                               </p>
                             </div>
-                            <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed whitespace-pre-line">
+                            <p className="text-xs text-foreground/80 leading-relaxed whitespace-pre-line">
                               {q.keyPoints}
                             </p>
                           </div>
