@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppLayout from '@/components/AppLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -425,6 +425,7 @@ const SetQuestionsDialog = ({ set, examId, open, onClose, onSaved }: SetQuestion
   const [editingId, setEditingId] = useState<string | null>(null);   // question id being edited
   const [addingNew, setAddingNew] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Question | null>(null);
+  const newFormRef = useRef<HTMLDivElement>(null);
 
   const loadQuestions = async () => {
     setLoading(true);
@@ -586,11 +587,13 @@ const SetQuestionsDialog = ({ set, examId, open, onClose, onSaved }: SetQuestion
 
                 {/* New question form */}
                 {addingNew && (
-                  <QuestionForm
-                    examId={examId}
-                    onSave={handleAddQuestion}
-                    onCancel={() => setAddingNew(false)}
-                  />
+                  <div ref={newFormRef}>
+                    <QuestionForm
+                      examId={examId}
+                      onSave={handleAddQuestion}
+                      onCancel={() => setAddingNew(false)}
+                    />
+                  </div>
                 )}
               </>
             )}
@@ -601,7 +604,11 @@ const SetQuestionsDialog = ({ set, examId, open, onClose, onSaved }: SetQuestion
               variant="outline"
               size="sm"
               disabled={addingNew || editingId !== null}
-              onClick={() => { setAddingNew(true); setEditingId(null); }}
+              onClick={() => {
+                setAddingNew(true);
+                setEditingId(null);
+                setTimeout(() => newFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+              }}
             >
               <Plus className="h-4 w-4 mr-2" />새 문제 추가
             </Button>
