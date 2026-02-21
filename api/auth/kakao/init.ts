@@ -8,9 +8,8 @@ export default function handler(req: IncomingMessage, res: ServerResponse) {
     return;
   }
 
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:5173';
+  const baseUrl = process.env.APP_URL
+    || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:5173');
 
   const state = Math.random().toString(36).substring(2, 10);
 

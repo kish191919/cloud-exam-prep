@@ -8,9 +8,8 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   const naverClientId = process.env.NAVER_CLIENT_ID;
   const naverClientSecret = process.env.NAVER_CLIENT_SECRET;
 
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:5173';
+  const baseUrl = process.env.APP_URL
+    || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:5173');
 
   const errorRedirect = (msg: string) => {
     res.writeHead(302, { Location: `${baseUrl}/?error=${encodeURIComponent(msg)}` });
@@ -69,31 +68,16 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
       auth: { autoRefreshToken: false, persistSession: false },
     });
 
-    // 4. 이메일로 기존 유저 조회
-    const { data: existingUserData } = await supabaseAdmin.auth.admin.getUserByEmail(userEmail);
-    const existingUser = existingUserData?.user;
-
-    if (!existingUser) {
-      // 신규 유저 생성 (이메일 인증 건너뜀)
-      await supabaseAdmin.auth.admin.createUser({
-        email: userEmail,
-        email_confirm: true,
-        user_metadata: {
-          full_name: name ?? '네이버 사용자',
-          provider: 'naver',
-          naver_id: naverId,
-        },
-      });
-    } else if (!existingUser.user_metadata?.naver_id) {
-      // 기존 이메일 유저에 Naver 메타데이터 추가
-      await supabaseAdmin.auth.admin.updateUserById(existingUser.id, {
-        user_metadata: {
-          ...existingUser.user_metadata,
-          naver_id: naverId,
-          provider: 'naver',
-        },
-      });
-    }
+    // 4. 유저 생성 (이미 존재하면 오류 무시 — 합성 이메일이므로 해당 유저가 맞음)
+    await supabaseAdmin.auth.admin.createUser({
+      email: userEmail,
+      email_confirm: true,
+      user_metadata: {
+        full_name: name ?? '네이버 사용자',
+        provider: 'naver',
+        naver_id: naverId,
+      },
+    });
 
     // 5. 매직링크 생성 (이메일 발송 없이 action_link만 획득)
     const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
