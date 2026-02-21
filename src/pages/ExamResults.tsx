@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getSession, createSession } from '@/hooks/useExamSession';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   CheckCircle2, XCircle, RotateCcw, ArrowLeft,
   Trophy, Target, Clock, Minus, Loader2, PenTool,
@@ -352,19 +353,20 @@ const ExamResults = () => {
               {tagEntries.length > 0 && (
                 <>
                   <span className="text-muted-foreground/40 text-xs self-center px-0.5">|</span>
-                  {tagEntries.map(([tag]) => (
-                    <button
-                      key={tag}
-                      onClick={() => setTagFilter(prev => prev === tag ? null : tag)}
-                      className={`flex items-center px-3 py-1.5 rounded-full text-xs font-medium transition-colors max-w-[160px] truncate ${
-                        tagFilter === tag
-                          ? 'bg-accent text-accent-foreground'
-                          : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                      }`}
-                    >
-                      {tag}
-                    </button>
-                  ))}
+                  <Select
+                    value={tagFilter ?? '__all__'}
+                    onValueChange={(val) => setTagFilter(val === '__all__' ? null : val)}
+                  >
+                    <SelectTrigger className="h-7 w-auto min-w-[120px] max-w-[200px] text-xs rounded-full px-3 border-0 bg-muted text-muted-foreground">
+                      <SelectValue placeholder={isKo ? '도메인 선택' : 'Domain'} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="__all__">{isKo ? '전체 도메인' : 'All Domains'}</SelectItem>
+                      {tagEntries.map(([tag]) => (
+                        <SelectItem key={tag} value={tag}>{tag}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </>
               )}
             </div>
