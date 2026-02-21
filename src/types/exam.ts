@@ -11,7 +11,6 @@ export interface Question {
   correctOptionId: string;
   explanation: string;
   tags: string[];
-  difficulty: 1 | 2 | 3;
   keyPoints?: string;
   keyPointImages?: string[];
   refLinks?: { name: string; url: string }[];

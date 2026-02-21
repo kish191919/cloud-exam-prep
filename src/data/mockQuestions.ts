@@ -13,7 +13,7 @@ export const awsAifQuestions: Question[] = [
     correctOptionId: 'b',
     explanation: 'Amazon Bedrock is a fully managed service that provides access to foundation models (FMs) from leading AI companies like Anthropic, Meta, and Amazon through a single API. SageMaker is for building/training custom ML models.',
     tags: ['Foundation Models', 'Bedrock'],
-    difficulty: 1,
+
   },
   {
     id: 'aif-q2',
@@ -27,7 +27,7 @@ export const awsAifQuestions: Question[] = [
     correctOptionId: 'c',
     explanation: 'Amazon Comprehend is a natural language processing (NLP) service that uses machine learning to find insights and relationships in text, including sentiment analysis. Textract extracts text from documents, Polly converts text to speech, and Translate handles language translation.',
     tags: ['NLP', 'Comprehend'],
-    difficulty: 1,
+
   },
   {
     id: 'aif-q3',
@@ -41,7 +41,7 @@ export const awsAifQuestions: Question[] = [
     correctOptionId: 'c',
     explanation: 'Maximum data collection is NOT a principle of responsible AI. Responsible AI principles include fairness, transparency, privacy, security, and accountability. Data minimization (collecting only necessary data) is preferred over maximum collection.',
     tags: ['Responsible AI', 'Ethics'],
-    difficulty: 1,
+
   },
   {
     id: 'aif-q4',
@@ -55,7 +55,7 @@ export const awsAifQuestions: Question[] = [
     correctOptionId: 'c',
     explanation: 'Amazon SageMaker provides a fully managed environment for the entire ML lifecycle — from data preparation and model building to training, tuning, and deployment at scale.',
     tags: ['SageMaker', 'ML Lifecycle'],
-    difficulty: 2,
+
   },
   {
     id: 'aif-q5',
@@ -69,7 +69,7 @@ export const awsAifQuestions: Question[] = [
     correctOptionId: 'a',
     explanation: 'Amazon Rekognition makes it easy to add image and video analysis to applications. It can identify objects, people, text, scenes, and activities, as well as detect inappropriate content and provide facial analysis.',
     tags: ['Computer Vision', 'Rekognition'],
-    difficulty: 1,
+
   },
   {
     id: 'aif-q6',
@@ -83,7 +83,7 @@ export const awsAifQuestions: Question[] = [
     correctOptionId: 'b',
     explanation: 'A foundation model is a large AI model pre-trained on a broad dataset that can be adapted (fine-tuned) to a wide range of downstream tasks. Examples include GPT, Claude, and Llama models.',
     tags: ['Foundation Models', 'Generative AI'],
-    difficulty: 2,
+
   },
   {
     id: 'aif-q7',
@@ -97,7 +97,7 @@ export const awsAifQuestions: Question[] = [
     correctOptionId: 'c',
     explanation: 'Amazon Lex provides advanced deep learning functionalities of automatic speech recognition (ASR) and natural language understanding (NLU) to build conversational interfaces — the same technology that powers Amazon Alexa.',
     tags: ['Conversational AI', 'Lex'],
-    difficulty: 1,
+
   },
   {
     id: 'aif-q8',
@@ -111,7 +111,7 @@ export const awsAifQuestions: Question[] = [
     correctOptionId: 'b',
     explanation: 'The quality and quantity of training data is the most critical factor affecting ML model performance. Poor data quality leads to poor model predictions regardless of the algorithm or infrastructure used.',
     tags: ['ML Fundamentals', 'Data Quality'],
-    difficulty: 1,
+
   },
   {
     id: 'aif-q9',
@@ -125,7 +125,7 @@ export const awsAifQuestions: Question[] = [
     correctOptionId: 'b',
     explanation: 'Amazon Textract automatically extracts text, handwriting, and data from scanned documents. It goes beyond simple OCR to identify, understand, and extract data from forms and tables.',
     tags: ['Document Processing', 'Textract'],
-    difficulty: 1,
+
   },
   {
     id: 'aif-q10',
@@ -139,7 +139,7 @@ export const awsAifQuestions: Question[] = [
     correctOptionId: 'b',
     explanation: 'This describes model bias, where predictions are systematically less accurate for certain groups. Amazon SageMaker Clarify helps detect bias in data and models, and provides explanations for model predictions.',
     tags: ['Responsible AI', 'Bias Detection', 'SageMaker'],
-    difficulty: 3,
+
   },
 ];
 

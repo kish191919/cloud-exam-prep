@@ -26,3 +26,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 문제 변환 에이전트 출력물
+output/*.sql
+output/*.json
+output/input_raw.txt

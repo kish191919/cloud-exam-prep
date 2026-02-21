@@ -59,10 +59,9 @@ function parseCSV(text: string): string[][] {
 
 // Parse a single CSV data row into QuestionInput
 function csvRowToQuestion(cols: string[]): Omit<QuestionInput, 'examId'> | null {
-  // Expected: text,option_a,option_b,option_c,option_d,correct,explanation,difficulty,tags
-  if (cols.length < 8) return null;
-  const [text, optA, optB, optC, optD, correct, explanation, diffStr, tagsStr = ''] = cols;
-  const diff = parseInt(diffStr, 10);
+  // Expected: text,option_a,option_b,option_c,option_d,correct,explanation,tags
+  if (cols.length < 7) return null;
+  const [text, optA, optB, optC, optD, correct, explanation, tagsStr = ''] = cols;
   const correctId = correct.toLowerCase().trim() as 'a' | 'b' | 'c' | 'd';
   if (!text || !optA || !optB || !['a','b','c','d'].includes(correctId)) return null;
   return {
@@ -75,15 +74,14 @@ function csvRowToQuestion(cols: string[]): Omit<QuestionInput, 'examId'> | null 
     ],
     correctOptionId: correctId,
     explanation,
-    difficulty: ([1, 2, 3].includes(diff) ? diff : 1) as 1 | 2 | 3,
     tags: tagsStr ? tagsStr.split(',').map(t => t.trim()).filter(Boolean) : [],
   };
 }
 
 // CSV template download
 function downloadCSVTemplate() {
-  const header = 'text,option_a,option_b,option_c,option_d,correct,explanation,difficulty,tags';
-  const example = '"Which AWS service provides foundation models through a single API?","Amazon SageMaker","Amazon Bedrock","Amazon Comprehend","Amazon Rekognition","b","Amazon Bedrock provides foundation models through a unified API.","1","AI,ML"';
+  const header = 'text,option_a,option_b,option_c,option_d,correct,explanation,tags';
+  const example = '"Which AWS service provides foundation models through a single API?","Amazon SageMaker","Amazon Bedrock","Amazon Comprehend","Amazon Rekognition","b","Amazon Bedrock provides foundation models through a unified API.","AI,ML"';
   const csv = [header, example].join('\n');
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
@@ -104,7 +102,7 @@ interface QFormProps {
 const OPTION_LABELS = ['A', 'B', 'C', 'D'] as const;
 
 const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps) => {
-  const empty = { text: '', a: '', b: '', c: '', d: '', a_exp: '', b_exp: '', c_exp: '', d_exp: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', difficulty: 1 as 1|2|3, tags: '', keyPoints: '', keyPointImages: [] as string[], refLinks: [] as { name: string; url: string }[] };
+  const empty = { text: '', a: '', b: '', c: '', d: '', a_exp: '', b_exp: '', c_exp: '', d_exp: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', tags: '', keyPoints: '', keyPointImages: [] as string[], refLinks: [] as { name: string; url: string }[] };
   const [form, setForm] = useState(empty);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -122,7 +120,6 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
         a_exp: exps['a'] ?? '', b_exp: exps['b'] ?? '', c_exp: exps['c'] ?? '', d_exp: exps['d'] ?? '',
         correct: edit.correctOptionId as 'a'|'b'|'c'|'d',
         explanation: edit.explanation,
-        difficulty: edit.difficulty,
         tags: edit.tags.join(', '),
         keyPoints: edit.keyPoints ?? '',
         keyPointImages: edit.keyPointImages ?? [],
@@ -177,7 +174,6 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
         ] as { id: 'a'|'b'|'c'|'d'; text: string; explanation?: string }[]).filter(o => o.text),
         correctOptionId: form.correct,
         explanation: form.explanation.trim(),
-        difficulty: form.difficulty,
         tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
         keyPoints: form.keyPoints.trim() || undefined,
         keyPointImages: form.keyPointImages.length > 0 ? form.keyPointImages : undefined,
@@ -267,35 +263,14 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
             />
           </div>
 
-          {/* Difficulty + Tags */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium mb-1.5 block">난이도</label>
-              <div className="flex gap-2">
-                {([1,2,3] as const).map(d => (
-                  <button
-                    key={d}
-                    type="button"
-                    onClick={() => set('difficulty', d)}
-                    className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-all ${
-                      form.difficulty === d
-                        ? 'border-accent bg-accent/10 text-accent'
-                        : 'border-border text-muted-foreground hover:border-accent/40'
-                    }`}
-                  >
-                    {d === 1 ? '쉬움' : d === 2 ? '보통' : '어려움'}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium mb-1.5 block">태그 (쉼표 구분)</label>
-              <Input
-                placeholder="예: AI, ML, SageMaker"
-                value={form.tags}
-                onChange={e => set('tags', e.target.value)}
-              />
-            </div>
+          {/* Tags */}
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">태그 (쉼표 구분)</label>
+            <Input
+              placeholder="예: AI, ML, SageMaker"
+              value={form.tags}
+              onChange={e => set('tags', e.target.value)}
+            />
           </div>
 
           {/* Key Points */}
@@ -493,9 +468,8 @@ const CsvUploadDialog = ({ examId, open, onClose, onSaved }: CsvDialogProps) => 
           <div className="bg-muted/50 rounded-lg p-3 text-xs font-mono text-muted-foreground space-y-1">
             <p className="font-semibold text-foreground text-sm mb-2">CSV 형식 (헤더 필수)</p>
             <p>text, option_a, option_b, option_c, option_d,</p>
-            <p>correct, explanation, difficulty, tags</p>
+            <p>correct, explanation, tags</p>
             <p className="mt-2 text-xs">• correct: a / b / c / d 중 하나</p>
-            <p>• difficulty: 1(쉬움) / 2(보통) / 3(어려움)</p>
             <p>• tags: 쉼표로 구분 (예: AI,ML)</p>
           </div>
 
@@ -693,9 +667,6 @@ const AdminQuestionsPage = () => {
   const sets = setsMap[activeExamId] ?? [];
   const qSetMap = setQMap[activeExamId] ?? {};
 
-  const diffLabel = (d: number) => d === 1 ? '쉬움' : d === 2 ? '보통' : '어려움';
-  const diffColor = (d: number) => d === 1 ? 'bg-green-100 text-green-700' : d === 2 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700';
-
   if (loadingExams) {
     return (
       <AppLayout>
@@ -775,9 +746,6 @@ const AdminQuestionsPage = () => {
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium leading-snug line-clamp-2">{q.text}</p>
                           <div className="flex items-center gap-2 mt-2 flex-wrap">
-                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${diffColor(q.difficulty)}`}>
-                              {diffLabel(q.difficulty)}
-                            </span>
                             <span className="text-xs text-muted-foreground">
                               정답: <strong>{q.correctOptionId.toUpperCase()}</strong>
                             </span>

@@ -178,7 +178,7 @@ interface QuestionFormProps {
 }
 
 const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormProps) => {
-  const empty = { text: '', a: '', b: '', c: '', d: '', a_exp: '', b_exp: '', c_exp: '', d_exp: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', difficulty: 1 as 1|2|3, tags: '', keyPoints: '', refLinks: [] as { name: string; url: string }[] };
+  const empty = { text: '', a: '', b: '', c: '', d: '', a_exp: '', b_exp: '', c_exp: '', d_exp: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', tags: '', keyPoints: '', refLinks: [] as { name: string; url: string }[] };
   const [form, setFormState] = useState(empty);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -194,7 +194,6 @@ const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormP
         a_exp: exps['a'] ?? '', b_exp: exps['b'] ?? '', c_exp: exps['c'] ?? '', d_exp: exps['d'] ?? '',
         correct: edit.correctOptionId as 'a'|'b'|'c'|'d',
         explanation: edit.explanation,
-        difficulty: edit.difficulty,
         tags: edit.tags.join(', '),
         keyPoints: edit.keyPoints ?? '',
         refLinks: edit.refLinks ?? [],
@@ -225,7 +224,6 @@ const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormP
         ] as { id: 'a'|'b'|'c'|'d'; text: string; explanation?: string }[]).filter(o => o.text),
         correctOptionId: form.correct,
         explanation: form.explanation.trim(),
-        difficulty: form.difficulty,
         tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
         keyPoints: form.keyPoints.trim() || undefined,
         refLinks: form.refLinks.filter(r => r.name.trim() && r.url.trim()),
@@ -299,34 +297,13 @@ const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormP
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="text-sm font-medium mb-1.5 block">난이도</label>
-          <div className="flex gap-2">
-            {([1,2,3] as const).map(d => (
-              <button
-                key={d}
-                type="button"
-                onClick={() => set('difficulty', d)}
-                className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-all ${
-                  form.difficulty === d
-                    ? 'border-accent bg-accent/10 text-accent'
-                    : 'border-border text-muted-foreground hover:border-accent/40'
-                }`}
-              >
-                {d === 1 ? '쉬움' : d === 2 ? '보통' : '어려움'}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-1.5 block">태그 (쉼표 구분)</label>
-          <Input
-            placeholder="예: AI, ML, SageMaker"
-            value={form.tags}
-            onChange={e => set('tags', e.target.value)}
-          />
-        </div>
+      <div>
+        <label className="text-sm font-medium mb-1.5 block">태그 (쉼표 구분)</label>
+        <Input
+          placeholder="예: AI, ML, SageMaker"
+          value={form.tags}
+          onChange={e => set('tags', e.target.value)}
+        />
       </div>
 
       <div>
@@ -470,9 +447,6 @@ const SetQuestionsDialog = ({ set, examId, open, onClose, onSaved }: SetQuestion
     onSaved();
   };
 
-  const diffLabel = (d: number) => d === 1 ? '쉬움' : d === 2 ? '보통' : '어려움';
-  const diffColor = (d: number) => d === 1 ? 'text-green-600' : d === 2 ? 'text-yellow-600' : 'text-red-600';
-
   return (
     <>
       <Dialog open={open} onOpenChange={v => !v && onClose()}>
@@ -510,9 +484,6 @@ const SetQuestionsDialog = ({ set, examId, open, onClose, onSaved }: SetQuestion
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
                               <span className="text-xs font-bold text-muted-foreground">Q{idx + 1}</span>
-                              <span className={`text-xs font-medium ${diffColor(q.difficulty)}`}>
-                                {diffLabel(q.difficulty)}
-                              </span>
                               <span className="text-xs text-muted-foreground">
                                 정답: <strong className="text-accent">{q.correctOptionId.toUpperCase()}</strong>
                               </span>

@@ -96,14 +96,13 @@ npm run dev
 
 ```sql
 -- 1. 문제 추가
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation)
 VALUES (
   'aif-q11',
   'aws-aif-c01',
   'What is the primary benefit of using Amazon SageMaker?',
   'c',
-  'Amazon SageMaker provides a complete ML workflow platform.',
-  2
+  'Amazon SageMaker provides a complete ML workflow platform.'
 );
 
 -- 2. 선택지 추가

@@ -54,7 +54,6 @@ export interface Database {
           text: string
           correct_option_id: string
           explanation: string
-          difficulty: number
           key_points: string | null
           ref_links: Json
           created_at: string
@@ -66,7 +65,6 @@ export interface Database {
           text: string
           correct_option_id: string
           explanation: string
-          difficulty: number
           key_points?: string | null
           ref_links?: Json
           created_at?: string
@@ -78,7 +76,6 @@ export interface Database {
           text?: string
           correct_option_id?: string
           explanation?: string
-          difficulty?: number
           key_points?: string | null
           ref_links?: Json
           created_at?: string

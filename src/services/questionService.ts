@@ -7,7 +7,6 @@ interface QuestionRow {
   text: string;
   correct_option_id: string;
   explanation: string;
-  difficulty: number;
   key_points: string | null;
   key_point_images: string[] | null;
   ref_links: any;
@@ -62,7 +61,7 @@ export async function getQuestionsForExam(examId: string): Promise<Question[]> {
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
     tags: q.question_tags.map(t => t.tag),
-    difficulty: q.difficulty as 1 | 2 | 3,
+
     keyPoints: q.key_points ?? undefined,
     keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
@@ -110,7 +109,7 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
     tags: q.question_tags.map(t => t.tag),
-    difficulty: q.difficulty as 1 | 2 | 3,
+
     keyPoints: q.key_points ?? undefined,
     keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
@@ -157,62 +156,13 @@ export async function getQuestionsByIds(questionIds: string[]): Promise<Question
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
     tags: q.question_tags.map(t => t.tag),
-    difficulty: q.difficulty as 1 | 2 | 3,
+
     keyPoints: q.key_points ?? undefined,
     keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   }));
 }
 
-export async function getQuestionsByDifficulty(
-  examId: string,
-  difficulty: 1 | 2 | 3
-): Promise<Question[]> {
-  const { data, error } = await supabase
-    .from('questions')
-    .select(`
-      *,
-      question_options (
-        id,
-        option_id,
-        text,
-        explanation,
-        sort_order
-      ),
-      question_tags (
-        tag
-      )
-    `)
-    .eq('exam_id', examId)
-    .eq('difficulty', difficulty)
-    .order('id', { ascending: true });
-
-  if (error) {
-    console.error('Error fetching questions by difficulty:', error);
-    throw error;
-  }
-
-  if (!data) return [];
-
-  return (data as unknown as QuestionRow[]).map(q => ({
-    id: q.id,
-    text: q.text,
-    options: q.question_options
-      .sort((a, b) => a.sort_order - b.sort_order)
-      .map(opt => ({
-        id: opt.option_id,
-        text: opt.text,
-        explanation: opt.explanation ?? undefined,
-      })),
-    correctOptionId: q.correct_option_id,
-    explanation: q.explanation,
-    tags: q.question_tags.map(t => t.tag),
-    difficulty: q.difficulty as 1 | 2 | 3,
-    keyPoints: q.key_points ?? undefined,
-    keyPointImages: q.key_point_images ?? undefined,
-    refLinks: q.ref_links ?? undefined,
-  }));
-}
 
 export async function getSetsForExam(examId: string): Promise<ExamSet[]> {
   const { data, error } = await supabase
@@ -276,7 +226,7 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
       correctOptionId: q.correct_option_id,
       explanation: q.explanation,
       tags: (q.question_tags as any[]).map((t: any) => t.tag),
-      difficulty: q.difficulty as 1 | 2 | 3,
+  
       keyPoints: q.key_points ?? undefined,
       refLinks: q.ref_links ?? undefined,
     };
@@ -323,7 +273,7 @@ export async function getQuestionsByTag(examId: string, tag: string): Promise<Qu
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
     tags: q.question_tags.map(t => t.tag),
-    difficulty: q.difficulty as 1 | 2 | 3,
+
     keyPoints: q.key_points ?? undefined,
     keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,

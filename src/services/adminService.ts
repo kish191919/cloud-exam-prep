@@ -86,7 +86,6 @@ export interface QuestionInput {
   options: { id: 'a' | 'b' | 'c' | 'd'; text: string; explanation?: string }[];
   correctOptionId: 'a' | 'b' | 'c' | 'd';
   explanation: string;
-  difficulty: 1 | 2 | 3;
   tags: string[];
   keyPoints?: string;
   keyPointImages?: string[];
@@ -110,7 +109,6 @@ export async function createQuestion(input: QuestionInput): Promise<string> {
       text: input.text,
       correct_option_id: input.correctOptionId,
       explanation: input.explanation,
-      difficulty: input.difficulty,
       key_points: input.keyPoints ?? null,
       key_point_images: input.keyPointImages ?? [],
       ref_links: input.refLinks ?? [],
@@ -147,7 +145,6 @@ export async function updateQuestion(questionId: string, input: Omit<QuestionInp
       text: input.text,
       correct_option_id: input.correctOptionId,
       explanation: input.explanation,
-      difficulty: input.difficulty,
       key_points: input.keyPoints ?? null,
       key_point_images: input.keyPointImages ?? [],
       ref_links: input.refLinks ?? [],
