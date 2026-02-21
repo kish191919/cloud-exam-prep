@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Cloud, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Cloud, Eye, EyeOff, Loader2, Mail } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
@@ -184,15 +184,18 @@ const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [done, setDone] = useState(false);
+  const [emailExists, setEmailExists] = useState(false);
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignupForm>({
     resolver: zodResolver(signupSchema),
   });
 
   const onSubmit = async (data: SignupForm) => {
-    const { error } = await signUpWithEmail(data.email, data.password, data.name);
+    const { data: signupData, error } = await signUpWithEmail(data.email, data.password, data.name);
     if (error) {
       toast.error(t('signupFailed'));
+    } else if (signupData?.user?.identities?.length === 0) {
+      setEmailExists(true);
     } else {
       setDone(true);
     }
@@ -214,6 +217,19 @@ const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const handleNaver = () => {
     signInWithNaver();
   };
+
+  if (emailExists) {
+    return (
+      <div className="text-center py-8 space-y-3">
+        <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mx-auto">
+          <Mail className="h-8 w-8 text-destructive" />
+        </div>
+        <h3 className="font-semibold text-lg">{t('emailAlreadyExists')}</h3>
+        <p className="text-sm text-muted-foreground">{t('emailAlreadyExistsDesc')}</p>
+        <Button onClick={onSuccess} className="mt-2 w-full">{t('goToLogin')}</Button>
+      </div>
+    );
+  }
 
   if (done) {
     return (
