@@ -9,6 +9,8 @@ interface AuthContextType {
   signInWithEmail: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUpWithEmail: (email: string, password: string, name: string) => Promise<{ error: Error | null }>;
   signInWithGoogle: () => Promise<{ error: Error | null }>;
+  signInWithKakao: () => Promise<{ error: Error | null }>;
+  signInWithNaver: () => void;
   signOut: () => Promise<void>;
   openAuthModal: (tab?: 'login' | 'signup') => void;
   closeAuthModal: () => void;
@@ -69,6 +71,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error };
   };
 
+  const signInWithKakao = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+      options: { redirectTo: window.location.origin },
+    });
+    return { error };
+  };
+
+  const signInWithNaver = () => {
+    window.location.href = '/api/auth/naver/init';
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
   };
@@ -83,7 +97,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider value={{
       user, session, loading,
-      signInWithEmail, signUpWithEmail, signInWithGoogle, signOut,
+      signInWithEmail, signUpWithEmail, signInWithGoogle, signInWithKakao, signInWithNaver, signOut,
       openAuthModal, closeAuthModal, authModalOpen, authModalTab,
     }}>
       {children}

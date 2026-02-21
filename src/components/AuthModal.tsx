@@ -31,7 +31,7 @@ const signupSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>;
 type SignupForm = z.infer<typeof signupSchema>;
 
-// ─── Google Icon SVG ───────────────────────────────────────────────────────────
+// ─── Social Icons ──────────────────────────────────────────────────────────────
 const GoogleIcon = () => (
   <svg viewBox="0 0 24 24" className="h-5 w-5">
     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -41,12 +41,25 @@ const GoogleIcon = () => (
   </svg>
 );
 
+const KakaoIcon = () => (
+  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="#000000">
+    <path d="M12 3C6.477 3 2 6.477 2 10.8c0 2.7 1.607 5.084 4.063 6.527L5.09 21l4.493-2.99A11.3 11.3 0 0 0 12 18.6c5.523 0 10-3.477 10-7.8S17.523 3 12 3z"/>
+  </svg>
+);
+
+const NaverIcon = () => (
+  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="#FFFFFF">
+    <path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z"/>
+  </svg>
+);
+
 // ─── Login Form ────────────────────────────────────────────────────────────────
 const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const { t } = useTranslation('auth');
-  const { signInWithEmail, signInWithGoogle } = useAuth();
+  const { signInWithEmail, signInWithGoogle, signInWithKakao, signInWithNaver } = useAuth();
   const [showPw, setShowPw] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [kakaoLoading, setKakaoLoading] = useState(false);
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
@@ -71,8 +84,21 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
     }
   };
 
+  const handleKakao = async () => {
+    setKakaoLoading(true);
+    const { error } = await signInWithKakao();
+    if (error) {
+      toast.error(t('socialLoginFailed'));
+      setKakaoLoading(false);
+    }
+  };
+
+  const handleNaver = () => {
+    signInWithNaver();
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       {/* Google */}
       <Button
         type="button"
@@ -85,7 +111,30 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
         {t('continueWithGoogle')}
       </Button>
 
-      <div className="relative">
+      {/* Kakao */}
+      <Button
+        type="button"
+        variant="outline"
+        className="w-full gap-3 h-12 text-sm font-medium bg-[#FEE500] hover:bg-[#FEE500]/90 border-[#FEE500] text-black hover:text-black"
+        onClick={handleKakao}
+        disabled={kakaoLoading}
+      >
+        {kakaoLoading ? <Loader2 className="h-4 w-4 animate-spin text-black" /> : <KakaoIcon />}
+        {t('continueWithKakao')}
+      </Button>
+
+      {/* Naver */}
+      <Button
+        type="button"
+        variant="outline"
+        className="w-full gap-3 h-12 text-sm font-medium bg-[#03C75A] hover:bg-[#03C75A]/90 border-[#03C75A] text-white hover:text-white"
+        onClick={handleNaver}
+      >
+        <NaverIcon />
+        {t('continueWithNaver')}
+      </Button>
+
+      <div className="relative pt-1">
         <Separator />
         <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-3 text-xs text-muted-foreground">
           {t('or')}
@@ -137,10 +186,11 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
 // ─── Signup Form ───────────────────────────────────────────────────────────────
 const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const { t } = useTranslation('auth');
-  const { signUpWithEmail, signInWithGoogle } = useAuth();
+  const { signUpWithEmail, signInWithGoogle, signInWithKakao, signInWithNaver } = useAuth();
   const [showPw, setShowPw] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [kakaoLoading, setKakaoLoading] = useState(false);
   const [done, setDone] = useState(false);
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignupForm>({
@@ -165,6 +215,19 @@ const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
     }
   };
 
+  const handleKakao = async () => {
+    setKakaoLoading(true);
+    const { error } = await signInWithKakao();
+    if (error) {
+      toast.error(t('socialLoginFailed'));
+      setKakaoLoading(false);
+    }
+  };
+
+  const handleNaver = () => {
+    signInWithNaver();
+  };
+
   if (done) {
     return (
       <div className="text-center py-8 space-y-3">
@@ -179,7 +242,7 @@ const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       {/* Google */}
       <Button
         type="button"
@@ -192,7 +255,30 @@ const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
         {t('signupWithGoogle')}
       </Button>
 
-      <div className="relative">
+      {/* Kakao */}
+      <Button
+        type="button"
+        variant="outline"
+        className="w-full gap-3 h-12 text-sm font-medium bg-[#FEE500] hover:bg-[#FEE500]/90 border-[#FEE500] text-black hover:text-black"
+        onClick={handleKakao}
+        disabled={kakaoLoading}
+      >
+        {kakaoLoading ? <Loader2 className="h-4 w-4 animate-spin text-black" /> : <KakaoIcon />}
+        {t('signupWithKakao')}
+      </Button>
+
+      {/* Naver */}
+      <Button
+        type="button"
+        variant="outline"
+        className="w-full gap-3 h-12 text-sm font-medium bg-[#03C75A] hover:bg-[#03C75A]/90 border-[#03C75A] text-white hover:text-white"
+        onClick={handleNaver}
+      >
+        <NaverIcon />
+        {t('signupWithNaver')}
+      </Button>
+
+      <div className="relative pt-1">
         <Separator />
         <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-3 text-xs text-muted-foreground">
           {t('or')}
