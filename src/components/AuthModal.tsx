@@ -59,7 +59,6 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const { signInWithEmail, signInWithGoogle, signInWithKakao, signInWithNaver } = useAuth();
   const [showPw, setShowPw] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [kakaoLoading, setKakaoLoading] = useState(false);
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
@@ -84,13 +83,8 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
     }
   };
 
-  const handleKakao = async () => {
-    setKakaoLoading(true);
-    const { error } = await signInWithKakao();
-    if (error) {
-      toast.error(t('socialLoginFailed'));
-      setKakaoLoading(false);
-    }
+  const handleKakao = () => {
+    signInWithKakao();
   };
 
   const handleNaver = () => {
@@ -117,9 +111,8 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
         variant="outline"
         className="w-full gap-3 h-12 text-sm font-medium bg-[#FEE500] hover:bg-[#FEE500]/90 border-[#FEE500] text-black hover:text-black"
         onClick={handleKakao}
-        disabled={kakaoLoading}
       >
-        {kakaoLoading ? <Loader2 className="h-4 w-4 animate-spin text-black" /> : <KakaoIcon />}
+        <KakaoIcon />
         {t('continueWithKakao')}
       </Button>
 
@@ -190,7 +183,6 @@ const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const [showPw, setShowPw] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [kakaoLoading, setKakaoLoading] = useState(false);
   const [done, setDone] = useState(false);
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignupForm>({
@@ -215,13 +207,8 @@ const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
     }
   };
 
-  const handleKakao = async () => {
-    setKakaoLoading(true);
-    const { error } = await signInWithKakao();
-    if (error) {
-      toast.error(t('socialLoginFailed'));
-      setKakaoLoading(false);
-    }
+  const handleKakao = () => {
+    signInWithKakao();
   };
 
   const handleNaver = () => {
@@ -261,9 +248,8 @@ const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
         variant="outline"
         className="w-full gap-3 h-12 text-sm font-medium bg-[#FEE500] hover:bg-[#FEE500]/90 border-[#FEE500] text-black hover:text-black"
         onClick={handleKakao}
-        disabled={kakaoLoading}
       >
-        {kakaoLoading ? <Loader2 className="h-4 w-4 animate-spin text-black" /> : <KakaoIcon />}
+        <KakaoIcon />
         {t('signupWithKakao')}
       </Button>
 

@@ -9,7 +9,7 @@ interface AuthContextType {
   signInWithEmail: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUpWithEmail: (email: string, password: string, name: string) => Promise<{ error: Error | null }>;
   signInWithGoogle: () => Promise<{ error: Error | null }>;
-  signInWithKakao: () => Promise<{ error: Error | null }>;
+  signInWithKakao: () => void;
   signInWithNaver: () => void;
   signOut: () => Promise<void>;
   openAuthModal: (tab?: 'login' | 'signup') => void;
@@ -71,12 +71,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error };
   };
 
-  const signInWithKakao = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'kakao',
-      options: { redirectTo: window.location.origin },
-    });
-    return { error };
+  const signInWithKakao = () => {
+    window.location.href = '/api/auth/kakao/init';
   };
 
   const signInWithNaver = () => {
