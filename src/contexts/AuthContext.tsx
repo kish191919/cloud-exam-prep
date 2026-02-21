@@ -12,6 +12,7 @@ interface AuthContextType {
   signInWithKakao: () => void;
   signInWithNaver: () => void;
   signOut: () => Promise<void>;
+  resetPasswordForEmail: (email: string) => Promise<{ error: Error | null }>;
   openAuthModal: (tab?: 'login' | 'signup') => void;
   closeAuthModal: () => void;
   authModalOpen: boolean;
@@ -83,6 +84,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await supabase.auth.signOut();
   };
 
+  const resetPasswordForEmail = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    return { error };
+  };
+
   const openAuthModal = (tab: 'login' | 'signup' = 'login') => {
     setAuthModalTab(tab);
     setAuthModalOpen(true);
@@ -93,7 +101,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider value={{
       user, session, loading,
-      signInWithEmail, signUpWithEmail, signInWithGoogle, signInWithKakao, signInWithNaver, signOut,
+      signInWithEmail, signUpWithEmail, signInWithGoogle, signInWithKakao, signInWithNaver, signOut, resetPasswordForEmail,
       openAuthModal, closeAuthModal, authModalOpen, authModalTab,
     }}>
       {children}

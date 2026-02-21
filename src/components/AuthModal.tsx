@@ -18,6 +18,9 @@ const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
 });
+const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
 const signupSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
@@ -29,6 +32,7 @@ const signupSchema = z.object({
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
+type ForgotPasswordForm = z.infer<typeof forgotPasswordSchema>;
 type SignupForm = z.infer<typeof signupSchema>;
 
 // ─── Social Icons ──────────────────────────────────────────────────────────────
@@ -54,7 +58,7 @@ const NaverIcon = () => (
 );
 
 // ─── Login Form ────────────────────────────────────────────────────────────────
-const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
+const LoginForm = ({ onSuccess, onForgotPassword }: { onSuccess: () => void; onForgotPassword: () => void }) => {
   const { t } = useTranslation('auth');
   const { signInWithEmail, signInWithGoogle, signInWithKakao, signInWithNaver } = useAuth();
   const [showPw, setShowPw] = useState(false);
@@ -149,7 +153,16 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
 
       {/* Password */}
       <div className="space-y-1.5">
-        <Label htmlFor="login-password">{t('password')}</Label>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="login-password">{t('password')}</Label>
+          <button
+            type="button"
+            className="text-xs text-accent hover:underline"
+            onClick={onForgotPassword}
+          >
+            {t('forgotPassword')}
+          </button>
+        </div>
         <div className="relative">
           <Input
             id="login-password"
@@ -173,6 +186,71 @@ const LoginForm = ({ onSuccess }: { onSuccess: () => void }) => {
         {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : t('login')}
       </Button>
     </form>
+  );
+};
+
+// ─── Forgot Password Form ──────────────────────────────────────────────────────
+const ForgotPasswordForm = ({ onBack }: { onBack: () => void }) => {
+  const { t } = useTranslation('auth');
+  const { resetPasswordForEmail } = useAuth();
+  const [done, setDone] = useState(false);
+
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<ForgotPasswordForm>({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
+
+  const onSubmit = async (data: ForgotPasswordForm) => {
+    const { error } = await resetPasswordForEmail(data.email);
+    if (error) {
+      toast.error(t('resetLinkSendFailed'));
+    } else {
+      setDone(true);
+    }
+  };
+
+  if (done) {
+    return (
+      <div className="text-center py-8 space-y-3">
+        <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto">
+          <Mail className="h-8 w-8 text-accent" />
+        </div>
+        <h3 className="font-semibold text-lg">{t('resetEmailSent')}</h3>
+        <p className="text-sm text-muted-foreground">{t('resetEmailSentDesc')}</p>
+        <Button variant="outline" onClick={onBack} className="mt-2">{t('backToLogin')}</Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <button
+          type="button"
+          className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 mb-4"
+          onClick={onBack}
+        >
+          ← {t('backToLogin')}
+        </button>
+        <h3 className="font-semibold text-base">{t('forgotPasswordTitle')}</h3>
+        <p className="text-sm text-muted-foreground mt-1">{t('forgotPasswordDesc')}</p>
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        <div className="space-y-1.5">
+          <Label htmlFor="forgot-email">{t('email')}</Label>
+          <Input
+            id="forgot-email"
+            type="email"
+            placeholder="example@email.com"
+            {...register('email')}
+            className={errors.email ? 'border-destructive' : ''}
+          />
+          {errors.email && <p className="text-xs text-destructive">{t('invalidEmail')}</p>}
+        </div>
+        <Button type="submit" className="w-full h-12 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold" disabled={isSubmitting}>
+          {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : t('sendResetLink')}
+        </Button>
+      </form>
+    </div>
   );
 };
 
@@ -359,9 +437,20 @@ const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
 const AuthModal = () => {
   const { t } = useTranslation('auth');
   const { authModalOpen, authModalTab, closeAuthModal, openAuthModal } = useAuth();
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+
+  const handleTabChange = (v: string) => {
+    setShowForgotPassword(false);
+    openAuthModal(v as 'login' | 'signup');
+  };
+
+  const handleClose = () => {
+    setShowForgotPassword(false);
+    closeAuthModal();
+  };
 
   return (
-    <Dialog open={authModalOpen} onOpenChange={(open) => !open && closeAuthModal()}>
+    <Dialog open={authModalOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="sm:max-w-md p-0 overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground px-8 py-6 text-center">
@@ -372,33 +461,39 @@ const AuthModal = () => {
           <p className="text-sm text-primary-foreground/70">{t('headerSubtitle')}</p>
         </div>
 
-        {/* Tabs */}
-        <Tabs value={authModalTab} onValueChange={(v) => openAuthModal(v as 'login' | 'signup')} className="px-8 py-6">
-          <TabsList className="w-full mb-6 h-11">
-            <TabsTrigger value="login" className="flex-1 font-medium">{t('login')}</TabsTrigger>
-            <TabsTrigger value="signup" className="flex-1 font-medium">{t('signup')}</TabsTrigger>
-          </TabsList>
+        {showForgotPassword ? (
+          <div className="px-8 py-6">
+            <ForgotPasswordForm onBack={() => setShowForgotPassword(false)} />
+          </div>
+        ) : (
+          /* Tabs */
+          <Tabs value={authModalTab} onValueChange={handleTabChange} className="px-8 py-6">
+            <TabsList className="w-full mb-6 h-11">
+              <TabsTrigger value="login" className="flex-1 font-medium">{t('login')}</TabsTrigger>
+              <TabsTrigger value="signup" className="flex-1 font-medium">{t('signup')}</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="login" className="mt-0">
-            <LoginForm onSuccess={closeAuthModal} />
-            <p className="text-center text-sm text-muted-foreground mt-4">
-              {t('noAccount')}{' '}
-              <button type="button" className="text-accent hover:underline font-medium" onClick={() => openAuthModal('signup')}>
-                {t('signupLink')}
-              </button>
-            </p>
-          </TabsContent>
+            <TabsContent value="login" className="mt-0">
+              <LoginForm onSuccess={handleClose} onForgotPassword={() => setShowForgotPassword(true)} />
+              <p className="text-center text-sm text-muted-foreground mt-4">
+                {t('noAccount')}{' '}
+                <button type="button" className="text-accent hover:underline font-medium" onClick={() => openAuthModal('signup')}>
+                  {t('signupLink')}
+                </button>
+              </p>
+            </TabsContent>
 
-          <TabsContent value="signup" className="mt-0">
-            <SignupForm onSuccess={() => openAuthModal('login')} />
-            <p className="text-center text-sm text-muted-foreground mt-4">
-              {t('haveAccount')}{' '}
-              <button type="button" className="text-accent hover:underline font-medium" onClick={() => openAuthModal('login')}>
-                {t('loginLink')}
-              </button>
-            </p>
-          </TabsContent>
-        </Tabs>
+            <TabsContent value="signup" className="mt-0">
+              <SignupForm onSuccess={() => openAuthModal('login')} />
+              <p className="text-center text-sm text-muted-foreground mt-4">
+                {t('haveAccount')}{' '}
+                <button type="button" className="text-accent hover:underline font-medium" onClick={() => openAuthModal('login')}>
+                  {t('loginLink')}
+                </button>
+              </p>
+            </TabsContent>
+          </Tabs>
+        )}
       </DialogContent>
     </Dialog>
   );
