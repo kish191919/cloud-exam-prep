@@ -32,6 +32,7 @@ const ExamResults = () => {
   const [session, setSession] = useState<ExamSession | null>(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<FilterType>('all');
+  const [tagFilter, setTagFilter] = useState<string | null>(null);
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [creating, setCreating] = useState(false);
 
@@ -97,10 +98,12 @@ const ExamResults = () => {
 
   // ── Filtered question list ───────────────────────────────────────────────
   const filteredQuestions: Question[] = (() => {
-    if (filter === 'wrong')      return wrongQs;
-    if (filter === 'correct')    return correctQs;
-    if (filter === 'unanswered') return skippedQs;
-    return session.questions;
+    let qs = session.questions;
+    if (filter === 'wrong')           qs = wrongQs;
+    else if (filter === 'correct')    qs = correctQs;
+    else if (filter === 'unanswered') qs = skippedQs;
+    if (tagFilter) qs = qs.filter(q => q.tags.includes(tagFilter));
+    return qs;
   })();
 
   // 오답/복습/북마크 등 필터된 세션인지 판별
@@ -346,6 +349,24 @@ const ExamResults = () => {
                   <span className="opacity-70">({f.count})</span>
                 </button>
               ))}
+              {tagEntries.length > 0 && (
+                <>
+                  <span className="text-muted-foreground/40 text-xs self-center px-0.5">|</span>
+                  {tagEntries.map(([tag]) => (
+                    <button
+                      key={tag}
+                      onClick={() => setTagFilter(prev => prev === tag ? null : tag)}
+                      className={`flex items-center px-3 py-1.5 rounded-full text-xs font-medium transition-colors max-w-[160px] truncate ${
+                        tagFilter === tag
+                          ? 'bg-accent text-accent-foreground'
+                          : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </>
+              )}
             </div>
           </CardHeader>
 
