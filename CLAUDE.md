@@ -153,6 +153,8 @@ quality_checklist_content ← .claude/skills/question-redesigner/references/qual
 ```python
 # 예: 5개 문제 → 5개 에이전트 동시 실행
 for q in parsed_questions:
+    # correct_answer_concept: 원문 정답 보기 텍스트 (규칙 13 — 정답 개념 보존)
+    correct_answer_concept = q["options"].get(q["answer"], "")
     Task(
         subagent_type="general-purpose",
         model="haiku",          # Haiku 모델 사용
@@ -161,6 +163,7 @@ for q in parsed_questions:
             "question": q,
             "exam_id": exam_id,
             "source_language": source_language,   # "en" 또는 "ko"
+            "correct_answer_concept": correct_answer_concept,   # 원문 정답 보기 텍스트
             "redesign_rules": redesign_rules_content,
             "domain_tags": domain_tags_content,
             "quality_checklist": quality_checklist_content
