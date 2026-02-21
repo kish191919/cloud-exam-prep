@@ -68,6 +68,24 @@ const ExamResults = () => {
 
   // ── Derived stats ────────────────────────────────────────────────────────
   const total = session.questions.length;
+  // ── Tag breakdown ────────────────────────────────────────────────────────
+  const tagStats: Record<string, { correct: number; total: number }> = (() => {
+    if (session.tagBreakdown && Object.keys(session.tagBreakdown).length > 0) {
+      return session.tagBreakdown;
+    }
+    const stats: Record<string, { correct: number; total: number }> = {};
+    session.questions.forEach(q => {
+      q.tags.forEach(tag => {
+        if (!stats[tag]) stats[tag] = { correct: 0, total: 0 };
+        stats[tag].total++;
+      });
+      if (session.answers[q.id] === q.correctOptionId) {
+        q.tags.forEach(tag => { stats[tag].correct++; });
+      }
+    });
+    return stats;
+  })();
+  const tagEntries = Object.entries(tagStats).sort((a, b) => b[1].total - a[1].total);
   const correctQs = session.questions.filter(q => session.answers[q.id] === q.correctOptionId);
   const wrongQs   = session.questions.filter(q => session.answers[q.id] && session.answers[q.id] !== q.correctOptionId);
   const skippedQs = session.questions.filter(q => !session.answers[q.id]);
@@ -243,6 +261,40 @@ const ExamResults = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* ── Domain score breakdown ── */}
+        {tagEntries.length > 0 && (
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">
+                {isKo ? '도메인별 성적' : 'Score by Domain'}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {tagEntries.map(([tag, { correct, total: tagTotal }]) => {
+                const pct = tagTotal > 0 ? Math.round((correct / tagTotal) * 100) : 0;
+                const good = pct >= 70;
+                return (
+                  <div key={tag}>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-xs text-muted-foreground flex-1 mr-3 truncate">{tag}</span>
+                      <span className={`text-xs font-semibold shrink-0 ${good ? 'text-green-600' : 'text-destructive'}`}>
+                        {correct}/{tagTotal} ({pct}%)
+                      </span>
+                    </div>
+                    <div className="relative h-2.5 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all ${good ? 'bg-green-500' : 'bg-destructive'}`}
+                        style={{ width: `${pct}%` }}
+                      />
+                      <div className="absolute top-0 bottom-0 w-0.5 bg-yellow-500/70" style={{ left: '70%' }} />
+                    </div>
+                  </div>
+                );
+              })}
+            </CardContent>
+          </Card>
+        )}
 
         {/* ── Question review ── */}
         <Card>

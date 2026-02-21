@@ -9,7 +9,8 @@
       "Bash(source:*)",
       "Bash(SUPABASE_URL=\"https://nxneadcbymapbtzkzixg.supabase.co\":*)",
       "Bash(SUPABASE_KEY=\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54bmVhZGNieW1hcGJ0emt6aXhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEyMjc4NTUsImV4cCI6MjA4NjgwMzg1NX0.kkOtpjRy7l_KzImxHMRsYA6SLn5Ed96G18zDxZiszzM\")",
-      "Bash(__NEW_LINE_3580ad382a02db74__ curl -s -H \"apikey: $SUPABASE_KEY\" -H \"Authorization: Bearer $SUPABASE_KEY\" \"$SUPABASE_URL/rest/v1/questions?select=id&exam_id=eq.aws-aif-c01&order=id.desc&limit=1\")"
+      "Bash(__NEW_LINE_3580ad382a02db74__ curl -s -H \"apikey: $SUPABASE_KEY\" -H \"Authorization: Bearer $SUPABASE_KEY\" \"$SUPABASE_URL/rest/v1/questions?select=id&exam_id=eq.aws-aif-c01&order=id.desc&limit=1\")",
+      "Bash(curl:*)"
     ]
   }
 }
