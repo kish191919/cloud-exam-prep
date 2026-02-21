@@ -6,6 +6,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const kakaoClientId = process.env.KAKAO_REST_API_KEY;
+  const kakaoClientSecret = process.env.KAKAO_CLIENT_SECRET;
 
   const baseUrl = process.env.APP_URL
     || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:5173');
@@ -33,6 +34,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
       body: new URLSearchParams({
         grant_type: 'authorization_code',
         client_id: kakaoClientId,
+        ...(kakaoClientSecret ? { client_secret: kakaoClientSecret } : {}),
         redirect_uri: `${baseUrl}/api/auth/kakao/callback`,
         code,
       }).toString(),
