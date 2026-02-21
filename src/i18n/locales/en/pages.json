@@ -1,83 +1,144 @@
 {
   "index": {
     "hero": {
-      "badge": "AWS AIF-C01 practice exam now available",
-      "title": "Master Cloud Certifications",
-      "titleAccent": "With Confidence",
-      "subtitle": "Practice with realistic CBT exams for AWS, GCP & Azure. Track your progress, review mistakes, and pass on your first try.",
-      "ctaPrimary": "Start Free Practice",
-      "ctaSecondary": "Learn More",
+      "badge": "30-Min Daily AWS Study Routine",
+      "title": "30 Minutes After Work,",
+      "titleAccent": "Your AWS Pass Routine",
+      "subtitle": "Understand concepts in Korean first, then conquer the English exam. A structured CBT study plan designed for working professionals.",
+      "ctaPrimary": "Start Free Now",
+      "ctaSecondary": "See the Routine",
       "stats": {
         "questions": {
           "value": "500+",
-          "label": "Questions"
+          "label": "Questions with KR Explanations"
         },
         "passRate": {
           "value": "95%",
           "label": "Pass Rate"
         },
         "providers": {
-          "value": "3",
-          "label": "Cloud Providers"
+          "value": "30 min",
+          "label": "Avg. Daily Study Time"
         }
       }
     },
     "featuresSection": {
-      "title": "Everything You Need to Pass",
-      "subtitle": "Built by certified professionals who understand what it takes to ace cloud exams."
+      "title": "Why Busy Professionals Pass with CloudMaster",
+      "subtitle": "Maximum efficiency in minimum time. Korean explanations, real CBT practice — everything you need."
     },
     "features": [
       {
         "icon": "Shield",
-        "title": "Realistic CBT Experience",
-        "desc": "Timed exams with auto-save, bookmarks, pause/resume, and question navigation — just like the real test."
-      },
-      {
-        "icon": "BarChart3",
-        "title": "Smart Analytics",
-        "desc": "Track scores by topic, identify weak areas, and review wrong answers with detailed explanations."
-      },
-      {
-        "icon": "Clock",
-        "title": "Realistic Time Management",
-        "desc": "Practice under real exam conditions and build confidence to finish within time limits."
+        "title": "Realistic CBT Environment",
+        "desc": "Timer, auto-save, bookmarks, and question navigation — practice in conditions identical to the real exam."
       },
       {
         "icon": "BookOpen",
-        "title": "Detailed Explanations",
-        "desc": "Learn from comprehensive explanations for every question to understand concepts and improve."
+        "title": "Korean Explanations First",
+        "desc": "Every question comes with detailed Korean explanations. Understand the concept fully before tackling the English exam."
+      },
+      {
+        "icon": "BarChart3",
+        "title": "Target Your Weak Spots",
+        "desc": "Topic-by-topic score analysis pinpoints exactly where you're weak, so you can drill only what matters."
+      },
+      {
+        "icon": "Clock",
+        "title": "30-Minute Session Design",
+        "desc": "Short sessions after work or on weekends — consistent 30-minute blocks that stack into real exam-ready skills."
       },
       {
         "icon": "Target",
-        "title": "Topic-Based Study",
-        "desc": "Focus on specific domains and target your weak areas for efficient learning."
+        "title": "Domain-Focused Study",
+        "desc": "No need to study everything. Target weak domains and use your limited time efficiently."
       },
       {
-        "icon": "Users",
-        "title": "Multi-Cloud Coverage",
-        "desc": "AWS, GCP, and Azure certifications in one platform. Always updated for the latest exam versions."
+        "icon": "Smartphone",
+        "title": "Study on Your Commute",
+        "desc": "Study on the subway, bus, or during lunch. Install as a PWA for app-like speed anywhere."
       }
     ],
     "howItWorks": {
-      "title": "How It Works"
+      "title": "The 30-Minute Pass Routine"
     },
     "steps": [
       {
         "num": "01",
-        "title": "Choose Your Exam",
-        "desc": "Select from AWS, GCP, or Azure certification practice tests."
+        "title": "Solve Today's Questions",
+        "desc": "Work through 10–20 CBT questions under timed conditions. Just 15 minutes after work."
       },
       {
         "num": "02",
-        "title": "Take the Test",
-        "desc": "Experience a realistic CBT environment with timer and auto-save."
+        "title": "Review Wrong Answers",
+        "desc": "Read the detailed explanations for every mistake. Understanding why you were wrong is the key."
       },
       {
         "num": "03",
-        "title": "Review & Improve",
-        "desc": "Analyze results, study explanations, and retake weak areas."
+        "title": "Identify Weak Domains",
+        "desc": "Check your analytics report to find today's weak domain and plan your focus for tomorrow."
       }
     ],
+    "routine": {
+      "title": "The 30-Min AWS Pass Routine",
+      "subtitle": "Follow this routine daily and you'll be ready to pass in 2–3 months.",
+      "badge": "Proven Study Routine",
+      "steps": [
+        {
+          "time": "Right After Work",
+          "duration": "15 min",
+          "title": "Solve Today's CBT Questions",
+          "desc": "Work through 10–20 questions in a timed CBT environment to keep your exam instincts sharp.",
+          "icon": "Target"
+        },
+        {
+          "time": "+15 min",
+          "duration": "10 min",
+          "title": "Review Wrong Answers",
+          "desc": "Read the detailed explanations for every mistake. Understanding why you were wrong is the key to not repeating it.",
+          "icon": "BookOpen"
+        },
+        {
+          "time": "+25 min",
+          "duration": "5 min",
+          "title": "Check Your Weak Domains",
+          "desc": "Pull up your analytics report, note today's weak domain, and plan what to focus on tomorrow.",
+          "icon": "BarChart3"
+        }
+      ],
+      "totalTime": "30 min/day",
+      "totalTimeDesc": "done consistently"
+    },
+    "testimonials": {
+      "title": "Pass Stories",
+      "subtitle": "Real results from working professionals who made the time.",
+      "badge": "Real Pass Stories",
+      "items": [
+        {
+          "name": "Kim Minjun",
+          "role": "5-Year SI Engineer",
+          "cert": "AWS SAA-C03 Passed",
+          "score": "820 pts",
+          "quote": "Passed in two and a half months studying 30 minutes after work. The Korean explanations were invaluable, and being able to study on mobile during my commute made it sustainable.",
+          "period": "2.5 months"
+        },
+        {
+          "name": "Lee Seoyeon",
+          "role": "3-Year Financial IT Team",
+          "cert": "AWS AIF-C01 Passed",
+          "score": "790 pts",
+          "quote": "AI certification felt daunting, but locking in the concepts with Korean explanations first, then drilling CBT questions, made it click. Passed on the first try.",
+          "period": "1.5 months"
+        },
+        {
+          "name": "Park Dohyun",
+          "role": "Startup Engineering Lead",
+          "cert": "AWS DEA-C01 Passed",
+          "score": "850 pts",
+          "quote": "Meetings, overtime — the works. But the short session format meant I could always squeeze in study time. The weak-spot drills right before the exam pushed me over the line.",
+          "period": "3 months"
+        }
+      ]
+    },
     "pricing": {
       "title": "Simple, Transparent Pricing",
       "subtitle": "Start free, upgrade when you're ready.",
@@ -130,31 +191,31 @@
       "title": "Frequently Asked Questions",
       "questions": [
         {
-          "q": "What certifications are covered?",
-          "a": "We currently offer practice exams for AWS certifications including AIF-C01, SAA-C03, and DEA-C01. GCP and Azure exams are coming soon."
+          "q": "How much time do I need to study each day?",
+          "a": "30 minutes a day is enough. A routine of 15–20 CBT questions and reviewing wrong answers consistently for 2–3 months builds solid exam-ready skills."
         },
         {
-          "q": "How realistic are the practice exams?",
-          "a": "Our CBT interface mirrors the actual exam experience with timed sessions, question navigation panels, bookmarking, and the same question formats you'll encounter on test day."
+          "q": "Can I pass the English exam by studying in Korean?",
+          "a": "Yes. AWS officially supports Korean-language exams. Understanding concepts deeply in Korean first, then training with English CBT questions, is actually a highly effective strategy."
         },
         {
-          "q": "Can I access on mobile?",
-          "a": "Yes! CloudMaster is fully responsive and works on desktop, tablet, and mobile devices. Study anywhere, anytime."
+          "q": "Which AWS exams are available?",
+          "a": "We currently offer AIF-C01 (AI Practitioner), SAA-C03 (Solutions Architect Associate), and DEA-C01 (Data Engineer Associate). More certifications are being added."
         },
         {
-          "q": "What happens if I lose connection during an exam?",
-          "a": "Your progress is auto-saved after every answer. If you lose connection or close your browser, you can resume exactly where you left off."
+          "q": "Can I study on mobile during my commute?",
+          "a": "Absolutely. CloudMaster is a PWA and can be installed like an app on your phone. Study on the subway, bus, or during your lunch break."
         },
         {
-          "q": "How do I track my progress?",
-          "a": "Your dashboard shows score trends, topic-by-topic breakdowns, and identifies your weakest areas so you can focus your study time effectively."
+          "q": "What if I close the app mid-exam?",
+          "a": "No worries. Progress is auto-saved after every answer. You can resume exactly where you left off, even after losing connection."
         }
       ]
     },
     "cta": {
-      "title": "Ready to Get Certified?",
-      "subtitle": "Join thousands of cloud professionals who passed their exams with CloudMaster.",
-      "button": "Start Practicing Now"
+      "title": "Start Your 30-Min Routine Tonight",
+      "subtitle": "Thousands of working professionals have passed AWS exams with CloudMaster. You're next.",
+      "button": "Start Free Now"
     },
     "footer": {
       "privacy": "Privacy Policy",
