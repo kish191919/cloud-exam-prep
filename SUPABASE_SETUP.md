@@ -147,6 +147,63 @@ Supabase 대시보드에서 확인 가능:
 4. **Logs**: 에러 및 성능 모니터링
 5. **Database**: 백업 및 복원
 
+## 📧 이메일 설정 (스팸 방지)
+
+비밀번호 재설정 이메일이 스팸함으로 분류되는 경우 아래 두 단계를 모두 진행하세요.
+
+### Step 1 — 이메일 템플릿 적용 (Supabase Dashboard)
+
+1. [Supabase 대시보드](https://app.supabase.com) → 프로젝트 선택
+2. 왼쪽 메뉴 **Authentication** → **Email Templates**
+3. **"Reset Password"** 탭 선택
+4. **Subject** 입력:
+   ```
+   [Cloud Certified Exam Prep] 비밀번호를 재설정해 주세요
+   ```
+5. **Body** 영역의 기존 내용을 전체 삭제 후,
+   `supabase/templates/reset_password.html` 파일의 내용을 복사하여 붙여넣기
+6. **Save** 클릭
+
+### Step 2 — Custom SMTP 설정 (Resend.com 권장)
+
+> Supabase 기본 발신자(`@supabase.io`)는 이메일 평판이 낮아 스팸 분류의 주요 원인입니다.
+> 본인 도메인으로 발송하면 스팸 문제를 근본적으로 해결할 수 있습니다.
+
+**Resend.com 설정 (무료 3,000통/월)**
+
+1. [resend.com](https://resend.com) 가입 및 로그인
+2. **Domains** → **Add Domain** → 본인 도메인 입력 (예: `cloudcertified.kr`)
+3. 안내에 따라 DNS 레코드 추가:
+   - **SPF** 레코드 (TXT)
+   - **DKIM** 레코드 (TXT)
+   - 추가 후 **Verify** 클릭 → 인증 완료 확인
+4. **API Keys** → **Create API Key** → 생성된 키 복사
+
+**Supabase SMTP 설정**
+
+1. Supabase 대시보드 → **Project Settings** → **Authentication**
+2. **SMTP Settings** 섹션에서 **"Enable Custom SMTP"** 토글 ON
+3. 아래 정보 입력:
+
+   | 항목 | 값 |
+   |------|-----|
+   | SMTP Host | `smtp.resend.com` |
+   | SMTP Port | `465` |
+   | SMTP User | `resend` |
+   | SMTP Password | `{Resend API Key}` |
+   | Sender email | `noreply@{본인 도메인}` |
+   | Sender name | `Cloud Certified Exam Prep` |
+
+4. **Save** 후 **"Send test email"** 버튼으로 수신 확인
+
+**설정 완료 확인**
+
+- 앱에서 "비밀번호 찾기" → 이메일 주소 입력
+- 받은편지함(스팸 아님)에서 CM 브랜드 이메일 수신 확인
+- [mail-tester.com](https://mail-tester.com) 에서 스팸 점수 10점 목표로 측정 (선택)
+
+---
+
 ## 🆘 문제 해결
 
 ### "Missing Supabase environment variables" 에러
