@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-parse_text.py — 영문 AWS 시험 문제 텍스트를 파싱하여 parsed_questions.json 생성
+parse_text.py — 영문/한국어 AWS 시험 문제 텍스트를 파싱하여 parsed_questions.json 생성
 
 입력: 표준 입력(stdin) 또는 --input-file 파라미터로 텍스트 파일 경로 지정
 출력: output/parsed_questions.json (JSON 배열)
@@ -9,8 +9,10 @@ parse_text.py — 영문 AWS 시험 문제 텍스트를 파싱하여 parsed_ques
   1. 문제 번호 있음: "21. Question text" 또는 "Q21. Question text"
   2. 문제 번호 없음: "Question text" (자동 번호 부여)
   3. 보기: "A. Option" / "A) Option" (대소문자 무관)
-  4. 정답: "Correct answer: D" / "Correct Answer: D, E" / "Answer: D"
+  4. 정답 (영문): "Correct answer: D" / "Correct Answer: D, E" / "Answer: D"
+     정답 (한국어): "정답: D" / "정답: D, E"
      정답 구분자: 콤마, 슬래시, 공백, 'and'
+  5. 해설 줄 자동 스킵: "Explanation:" / "해설:" / "설명:"
 
 사용법:
   python3 parse_text.py --input-file /path/to/questions.txt \
@@ -43,9 +45,10 @@ RE_OPTION = re.compile(
 )
 
 # 정답 행 패턴: "Correct answer: D" / "Answer: D, E" / "Correct Answer: B and C" / "Answer: AC"
+# 한국어: "정답: D" / "정답: D, E"
 # [A-Ea-e]+ 로 구분자 없는 연속 문자(AC, BCE 등)도 캡처
 RE_ANSWER_LINE = re.compile(
-    r'(?:correct\s+answer|answer)\s*:?\s*([A-Ea-e]+(?:\s*[,/]\s*[A-Ea-e]+|\s+and\s+[A-Ea-e]+)*)',
+    r'(?:correct\s+answer|answer|정답)\s*:?\s*([A-Ea-e]+(?:\s*[,/]\s*[A-Ea-e]+|\s+and\s+[A-Ea-e]+)*)',
     re.IGNORECASE
 )
 
@@ -173,8 +176,8 @@ def _parse_block(block_lines: list[str], auto_number: int) -> dict | None:
         if re.match(r'^answer\s*$', stripped, re.IGNORECASE):
             continue
 
-        # "Explanation:" 줄 스킵 (원문 영어 해설 — 한국어 재설계에서 새로 생성하므로 불필요)
-        if re.match(r'^explanation\s*:', stripped, re.IGNORECASE):
+        # "Explanation:" / "해설:" / "설명:" 줄 스킵 (원문 해설 — 재설계에서 새로 생성하므로 불필요)
+        if re.match(r'^(?:explanation|해설|설명)\s*:', stripped, re.IGNORECASE):
             continue
 
         # 정답 행

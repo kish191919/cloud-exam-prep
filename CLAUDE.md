@@ -1,6 +1,6 @@
 # AWS 시험 문제 변환 오케스트레이터
 
-이 프로젝트의 Claude Code 에이전트는 영문 AWS 시험 문제를 한국어 4지선다 문제로 재설계하고, Supabase에 바로 적재 가능한 SQL 파일을 생성하는 변환 파이프라인을 실행합니다.
+이 프로젝트의 Claude Code 에이전트는 영문 또는 한국어 AWS 시험 문제를 한국어 4지선다 문제로 재설계하고, Supabase에 바로 적재 가능한 SQL 파일을 생성하는 변환 파이프라인을 실행합니다.
 
 ## 역할
 
@@ -81,7 +81,16 @@ curl -s -X POST \
 
 **세트가 없는 경우:** 목록 없이 이름 입력만 요청
 
-### 3. Supabase에서 MAX(id) 조회
+### 3. 입력 언어 감지
+
+문제 텍스트를 수집한 직후, 입력 언어를 판별하여 `source_language` 변수에 저장한다:
+
+- **한국어 입력 감지 기준:** 텍스트에 한글 문자가 전체의 30% 이상 포함된 경우
+- `source_language = "ko"` (한국어 입력) 또는 `source_language = "en"` (영문 입력)
+
+> 언어 판별은 LLM이 텍스트를 보고 직접 판단한다. 이후 `source_language` 값은 Redesigner Agent에 전달된다.
+
+### 4. Supabase에서 MAX(id) 조회
 
 `.env` 파일에서 `SUPABASE_URL`과 `SUPABASE_SERVICE_ROLE_KEY`를 읽어 API 호출:
 
@@ -151,6 +160,7 @@ for q in parsed_questions:
             "task": "redesign_single",
             "question": q,
             "exam_id": exam_id,
+            "source_language": source_language,   # "en" 또는 "ko"
             "redesign_rules": redesign_rules_content,
             "domain_tags": domain_tags_content,
             "quality_checklist": quality_checklist_content
