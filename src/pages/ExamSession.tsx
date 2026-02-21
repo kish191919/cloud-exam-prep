@@ -29,6 +29,15 @@ const ExamSession = () => {
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
   const [navDirection, setNavDirection] = useState<'next' | 'prev'>('next');
   const touchStartX = useRef<number | null>(null);
+  const currentNavBtnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    currentNavBtnRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center',
+      block: 'nearest',
+    });
+  }, [session?.currentIndex]);
 
   const mode = session?.mode ?? 'exam';
   const isExamMode = mode === 'exam';
@@ -253,6 +262,7 @@ const ExamSession = () => {
           {session.questions.map((q, i) => (
             <button
               key={q.id}
+              ref={i === session.currentIndex ? currentNavBtnRef : undefined}
               onClick={() => navigateTo(i)}
               className={`flex-shrink-0 w-8 h-8 rounded text-xs font-semibold ${
                 i === session.currentIndex
@@ -280,6 +290,7 @@ const ExamSession = () => {
             return (
               <button
                 key={q.id}
+                ref={isCurrent ? currentNavBtnRef : undefined}
                 onClick={() => navigateTo(i)}
                 className={`relative flex-shrink-0 w-8 h-8 rounded text-xs font-semibold flex items-center justify-center transition-all ${
                   isCurrent
