@@ -125,6 +125,25 @@ const ExamResults = () => {
     } finally { setCreating(false); }
   };
 
+  const handleDomainPractice = async (tag: string) => {
+    if (creating) return;
+    const tagQuestions = session.questions.filter(q => q.tags.includes(tag));
+    if (tagQuestions.length === 0) return;
+    setCreating(true);
+    try {
+      const id = await createSession(
+        session.examId,
+        `${tag} - ${isKo ? '연습' : 'Practice'}`,
+        tagQuestions,
+        Math.ceil(tagQuestions.length * 2),
+        'practice',
+        false,
+        user?.id || null
+      );
+      navigate(`/session/${id}`);
+    } finally { setCreating(false); }
+  };
+
   // 필터된 세션이면 시험 목록으로, 일반 세션이면 동일 문제 전체 재시도
   const handleRetryAll = async (mode: 'exam' | 'practice') => {
     if (isFilteredSession) {
@@ -273,22 +292,28 @@ const ExamResults = () => {
             <CardContent className="space-y-3">
               {tagEntries.map(([tag, { correct, total: tagTotal }]) => {
                 const pct = tagTotal > 0 ? Math.round((correct / tagTotal) * 100) : 0;
-                const good = pct >= 70;
                 return (
                   <div key={tag}>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-xs text-muted-foreground flex-1 mr-3 truncate">{tag}</span>
-                      <span className={`text-xs font-semibold shrink-0 ${good ? 'text-green-600' : 'text-destructive'}`}>
-                        {correct}/{tagTotal} ({pct}%)
-                      </span>
-                    </div>
-                    <div className="relative h-2.5 bg-muted rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all ${good ? 'bg-green-500' : 'bg-destructive'}`}
-                        style={{ width: `${pct}%` }}
-                      />
-                      <div className="absolute top-0 bottom-0 w-0.5 bg-yellow-500/70" style={{ left: '70%' }} />
-                    </div>
+                    <button
+                      onClick={() => handleDomainPractice(tag)}
+                      disabled={creating}
+                      className="w-full text-left group"
+                    >
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-xs text-muted-foreground flex-1 mr-3 truncate group-hover:text-foreground transition-colors">
+                          {tag}
+                        </span>
+                        <span className="text-xs font-semibold shrink-0 text-green-600">
+                          {correct}/{tagTotal} ({pct}%)
+                        </span>
+                      </div>
+                      <div className="relative h-2.5 bg-muted rounded-full overflow-hidden group-hover:bg-muted/70 transition-colors">
+                        <div
+                          className="h-full rounded-full transition-all bg-green-500"
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                    </button>
                   </div>
                 );
               })}
