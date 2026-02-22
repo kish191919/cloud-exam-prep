@@ -17,7 +17,7 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   Plus, Pencil, Trash2, Loader2, Upload, Download,
-  Save, CheckCircle2, AlertTriangle, ArrowLeft, Layers, X, ImagePlus,
+  Save, CheckCircle2, AlertTriangle, ArrowLeft, Layers, X,
 } from 'lucide-react';
 import { getAllExams } from '@/services/examService';
 import { getQuestionsForExam, getSetsForExam } from '@/services/questionService';
@@ -25,7 +25,6 @@ import {
   createQuestion, updateQuestion, deleteQuestion,
   bulkCreateQuestions, QuestionInput,
   getExamSetQuestionMap, moveQuestionToSet,
-  uploadKeyPointImage, deleteKeyPointImage,
 } from '@/services/adminService';
 import type { ExamConfig, ExamSet, Question } from '@/types/exam';
 import { useAuth } from '@/contexts/AuthContext';
@@ -102,12 +101,10 @@ interface QFormProps {
 const OPTION_LABELS = ['A', 'B', 'C', 'D'] as const;
 
 const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps) => {
-  const empty = { text: '', a: '', b: '', c: '', d: '', a_exp: '', b_exp: '', c_exp: '', d_exp: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', tags: '', keyPoints: '', keyPointImages: [] as string[], refLinks: [] as { name: string; url: string }[] };
+  const empty = { text: '', a: '', b: '', c: '', d: '', a_exp: '', b_exp: '', c_exp: '', d_exp: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', tags: '', keyPoints: '', refLinks: [] as { name: string; url: string }[] };
   const [form, setForm] = useState(empty);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
-  const [imageUploading, setImageUploading] = useState(false);
-  const imageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (edit) {
@@ -122,7 +119,6 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
         explanation: edit.explanation,
         tags: edit.tags.join(', '),
         keyPoints: edit.keyPoints ?? '',
-        keyPointImages: edit.keyPointImages ?? [],
         refLinks: edit.refLinks ?? [],
       });
     } else {
@@ -132,29 +128,6 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
   }, [edit, open]);
 
   const set = (key: string, val: any) => setForm(f => ({ ...f, [key]: val }));
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files ?? []);
-    if (files.length === 0) return;
-    setImageUploading(true);
-    setError('');
-    try {
-      // Use a temporary ID if creating a new question
-      const qId = edit?.id ?? `temp-${Date.now()}`;
-      const urls = await Promise.all(files.map(f => uploadKeyPointImage(f, qId)));
-      set('keyPointImages', [...form.keyPointImages, ...urls]);
-    } catch (e: any) {
-      setError('이미지 업로드 실패: ' + (e.message ?? String(e)));
-    } finally {
-      setImageUploading(false);
-      if (imageInputRef.current) imageInputRef.current.value = '';
-    }
-  };
-
-  const handleRemoveImage = async (url: string) => {
-    set('keyPointImages', form.keyPointImages.filter(u => u !== url));
-    try { await deleteKeyPointImage(url); } catch { /* ignore */ }
-  };
 
   const handleSave = async () => {
     if (!form.text.trim() || !form.a.trim() || !form.b.trim()) {
@@ -176,7 +149,6 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
         explanation: form.explanation.trim(),
         tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
         keyPoints: form.keyPoints.trim() || undefined,
-        keyPointImages: form.keyPointImages.length > 0 ? form.keyPointImages : undefined,
         refLinks: form.refLinks.filter(r => r.name.trim() && r.url.trim()),
       };
       if (edit) {
@@ -282,46 +254,6 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
               value={form.keyPoints}
               onChange={e => set('keyPoints', e.target.value)}
             />
-            {/* Image upload */}
-            <div className="mt-2">
-              <input
-                ref={imageInputRef}
-                type="file"
-                accept="image/*"
-                multiple
-                className="hidden"
-                onChange={handleImageUpload}
-              />
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={imageUploading}
-                onClick={() => imageInputRef.current?.click()}
-                className="w-full"
-              >
-                {imageUploading
-                  ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />업로드 중...</>
-                  : <><ImagePlus className="h-4 w-4 mr-2" />이미지 추가</>
-                }
-              </Button>
-              {form.keyPointImages.length > 0 && (
-                <div className="mt-2 grid grid-cols-2 gap-2">
-                  {form.keyPointImages.map((url, idx) => (
-                    <div key={idx} className="relative rounded-lg overflow-hidden border border-border group">
-                      <img src={url} alt={`이미지 ${idx + 1}`} className="w-full object-contain max-h-32 bg-muted" />
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveImage(url)}
-                        className="absolute top-1 right-1 bg-black/60 hover:bg-black/80 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Reference Links */}

@@ -1,5 +1,5 @@
 import { Question, ExamMode } from '@/types/exam';
-import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb, ImageIcon } from 'lucide-react';
+import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -47,9 +47,6 @@ const QuestionDisplay = ({
   // Feedback animation state (for practice mode when answer is first selected)
   const [feedbackAnimation, setFeedbackAnimation] = useState<'correct' | 'wrong' | null>(null);
   const prevAnswerRef = useRef<string | undefined>(undefined);
-
-  // Lightbox state for image preview
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
   // Trigger feedback animation when answer is first selected in practice mode
   useEffect(() => {
@@ -120,7 +117,6 @@ const QuestionDisplay = ({
 
   const hasKeySection = showFeedback && (
     questionKeyPoints ||
-    (question.keyPointImages && question.keyPointImages.length > 0) ||
     (question.refLinks && question.refLinks.length > 0)
   );
 
@@ -212,7 +208,7 @@ const QuestionDisplay = ({
       {hasKeySection && (
         <div className="mt-6 space-y-4">
           {/* 핵심 암기사항 */}
-          {(questionKeyPoints || (question.keyPointImages && question.keyPointImages.length > 0)) && (
+          {questionKeyPoints && (
             <div className="rounded-xl border border-amber-200 dark:border-amber-800/50 bg-amber-50/60 dark:bg-amber-950/20 p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Lightbulb className="h-4 w-4 text-amber-500 shrink-0" />
@@ -220,32 +216,9 @@ const QuestionDisplay = ({
                   {isEn ? 'Key Points' : '핵심 암기사항'}
                 </span>
               </div>
-              {questionKeyPoints && (
-                <p className="text-sm leading-relaxed text-foreground whitespace-pre-line mb-3">
-                  {questionKeyPoints}
-                </p>
-              )}
-              {question.keyPointImages && question.keyPointImages.length > 0 && (
-                <div className={`grid gap-3 ${question.keyPointImages.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
-                  {question.keyPointImages.map((src, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setLightboxSrc(src)}
-                      className="relative rounded-lg overflow-hidden border border-amber-200 dark:border-amber-800/50 hover:opacity-90 transition-opacity group"
-                    >
-                      <img
-                        src={src}
-                        alt={`핵심 암기 이미지 ${idx + 1}`}
-                        className="w-full object-contain max-h-64 bg-background"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10">
-                        <ImageIcon className="h-6 w-6 text-white drop-shadow" />
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
+              <p className="text-sm leading-relaxed text-foreground whitespace-pre-line">
+                {questionKeyPoints}
+              </p>
             </div>
           )}
 
@@ -276,26 +249,6 @@ const QuestionDisplay = ({
         </div>
       )}
 
-      {/* Lightbox */}
-      {lightboxSrc && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-          onClick={() => setLightboxSrc(null)}
-        >
-          <img
-            src={lightboxSrc}
-            alt="확대 보기"
-            className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
-            onClick={e => e.stopPropagation()}
-          />
-          <button
-            className="absolute top-4 right-4 text-white/80 hover:text-white text-3xl leading-none"
-            onClick={() => setLightboxSrc(null)}
-          >
-            ×
-          </button>
-        </div>
-      )}
     </div>
   );
 };

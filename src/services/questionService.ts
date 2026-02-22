@@ -11,7 +11,6 @@ interface QuestionRow {
   explanation_en: string | null;
   key_points: string | null;
   key_points_en: string | null;
-  key_point_images: string[] | null;
   ref_links: any;
   question_options: Array<{
     id: string;
@@ -75,7 +74,6 @@ export async function getQuestionsForExam(examId: string): Promise<Question[]> {
 
     keyPoints: q.key_points ?? undefined,
     keyPointsEn: q.key_points_en ?? undefined,
-    keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   }));
 }
@@ -130,7 +128,6 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
 
     keyPoints: q.key_points ?? undefined,
     keyPointsEn: q.key_points_en ?? undefined,
-    keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   };
 }
@@ -184,7 +181,6 @@ export async function getQuestionsByIds(questionIds: string[]): Promise<Question
 
     keyPoints: q.key_points ?? undefined,
     keyPointsEn: q.key_points_en ?? undefined,
-    keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   }));
 }
@@ -319,7 +315,6 @@ export async function getQuestionsByTag(examId: string, tag: string): Promise<Qu
 
     keyPoints: q.key_points ?? undefined,
     keyPointsEn: q.key_points_en ?? undefined,
-    keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   }));
 }

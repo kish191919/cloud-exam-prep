@@ -6,7 +6,7 @@
 
 
 -- ── 문제 21: FM 선택 기준 (모달리티, 다국어, 지연 시간, 비용) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q121',
   'aws-aif-c01',
@@ -55,7 +55,6 @@ Amazon Bedrock 모델 선택 팁:
 • Claude Haiku: 빠름, 저렴, 단순 작업
 • Claude Sonnet: 균형 (속도/성능/비용)
 • Claude Opus: 최고 성능, 복잡한 추론',
-  '{}',
   '[{"name": "Amazon Bedrock 모델 선택 가이드", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"}, {"name": "Bedrock 프롬프트 캐싱", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html"}]'
 );
 
@@ -69,7 +68,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q121', '파운�
 
 
 -- ── 문제 22: 추론 파라미터 (Temperature, Top-P) 영향 ──────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q122',
   'aws-aif-c01',
@@ -115,7 +114,6 @@ Temperature 범위: 0.0 ~ 1.0 (일부 모델 2.0까지)
 • Max Tokens: 최대 출력 토큰 수 제한
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 암기팁: 정확도 중요 → Temperature ↓ / 창의성 중요 → Temperature ↑',
-  '{}',
   '[{"name": "Amazon Bedrock 추론 파라미터 가이드", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/inference-parameters.html"}]'
 );
 
@@ -129,7 +127,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q122', '파운�
 
 
 -- ── 문제 23: RAG 비즈니스 적용 사례 및 Amazon Bedrock Knowledge Base ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q123',
   'aws-aif-c01',
@@ -168,7 +166,6 @@ Amazon Bedrock Knowledge Base 장점:
 • 자동 청킹, 임베딩, 벡터 DB 관리
 • 소스 인용(Citation) 자동 제공
 • 하이브리드 검색 (의미 + 키워드 검색)',
-  '{}',
   '[{"name": "Amazon Bedrock Knowledge Base", "url": "https://aws.amazon.com/bedrock/knowledge-bases/"}, {"name": "RAG 사용 사례 가이드", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"}]'
 );
 
@@ -182,7 +179,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q123', '파운�
 
 
 -- ── 문제 24: 벡터 DB AWS 서비스 선택 (OpenSearch, Aurora, Neptune, RDS) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q124',
   'aws-aif-c01',
@@ -221,7 +218,6 @@ Amazon Neptune:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Amazon Bedrock Knowledge Base 기본 벡터 DB:
 • OpenSearch Serverless, Aurora, Pinecone, Redis, Mongo 연결 가능',
-  '{}',
   '[{"name": "Amazon OpenSearch 벡터 검색", "url": "https://aws.amazon.com/opensearch-service/features/vector-search/"}, {"name": "pgvector on Aurora", "url": "https://aws.amazon.com/rds/aurora/postgresql/"}, {"name": "Amazon Neptune Analytics", "url": "https://aws.amazon.com/neptune/"}]'
 );
 
@@ -235,7 +231,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q124', '파운�
 
 
 -- ── 문제 25: FM 사용자 지정 비용 트레이드오프 (사전훈련 vs 미세조정 vs RAG vs 인컨텍스트) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q125',
   'aws-aif-c01',
@@ -288,7 +284,6 @@ RAG (검색 증강 생성):
 • 시간: 수개월
 • 강점: 완전히 새로운 도메인 언어 학습
 • 적합: 기존 FM이 전혀 이해 못하는 특수 도메인',
-  '{}',
   '[{"name": "Amazon Bedrock 사용자 지정 모델", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html"}, {"name": "FM 사용자 지정 접근 방법 비교", "url": "https://aws.amazon.com/bedrock/"}]'
 );
 
@@ -302,7 +297,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q125', '파운�
 
 
 -- ── 문제 26: Amazon Bedrock Agents 다단계 작업 (에이전틱 AI) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q126',
   'aws-aif-c01',
@@ -348,7 +343,6 @@ Model Context Protocol (MCP):
 • MCP 서버: 도구 제공 / MCP 클라이언트: AI 에이전트
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ReAct 프레임워크: Reason(추론) → Act(행동) → Observe(관찰) 반복',
-  '{}',
   '[{"name": "Amazon Bedrock Agents", "url": "https://aws.amazon.com/bedrock/agents/"}, {"name": "Model Context Protocol", "url": "https://www.anthropic.com/news/model-context-protocol"}]'
 );
 
@@ -362,7 +356,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q126', '파운�
 
 
 -- ── 문제 27: 프롬프트 엔지니어링 구성 요소 (컨텍스트, 명령, 네거티브 프롬프트) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q127',
   'aws-aif-c01',
@@ -403,7 +397,6 @@ VALUES (
 • 경계 설정: 모델이 해야 할 것과 하지 말아야 할 것 모두 명시
 • 형식 지정: 일관된 출력 형식 요구
 • 역할 부여: 전문가 역할로 답변 품질 향상',
-  '{}',
   '[{"name": "Amazon Bedrock 프롬프트 엔지니어링", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-engineering-guidelines.html"}]'
 );
 
@@ -417,7 +410,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q127', '파운�
 
 
 -- ── 문제 28: 프롬프트 보안 위험 (탈옥, 하이재킹, 중독, 노출) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q128',
   'aws-aif-c01',
@@ -468,7 +461,6 @@ VALUES (
 • 입력 검증 및 무결성 검사
 • 시스템 프롬프트 보호 지시 추가
 • 인간 검토 (Human in the Loop)',
-  '{}',
   '[{"name": "Amazon Bedrock Guardrails 보안", "url": "https://aws.amazon.com/bedrock/guardrails/"}, {"name": "AWS AI 보안 모범 사례", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/security.html"}]'
 );
 
@@ -482,7 +474,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q128', '파운�
 
 
 -- ── 문제 29: 프롬프트 엔지니어링 모범 사례 및 응답 품질 개선 ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q129',
   'aws-aif-c01',
@@ -531,7 +523,6 @@ VALUES (
 • Temperature, Top-P 조절 실험
 • 다양한 프롬프트 버전 A/B 테스트
 • Amazon Bedrock Playground 활용',
-  '{}',
   '[{"name": "Bedrock 프롬프트 모범 사례", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-engineering-guidelines.html"}]'
 );
 
@@ -545,7 +536,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q129', '파운�
 
 
 -- ── 문제 30: FM 훈련 방법 비교 (증류, 지속적 사전 훈련, 전이 학습) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q130',
   'aws-aif-c01',
@@ -592,7 +583,6 @@ VALUES (
 양자화 (Quantization):
 • 모델 가중치 정밀도 낮춤 (FP32→INT8)
 • 모델 크기 축소, 추론 속도 향상',
-  '{}',
   '[{"name": "Amazon Bedrock 모델 최적화", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-guidelines.html"}, {"name": "SageMaker 모델 압축", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-optimize.html"}]'
 );
 
@@ -606,7 +596,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q130', '파운�
 
 
 -- ── 문제 31: 미세 조정 데이터 준비 (큐레이션, 대표성, RLHF) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q131',
   'aws-aif-c01',
@@ -646,7 +636,6 @@ VALUES (
 6. RLHF (인간 피드백 강화 학습):
    • 전문가 피드백으로 모델 행동 정렬
    • 의학적 안전성, 윤리성 확보',
-  '{}',
   '[{"name": "Amazon Bedrock 미세 조정 데이터 가이드", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-prepare.html"}, {"name": "SageMaker Ground Truth 레이블링", "url": "https://aws.amazon.com/sagemaker/groundtruth/"}]'
 );
 
@@ -660,7 +649,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q131', '파운�
 
 
 -- ── 문제 32: FM 성능 평가 방법 (Amazon Bedrock Model Evaluation) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q132',
   'aws-aif-c01',
@@ -703,7 +692,6 @@ Amazon Bedrock Model Evaluation:
 평가 시 고려사항:
 • 자체 도메인 데이터로 평가해야 실제 성능 반영
 • 여러 지표를 종합적으로 평가 (단일 지표 신뢰 금지)',
-  '{}',
   '[{"name": "Amazon Bedrock Model Evaluation", "url": "https://aws.amazon.com/bedrock/model-evaluation/"}, {"name": "Bedrock 평가 가이드", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html"}]'
 );
 
@@ -717,7 +705,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q132', '파운�
 
 
 -- ── 문제 33: FM 평가 지표 (ROUGE, BLEU, BERTScore) ────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q133',
   'aws-aif-c01',
@@ -764,7 +752,6 @@ BERTScore (의미 기반 유사도):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 암기팁:
 • 요약→ROUGE / 번역→BLEU / 의미유사→BERTScore',
-  '{}',
   '[{"name": "FM 평가 지표 가이드", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html"}, {"name": "Amazon Bedrock Model Evaluation", "url": "https://aws.amazon.com/bedrock/model-evaluation/"}]'
 );
 
@@ -778,7 +765,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q133', '파운�
 
 
 -- ── 문제 34: FM이 비즈니스 목표에 부합하는지 판단 지표 ──────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q134',
   'aws-aif-c01',
@@ -822,7 +809,6 @@ VALUES (
 • AI가 가장 효과적인 작업 유형 분석
 • 고효율 vs 저효율 활용 사례 파악
 • 지속적 프롬프트/워크플로 최적화',
-  '{}',
   '[{"name": "Amazon Q Developer", "url": "https://aws.amazon.com/q/developer/"}, {"name": "GenAI 비즈니스 가치 측정", "url": "https://aws.amazon.com/bedrock/"}]'
 );
 
@@ -836,7 +822,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q134', '파운�
 
 
 -- ── 문제 35: RAG/에이전트 애플리케이션 성능 평가 (Faithfulness, Relevancy) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q135',
   'aws-aif-c01',
@@ -885,7 +871,6 @@ VALUES (
 Amazon Bedrock 지원 평가 도구:
 • Amazon Bedrock Model Evaluation
 • 자체 평가 파이프라인 구축 (SageMaker + Lambda)',
-  '{}',
   '[{"name": "Amazon Bedrock RAG 평가", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html"}, {"name": "RAGAS 평가 프레임워크", "url": "https://aws.amazon.com/blogs/machine-learning/"}]'
 );
 

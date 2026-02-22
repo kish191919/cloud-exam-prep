@@ -7,7 +7,7 @@
 
 
 -- ── 문제 51: SageMaker ML 파이프라인 통합 서비스 생태계 ─────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q151',
   'aws-aif-c01',
@@ -72,7 +72,6 @@ VALUES (
 모니터링:
 • SageMaker Model Monitor: 데이터 드리프트 감지
 • SageMaker Clarify: 편향성/설명가능성',
-  '{}',
   '[{"name": "SageMaker Data Wrangler", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/data-wrangler.html"}, {"name": "SageMaker Feature Store", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/feature-store.html"}, {"name": "SageMaker Pipelines", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/pipelines.html"}, {"name": "SageMaker Model Registry", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-registry.html"}]'
 );
 
@@ -86,7 +85,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q151', 'AI 및 M
 
 
 -- ── 문제 52: 클러스터링 알고리즘 선택 (K-means vs DBSCAN vs 계층적) ────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q152',
   'aws-aif-c01',
@@ -147,7 +146,6 @@ DBSCAN 핵심 개념:
 • Core Point: 반경 epsilon 내 MinPts 이상 이웃 보유
 • Border Point: Core Point 이웃이지만 자체는 Core 아님
 • Noise: 어떤 군집에도 속하지 않는 이상치',
-  '{}',
   '[{"name": "Amazon SageMaker K-Means", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/k-means.html"}, {"name": "비지도 학습 클러스터링", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/unsupervised-learning.html"}]'
 );
 
@@ -161,7 +159,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q152', 'AI 및 M
 
 
 -- ── 문제 53: 모델 배포 전략 (Canary / Blue-Green / Shadow) ───────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q153',
   'aws-aif-c01',
@@ -215,7 +213,6 @@ Shadow 배포:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 SageMaker 구현 핵심:
 ProductionVariants → InitialVariantWeight 설정',
-  '{}',
   '[{"name": "SageMaker 배포 전략", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/deployment-guardrails.html"}, {"name": "SageMaker 프로덕션 변형", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-ab-testing.html"}]'
 );
 
@@ -229,7 +226,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q153', 'AI 및 M
 
 
 -- ── 문제 54: Amazon Forecast vs SageMaker (시계열 예측) ────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q154',
   'aws-aif-c01',
@@ -291,7 +288,6 @@ Amazon Forecast의 특징:
 • 금융: 현금 흐름 예측
 • 물류: 배송량 예측
 • 인프라: 용량 계획',
-  '{}',
   '[{"name": "Amazon Forecast 소개", "url": "https://aws.amazon.com/forecast/"}, {"name": "Amazon Forecast 데이터셋", "url": "https://docs.aws.amazon.com/forecast/latest/dg/howitworks-datasets-groups.html"}]'
 );
 
@@ -305,7 +301,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q154', 'AI 및 M
 
 
 -- ── 문제 55: 이상 탐지 서비스 선택 (Lookout for Equipment vs Fraud Detector) ─
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q155',
   'aws-aif-c01',
@@ -369,7 +365,6 @@ Amazon Rekognition:
 • 데이터: 픽셀 데이터
 • 방식: 딥러닝 (사전 훈련 모델)
 • 활용: 제품 외관 결함 탐지',
-  '{}',
   '[{"name": "Amazon Lookout for Equipment", "url": "https://aws.amazon.com/lookout-for-equipment/"}, {"name": "Amazon Lookout for Metrics", "url": "https://aws.amazon.com/lookout-for-metrics/"}, {"name": "Amazon Fraud Detector", "url": "https://aws.amazon.com/fraud-detector/"}]'
 );
 
@@ -383,7 +378,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q155', 'AI 및 M
 
 
 -- ── 문제 56: 멀티모달 AI / Amazon Bedrock Nova 패밀리 ─────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q156',
   'aws-aif-c01',
@@ -448,7 +443,6 @@ Nova Pro:
 • Claude 3 Sonnet/Haiku: Anthropic, 멀티모달
 • Nova Pro/Lite: Amazon, 멀티모달
 • Titan Image Generator: 이미지 생성 전용',
-  '{}',
   '[{"name": "Amazon Nova 모델 소개", "url": "https://aws.amazon.com/bedrock/nova/"}, {"name": "Amazon Bedrock 멀티모달", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"}]'
 );
 
@@ -462,7 +456,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q156', 'GenAI의
 
 
 -- ── 문제 57: RLHF (인간 피드백 기반 강화학습) ────────────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q157',
   'aws-aif-c01',
@@ -521,7 +515,6 @@ RLHF 관련 개념:
 실제 사례:
 • ChatGPT: RLHF로 대화 품질 개선
 • Claude: Constitutional AI + RLHF',
-  '{}',
   '[{"name": "RLHF 개념 설명", "url": "https://aws.amazon.com/what-is/reinforcement-learning-from-human-feedback/"}, {"name": "Amazon Bedrock 파인튜닝", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html"}]'
 );
 
@@ -535,7 +528,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q157', 'GenAI의
 
 
 -- ── 문제 58: 다국어 임베딩 / 교차 언어 검색 ──────────────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q158',
   'aws-aif-c01',
@@ -600,7 +593,6 @@ Amazon Bedrock 임베딩 모델:
 • Amazon OpenSearch Serverless (k-NN)
 • Amazon Aurora + pgvector
 • Amazon MemoryDB (벡터 검색 지원)',
-  '{}',
   '[{"name": "Amazon Titan Embeddings", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html"}, {"name": "Amazon OpenSearch 벡터 검색", "url": "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/knn.html"}]'
 );
 
@@ -614,7 +606,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q158', 'GenAI의
 
 
 -- ── 문제 59: 하이브리드 검색 (Dense + Sparse + RRF) ──────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q159',
   'aws-aif-c01',
@@ -681,7 +673,6 @@ Amazon Bedrock Knowledge Bases:
 • Dense만: 일반 Q&A, 문서 요약
 • Sparse만: 코드, 정확한 키워드 검색
 • Hybrid: 전문 도메인 (법률, 의료, 기술)',
-  '{}',
   '[{"name": "Amazon Bedrock Knowledge Bases 하이브리드 검색", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-vector-store.html"}, {"name": "Amazon OpenSearch 하이브리드 검색", "url": "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/hybrid-search.html"}]'
 );
 
@@ -695,7 +686,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q159', 'GenAI의
 
 
 -- ── 문제 60: GenAI 애플리케이션 유형 / 코드 생성 AI ─────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q160',
   'aws-aif-c01',
@@ -762,7 +753,6 @@ Amazon Q Developer 특징:
 • AWS 서비스 코드 제안 특화
 • IDE 통합 (VS Code, JetBrains 등)
 • 보안 스캐닝 내장',
-  '{}',
   '[{"name": "Amazon Q Developer", "url": "https://aws.amazon.com/q/developer/"}, {"name": "Amazon Q 기능 소개", "url": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/what-is.html"}]'
 );
 
@@ -776,7 +766,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q160', 'GenAI의
 
 
 -- ── 문제 61: Bedrock Guardrails 기능 매핑 ────────────────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q161',
   'aws-aif-c01',
@@ -848,7 +838,6 @@ Bedrock Guardrails 기능 구성:
 6) Contextual Grounding (문맥 관련성):
 • 목적: 응답이 질문과 관련있는지?
 • Relevance Score 측정',
-  '{}',
   '[{"name": "Amazon Bedrock Guardrails", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html"}, {"name": "Guardrails 기능 설명", "url": "https://aws.amazon.com/bedrock/guardrails/"}]'
 );
 
@@ -862,7 +851,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q161', '파운�
 
 
 -- ── 문제 62: Amazon Bedrock vs SageMaker JumpStart 선택 ─────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q162',
   'aws-aif-c01',
@@ -930,7 +919,6 @@ SageMaker JumpStart:
 • 오픈소스, 인프라 제어 → JumpStart
 • 독점 모델(Claude, Titan) → Bedrock
 • 완전 커스텀 훈련 → JumpStart / SageMaker',
-  '{}',
   '[{"name": "Amazon Bedrock 소개", "url": "https://aws.amazon.com/bedrock/"}, {"name": "SageMaker JumpStart", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/studio-jumpstart.html"}]'
 );
 
@@ -944,7 +932,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q162', '파운�
 
 
 -- ── 문제 63: Knowledge Base 청킹(Chunking) 전략 ─────────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q163',
   'aws-aif-c01',
@@ -1015,7 +1003,6 @@ No Chunking (기본 청킹 없음):
 • Chunk Size: 청크 최대 토큰 수
 • Overlap: 인접 청크 겹치는 토큰 수
   (컨텍스트 연속성을 위해 10-20% 권장)',
-  '{}',
   '[{"name": "Bedrock Knowledge Bases 청킹", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-setup-chunking.html"}, {"name": "RAG 청킹 전략", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking-parsing.html"}]'
 );
 
@@ -1029,7 +1016,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q163', '파운�
 
 
 -- ── 문제 64: Bedrock Cross-Region Inference (교차 리전 추론) ──────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q164',
   'aws-aif-c01',
@@ -1097,7 +1084,6 @@ Bedrock 용량 관리 옵션:
 • On-Demand: 기본, 용량 보장 없음
 • Provisioned Throughput: 특정 용량 예약
 • Cross-Region Inference: 다중 리전 자동 분산',
-  '{}',
   '[{"name": "Bedrock Cross-Region Inference", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html"}, {"name": "Bedrock 추론 프로파일", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles.html"}]'
 );
 
@@ -1111,7 +1097,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q164', '파운�
 
 
 -- ── 문제 65: Amazon Bedrock Prompt Management ─────────────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q165',
   'aws-aif-c01',
@@ -1186,7 +1172,6 @@ response = bedrock.converse(
 • Bedrock Agents: 복잡한 다단계 작업 자동화
 • Knowledge Bases: RAG 기반 문서 검색
 • Guardrails: 안전 필터 적용',
-  '{}',
   '[{"name": "Amazon Bedrock Prompt Management", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-management.html"}, {"name": "Bedrock 프롬프트 버전 관리", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-management-version.html"}]'
 );
 

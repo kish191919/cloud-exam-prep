@@ -277,7 +277,6 @@ Redesigner Agent로부터 에스컬레이션 보고를 받으면:
 
 ## 중요 제약사항
 
-- `key_point_images` 컬럼은 DB에 존재하지 않으므로 SQL INSERT에서 반드시 제외
 - AWS 서비스명은 원문 그대로 보존 (번역·축약 금지)
 - 출력 문제는 반드시 단일 정답 4지선다 형식
 - LLM 모델: Parser & SQL → Claude Sonnet 4.6 / Redesigner → Claude Haiku 4.5

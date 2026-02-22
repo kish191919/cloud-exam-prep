@@ -6,7 +6,7 @@
 
 
 -- ── 문제 44: AWS 공동 책임 모델과 AI 보안 ─────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q144',
   'aws-aif-c01',
@@ -55,7 +55,6 @@ AWS 책임 (Security OF the Cloud):
 Amazon Bedrock 특화 공동 책임:
 • AWS: FM 인프라, API 보안, 기본 모델 무결성
 • 고객: API 키 관리, 프롬프트 설계, 출력 검증',
-  '{}',
   '[{"name": "AWS 공동 책임 모델", "url": "https://aws.amazon.com/compliance/shared-responsibility-model/"}, {"name": "Amazon Bedrock 보안", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/security.html"}]'
 );
 
@@ -69,7 +68,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q144', 'AI 솔�
 
 
 -- ── 문제 45: Amazon Macie + AWS PrivateLink + 암호화 (AI 데이터 보안) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q145',
   'aws-aif-c01',
@@ -116,7 +115,6 @@ AWS PrivateLink / VPC 엔드포인트:
 • Amazon GuardDuty: 위협 탐지
 • AWS Security Hub: 보안 상태 통합 대시보드
 • Amazon Inspector: EC2/컨테이너 취약성 스캔',
-  '{}',
   '[{"name": "Amazon Macie", "url": "https://aws.amazon.com/macie/"}, {"name": "AWS PrivateLink", "url": "https://aws.amazon.com/privatelink/"}, {"name": "SageMaker 데이터 보안", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/security.html"}]'
 );
 
@@ -130,7 +128,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q145', 'AI 솔�
 
 
 -- ── 문제 46: 데이터 계보·카탈로그화 + SageMaker Model Cards ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q146',
   'aws-aif-c01',
@@ -182,7 +180,6 @@ Amazon SageMaker Model Cards:
 • AI 출력이 어떤 데이터/문서를 근거로 했는지 명시
 • RAG 시스템: 검색된 문서 출처 자동 인용
 • 규제 AI: 훈련 데이터 출처 증명 필수',
-  '{}',
   '[{"name": "AWS Glue Data Catalog", "url": "https://docs.aws.amazon.com/glue/latest/dg/catalog-and-crawler.html"}, {"name": "Amazon SageMaker Model Cards", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-cards.html"}, {"name": "SageMaker Experiments", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/experiments.html"}]'
 );
 
@@ -196,7 +193,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q146', 'AI 솔�
 
 
 -- ── 문제 47: 보안 데이터 엔지니어링 모범 사례 ─────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q147',
   'aws-aif-c01',
@@ -251,7 +248,6 @@ IAM 역할로 데이터 과학팀에만 S3 훈련 데이터 접근 권한 부여
 • AWS Glue DataBrew: 데이터 프로파일링
 • SageMaker Data Wrangler: EDA 및 변환
 • 지표: 완성도, 정확성, 일관성, 최신성',
-  '{}',
   '[{"name": "SageMaker 데이터 준비", "url": "https://aws.amazon.com/sagemaker/data-wrangler/"}, {"name": "AWS Lake Formation 접근 제어", "url": "https://aws.amazon.com/lake-formation/"}, {"name": "AWS 프라이버시 강화 기술", "url": "https://aws.amazon.com/machine-learning/responsible-ai/"}]'
 );
 
@@ -265,7 +261,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q147', 'AI 솔�
 
 
 -- ── 문제 48: AWS 거버넌스·규정 준수 서비스 (Config, CloudTrail, Audit Manager, Inspector, Artifact) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q148',
   'aws-aif-c01',
@@ -329,7 +325,6 @@ AWS Artifact:
 AWS Trusted Advisor:
 • 비용 최적화, 성능, 보안, 내결함성 권고
 • 보안 그룹, IAM, MFA, S3 권한 검토',
-  '{}',
   '[{"name": "AWS Config", "url": "https://aws.amazon.com/config/"}, {"name": "AWS CloudTrail", "url": "https://aws.amazon.com/cloudtrail/"}, {"name": "AWS Audit Manager", "url": "https://aws.amazon.com/audit-manager/"}, {"name": "Amazon Inspector", "url": "https://aws.amazon.com/inspector/"}, {"name": "AWS Artifact", "url": "https://aws.amazon.com/artifact/"}]'
 );
 
@@ -343,7 +338,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q148', 'AI 솔�
 
 
 -- ── 문제 49: 데이터 거버넌스 전략 (레지던시, 수명 주기, 보존, 로깅) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q149',
   'aws-aif-c01',
@@ -402,7 +397,6 @@ GuardDuty는 CloudTrail 이벤트를 분석하여 비정상적인 IAM 활동, S3
 SCP (Service Control Policy):
 • AWS Organizations 레벨에서 모든 계정에 제약
 • 특정 리전만 허용, 특정 서비스 차단 가능',
-  '{}',
   '[{"name": "S3 수명 주기 정책", "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html"}, {"name": "Amazon GuardDuty", "url": "https://aws.amazon.com/guardduty/"}, {"name": "AWS Organizations SCP", "url": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"}]'
 );
 
@@ -416,7 +410,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q149', 'AI 솔�
 
 
 -- ── 문제 50: 생성형 AI Security Scoping Matrix + 거버넌스 프레임워크 ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q150',
   'aws-aif-c01',
@@ -479,7 +473,6 @@ Scoping Matrix 두 축:
 • Bedrock Guardrails: 콘텐츠 안전 정책
 • IAM + SCPs: 접근 권한 거버넌스
 • AWS Security Hub: 통합 보안 뷰',
-  '{}',
   '[{"name": "AWS GenAI 보안 가이드", "url": "https://aws.amazon.com/security/generative-ai/"}, {"name": "생성형 AI Security Scoping Matrix", "url": "https://aws.amazon.com/blogs/security/generative-ai-security-scoping-matrix/"}, {"name": "AWS AI/ML 거버넌스", "url": "https://aws.amazon.com/machine-learning/responsible-ai/"}]'
 );
 

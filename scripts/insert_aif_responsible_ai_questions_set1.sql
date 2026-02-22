@@ -6,7 +6,7 @@
 
 
 -- ── 문제 36: 책임감 있는 AI 특성 + Amazon Bedrock Guardrails ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q136',
   'aws-aif-c01',
@@ -63,7 +63,6 @@ Amazon Bedrock Guardrails 기능:
 Amazon Bedrock Guardrails 주요 기능:
 • 콘텐츠 필터 / 민감 정보 레독션
 • 주제 거부 / 단어 필터 / 그라운딩 체크',
-  '{}',
   '[{"name": "Amazon Bedrock Guardrails", "url": "https://aws.amazon.com/bedrock/guardrails/"}, {"name": "책임감 있는 AI AWS", "url": "https://aws.amazon.com/machine-learning/responsible-ai/"}]'
 );
 
@@ -77,7 +76,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q136', '책임 �
 
 
 -- ── 문제 37: GenAI 사용의 법적·비즈니스 위험 파악 ──────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q137',
   'aws-aif-c01',
@@ -133,7 +132,6 @@ AI가 사실로 확인되지 않은 정보를 생성하여 허위 광고, 명예
 • AI 오류로 인한 브랜드 이미지 손상
 • 고객 이탈, 비즈니스 손실
 • 대응: 인간 감독(Human in the Loop)',
-  '{}',
   '[{"name": "AWS GenAI 책임감 있는 사용", "url": "https://aws.amazon.com/machine-learning/responsible-ai/"}, {"name": "Amazon Bedrock 데이터 보안", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/security.html"}]'
 );
 
@@ -147,7 +145,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q137', '책임 �
 
 
 -- ── 문제 38: 데이터셋 특성과 편향 (포용성, 다양성, 균형) ─────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q138',
   'aws-aif-c01',
@@ -202,7 +200,6 @@ VALUES (
 데이터 편향의 악순환:
 편향된 역사적 데이터 → 편향된 AI 모델
 → 편향된 의사결정 → 더 편향된 데이터 생성',
-  '{}',
   '[{"name": "SageMaker Clarify 편향 감지", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-detect-data-bias.html"}, {"name": "AWS 책임감 있는 AI 데이터 가이드", "url": "https://aws.amazon.com/machine-learning/responsible-ai/"}]'
 );
 
@@ -216,7 +213,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q138', '책임 �
 
 
 -- ── 문제 39: 편향 감지·모니터링 도구 (SageMaker Clarify, Model Monitor, A2I) ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q139',
   'aws-aif-c01',
@@ -264,7 +261,6 @@ Amazon Augmented AI (A2I):
 레이블 품질 분석:
 • Amazon SageMaker Ground Truth Plus
 • 레이블러 간 일치도(Inter-annotator Agreement) 측정',
-  '{}',
   '[{"name": "Amazon SageMaker Clarify", "url": "https://aws.amazon.com/sagemaker/clarify/"}, {"name": "SageMaker Model Monitor", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html"}, {"name": "Amazon Augmented AI (A2I)", "url": "https://aws.amazon.com/augmented-ai/"}]'
 );
 
@@ -278,7 +274,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q139', '책임 �
 
 
 -- ── 문제 40: 과적합·과소적합과 인구통계학적 영향 ─────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q140',
   'aws-aif-c01',
@@ -330,7 +326,6 @@ VALUES (
 • 인구통계 그룹별 성능 분리 측정
 • SageMaker Clarify: 자동화된 하위 그룹 편향 분석
 • 균등한 성능을 위한 공정성 제약 조건 추가',
-  '{}',
   '[{"name": "SageMaker Clarify 편향 메트릭", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-measure-post-training-bias.html"}, {"name": "ML 공정성 가이드", "url": "https://aws.amazon.com/machine-learning/responsible-ai/"}]'
 );
 
@@ -344,7 +339,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q140', '책임 �
 
 
 -- ── 문제 41: 환경적 고려사항과 지속 가능한 FM 선택 ───────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q141',
   'aws-aif-c01',
@@ -405,7 +400,6 @@ AWS 지속 가능성 지원:
 • 성능 임계값 설정 (95% 이상이면 충분)
 • 환경 비용 = 비즈니스 비용으로 인식
 • ESG 목표와 AI 전략 정렬',
-  '{}',
   '[{"name": "AWS 지속 가능성", "url": "https://sustainability.aboutamazon.com/"}, {"name": "AWS 탄소 발자국 도구", "url": "https://aws.amazon.com/aws-cost-management/aws-customer-carbon-footprint-tool/"}, {"name": "책임감 있는 AI AWS", "url": "https://aws.amazon.com/machine-learning/responsible-ai/"}]'
 );
 
@@ -419,7 +413,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q141', '책임 �
 
 
 -- ── 문제 42: 투명성·설명 가능성 vs 불투명한 모델 + SageMaker Model Cards ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q142',
   'aws-aif-c01',
@@ -479,7 +473,6 @@ Amazon SageMaker Model Cards:
 • 아키텍처 코드 공개 → 감사 가능
 • 훈련 데이터·과정 공개 여부 확인 필요
 • 라이선스 조건 확인 필수 (Apache, MIT, GPL 등)',
-  '{}',
   '[{"name": "Amazon SageMaker Model Cards", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-cards.html"}, {"name": "SageMaker Clarify 설명 가능성", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-explainability.html"}]'
 );
 
@@ -493,7 +486,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q142', '책임 �
 
 
 -- ── 문제 43: 해석 가능성과 성능 트레이드오프 + 인간 중심 설계 ──
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q143',
   'aws-aif-c01',
@@ -560,7 +553,6 @@ AI가 실제 병변이 아닌 아티팩트(장비 노이즈, 마스크 그림자
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Amazon A2I: 의료 AI에서 인간 검토 루프 구현
 SageMaker Clarify: 의료 모델 편향 분석',
-  '{}',
   '[{"name": "AWS 의료 AI 책임감 있는 사용", "url": "https://aws.amazon.com/health/machine-learning/"}, {"name": "Amazon Augmented AI (A2I)", "url": "https://aws.amazon.com/augmented-ai/"}, {"name": "SageMaker Clarify 설명 가능성", "url": "https://aws.amazon.com/sagemaker/clarify/"}]'
 );
 

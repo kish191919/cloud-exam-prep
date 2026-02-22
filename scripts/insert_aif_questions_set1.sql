@@ -5,7 +5,7 @@
 -- ============================================================
 
 -- ── 문제 1: AI / ML / 딥러닝 계층 관계 ─────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q101',
   'aws-aif-c01',
@@ -20,7 +20,6 @@ VALUES (
 • ML (머신러닝): AI의 하위 집합, 데이터로부터 학습
 • 딥러닝: ML의 하위 집합, 다층 신경망 사용
 • GenAI: 딥러닝의 하위 집합, 새로운 콘텐츠 생성',
-  '{}',
   '[{"name": "AWS AI/ML 개념 가이드", "url": "https://aws.amazon.com/machine-learning/what-is-ai/"}]'
 );
 
@@ -34,7 +33,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q101', 'AI 및 M
 
 
 -- ── 문제 2: 지도/비지도/강화 학습 유형 매칭 ─────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q102',
   'aws-aif-c01',
@@ -52,7 +51,6 @@ VALUES (
 • 지도 학습 (Supervised): 레이블된 입력-출력 쌍 데이터 사용 → 분류, 회귀
 • 비지도 학습 (Unsupervised): 레이블 없는 데이터에서 패턴 발견 → 클러스터링, 차원축소
 • 강화 학습 (Reinforcement): 에이전트가 환경과 상호작용, 보상/페널티로 학습 → 게임AI, 로봇, 자율주행',
-  '{}',
   '[{"name": "Amazon SageMaker 학습 유형", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/algorithms-choose.html"}]'
 );
 
@@ -66,7 +64,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q102', 'AI 및 M
 
 
 -- ── 문제 3: 회귀/분류/클러스터링 기법 선택 ─────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q103',
   'aws-aif-c01',
@@ -85,7 +83,6 @@ VALUES (
 • 분류 (Classification): 이산형 범주 예측 → 스팸/정상, 양성/음성, 고양이/개
 • 클러스터링 (Clustering): 레이블 없이 유사 그룹 발견 → 고객 세분화, 문서 그룹화
 핵심 구분: 출력이 숫자면 회귀, 카테고리면 분류, 레이블 없으면 클러스터링',
-  '{}',
   '[{"name": "ML 알고리즘 선택 가이드", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/algorithms-choose.html"}]'
 );
 
@@ -99,7 +96,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q103', 'AI 및 M
 
 
 -- ── 문제 4: AWS AI 서비스 선택 (Transcribe + Comprehend) ────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q104',
   'aws-aif-c01',
@@ -116,7 +113,6 @@ VALUES (
 • Amazon Rekognition: 이미지/영상 분석 (얼굴인식, 객체탐지, 텍스트감지)
 • Amazon Lex: 대화형 챗봇 구축 (음성/텍스트 기반)
 • Amazon Textract: 문서/이미지에서 텍스트 및 데이터 추출 (OCR+)',
-  '{}',
   '[{"name": "Amazon Transcribe 공식 문서", "url": "https://aws.amazon.com/transcribe/"}, {"name": "Amazon Comprehend 공식 문서", "url": "https://aws.amazon.com/comprehend/"}]'
 );
 
@@ -130,7 +126,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q104', 'AI 및 M
 
 
 -- ── 문제 5: ML이 부적합한 경우 ──────────────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q105',
   'aws-aif-c01',
@@ -146,7 +142,6 @@ VALUES (
   - 설명 책임이 필요한 법적 결정
   - 훈련 데이터 부족
   - ML 구축 비용 > 기대 가치',
-  '{}',
   '[{"name": "AWS ML 사용 사례 가이드", "url": "https://aws.amazon.com/machine-learning/use-cases/"}]'
 );
 
@@ -160,7 +155,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q105', 'AI 및 M
 
 
 -- ── 문제 6: 배치 vs 실시간 추론 ─────────────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q106',
   'aws-aif-c01',
@@ -176,7 +171,6 @@ VALUES (
 • 배치 변환 (Batch Transform): 대량 데이터 일괄 처리, 지속 엔드포인트 불필요, 비용 효율적
 • 비동기 추론 (Async): 대용량 페이로드(최대 1GB), 처리시간 ~15분, 즉각 응답 불필요
 • 서버리스 추론 (Serverless): 간헐적 트래픽, 콜드 스타트 허용, 사용량 기반 과금',
-  '{}',
   '[{"name": "SageMaker 추론 옵션 비교", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html"}]'
 );
 
@@ -190,7 +184,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q106', 'AI 및 M
 
 
 -- ── 문제 7: ML 파이프라인 단계 순서 ─────────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q107',
   'aws-aif-c01',
@@ -215,7 +209,6 @@ VALUES (
 6. 모델 평가 (Model Evaluation)
 7. 배포 (Deployment) → 모니터링 (Monitoring)
 AWS 서비스: SageMaker Data Wrangler → SageMaker → SageMaker Model Monitor',
-  '{}',
   '[{"name": "SageMaker ML 파이프라인", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/how-it-works-training.html"}]'
 );
 
@@ -229,7 +222,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q107', 'AI 및 M
 
 
 -- ── 문제 8: SageMaker 서비스 기능 매칭 ──────────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q108',
   'aws-aif-c01',
@@ -247,7 +240,6 @@ VALUES (
 • Data Wrangler: 노코드 데이터 준비, 300+ 변환 기능, EDA 시각화
 • SageMaker Pipelines: ML 워크플로우 자동화 (MLOps CI/CD)
 • SageMaker Experiments: 실험 추적 및 비교',
-  '{}',
   '[{"name": "SageMaker 구성 요소 가이드", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/whatis.html"}]'
 );
 
@@ -261,7 +253,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q108', 'AI 및 M
 
 
 -- ── 문제 9: 모델 평가 지표 선택 (재현율 vs 정밀도) ──────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q109',
   'aws-aif-c01',
@@ -278,7 +270,6 @@ VALUES (
 • F1 Score: 정밀도와 재현율의 조화평균 (균형 필요 시)
 • AUC-ROC: 전반적 모델 분류 성능 (임계값 독립적)
 암기팁: FN이 치명적 → Recall 중시 / FP가 치명적 → Precision 중시',
-  '{}',
   '[{"name": "ML 모델 평가 지표", "url": "https://docs.aws.amazon.com/machine-learning/latest/dg/binary-model-insights.html"}]'
 );
 
@@ -292,7 +283,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q109', 'AI 및 M
 
 
 -- ── 문제 10: 데이터 드리프트와 MLOps (Model Monitor) ────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q110',
   'aws-aif-c01',
@@ -312,7 +303,6 @@ VALUES (
   3. 편향 드리프트 (Bias Drift)
   4. 특성 중요도 (Feature Attribution)
 • MLOps 원칙: 실험 추적, 자동화, 지속적 모니터링, 모델 재훈련',
-  '{}',
   '[{"name": "SageMaker Model Monitor", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html"}]'
 );
 

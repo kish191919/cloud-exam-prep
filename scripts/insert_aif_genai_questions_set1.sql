@@ -6,7 +6,7 @@
 
 
 -- ── 문제 11: 토큰, 컨텍스트 윈도우, LLM 기반 요금 ──────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q111',
   'aws-aif-c01',
@@ -31,7 +31,6 @@ VALUES (
 Bedrock 요금 모델:
 • 온디맨드 (On-Demand): 사용한 토큰만큼 과금 (유연성 높음)
 • 프로비저닝 처리량 (Provisioned Throughput): 처리량 예약, 대규모 안정적 처리',
-  '{}',
   '[{"name": "Amazon Bedrock 요금", "url": "https://aws.amazon.com/bedrock/pricing/"}]'
 );
 
@@ -45,7 +44,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q111', 'GenAI의
 
 
 -- ── 문제 12: 임베딩, 벡터 DB, RAG 아키텍처 (다이어그램 포함) ─
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q112',
   'aws-aif-c01',
@@ -95,7 +94,6 @@ RAG 장점:
 AWS 서비스:
 • Amazon Bedrock Knowledge Base: 완전관리형 RAG 구현
 • 자동 청킹, 임베딩, 벡터 DB 관리 제공',
-  '{}',
   '[{"name": "Amazon Bedrock Knowledge Base", "url": "https://aws.amazon.com/bedrock/knowledge-bases/"}, {"name": "RAG 아키텍처 가이드", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"}]'
 );
 
@@ -109,7 +107,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q112', 'GenAI의
 
 
 -- ── 문제 13: 프롬프트 엔지니어링 기법 매칭 ─────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q113',
   'aws-aif-c01',
@@ -149,7 +147,6 @@ Chain-of-Thought (CoT):
 추가 기법:
 • System Prompt: 모델의 역할/성격/규칙 정의
 • Temperature: 0(결정론적) ~ 1(창의적) 조절',
-  '{}',
   '[{"name": "Amazon Bedrock 프롬프트 엔지니어링 가이드", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-engineering-guidelines.html"}]'
 );
 
@@ -163,7 +160,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q113', 'GenAI의
 
 
 -- ── 문제 14: 할루시네이션 원인과 RAG 해결책 ────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q114',
   'aws-aif-c01',
@@ -194,7 +191,6 @@ VALUES (
 3. 낮은 Temperature: 더 결정론적인 답변 (창의성 ↓, 정확성 ↑)
 4. Human in the Loop: 중요 결정 전 전문가 검토
 5. 소스 인용(Citation) 요구: 근거 없는 주장 방지',
-  '{}',
   '[{"name": "Amazon Bedrock Guardrails", "url": "https://aws.amazon.com/bedrock/guardrails/"}, {"name": "Amazon Bedrock Knowledge Base", "url": "https://aws.amazon.com/bedrock/knowledge-bases/"}]'
 );
 
@@ -208,7 +204,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q114', 'GenAI의
 
 
 -- ── 문제 15: 확산 모델, 멀티모달, 이미지 생성 AI ────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q115',
   'aws-aif-c01',
@@ -262,7 +258,6 @@ LLM (Large Language Model):
 GAN (Generative Adversarial Network):
 • 생성자(Generator) vs 판별자(Discriminator) 경쟁 학습
 • 확산 모델 이전의 이미지 생성 주류 기술',
-  '{}',
   '[{"name": "Amazon Titan Image Generator", "url": "https://aws.amazon.com/bedrock/titan/"}, {"name": "Stability AI on Amazon Bedrock", "url": "https://aws.amazon.com/bedrock/"}]'
 );
 
@@ -276,7 +271,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q115', 'GenAI의
 
 
 -- ── 문제 16: 파운데이션 모델 수명 주기 단계 순서 ────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q116',
   'aws-aif-c01',
@@ -324,7 +319,6 @@ VALUES (
 
 7단계: 피드백 (Feedback)
   - 사용자 피드백 수집 → 다음 버전 개선 (반복 사이클)',
-  '{}',
   '[{"name": "Amazon Bedrock 파운데이션 모델", "url": "https://aws.amazon.com/bedrock/"}, {"name": "SageMaker JumpStart 모델 허브", "url": "https://aws.amazon.com/sagemaker/jumpstart/"}]'
 );
 
@@ -338,7 +332,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q116', 'GenAI의
 
 
 -- ── 문제 17: Amazon Bedrock 핵심 기능 매칭 ─────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q117',
   'aws-aif-c01',
@@ -379,7 +373,6 @@ Guardrails (가드레일):
 • Model Evaluation: 모델 성능 자동/인간 평가
 • Fine-tuning: 커스텀 FM 훈련
 • PartyRock: 노코드 AI 앱 빌더 (프로토타입용)',
-  '{}',
   '[{"name": "Amazon Bedrock Knowledge Base", "url": "https://aws.amazon.com/bedrock/knowledge-bases/"}, {"name": "Amazon Bedrock Agents", "url": "https://aws.amazon.com/bedrock/agents/"}, {"name": "Amazon Bedrock Guardrails", "url": "https://aws.amazon.com/bedrock/guardrails/"}]'
 );
 
@@ -393,7 +386,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q117', 'GenAI의
 
 
 -- ── 문제 18: 미세 조정 vs RAG vs 프롬프트 엔지니어링 선택 ────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q118',
   'aws-aif-c01',
@@ -432,7 +425,6 @@ RAG (검색 증강 생성):
 • 장점: 특화 스타일/형식/용어 완벽 학습, 일관성 높음
 • 한계: 훈련 시간 필요, 데이터 변경 시 재훈련
 • 적합: 특화 도메인, 일관된 형식, 대규모 반복 작업',
-  '{}',
   '[{"name": "Amazon Bedrock Fine-tuning", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html"}, {"name": "RAG vs Fine-tuning 비교 가이드", "url": "https://aws.amazon.com/blogs/machine-learning/"}]'
 );
 
@@ -446,7 +438,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q118', 'GenAI의
 
 
 -- ── 문제 19: Amazon Q 서비스 (Business / Developer / Bedrock) ─
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q119',
   'aws-aif-c01',
@@ -491,7 +483,6 @@ Amazon SageMaker JumpStart:
 • 사전 훈련된 모델 허브 + One-click 배포
 • 도메인 특화 모델 탐색 및 실험
 • 대상: 데이터 사이언티스트, ML 엔지니어',
-  '{}',
   '[{"name": "Amazon Q Business", "url": "https://aws.amazon.com/q/business/"}, {"name": "Amazon Q Developer", "url": "https://aws.amazon.com/q/developer/"}, {"name": "Amazon Bedrock", "url": "https://aws.amazon.com/bedrock/"}]'
 );
 
@@ -505,7 +496,7 @@ INSERT INTO question_tags (question_id, tag) VALUES ('awsaifc01-q119', 'GenAI의
 
 
 -- ── 문제 20: GenAI 비용 트레이드오프 최적화 ─────────────────
-INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, key_point_images, ref_links)
+INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, difficulty, key_points, ref_links)
 VALUES (
   'awsaifc01-q120',
   'aws-aif-c01',
@@ -554,7 +545,6 @@ VALUES (
 • 프롬프트 캐싱: 반복 시스템 프롬프트 비용 절감
 • 배치 처리: 비실시간 작업은 배치 변환으로 비용 절감
 • 리전 선택: 리전별 요금 차이 고려',
-  '{}',
   '[{"name": "Amazon Bedrock 요금", "url": "https://aws.amazon.com/bedrock/pricing/"}, {"name": "프로비저닝 처리량 가이드", "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/prov-throughput.html"}]'
 );
 

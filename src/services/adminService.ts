@@ -88,7 +88,6 @@ export interface QuestionInput {
   explanation: string;
   tags: string[];
   keyPoints?: string;
-  keyPointImages?: string[];
   refLinks?: { name: string; url: string }[];
 }
 
@@ -110,7 +109,6 @@ export async function createQuestion(input: QuestionInput): Promise<string> {
       correct_option_id: input.correctOptionId,
       explanation: input.explanation,
       key_points: input.keyPoints ?? null,
-      key_point_images: input.keyPointImages ?? [],
       ref_links: input.refLinks ?? [],
     });
   if (qErr) throw qErr;
@@ -146,7 +144,6 @@ export async function updateQuestion(questionId: string, input: Omit<QuestionInp
       correct_option_id: input.correctOptionId,
       explanation: input.explanation,
       key_points: input.keyPoints ?? null,
-      key_point_images: input.keyPointImages ?? [],
       ref_links: input.refLinks ?? [],
     })
     .eq('id', questionId);
@@ -229,27 +226,6 @@ export async function moveQuestionToSet(
   if (!newIds.includes(questionId)) {
     await updateSetQuestions(newSetId, [...newIds, questionId]);
   }
-}
-
-// ─── Key Point Image Upload ───────────────────────────────────────────────────
-
-const BUCKET = 'question-images';
-
-export async function uploadKeyPointImage(file: File, questionId: string): Promise<string> {
-  const ext = file.name.split('.').pop() ?? 'jpg';
-  const path = `${questionId}/${Date.now()}.${ext}`;
-  const { error } = await supabase.storage.from(BUCKET).upload(path, file, { upsert: false });
-  if (error) throw error;
-  const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
-  return data.publicUrl;
-}
-
-export async function deleteKeyPointImage(url: string): Promise<void> {
-  const marker = `/${BUCKET}/`;
-  const idx = url.indexOf(marker);
-  if (idx === -1) return;
-  const path = url.slice(idx + marker.length);
-  await supabase.storage.from(BUCKET).remove([path]);
 }
 
 export async function bulkCreateQuestions(

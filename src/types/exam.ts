@@ -17,7 +17,6 @@ export interface Question {
   tags: string[];
   keyPoints?: string;
   keyPointsEn?: string;
-  keyPointImages?: string[];
   refLinks?: { name: string; url: string }[];
 }
 
