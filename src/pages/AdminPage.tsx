@@ -27,7 +27,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   Plus, Pencil, Trash2, BookOpen, FlaskConical,
   Loader2, Save, FileText, AlertTriangle, X,
-  ChevronUp, ChevronDown,
+  ChevronUp, ChevronDown, Shuffle, ArrowRightLeft,
 } from 'lucide-react';
 import { getAllExams } from '@/services/examService';
 import { getSetsForExam, getQuestionsForSet } from '@/services/questionService';
@@ -37,6 +37,7 @@ import {
   deleteExamSet,
   getSetQuestionIds,
   updateSetQuestions,
+  moveQuestionToSet,
   createQuestion,
   updateQuestion,
   deleteQuestion,
@@ -391,18 +392,26 @@ const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormP
 interface SetQuestionsDialogProps {
   set: ExamSet;
   examId: string;
+  allSets: ExamSet[];
   open: boolean;
   onClose: () => void;
   onSaved: () => void;
 }
 
-const SetQuestionsDialog = ({ set, examId, open, onClose, onSaved }: SetQuestionsDialogProps) => {
+const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: SetQuestionsDialogProps) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);   // question id being edited
   const [addingNew, setAddingNew] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Question | null>(null);
   const newFormRef = useRef<HTMLDivElement>(null);
+  const [shuffling, setShuffling] = useState(false);
+  const [reordering, setReordering] = useState(false);
+  const [moveDialogQuestion, setMoveDialogQuestion] = useState<Question | null>(null);
+  const [moveTargetSetId, setMoveTargetSetId] = useState('');
+  const [moving, setMoving] = useState(false);
+
+  const otherSets = allSets.filter(s => s.id !== set.id);
 
   const loadQuestions = async () => {
     setLoading(true);
@@ -436,6 +445,38 @@ const SetQuestionsDialog = ({ set, examId, open, onClose, onSaved }: SetQuestion
     onSaved(); // refresh set question count
   };
 
+  // Shuffle question order randomly
+  const handleShuffle = async () => {
+    setShuffling(true);
+    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    await updateSetQuestions(set.id, shuffled.map(q => q.id));
+    await loadQuestions();
+    setShuffling(false);
+  };
+
+  // Move question up or down within the set
+  const handleReorderQuestion = async (idx: number, dir: 'up' | 'down') => {
+    const newIdx = dir === 'up' ? idx - 1 : idx + 1;
+    if (newIdx < 0 || newIdx >= questions.length) return;
+    setReordering(true);
+    const reordered = [...questions];
+    [reordered[idx], reordered[newIdx]] = [reordered[newIdx], reordered[idx]];
+    await updateSetQuestions(set.id, reordered.map(q => q.id));
+    await loadQuestions();
+    setReordering(false);
+  };
+
+  // Move question to another set
+  const handleMoveToOtherSet = async () => {
+    if (!moveDialogQuestion || !moveTargetSetId) return;
+    setMoving(true);
+    await moveQuestionToSet(moveDialogQuestion.id, moveTargetSetId, set.id);
+    setMoveDialogQuestion(null);
+    await loadQuestions();
+    onSaved();
+    setMoving(false);
+  };
+
   // Remove question from set (and delete the question record)
   const handleDeleteQuestion = async () => {
     if (!deleteTarget) return;
@@ -461,6 +502,25 @@ const SetQuestionsDialog = ({ set, examId, open, onClose, onSaved }: SetQuestion
               </DialogTitle>
             </div>
           </DialogHeader>
+
+          {/* Toolbar */}
+          {!loading && questions.length > 0 && (
+            <div className="flex items-center justify-between px-1 pb-2 border-b">
+              <span className="text-xs text-muted-foreground">▲/▼ 버튼으로 순서 변경, → 버튼으로 다른 세트로 이동</span>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={shuffling || questions.length < 2}
+                onClick={handleShuffle}
+              >
+                {shuffling
+                  ? <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  : <Shuffle className="h-4 w-4 mr-2" />
+                }
+                랜덤으로 섞기
+              </Button>
+            </div>
+          )}
 
           <div className="flex-1 overflow-y-auto space-y-3 pr-1 py-2">
             {loading ? (
@@ -525,7 +585,43 @@ const SetQuestionsDialog = ({ set, examId, open, onClose, onSaved }: SetQuestion
                               </div>
                             )}
                           </div>
-                          <div className="flex flex-col gap-1 shrink-0">
+                          <div className="flex items-start gap-1 shrink-0">
+                            {/* Up/Down order buttons */}
+                            <div className="flex flex-col gap-0.5">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7"
+                                disabled={idx === 0 || reordering}
+                                onClick={() => handleReorderQuestion(idx, 'up')}
+                              >
+                                <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7"
+                                disabled={idx === questions.length - 1 || reordering}
+                                onClick={() => handleReorderQuestion(idx, 'down')}
+                              >
+                                <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                              </Button>
+                            </div>
+                            {/* Move to other set */}
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              disabled={otherSets.length === 0}
+                              title={otherSets.length === 0 ? '이동할 다른 세트가 없습니다' : '다른 세트로 이동'}
+                              onClick={() => {
+                                setMoveDialogQuestion(q);
+                                setMoveTargetSetId(otherSets[0]?.id ?? '');
+                              }}
+                            >
+                              <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />
+                            </Button>
+                            {/* Edit */}
                             <Button
                               variant="ghost"
                               size="icon"
@@ -534,6 +630,7 @@ const SetQuestionsDialog = ({ set, examId, open, onClose, onSaved }: SetQuestion
                             >
                               <Pencil className="h-4 w-4 text-muted-foreground" />
                             </Button>
+                            {/* Delete */}
                             <Button
                               variant="ghost"
                               size="icon"
@@ -610,6 +707,45 @@ const SetQuestionsDialog = ({ set, examId, open, onClose, onSaved }: SetQuestion
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Move to other set dialog */}
+      <Dialog open={!!moveDialogQuestion} onOpenChange={v => !v && setMoveDialogQuestion(null)}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>다른 세트로 이동</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 py-2">
+            <p className="text-sm text-muted-foreground">
+              이 문제를 현재 세트(<strong>{set.name}</strong>)에서 제거하고 선택한 세트에 추가합니다.
+            </p>
+            <select
+              value={moveTargetSetId}
+              onChange={e => setMoveTargetSetId(e.target.value)}
+              className="w-full border rounded-lg px-3 py-2 text-sm bg-background"
+            >
+              {otherSets.map(s => (
+                <option key={s.id} value={s.id}>
+                  {s.name} ({s.questionCount}문제)
+                </option>
+              ))}
+            </select>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setMoveDialogQuestion(null)}>취소</Button>
+            <Button
+              disabled={moving || !moveTargetSetId}
+              onClick={handleMoveToOtherSet}
+              className="bg-accent text-accent-foreground hover:bg-accent/90"
+            >
+              {moving
+                ? <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                : <ArrowRightLeft className="h-4 w-4 mr-2" />
+              }
+              이동
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
@@ -840,6 +976,7 @@ const AdminPage = () => {
         <SetQuestionsDialog
           set={questionsSet}
           examId={activeExamId}
+          allSets={currentSets}
           open={!!questionsSet}
           onClose={() => setQuestionsSet(null)}
           onSaved={() => loadSets(activeExamId)}

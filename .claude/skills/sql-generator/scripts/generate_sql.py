@@ -14,6 +14,13 @@ generate_sql.py — redesigned_questions.json → SQL INSERT 파일 생성
     --exam-id aws-aif-c01 \
     --output-dir output \
     [--sort-order-start 66]
+
+  # 영문 필드만 UPDATE (기존 문제에 영문 백필):
+  python3 generate_sql.py \
+    --input-file output/redesigned_questions.json \
+    --exam-id aws-aif-c01 \
+    --output-dir output \
+    --patch-en
 """
 
 import json
@@ -117,6 +124,48 @@ def make_question_block(q: dict, set_id: str, sort_order: int) -> str:
     return '\n'.join(lines)
 
 
+# ── UPDATE 블록 생성 (--patch-en 모드) ────────────────────────────────────────
+
+def make_patch_en_block(q: dict) -> str:
+    """영문 필드만 UPDATE하는 SQL 블록 (기존 문제 백필용)."""
+
+    qid = q['id']
+
+    def sql_str(val):
+        return f"'{val}'" if val is not None else 'NULL'
+
+    text_en_val = q.get('text_en') or ''
+    text_en = esc(text_en_val) if text_en_val else None
+    explanation_en_val = q.get('explanation_en') or ''
+    explanation_en = esc(explanation_en_val) if explanation_en_val else None
+    key_points_en_val = q.get('key_points_en') or ''
+    key_points_en = esc(key_points_en_val) if key_points_en_val else None
+
+    lines = [
+        f"-- ── 패치: {qid} ────────────────────────────────────────────",
+        f"UPDATE questions SET",
+        f"  text_en = {sql_str(text_en)},",
+        f"  explanation_en = {sql_str(explanation_en)},",
+        f"  key_points_en = {sql_str(key_points_en)}",
+        f"WHERE id = '{qid}';",
+        "",
+    ]
+
+    for opt in q.get('options', []):
+        oid = opt['option_id']
+        otext_en_val = opt.get('text_en') or ''
+        otext_en = esc(otext_en_val) if otext_en_val else None
+        oexpl_en_val = opt.get('explanation_en') or ''
+        oexpl_en = esc(oexpl_en_val) if oexpl_en_val else None
+        lines.append(
+            f"UPDATE question_options SET text_en = {sql_str(otext_en)}, explanation_en = {sql_str(oexpl_en)} "
+            f"WHERE question_id = '{qid}' AND option_id = '{oid}';"
+        )
+
+    lines.append("")
+    return '\n'.join(lines)
+
+
 # ── 배치 번호 결정 ────────────────────────────────────────────────────────────
 
 def next_batch_number(output_dir: Path, exam_id: str, date_str: str) -> int:
@@ -138,14 +187,16 @@ def main():
     parser = argparse.ArgumentParser(description='AWS 시험 문제 SQL 파일 생성기')
     parser.add_argument('--input-file', default='output/redesigned_questions.json',
                         help='재설계된 문제 JSON 파일 (기본: output/redesigned_questions.json)')
-    parser.add_argument('--set-id', required=True,
-                        help='exam_sets UUID (Supabase)')
+    parser.add_argument('--set-id', default=None,
+                        help='exam_sets UUID (Supabase) — INSERT 모드에서 필수')
     parser.add_argument('--exam-id', default='aws-aif-c01',
                         help='시험 ID (기본: aws-aif-c01)')
     parser.add_argument('--output-dir', default='output',
                         help='SQL 파일 저장 디렉토리 (기본: output)')
     parser.add_argument('--sort-order-start', type=int, default=1,
                         help='exam_set_questions.sort_order 시작값 (기본: 1)')
+    parser.add_argument('--patch-en', action='store_true',
+                        help='영문 필드(text_en 등)만 UPDATE하는 패치 SQL 생성 (기존 문제 백필용)')
     args = parser.parse_args()
 
     input_path = Path(args.input_file)
@@ -162,22 +213,43 @@ def main():
     output_dir.mkdir(parents=True, exist_ok=True)
 
     date_str = datetime.now().strftime('%Y%m%d')
+    ids = [q['id'] for q in questions]
+    first_id = ids[0] if ids else 'N/A'
+    last_id = ids[-1] if ids else 'N/A'
+
+    # ── patch-en 모드 ──────────────────────────────────────────────────────────
+    if args.patch_en:
+        blocks = [make_patch_en_block(q) for q in questions]
+        header = (
+            f"-- ============================================================\n"
+            f"-- {args.exam_id} 영문 필드 패치 (text_en / explanation_en / key_points_en)\n"
+            f"-- 생성일: {datetime.now().strftime('%Y-%m-%d')}\n"
+            f"-- 대상 ID 범위: {first_id} ~ {last_id}\n"
+            f"-- ⚠️ Supabase SQL Editor에서 실행하세요\n"
+            f"-- ============================================================\n\n"
+        )
+        output_filename = f'{args.exam_id}-{date_str}-patch-en.sql'
+        output_path = output_dir / output_filename
+        output_path.write_text(header + '\n'.join(blocks), encoding='utf-8')
+        print(f'[OK] 패치 SQL 파일 생성: {output_path}')
+        print(f'[OK] 총 {len(questions)}개 문제 | ID 범위: {first_id} ~ {last_id}')
+        return
+
+    # ── INSERT 모드 ────────────────────────────────────────────────────────────
+    if not args.set_id:
+        print('[ERROR] INSERT 모드에서는 --set-id가 필요합니다.')
+        raise SystemExit(1)
+
     batch_num = next_batch_number(output_dir, args.exam_id, date_str)
     output_filename = f'{args.exam_id}-{date_str}-{batch_num:03d}.sql'
     output_path = output_dir / output_filename
 
-    # SQL 블록 생성
     blocks = []
     sort_order = args.sort_order_start
-    ids = []
     for q in questions:
         block = make_question_block(q, args.set_id, sort_order)
         blocks.append(block)
-        ids.append(q['id'])
         sort_order += 1
-
-    first_id = ids[0] if ids else 'N/A'
-    last_id = ids[-1] if ids else 'N/A'
 
     # 템플릿 읽기
     template_path = Path(__file__).parent / 'templates' / 'insert_template.sql'
