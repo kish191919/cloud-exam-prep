@@ -36,7 +36,9 @@ export async function getQuestionsForExam(examId: string): Promise<Question[]> {
         id,
         option_id,
         text,
+        text_en,
         explanation,
+        explanation_en,
         sort_order
       ),
       question_tags (
@@ -87,7 +89,9 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
         id,
         option_id,
         text,
+        text_en,
         explanation,
+        explanation_en,
         sort_order
       ),
       question_tags (
@@ -142,7 +146,9 @@ export async function getQuestionsByIds(questionIds: string[]): Promise<Question
         id,
         option_id,
         text,
+        text_en,
         explanation,
+        explanation_en,
         sort_order
       ),
       question_tags (
@@ -219,7 +225,9 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
         question_options (
           option_id,
           text,
+          text_en,
           explanation,
+          explanation_en,
           sort_order
         ),
         question_tags (
@@ -271,7 +279,9 @@ export async function getQuestionsByTag(examId: string, tag: string): Promise<Qu
         id,
         option_id,
         text,
+        text_en,
         explanation,
+        explanation_en,
         sort_order
       ),
       question_tags!inner (

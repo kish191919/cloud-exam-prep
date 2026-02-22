@@ -1,0 +1,50 @@
+A design company is using a foundation model (FM) on Amazon Bedrock to generate images for various projects. The company wants to have control over how detailed or abstract each generated image appears Which model parameter should the company modify?
+
+A. Model checkpoint
+B. Batch size
+C. Generation step
+D. Token length
+Answer
+Correct answer: C
+Explanation: The “generation step” parameter controls how detailed or abstract an image appears during generation. By adjusting the number of generation steps, you can influence the level of refinement and detail in the output more steps yield more detailed images, while fewer steps result in more abstract images.
+
+A financial company has offices in different countries worldwide. The company requires that all API calls between generative AI applications and foundation models (FM) must not travel across the public internet. Which AWS service should the company use?
+
+A. AWS PrivateLink
+B. Amazon Q
+C. Amazon CloudFront
+D. AWS CloudTrail
+Answer
+Correct answer: A
+Explanation: AWS PrivateLink provides secure, private connectivity between VPCs and AWS services, ensuring that API calls do not traverse the public internet. This meets the requirement for private communication between generative AI applications and foundation models across global offices.
+
+An ecommerce company is deploying a chatbot. The chatbot will give users the ability to ask questions about the company’s products and receive details on users’ orders. The company must implement safeguards for the chatbot to filter harmful content from the input prompts and chatbot responses. Which AWS feature or resource meets these requirements?
+
+A. Amazon Bedrock Guardrails
+B. Amazon Bedrock Agents
+C. Amazon Bedrock inference APIs
+D. Amazon Bedrock custom models
+Answer
+Correct answer: A
+Explanation: Amazon Bedrock Guardrails enable you to implement safeguards that filter out harmful or inappropriate content in both user input prompts and chatbot responses, ensuring safe and compliant chatbot interactions.
+
+A company wants to learn about generative AI applications in an experimental environment. Which solution will meet this requirement MOST cost-effectively?
+
+A. Amazon Q Developer
+B. Amazon SageMaker JumpStart
+C. Amazon Bedrock PartyRock
+D. Amazon Q Business
+Answer
+Correct answer: C
+Explanation: Amazon Bedrock PartyRock provides a highly cost-effective and experimental environment for learning about generative AI applications, allowing users to quickly build, test, and iterate on AI apps without incurring significant costs.
+
+A company needs to collect a large dataset to train an AI assistant in a specific content area. Which dataset will meet this requirement?
+
+A. Diverse conversations that use relevant terminology
+B. Time series data of general purpose historical sales
+C. Sentiment analysis of news articles
+D. Unique product IDs and corresponding user IDs
+Answer
+Correct answer: A
+Explanation: To train an AI assistant for a specific content area, you need a large dataset of diverse conversations that incorporate the relevant terminology and context for that area. This enables the assistant to learn how to respond accurately and appropriately within the targeted subject.
+
