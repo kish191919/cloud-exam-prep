@@ -215,7 +215,7 @@ const QuestionForm = ({ examId: _examId, edit, onSave, onCancel }: QuestionFormP
         explanation: edit.explanation,
         tags: edit.tags.join(', '),
         keyPoints: edit.keyPoints ?? '',
-        refLinks: edit.refLinks ?? [],
+        refLinks: Array.isArray(edit.refLinks) ? edit.refLinks : [],
       });
     } else {
       setFormState(empty);

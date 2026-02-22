@@ -1,6 +1,14 @@
 import { supabase } from '@/lib/supabase';
 import type { Question, ExamSet } from '@/types/exam';
 
+function parseRefLinks(raw: any): { name: string; url: string }[] | undefined {
+  if (!raw) return undefined;
+  if (typeof raw === 'string') {
+    try { return JSON.parse(raw); } catch { return []; }
+  }
+  return Array.isArray(raw) ? raw : [];
+}
+
 interface QuestionRow {
   id: string;
   exam_id: string;
@@ -74,7 +82,7 @@ export async function getQuestionsForExam(examId: string): Promise<Question[]> {
 
     keyPoints: q.key_points ?? undefined,
     keyPointsEn: q.key_points_en ?? undefined,
-    refLinks: q.ref_links ?? undefined,
+    refLinks: parseRefLinks(q.ref_links),
   }));
 }
 
@@ -128,7 +136,7 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
 
     keyPoints: q.key_points ?? undefined,
     keyPointsEn: q.key_points_en ?? undefined,
-    refLinks: q.ref_links ?? undefined,
+    refLinks: parseRefLinks(q.ref_links),
   };
 }
 
@@ -181,7 +189,7 @@ export async function getQuestionsByIds(questionIds: string[]): Promise<Question
       tags: q.question_tags.map(t => t.tag),
       keyPoints: q.key_points ?? undefined,
       keyPointsEn: q.key_points_en ?? undefined,
-      refLinks: q.ref_links ?? undefined,
+      refLinks: parseRefLinks(q.ref_links),
     }])
   );
 
@@ -265,7 +273,7 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
 
       keyPoints: q.key_points ?? undefined,
       keyPointsEn: q.key_points_en ?? undefined,
-      refLinks: q.ref_links ?? undefined,
+      refLinks: parseRefLinks(q.ref_links),
     };
   });
 }
@@ -319,6 +327,6 @@ export async function getQuestionsByTag(examId: string, tag: string): Promise<Qu
 
     keyPoints: q.key_points ?? undefined,
     keyPointsEn: q.key_points_en ?? undefined,
-    refLinks: q.ref_links ?? undefined,
+    refLinks: parseRefLinks(q.ref_links),
   }));
 }

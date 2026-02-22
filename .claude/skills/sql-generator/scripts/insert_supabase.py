@@ -87,6 +87,14 @@ def insert_question(q: dict, set_id: str, sort_order: int, supabase_url: str, su
     errors = []
 
     # 1. questions
+    ref_links_raw = q.get('ref_links', [])
+    if isinstance(ref_links_raw, str):
+        try:
+            ref_links_val = json.loads(ref_links_raw)
+        except (json.JSONDecodeError, ValueError):
+            ref_links_val = []
+    else:
+        ref_links_val = ref_links_raw if ref_links_raw is not None else []
     question_body = {
         'id': qid,
         'exam_id': q['exam_id'],
@@ -97,7 +105,7 @@ def insert_question(q: dict, set_id: str, sort_order: int, supabase_url: str, su
         'explanation_en': q.get('explanation_en') or None,
         'key_points': q.get('key_points') or '',
         'key_points_en': q.get('key_points_en') or None,
-        'ref_links': q.get('ref_links', []),
+        'ref_links': ref_links_val,
     }
     status, body = supabase_post(supabase_url, supabase_key, 'questions', question_body)
     if status not in (200, 201):
