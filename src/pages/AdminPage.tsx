@@ -445,10 +445,14 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
     onSaved(); // refresh set question count
   };
 
-  // Shuffle question order randomly
+  // Shuffle question order randomly (Fisher-Yates)
   const handleShuffle = async () => {
     setShuffling(true);
-    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    const shuffled = [...questions];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
     await updateSetQuestions(set.id, shuffled.map(q => q.id));
     await loadQuestions();
     setShuffling(false);
