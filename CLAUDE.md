@@ -122,10 +122,11 @@ curl -s \
     │
     ├─ 파싱 실패 문제 목록 수집 → 결과 요약에 포함 예정
     │
-    ├─ [STEP 2~5] 참조 파일 선로드 → Redesigner Agent 병렬 호출
-    │    ├─ Main이 redesign_rules.md, domain_tags, quality_checklist.md 미리 읽기
+    ├─ [STEP 2~5.5] 참조 파일 선로드 → Redesigner Agent 병렬 호출
+    │    ├─ Main이 redesign_rules.md, domain_tags, quality_checklist.md, translation_guide.md 미리 읽기
     │    ├─ 문제 N개 → N개 Redesigner Agent 동시 실행 (각 1개 문제 처리)
-    │    ├─ 결과 취합 → redesigned_questions.json 생성
+    │    ├─ 각 Agent가 STEP 5 품질검증 후 STEP 5.5 영문 번역 수행
+    │    ├─ 결과 취합 → redesigned_questions.json 생성 (한/영 양방향 필드 포함)
     │    └─ [에스컬레이션 발생 시] 사용자에게 실시간 전달 → 응답 → 해당 Agent 재호출
     │
     └─ [STEP 6] Parser & SQL Agent 호출 (SQL 생성)
@@ -134,16 +135,18 @@ curl -s \
     └─ [STEP 7] 결과 요약 출력
 ```
 
-## STEP 2~5: 병렬 재설계 실행 절차
+## STEP 2~5.5: 병렬 재설계 + 영문 번역 실행 절차
 
 ### 1. 참조 파일 선로드 (Main이 직접 읽기)
 
-Redesigner Agent 호출 전에 다음 3개 파일을 읽어 텍스트로 보관한다:
+Redesigner Agent 호출 전에 다음 4개 파일을 읽어 텍스트로 보관한다:
 
 ```
-redesign_rules_content  ← .claude/skills/question-redesigner/references/redesign_rules_compact.md
-domain_tags_content     ← .claude/skills/question-redesigner/references/domain_tags/{exam_id}.md
+redesign_rules_content    ← .claude/skills/question-redesigner/references/redesign_rules_compact.md
+domain_tags_content       ← .claude/skills/question-redesigner/references/domain_tags/{exam_id}.md
 quality_checklist_content ← .claude/skills/question-redesigner/references/quality_checklist_compact.md
+translation_guide_content ← .claude/skills/question-redesigner/references/translation_guide/{exam_id}.md
+                            (파일 없으면 null — Redesigner가 일반 번역 수행)
 ```
 
 ### 2. Redesigner Agent 병렬 호출
@@ -166,7 +169,8 @@ for q in parsed_questions:
             "correct_answer_concept": correct_answer_concept,   # 원문 정답 보기 텍스트
             "redesign_rules": redesign_rules_content,
             "domain_tags": domain_tags_content,
-            "quality_checklist": quality_checklist_content
+            "quality_checklist": quality_checklist_content,
+            "translation_guide": translation_guide_content   # AWS 자격증 영문 번역 가이드
         }
     )
 # 모든 Task를 단일 메시지에 묶어 동시 실행
@@ -225,12 +229,13 @@ Redesigner Agent로부터 에스컬레이션 보고를 받으면:
 | 파일 | 역할 |
 |------|------|
 | `output/parsed_questions.json` | 파싱 결과 + 체크포인트 |
-| `output/redesigned_questions.json` | 재설계 완료 결과 |
+| `output/redesigned_questions.json` | 재설계 완료 결과 (한/영 양방향 필드 포함) |
 | `output/{exam_id}-YYYYMMDD-{batch}.sql` | 최종 SQL 파일 |
 | `.env` | Supabase 접속 정보 (git에 포함되지 않음) |
 | `docs/sample.sql` | SQL 형식 참조용 샘플 |
 | `.claude/skills/question-parser/scripts/parse_text.py` | 파싱 스크립트 |
 | `.claude/skills/sql-generator/scripts/generate_sql.py` | SQL 생성 스크립트 |
+| `.claude/skills/question-redesigner/references/translation_guide/{exam_id}.md` | AWS 자격증 영문 번역 가이드 |
 
 ## 중요 제약사항
 

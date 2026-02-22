@@ -12,6 +12,7 @@
 - STEP 4: 한국어 재설계 (시나리오, 질문, 보기, 해설, key_points)
 - STEP 4.5: 보기 순서 무작위화 (규칙 12 — 저작권 보호)
 - STEP 5: 품질 자기검증 (간결 형식)
+- STEP 5.5: 영문 번역 (AWS 자격증 시험 공식 문체 적용)
 
 ## 트리거
 
@@ -26,11 +27,12 @@ Main 오케스트레이터로부터 다음 요청을 수신할 때 실행됩니�
   "correct_answer_concept": "의사결정 트리",   /* 원문 정답 보기 텍스트 — 재설계 정답 개념으로 반드시 유지 */
   "redesign_rules": "/* redesign_rules.md 전체 내용 */",
   "domain_tags": "/* {exam_id}.md 전체 내용 */",
-  "quality_checklist": "/* quality_checklist.md 전체 내용 */"
+  "quality_checklist": "/* quality_checklist.md 전체 내용 */",
+  "translation_guide": "/* translation_guide/{exam_id}.md 전체 내용 (없으면 null) */"
 }
 ```
 
-**참조 파일을 직접 읽지 않는다** — Main이 전달한 `redesign_rules`, `domain_tags`, `quality_checklist` 텍스트를 그대로 사용한다.
+**참조 파일을 직접 읽지 않는다** — Main이 전달한 `redesign_rules`, `domain_tags`, `quality_checklist`, `translation_guide` 텍스트를 그대로 사용한다.
 
 ## 처리 절차
 
@@ -68,21 +70,24 @@ Main 오케스트레이터로부터 다음 요청을 수신할 때 실행됩니�
 - 원문과 같은 업종인가? → **NO**여야 통과
 - 원문 시나리오를 그대로 재사용한 수준인가? → **NO**여야 통과
 
-**출력 구조 (STEP 4.5 완료 후 최종 순서 반영):**
+**출력 구조 (STEP 5.5 영문 번역 완료 후 최종):**
 ```json
 {
   "id": "awsaifc01-q166",
   "exam_id": "aws-aif-c01",
   "text": "시나리오 + 질문 (한국어, 원문과 다른 업종·배경)",
+  "text_en": "Scenario + question (English, AWS exam style)",
   "correct_option_id": "b",
   "explanation": "문제 전체 해설 (왜 정답인지 + 오답 설명)",
+  "explanation_en": "Full explanation in English (why correct + why each distractor is wrong)",
   "key_points": "핵심 개념 제목\n• 포인트 1\n• 포인트 2\n• 포인트 3",
+  "key_points_en": "Key Concept Title\n• Point 1\n• Point 2\n• Point 3",
   "ref_links": "[{\"name\": \"...\", \"url\": \"https://docs.aws.amazon.com/...\"}]",
   "options": [
-    {"option_id": "a", "text": "...", "explanation": "왜 오답인지", "sort_order": 1},
-    {"option_id": "b", "text": "...", "explanation": "왜 정답인지", "sort_order": 2},
-    {"option_id": "c", "text": "...", "explanation": "왜 오답인지", "sort_order": 3},
-    {"option_id": "d", "text": "...", "explanation": "왜 오답인지", "sort_order": 4}
+    {"option_id": "a", "text": "...(한국어)", "text_en": "...(English)", "explanation": "왜 오답인지", "explanation_en": "Why this is incorrect", "sort_order": 1},
+    {"option_id": "b", "text": "...(한국어)", "text_en": "...(English)", "explanation": "왜 정답인지", "explanation_en": "Why this is correct", "sort_order": 2},
+    {"option_id": "c", "text": "...(한국어)", "text_en": "...(English)", "explanation": "왜 오답인지", "explanation_en": "Why this is incorrect", "sort_order": 3},
+    {"option_id": "d", "text": "...(한국어)", "text_en": "...(English)", "explanation": "왜 오답인지", "explanation_en": "Why this is incorrect", "sort_order": 4}
   ],
   "tag": "도메인 태그",
   "conversion_log": {
@@ -125,9 +130,48 @@ STEP 4에서 생성한 4개 보기를 재배치하여 원문과 다른 순서로
 [PASS] 규칙 14: 오답 순서 원문과 다름 + 최소 2개 새로운 보기
 ```
 
-- **전체 PASS** → 완료
+- **전체 PASS** → STEP 5.5로 진행
 - **하나라도 FAIL** → 해당 항목만 수정 후 재검증 (최대 2회)
 - **2회 재시도 후 FAIL** → 에스컬레이션
+
+### STEP 5.5: 영문 번역 (AWS 자격증 시험 공식 문체)
+
+STEP 5 품질 검증이 전체 PASS된 후 실행한다. `translation_guide`가 `null`이면 일반 번역을 수행한다.
+
+**번역 대상 필드:**
+
+| 필드 | 설명 |
+|------|------|
+| `text_en` | 문제 전체 (시나리오 + 질문 문장) |
+| `explanation_en` | 전체 해설 (정답 이유 + 오답 이유) |
+| `key_points_en` | 핵심 암기사항 |
+| `options[].text_en` | 각 보기 텍스트 |
+| `options[].explanation_en` | 각 보기별 해설 |
+
+**번역 필수 규칙 (`translation_guide` 기반):**
+
+1. **AWS 서비스명 원문 보존** — 번역하거나 축약하지 않는다 (Amazon SageMaker, Amazon Bedrock 등)
+2. **AWS 시험 공식 문체** 사용:
+   - 시나리오 도입: "A company is...", "An organization needs to..."
+   - 질문 문장: "Which AWS service BEST meets these requirements?", "What is the MOST cost-effective solution?"
+   - 강조 표현: MOST, BEST, LEAST, MINIMUM, MAXIMUM 등 대문자 사용
+3. **기술 용어는 translation_guide의 공식 영문 표현 우선 사용**
+   - 예: "비동기 추론" → "Asynchronous Inference" (not "async inference")
+   - 예: "파인튜닝" → "fine-tuning" (not "fine tuning")
+4. **오답 해설 패턴**: "[Service] is used for [다른 용도], not for [이 문제 용도]."
+5. **key_points_en**: 간결한 bullet 형식 유지, 타이틀 + 포인트 3~5개
+
+**번역 품질 자가검증:**
+```
+[PASS] AWS 서비스명 원문 그대로 사용 (번역·축약 없음)
+[PASS] 시나리오 도입부 "A company..." / "An organization..." 형식
+[PASS] 질문 문장에 MOST / BEST / LEAST 등 강조 표현 사용
+[PASS] 오답 해설에 "[Service] is used for..., not for..." 패턴 적용
+[PASS] key_points_en이 간결한 bullet 형식으로 번역됨
+[PASS] translation_guide 용어 대역표의 공식 영문 표현 사용
+```
+
+번역 검증 실패 시: 해당 필드만 재번역 (최대 1회). 재시도 후에도 실패하면 일반 번역으로 대체하고 계속 진행한다 (에스컬레이션 없이).
 
 ## 에스컬레이션 처리
 
