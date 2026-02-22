@@ -75,8 +75,8 @@ Main 오케스트레이터로부터 다음 요청을 수신할 때 실행됩니�
 {
   "id": "awsaifc01-q166",
   "exam_id": "aws-aif-c01",
-  "text": "시나리오 + 질문 (한국어, 원문과 다른 업종·배경)",
-  "text_en": "Scenario + question (English, AWS exam style)",
+  "text": "첫 번째 문장.\n\n두 번째 문장. 세 번째 문장.\n\n질문은? (4문장 이상 — 첫 문장 뒤 \\n\\n, 질문 앞 \\n\\n)\n  또는\n  첫 번째 문장. 두 번째 문장.\n\n질문은? (3문장 이하 — 질문 앞 \\n\\n만)",
+  "text_en": "Scenario + question (English, AWS exam style — same \\n\\n rules apply for text_en)",
   "correct_option_id": "b",
   "explanation": "문제 전체 해설 (왜 정답인지 + 오답 설명)",
   "explanation_en": "Full explanation in English (why correct + why each distractor is wrong)",
@@ -127,17 +127,18 @@ STEP 4에서 생성한 4개 보기를 재배치하여 원문과 다른 순서로
 [PASS] 질문 명확성
 [PASS] 단일 개념 집중
 [PASS] 규칙 12: 정답 위치 원문과 다름
+[PASS] 규칙 8: 줄바꿈 서식 (질문 앞 \n\n 확인, 4문장+ 시 첫 문장 뒤 \n\n 확인)
 [PASS] 규칙 13: 정답 개념 correct_answer_concept와 일치
 [PASS] 규칙 14: 오답 순서 원문과 다름 + 최소 2개 새로운 보기
 [PASS] 원본 정답 AWS 기술적 유효성
 ```
 
 - **전체 PASS** → STEP 5.5로 진행
-- **1~11번 중 하나라도 FAIL** → 해당 항목만 수정 후 재검증 (최대 2회)
-- **1~11번 2회 재시도 후 FAIL** → 에스컬레이션
-- **12번 FAIL** → 재시도 없이 즉시 에스컬레이션 (`escalation_type: "original_answer_invalid"`)
+- **1~12번 중 하나라도 FAIL** → 해당 항목만 수정 후 재검증 (최대 2회)
+- **1~12번 2회 재시도 후 FAIL** → 에스컬레이션
+- **13번 FAIL** → 재시도 없이 즉시 에스컬레이션 (`escalation_type: "original_answer_invalid"`)
 
-⚠️ **[12] 원본 정답 AWS 기술적 유효성 검증 규칙:**
+⚠️ **[13] 원본 정답 AWS 기술적 유효성 검증 규칙:**
 - 원문 질문 텍스트(`question.question`)와 원문 전체 보기(`question.options`)를 검토한다
 - `correct_answer_concept`이 원문 보기 중 AWS 공식 기능 기준으로 명확히 가장 적합한 답인지 판단한다
 - 다른 보기가 더 적합하다고 판단되면 FAIL → 재시도 없이 즉시 에스컬레이션
