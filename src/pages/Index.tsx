@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import {
   Accordion,
@@ -277,21 +278,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-card border-t py-10 px-4">
-        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 font-bold">
-            <Cloud className="h-5 w-5 text-accent" />
-            {t('common:brand')}
-          </div>
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <Link to="/privacy" className="hover:text-foreground transition-colors">{t('index.footer.privacy')}</Link>
-            <Link to="/terms" className="hover:text-foreground transition-colors">{t('index.footer.terms')}</Link>
-            <a href="https://open.kakao.com/o/pnEbOZgi" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">{t('index.footer.community')}</a>
-          </div>
-          <p className="text-xs text-muted-foreground">{t('index.footer.copyright')}</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
