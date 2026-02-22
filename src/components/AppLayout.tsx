@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Cloud, BookOpen, RotateCcw, Settings2, LogOut, User } from 'lucide-react';
-import Footer from './Footer';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
@@ -107,7 +106,6 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </header>
       <main className="container mx-auto px-4 py-6">{children}</main>
-      <Footer />
     </div>
   );
 };
