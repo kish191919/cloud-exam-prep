@@ -428,6 +428,7 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
   const [moveDialogQuestion, setMoveDialogQuestion] = useState<Question | null>(null);
   const [moveTargetSetId, setMoveTargetSetId] = useState('');
   const [moving, setMoving] = useState(false);
+  const [scrollToId, setScrollToId] = useState<string | null>(null);
 
   const otherSets = allSets.filter(s => s.id !== set.id);
 
@@ -445,10 +446,21 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
     setAddingNew(false);
   }, [open, set.id]);
 
+  useEffect(() => {
+    if (!scrollToId || questions.length === 0) return;
+    const el = document.getElementById(`q-${scrollToId}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setScrollToId(null);
+    }
+  }, [scrollToId, questions]);
+
   const handleUpdateQuestion = async (input: Omit<QuestionInput, 'examId'>) => {
     if (!editingId) return;
+    const savedId = editingId;
     await updateQuestion(editingId, input);
     setEditingId(null);
+    setScrollToId(savedId);
     await loadQuestions();
   };
 
@@ -545,7 +557,7 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
             ) : (
               <>
                 {questions.map((q, idx) => (
-                  <div key={q.id}>
+                  <div key={q.id} id={`q-${q.id}`}>
                     {editingId === q.id ? (
                       <QuestionForm
                         examId={examId}
