@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppLayout from '@/components/AppLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,7 +28,8 @@ import {
   Plus, Pencil, Trash2, BookOpen, FlaskConical,
   Loader2, Save, FileText, AlertTriangle, X,
   ChevronUp, ChevronDown, Shuffle, ArrowRightLeft,
-  Search, Crown, UserCheck, UserX,
+  Search, Crown, UserCheck, UserX, Users,
+  ChevronLeft, ChevronRight,
 } from 'lucide-react';
 import { getAllExams } from '@/services/examService';
 import { getSetsForExam, getQuestionsForSet } from '@/services/questionService';
@@ -42,7 +43,7 @@ import {
   createQuestion,
   updateQuestion,
   deleteQuestion,
-  searchProfilesByEmail,
+  getAllProfiles,
   updateSubscriptionTier,
   QuestionInput,
   ProfileResult,
@@ -405,7 +406,7 @@ interface SetQuestionsDialogProps {
 const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: SetQuestionsDialogProps) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editingId, setEditingId] = useState<string | null>(null);   // question id being edited
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [addingNew, setAddingNew] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Question | null>(null);
   const newFormRef = useRef<HTMLDivElement>(null);
@@ -431,7 +432,6 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
     setAddingNew(false);
   }, [open, set.id]);
 
-  // Save edit of an existing question
   const handleUpdateQuestion = async (input: Omit<QuestionInput, 'examId'>) => {
     if (!editingId) return;
     await updateQuestion(editingId, input);
@@ -439,17 +439,15 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
     await loadQuestions();
   };
 
-  // Create a new question and add it to this set
   const handleAddQuestion = async (input: Omit<QuestionInput, 'examId'>) => {
     const newId = await createQuestion({ ...input, examId });
     const existingIds = await getSetQuestionIds(set.id);
     await updateSetQuestions(set.id, [...existingIds, newId]);
     setAddingNew(false);
     await loadQuestions();
-    onSaved(); // refresh set question count
+    onSaved();
   };
 
-  // Shuffle question order randomly (Fisher-Yates)
   const handleShuffle = async () => {
     setShuffling(true);
     const shuffled = [...questions];
@@ -462,7 +460,6 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
     setShuffling(false);
   };
 
-  // Move question up or down within the set
   const handleReorderQuestion = async (idx: number, dir: 'up' | 'down') => {
     const newIdx = dir === 'up' ? idx - 1 : idx + 1;
     if (newIdx < 0 || newIdx >= questions.length) return;
@@ -474,7 +471,6 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
     setReordering(false);
   };
 
-  // Move question to another set
   const handleMoveToOtherSet = async () => {
     if (!moveDialogQuestion || !moveTargetSetId) return;
     setMoving(true);
@@ -485,7 +481,6 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
     setMoving(false);
   };
 
-  // Remove question from set (and delete the question record)
   const handleDeleteQuestion = async () => {
     if (!deleteTarget) return;
     const existingIds = await getSetQuestionIds(set.id);
@@ -511,7 +506,6 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
             </div>
           </DialogHeader>
 
-          {/* Toolbar */}
           {!loading && questions.length > 0 && (
             <div className="flex items-center justify-between px-1 pb-2 border-b">
               <span className="text-xs text-muted-foreground">▲/▼ 버튼으로 순서 변경, → 버튼으로 다른 세트로 이동</span>
@@ -594,7 +588,6 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
                             )}
                           </div>
                           <div className="flex items-start gap-1 shrink-0">
-                            {/* Up/Down order buttons */}
                             <div className="flex flex-col gap-0.5">
                               <Button
                                 variant="ghost"
@@ -615,7 +608,6 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
                                 <ChevronDown className="h-4 w-4 text-muted-foreground" />
                               </Button>
                             </div>
-                            {/* Move to other set */}
                             <Button
                               variant="ghost"
                               size="icon"
@@ -629,7 +621,6 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
                             >
                               <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />
                             </Button>
-                            {/* Edit */}
                             <Button
                               variant="ghost"
                               size="icon"
@@ -638,7 +629,6 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
                             >
                               <Pencil className="h-4 w-4 text-muted-foreground" />
                             </Button>
-                            {/* Delete */}
                             <Button
                               variant="ghost"
                               size="icon"
@@ -661,7 +651,6 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
                   </div>
                 )}
 
-                {/* New question form */}
                 {addingNew && (
                   <div ref={newFormRef}>
                     <QuestionForm
@@ -695,7 +684,6 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
         </DialogContent>
       </Dialog>
 
-      {/* Delete confirmation */}
       <AlertDialog open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -716,7 +704,6 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Move to other set dialog */}
       <Dialog open={!!moveDialogQuestion} onOpenChange={v => !v && setMoveDialogQuestion(null)}>
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
@@ -759,33 +746,87 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
 };
 
 // ─── Subscription Management Section ─────────────────────────────────────────
+const PAGE_SIZE = 20;
+
 const SubscriptionManager = () => {
+  const [profiles, setProfiles] = useState<ProfileResult[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [freeCount, setFreeCount] = useState(0);
+  const [premiumCount, setPremiumCount] = useState(0);
+  const [page, setPage] = useState(0);
+  const [filterTier, setFilterTier] = useState<'all' | 'free' | 'premium'>('all');
   const [searchEmail, setSearchEmail] = useState('');
-  const [searching, setSearching] = useState(false);
-  const [results, setResults] = useState<ProfileResult[]>([]);
+  const [searchInput, setSearchInput] = useState('');
+  const [loading, setLoading] = useState(false);
   const [updating, setUpdating] = useState<string | null>(null);
   const [error, setError] = useState('');
 
-  const handleSearch = async () => {
-    if (!searchEmail.trim()) return;
-    setSearching(true);
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+
+  const loadProfiles = useCallback(async (p: number, tier: typeof filterTier, email: string) => {
+    setLoading(true);
     setError('');
     try {
-      const data = await searchProfilesByEmail(searchEmail.trim());
-      setResults(data);
-      if (data.length === 0) setError('일치하는 사용자가 없습니다.');
+      const { data, count } = await getAllProfiles(
+        p,
+        PAGE_SIZE,
+        tier === 'all' ? undefined : tier,
+        email || undefined,
+      );
+      setProfiles(data);
+      setTotalCount(count);
     } catch (e: any) {
-      setError(e.message ?? '검색 중 오류가 발생했습니다.');
+      setError(e.message ?? '불러오는 중 오류가 발생했습니다.');
     } finally {
-      setSearching(false);
+      setLoading(false);
     }
+  }, []);
+
+  // Load aggregate counts (free/premium)
+  const loadStats = useCallback(async () => {
+    try {
+      const [freeRes, premRes] = await Promise.all([
+        getAllProfiles(0, 1, 'free'),
+        getAllProfiles(0, 1, 'premium'),
+      ]);
+      setFreeCount(freeRes.count);
+      setPremiumCount(premRes.count);
+    } catch {
+      // stats are non-critical
+    }
+  }, []);
+
+  useEffect(() => {
+    loadProfiles(page, filterTier, searchEmail);
+  }, [page, filterTier, searchEmail, loadProfiles]);
+
+  useEffect(() => {
+    loadStats();
+  }, [loadStats]);
+
+  const handleSearch = () => {
+    setPage(0);
+    setSearchEmail(searchInput);
+  };
+
+  const handleFilterChange = (tier: typeof filterTier) => {
+    setFilterTier(tier);
+    setPage(0);
   };
 
   const handleTierChange = async (userId: string, tier: 'free' | 'premium') => {
     setUpdating(userId);
     try {
       await updateSubscriptionTier(userId, tier);
-      setResults(prev => prev.map(r => r.id === userId ? { ...r, subscription_tier: tier } : r));
+      setProfiles(prev => prev.map(r => r.id === userId ? { ...r, subscription_tier: tier } : r));
+      // Update stats
+      if (tier === 'premium') {
+        setFreeCount(c => c - 1);
+        setPremiumCount(c => c + 1);
+      } else {
+        setPremiumCount(c => c - 1);
+        setFreeCount(c => c + 1);
+      }
     } catch (e: any) {
       setError(e.message ?? '업데이트 중 오류가 발생했습니다.');
     } finally {
@@ -793,98 +834,233 @@ const SubscriptionManager = () => {
     }
   };
 
+  const formatDate = (iso: string | null) => {
+    if (!iso) return '-';
+    return new Date(iso).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  };
+
   return (
-    <Card className="mt-6">
-      <CardHeader className="pb-4">
-        <div className="flex items-center gap-2">
-          <Crown className="h-5 w-5 text-accent" />
-          <CardTitle className="text-lg">구독 관리</CardTitle>
-        </div>
-        <p className="text-sm text-muted-foreground">이메일로 사용자를 검색하여 프리미엄 등급을 부여하거나 해제합니다.</p>
-      </CardHeader>
-      <CardContent>
-        {/* Search */}
-        <div className="flex gap-2 mb-4">
-          <Input
-            placeholder="이메일 주소로 검색..."
-            value={searchEmail}
-            onChange={e => setSearchEmail(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleSearch()}
-            className="flex-1"
-          />
-          <Button
-            onClick={handleSearch}
-            disabled={searching || !searchEmail.trim()}
-            className="bg-accent text-accent-foreground hover:bg-accent/90 shrink-0"
-          >
-            {searching ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
-            <span className="ml-1.5 hidden sm:inline">검색</span>
-          </Button>
-        </div>
+    <div className="space-y-6">
+      {/* Stats cards */}
+      <div className="grid grid-cols-3 gap-4">
+        <Card>
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-muted">
+              <Users className="h-5 w-5 text-muted-foreground" />
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">전체 회원</p>
+              <p className="text-2xl font-bold">{freeCount + premiumCount}</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-muted">
+              <UserX className="h-5 w-5 text-muted-foreground" />
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">무료 회원</p>
+              <p className="text-2xl font-bold">{freeCount}</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-accent/10">
+              <Crown className="h-5 w-5 text-accent" />
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">프리미엄 회원</p>
+              <p className="text-2xl font-bold text-accent">{premiumCount}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-        {error && (
-          <p className="text-sm text-muted-foreground mb-3">{error}</p>
-        )}
+      <Card>
+        <CardHeader className="pb-4">
+          <CardTitle className="text-lg">회원 목록</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {/* Filter & Search */}
+          <div className="flex flex-col sm:flex-row gap-3 mb-4">
+            {/* Tier filter tabs */}
+            <div className="flex rounded-lg border border-border overflow-hidden shrink-0">
+              {(['all', 'free', 'premium'] as const).map(tier => (
+                <button
+                  key={tier}
+                  type="button"
+                  onClick={() => handleFilterChange(tier)}
+                  className={`px-3 py-1.5 text-sm font-medium transition-colors ${
+                    filterTier === tier
+                      ? 'bg-accent text-accent-foreground'
+                      : 'text-muted-foreground hover:bg-muted'
+                  }`}
+                >
+                  {tier === 'all' ? '전체' : tier === 'free' ? '무료' : '프리미엄'}
+                </button>
+              ))}
+            </div>
 
-        {/* Results */}
-        {results.length > 0 && (
-          <div className="space-y-2">
-            {results.map(profile => (
-              <div
-                key={profile.id}
-                className="flex items-center justify-between gap-3 p-3 rounded-lg border border-border"
+            {/* Email search */}
+            <div className="flex gap-2 flex-1">
+              <Input
+                placeholder="이메일로 검색..."
+                value={searchInput}
+                onChange={e => setSearchInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleSearch()}
+                className="flex-1"
+              />
+              <Button
+                onClick={handleSearch}
+                disabled={loading}
+                className="bg-accent text-accent-foreground hover:bg-accent/90 shrink-0"
               >
-                <div className="min-w-0">
-                  <p className="text-sm font-medium truncate">{profile.email ?? profile.id}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    ID: {profile.id.slice(0, 8)}…
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <Badge
-                    variant="outline"
-                    className={profile.subscription_tier === 'premium'
-                      ? 'border-accent text-accent'
-                      : 'border-muted-foreground/30 text-muted-foreground'
-                    }
-                  >
-                    {profile.subscription_tier === 'premium' ? '프리미엄' : '무료'}
-                  </Badge>
-                  {profile.subscription_tier === 'free' ? (
-                    <Button
-                      size="sm"
-                      disabled={updating === profile.id}
-                      onClick={() => handleTierChange(profile.id, 'premium')}
-                      className="bg-accent text-accent-foreground hover:bg-accent/90 text-xs h-8"
-                    >
-                      {updating === profile.id
-                        ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                        : <UserCheck className="h-3.5 w-3.5 mr-1" />
-                      }
-                      프리미엄 부여
-                    </Button>
-                  ) : (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      disabled={updating === profile.id}
-                      onClick={() => handleTierChange(profile.id, 'free')}
-                      className="text-xs h-8"
-                    >
-                      {updating === profile.id
-                        ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                        : <UserX className="h-3.5 w-3.5 mr-1" />
-                      }
-                      무료로 변경
-                    </Button>
-                  )}
-                </div>
-              </div>
-            ))}
+                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
+                <span className="ml-1.5 hidden sm:inline">검색</span>
+              </Button>
+              {searchEmail && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => { setSearchInput(''); setSearchEmail(''); setPage(0); }}
+                  title="검색 초기화"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
           </div>
-        )}
-      </CardContent>
-    </Card>
+
+          {error && (
+            <div className="flex items-center gap-2 text-destructive text-sm bg-destructive/10 p-3 rounded-lg mb-4">
+              <AlertTriangle className="h-4 w-4 shrink-0" />
+              {error}
+            </div>
+          )}
+
+          {/* Table */}
+          {loading ? (
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="h-7 w-7 animate-spin text-muted-foreground" />
+            </div>
+          ) : profiles.length === 0 ? (
+            <div className="text-center py-14 text-muted-foreground">
+              <Users className="h-10 w-10 mx-auto mb-3 opacity-30" />
+              <p className="text-sm">일치하는 회원이 없습니다.</p>
+            </div>
+          ) : (
+            <>
+              <div className="rounded-lg border border-border overflow-hidden">
+                {/* Table header */}
+                <div className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-0 bg-muted/50 px-4 py-2.5 text-xs font-semibold text-muted-foreground border-b border-border">
+                  <span>이메일</span>
+                  <span className="text-center w-20">가입일</span>
+                  <span className="text-center w-20">만료일</span>
+                  <span className="text-center w-20">등급</span>
+                  <span className="text-center w-28">액션</span>
+                </div>
+
+                {/* Rows */}
+                {profiles.map((profile, idx) => (
+                  <div
+                    key={profile.id}
+                    className={`grid grid-cols-[1fr_auto_auto_auto_auto] gap-0 items-center px-4 py-3 text-sm transition-colors hover:bg-muted/30 ${
+                      idx !== profiles.length - 1 ? 'border-b border-border' : ''
+                    }`}
+                  >
+                    <div className="min-w-0 pr-4">
+                      <p className="font-medium truncate">{profile.email ?? '(이메일 없음)'}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">ID: {profile.id.slice(0, 8)}…</p>
+                    </div>
+                    <span className="text-xs text-muted-foreground w-20 text-center">
+                      {formatDate(profile.created_at)}
+                    </span>
+                    <span className="text-xs text-muted-foreground w-20 text-center">
+                      {formatDate(profile.subscription_expires_at)}
+                    </span>
+                    <div className="w-20 flex justify-center">
+                      <Badge
+                        variant="outline"
+                        className={profile.subscription_tier === 'premium'
+                          ? 'border-accent text-accent bg-accent/5'
+                          : 'border-muted-foreground/30 text-muted-foreground'
+                        }
+                      >
+                        {profile.subscription_tier === 'premium' ? '프리미엄' : '무료'}
+                      </Badge>
+                    </div>
+                    <div className="w-28 flex justify-center">
+                      {profile.subscription_tier === 'free' ? (
+                        <Button
+                          size="sm"
+                          disabled={updating === profile.id}
+                          onClick={() => handleTierChange(profile.id, 'premium')}
+                          className="bg-accent text-accent-foreground hover:bg-accent/90 text-xs h-7 px-2.5"
+                        >
+                          {updating === profile.id
+                            ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            : <UserCheck className="h-3.5 w-3.5 mr-1" />
+                          }
+                          프리미엄 부여
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          disabled={updating === profile.id}
+                          onClick={() => handleTierChange(profile.id, 'free')}
+                          className="text-xs h-7 px-2.5"
+                        >
+                          {updating === profile.id
+                            ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            : <UserX className="h-3.5 w-3.5 mr-1" />
+                          }
+                          무료로 변경
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between mt-4">
+                  <p className="text-xs text-muted-foreground">
+                    총 {totalCount}명 중 {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, totalCount)}명
+                  </p>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      disabled={page === 0}
+                      onClick={() => setPage(p => p - 1)}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <span className="text-sm px-3 py-1 rounded border border-border bg-muted/50">
+                      {page + 1} / {totalPages}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      disabled={page >= totalPages - 1}
+                      onClick={() => setPage(p => p + 1)}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
@@ -893,6 +1069,7 @@ const AdminPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions'>('sets');
   const [exams, setExams] = useState<ExamConfig[]>([]);
   const [activeExamId, setActiveExamId] = useState<string>('');
   const [setsMap, setSetsMap] = useState<Record<string, ExamSet[]>>({});
@@ -940,7 +1117,6 @@ const AdminPage = () => {
     const setA = currentSets[index];
     const setB = currentSets[newIndex];
 
-    // Swap sort orders
     await Promise.all([
       updateExamSet(setA.id, { sortOrder: setB.sortOrder }),
       updateExamSet(setB.id, { sortOrder: setA.sortOrder }),
@@ -964,143 +1140,164 @@ const AdminPage = () => {
   return (
     <AppLayout>
       <div className="max-w-5xl mx-auto">
+        {/* Page header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">시험 세트 관리</h1>
-            <p className="text-muted-foreground text-sm mt-1">시험별 세트를 추가·편집·삭제하고 문제를 관리하세요.</p>
+            <h1 className="text-2xl font-bold">관리자</h1>
+            <p className="text-muted-foreground text-sm mt-1">시험 세트와 회원 구독을 관리합니다.</p>
           </div>
-          <Link to="/admin/questions">
-            <Button variant="outline">
-              <FileText className="h-4 w-4 mr-2" />문제 관리
-            </Button>
-          </Link>
+          {adminTab === 'sets' && (
+            <Link to="/admin/questions">
+              <Button variant="outline">
+                <FileText className="h-4 w-4 mr-2" />문제 관리
+              </Button>
+            </Link>
+          )}
         </div>
 
-        <Tabs value={activeExamId} onValueChange={setActiveExamId}>
-          <TabsList className="mb-6 flex-wrap h-auto gap-1">
-            {exams.map(exam => (
-              <TabsTrigger key={exam.id} value={exam.id} className="text-xs sm:text-sm">
-                {exam.code}
-              </TabsTrigger>
-            ))}
+        {/* Top-level tabs */}
+        <Tabs value={adminTab} onValueChange={v => setAdminTab(v as typeof adminTab)}>
+          <TabsList className="mb-6">
+            <TabsTrigger value="sets" className="gap-2">
+              <BookOpen className="h-4 w-4" />
+              시험 세트 관리
+            </TabsTrigger>
+            <TabsTrigger value="subscriptions" className="gap-2">
+              <Crown className="h-4 w-4" />
+              구독 관리
+            </TabsTrigger>
           </TabsList>
 
-          {exams.map(exam => (
-            <TabsContent key={exam.id} value={exam.id}>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between pb-4">
-                  <div>
-                    <CardTitle className="text-lg">{exam.title}</CardTitle>
-                    <p className="text-sm text-muted-foreground mt-0.5">
-                      {exam.code} · {currentSets.length}개 세트
-                    </p>
-                  </div>
-                  <Button
-                    onClick={() => { setEditingSet(null); setSetFormOpen(true); }}
-                    className="bg-accent text-accent-foreground hover:bg-accent/90 shrink-0"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />새 세트
-                  </Button>
-                </CardHeader>
+          {/* ── 시험 세트 관리 탭 ── */}
+          <TabsContent value="sets">
+            <Tabs value={activeExamId} onValueChange={setActiveExamId}>
+              <TabsList className="mb-6 flex-wrap h-auto gap-1">
+                {exams.map(exam => (
+                  <TabsTrigger key={exam.id} value={exam.id} className="text-xs sm:text-sm">
+                    {exam.code}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
 
-                <CardContent>
-                  {currentSets.length === 0 ? (
-                    <div className="text-center py-12 text-muted-foreground">
-                      <BookOpen className="h-10 w-10 mx-auto mb-3 opacity-30" />
-                      <p className="text-sm">아직 세트가 없습니다. "새 세트" 버튼으로 추가하세요.</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {currentSets.map((set, index) => (
-                        <div
-                          key={set.id}
-                          className="flex items-center gap-4 p-4 rounded-xl border border-border hover:border-accent/30 transition-colors"
-                        >
-                          {/* Move up/down buttons */}
-                          <div className="flex flex-col gap-1 shrink-0">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              disabled={index === 0}
-                              onClick={() => handleMoveSet(index, 'up')}
-                              className="h-7 w-7"
-                            >
-                              <ChevronUp className="h-4 w-4 text-muted-foreground" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              disabled={index === currentSets.length - 1}
-                              onClick={() => handleMoveSet(index, 'down')}
-                              className="h-7 w-7"
-                            >
-                              <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                            </Button>
-                          </div>
+              {exams.map(exam => (
+                <TabsContent key={exam.id} value={exam.id}>
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-4">
+                      <div>
+                        <CardTitle className="text-lg">{exam.title}</CardTitle>
+                        <p className="text-sm text-muted-foreground mt-0.5">
+                          {exam.code} · {currentSets.length}개 세트
+                        </p>
+                      </div>
+                      <Button
+                        onClick={() => { setEditingSet(null); setSetFormOpen(true); }}
+                        className="bg-accent text-accent-foreground hover:bg-accent/90 shrink-0"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />새 세트
+                      </Button>
+                    </CardHeader>
 
-                          <div className={`p-2 rounded-lg ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
-                            {set.type === 'sample'
-                              ? <FlaskConical className="h-5 w-5 text-primary" />
-                              : <BookOpen className="h-5 w-5 text-accent" />
-                            }
-                          </div>
-
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-0.5">
-                              <span className="font-semibold">{set.name}</span>
-                              <Badge variant="outline" className={`text-xs ${
-                                set.type === 'sample'
-                                  ? 'border-primary/40 text-primary'
-                                  : 'border-accent/40 text-accent'
-                              }`}>
-                                {set.type === 'sample' ? '샘플' : '전체'}
-                              </Badge>
-                            </div>
-                            {set.description && (
-                              <p className="text-xs text-muted-foreground truncate">{set.description}</p>
-                            )}
-                            <p className="text-xs text-muted-foreground mt-0.5">
-                              {set.questionCount}문제
-                            </p>
-                          </div>
-
-                          <div className="flex items-center gap-2 shrink-0">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => setQuestionsSet(set)}
-                              className="text-xs"
-                            >
-                              <FileText className="h-3.5 w-3.5 mr-1" />문제 편집
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => { setEditingSet(set); setSetFormOpen(true); }}
-                            >
-                              <Pencil className="h-4 w-4 text-muted-foreground" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => setDeleteTarget(set)}
-                            >
-                              <Trash2 className="h-4 w-4 text-destructive" />
-                            </Button>
-                          </div>
+                    <CardContent>
+                      {currentSets.length === 0 ? (
+                        <div className="text-center py-12 text-muted-foreground">
+                          <BookOpen className="h-10 w-10 mx-auto mb-3 opacity-30" />
+                          <p className="text-sm">아직 세트가 없습니다. "새 세트" 버튼으로 추가하세요.</p>
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-          ))}
+                      ) : (
+                        <div className="space-y-3">
+                          {currentSets.map((set, index) => (
+                            <div
+                              key={set.id}
+                              className="flex items-center gap-4 p-4 rounded-xl border border-border hover:border-accent/30 transition-colors"
+                            >
+                              <div className="flex flex-col gap-1 shrink-0">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  disabled={index === 0}
+                                  onClick={() => handleMoveSet(index, 'up')}
+                                  className="h-7 w-7"
+                                >
+                                  <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  disabled={index === currentSets.length - 1}
+                                  onClick={() => handleMoveSet(index, 'down')}
+                                  className="h-7 w-7"
+                                >
+                                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                                </Button>
+                              </div>
+
+                              <div className={`p-2 rounded-lg ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
+                                {set.type === 'sample'
+                                  ? <FlaskConical className="h-5 w-5 text-primary" />
+                                  : <BookOpen className="h-5 w-5 text-accent" />
+                                }
+                              </div>
+
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 mb-0.5">
+                                  <span className="font-semibold">{set.name}</span>
+                                  <Badge variant="outline" className={`text-xs ${
+                                    set.type === 'sample'
+                                      ? 'border-primary/40 text-primary'
+                                      : 'border-accent/40 text-accent'
+                                  }`}>
+                                    {set.type === 'sample' ? '샘플' : '전체'}
+                                  </Badge>
+                                </div>
+                                {set.description && (
+                                  <p className="text-xs text-muted-foreground truncate">{set.description}</p>
+                                )}
+                                <p className="text-xs text-muted-foreground mt-0.5">
+                                  {set.questionCount}문제
+                                </p>
+                              </div>
+
+                              <div className="flex items-center gap-2 shrink-0">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => setQuestionsSet(set)}
+                                  className="text-xs"
+                                >
+                                  <FileText className="h-3.5 w-3.5 mr-1" />문제 편집
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => { setEditingSet(set); setSetFormOpen(true); }}
+                                >
+                                  <Pencil className="h-4 w-4 text-muted-foreground" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => setDeleteTarget(set)}
+                                >
+                                  <Trash2 className="h-4 w-4 text-destructive" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              ))}
+            </Tabs>
+          </TabsContent>
+
+          {/* ── 구독 관리 탭 ── */}
+          <TabsContent value="subscriptions">
+            <SubscriptionManager />
+          </TabsContent>
         </Tabs>
       </div>
-
-      {/* ─── 구독 관리 섹션 ─── */}
-      <SubscriptionManager />
 
       {/* Set form dialog */}
       <SetFormDialog

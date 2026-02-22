@@ -234,17 +234,28 @@ export interface ProfileResult {
   id: string;
   email: string | null;
   subscription_tier: 'free' | 'premium';
+  subscription_expires_at: string | null;
   created_at: string;
 }
 
-export async function searchProfilesByEmail(email: string): Promise<ProfileResult[]> {
-  const { data, error } = await supabase
+export async function getAllProfiles(
+  page: number = 0,
+  pageSize: number = 20,
+  filterTier?: 'free' | 'premium',
+  searchEmail?: string,
+): Promise<{ data: ProfileResult[]; count: number }> {
+  let query = supabase
     .from('profiles')
-    .select('id, email, subscription_tier, created_at')
-    .ilike('email', `%${email}%`)
-    .limit(10);
+    .select('id, email, subscription_tier, subscription_expires_at, created_at', { count: 'exact' })
+    .order('created_at', { ascending: false });
+
+  if (filterTier) query = query.eq('subscription_tier', filterTier);
+  if (searchEmail?.trim()) query = query.ilike('email', `%${searchEmail.trim()}%`);
+  query = query.range(page * pageSize, (page + 1) * pageSize - 1);
+
+  const { data, error, count } = await query;
   if (error) throw error;
-  return (data || []) as ProfileResult[];
+  return { data: (data || []) as ProfileResult[], count: count ?? 0 };
 }
 
 export async function updateSubscriptionTier(
