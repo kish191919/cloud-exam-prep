@@ -269,6 +269,266 @@ export async function updateSubscriptionTier(
   if (error) throw error;
 }
 
+// ─── 통계 / 분석 ──────────────────────────────────────────────────────────────
+
+export interface OverviewStats {
+  todaySessions: number;
+  weekSubmitted: number;
+  avgScore: number | null;
+  inProgressSessions: number;
+  newUsersWeek: number;
+}
+
+export interface RecentSession {
+  id: string;
+  examTitle: string;
+  examId: string;
+  score: number | null;
+  status: string;
+  startedAt: string;
+  submittedAt: string | null;
+  userEmail: string | null;
+  durationSec: number | null;
+  pausedElapsed: number;
+}
+
+export interface ExamStat {
+  examId: string;
+  examTitle: string;
+  totalSessions: number;
+  submittedSessions: number;
+  avgScore: number | null;
+  passRate: number | null;     // % 점수 >= 70
+  avgDurationMin: number | null;
+  topWeakTags: { tag: string; correctRate: number; total: number }[];
+}
+
+export interface SetStat {
+  setId: string | null;
+  setName: string;
+  examId: string;
+  examTitle: string;
+  totalSessions: number;
+  submittedSessions: number;
+  avgScore: number | null;
+  avgDurationMin: number | null;
+}
+
+export interface HourStat {
+  hour: number;   // 0-23
+  count: number;
+}
+
+export interface WeekdayStat {
+  day: number;    // 0=일, 1=월 ... 6=토
+  count: number;
+}
+
+export async function getAdminOverview(): Promise<OverviewStats> {
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+  const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  const [todayRes, weekRes, avgRes, inProgressRes, newUsersRes] = await Promise.all([
+    supabase
+      .from('exam_sessions')
+      .select('id', { count: 'exact', head: true })
+      .gte('started_at', todayStart),
+    supabase
+      .from('exam_sessions')
+      .select('id', { count: 'exact', head: true })
+      .eq('status', 'submitted')
+      .gte('submitted_at', weekAgo),
+    supabase
+      .from('exam_sessions')
+      .select('score')
+      .eq('status', 'submitted')
+      .not('score', 'is', null),
+    supabase
+      .from('exam_sessions')
+      .select('id', { count: 'exact', head: true })
+      .eq('status', 'in_progress'),
+    supabase
+      .from('profiles')
+      .select('id', { count: 'exact', head: true })
+      .gte('created_at', weekAgo),
+  ]);
+
+  const scores = (avgRes.data || []).map((r: any) => r.score as number);
+  const avgScore = scores.length > 0
+    ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+    : null;
+
+  return {
+    todaySessions: todayRes.count ?? 0,
+    weekSubmitted: weekRes.count ?? 0,
+    avgScore,
+    inProgressSessions: inProgressRes.count ?? 0,
+    newUsersWeek: newUsersRes.count ?? 0,
+  };
+}
+
+export async function getRecentSessions(limit: number = 10): Promise<RecentSession[]> {
+  const { data, error } = await supabase
+    .from('exam_sessions')
+    .select('id, exam_title, exam_id, score, status, started_at, submitted_at, paused_elapsed, user_id')
+    .eq('status', 'submitted')
+    .order('submitted_at', { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+  const rows = (data || []) as any[];
+
+  // Fetch emails for user_ids in batch
+  const userIds = [...new Set(rows.map((r: any) => r.user_id).filter(Boolean))];
+  let emailMap: Record<string, string> = {};
+  if (userIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from('profiles')
+      .select('id, email')
+      .in('id', userIds);
+    (profiles || []).forEach((p: any) => { emailMap[p.id] = p.email ?? ''; });
+  }
+
+  return rows.map((r: any) => {
+    const startMs = new Date(r.started_at).getTime();
+    const endMs = r.submitted_at ? new Date(r.submitted_at).getTime() : null;
+    const durationSec = endMs ? Math.max(0, Math.round((endMs - startMs) / 1000) - (r.paused_elapsed ?? 0)) : null;
+    return {
+      id: r.id,
+      examTitle: r.exam_title,
+      examId: r.exam_id,
+      score: r.score,
+      status: r.status,
+      startedAt: r.started_at,
+      submittedAt: r.submitted_at,
+      userEmail: r.user_id ? (emailMap[r.user_id] ?? null) : null,
+      durationSec,
+      pausedElapsed: r.paused_elapsed ?? 0,
+    };
+  });
+}
+
+export async function getExamStats(): Promise<ExamStat[]> {
+  const { data, error } = await supabase
+    .from('exam_sessions')
+    .select('exam_id, exam_title, status, score, started_at, submitted_at, paused_elapsed, tag_breakdown');
+  if (error) throw error;
+
+  const rows = (data || []) as any[];
+  const examMap: Record<string, {
+    examTitle: string;
+    total: number;
+    submitted: number;
+    scores: number[];
+    durations: number[];
+    tagTotals: Record<string, { correct: number; total: number }>;
+  }> = {};
+
+  for (const r of rows) {
+    if (!examMap[r.exam_id]) {
+      examMap[r.exam_id] = { examTitle: r.exam_title, total: 0, submitted: 0, scores: [], durations: [], tagTotals: {} };
+    }
+    const e = examMap[r.exam_id];
+    e.total++;
+    if (r.status === 'submitted') {
+      e.submitted++;
+      if (r.score !== null) e.scores.push(r.score);
+      if (r.submitted_at) {
+        const dur = Math.max(0, (new Date(r.submitted_at).getTime() - new Date(r.started_at).getTime()) / 1000 - (r.paused_elapsed ?? 0));
+        e.durations.push(dur);
+      }
+      if (r.tag_breakdown) {
+        for (const [tag, stats] of Object.entries(r.tag_breakdown as Record<string, { correct: number; total: number }>)) {
+          if (!e.tagTotals[tag]) e.tagTotals[tag] = { correct: 0, total: 0 };
+          e.tagTotals[tag].correct += stats.correct;
+          e.tagTotals[tag].total += stats.total;
+        }
+      }
+    }
+  }
+
+  return Object.entries(examMap).map(([examId, e]) => {
+    const avgScore = e.scores.length > 0 ? Math.round(e.scores.reduce((a, b) => a + b, 0) / e.scores.length) : null;
+    const passRate = e.scores.length > 0 ? Math.round((e.scores.filter(s => s >= 70).length / e.scores.length) * 100) : null;
+    const avgDurationMin = e.durations.length > 0 ? Math.round(e.durations.reduce((a, b) => a + b, 0) / e.durations.length / 60) : null;
+    const topWeakTags = Object.entries(e.tagTotals)
+      .filter(([, v]) => v.total >= 3)
+      .map(([tag, v]) => ({ tag, correctRate: Math.round((v.correct / v.total) * 100), total: v.total }))
+      .sort((a, b) => a.correctRate - b.correctRate)
+      .slice(0, 5);
+    return { examId, examTitle: e.examTitle, totalSessions: e.total, submittedSessions: e.submitted, avgScore, passRate, avgDurationMin, topWeakTags };
+  });
+}
+
+export async function getSetStats(): Promise<SetStat[]> {
+  // Join exam_sessions with exam_sets via set_id
+  const { data, error } = await supabase
+    .from('exam_sessions')
+    .select('exam_id, exam_title, status, score, started_at, submitted_at, paused_elapsed, set_id, exam_sets(name)');
+  if (error) throw error;
+
+  const rows = (data || []) as any[];
+  const setMap: Record<string, {
+    setName: string;
+    examId: string;
+    examTitle: string;
+    total: number;
+    submitted: number;
+    scores: number[];
+    durations: number[];
+  }> = {};
+
+  for (const r of rows) {
+    const key = r.set_id ?? '__none__';
+    const setName = r.set_id ? (r.exam_sets?.name ?? '(알 수 없음)') : '(미분류)';
+    if (!setMap[key]) {
+      setMap[key] = { setName, examId: r.exam_id, examTitle: r.exam_title, total: 0, submitted: 0, scores: [], durations: [] };
+    }
+    const s = setMap[key];
+    s.total++;
+    if (r.status === 'submitted') {
+      s.submitted++;
+      if (r.score !== null) s.scores.push(r.score);
+      if (r.submitted_at) {
+        const dur = Math.max(0, (new Date(r.submitted_at).getTime() - new Date(r.started_at).getTime()) / 1000 - (r.paused_elapsed ?? 0));
+        s.durations.push(dur);
+      }
+    }
+  }
+
+  return Object.entries(setMap).map(([setId, s]) => ({
+    setId: setId === '__none__' ? null : setId,
+    setName: s.setName,
+    examId: s.examId,
+    examTitle: s.examTitle,
+    totalSessions: s.total,
+    submittedSessions: s.submitted,
+    avgScore: s.scores.length > 0 ? Math.round(s.scores.reduce((a, b) => a + b, 0) / s.scores.length) : null,
+    avgDurationMin: s.durations.length > 0 ? Math.round(s.durations.reduce((a, b) => a + b, 0) / s.durations.length / 60) : null,
+  })).sort((a, b) => b.totalSessions - a.totalSessions);
+}
+
+export async function getHourlyActivity(days: number = 30): Promise<{ hourly: HourStat[]; weekday: WeekdayStat[] }> {
+  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+  const { data, error } = await supabase
+    .from('exam_sessions')
+    .select('started_at')
+    .gte('started_at', since);
+  if (error) throw error;
+
+  const hourly: HourStat[] = Array.from({ length: 24 }, (_, h) => ({ hour: h, count: 0 }));
+  const weekday: WeekdayStat[] = Array.from({ length: 7 }, (_, d) => ({ day: d, count: 0 }));
+
+  for (const r of (data || []) as any[]) {
+    const d = new Date(r.started_at);
+    hourly[d.getHours()].count++;
+    weekday[d.getDay()].count++;
+  }
+
+  return { hourly, weekday };
+}
+
 export async function bulkCreateQuestions(
   examId: string,
   questions: Omit<QuestionInput, 'examId'>[],

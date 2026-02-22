@@ -183,7 +183,8 @@ const ExamList = () => {
         randomizeOptions,
         user?.id || null, // userId - associate with logged-in user
         initialBookmarks,
-        selectedSet?.type ?? 'full'  // setType: sample or full
+        selectedSet?.type ?? 'full',  // setType: sample or full
+        selectedSet?.id               // setId: for analytics
       );
       navigate(`/session/${sessionId}`);
     } catch (error) {

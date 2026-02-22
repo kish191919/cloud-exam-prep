@@ -43,7 +43,8 @@ export async function createSession(
   randomizeOptions: boolean = false,
   userId: string | null = null,
   initialBookmarks: string[] = [],
-  setType?: 'sample' | 'full'
+  setType?: 'sample' | 'full',
+  setId?: string
 ): Promise<string> {
   // ── Anonymous user: skip Supabase, use sessionStorage (clears on tab close) ──
   if (!userId) {
@@ -77,7 +78,7 @@ export async function createSession(
   // ── Logged-in user: save to Supabase ─────────────────────────────────────
   try {
     const sessionId = await sessionService.createSession(
-      examId, examTitle, questions, timeLimitMinutes, userId
+      examId, examTitle, questions, timeLimitMinutes, userId, setId
     );
 
     if (initialBookmarks.length > 0) {

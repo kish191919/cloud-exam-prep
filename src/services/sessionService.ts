@@ -29,7 +29,8 @@ export async function createSession(
   examTitle: string,
   questions: Question[],
   timeLimitMinutes: number,
-  userId?: string
+  userId?: string,
+  setId?: string
 ): Promise<string> {
   // @ts-ignore - Supabase type inference issue
   const { data, error } = await supabase
@@ -40,6 +41,7 @@ export async function createSession(
       status: 'in_progress' as const,
       time_limit_sec: timeLimitMinutes * 60,
       user_id: userId || null,
+      set_id: setId || null,
     })
     .select()
     .single();

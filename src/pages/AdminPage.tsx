@@ -30,6 +30,8 @@ import {
   ChevronUp, ChevronDown, Shuffle, ArrowRightLeft,
   Search, Crown, UserCheck, UserX, Users,
   ChevronLeft, ChevronRight,
+  BarChart3, TrendingUp, Clock, Activity, CalendarDays,
+  RefreshCw,
 } from 'lucide-react';
 import { getAllExams } from '@/services/examService';
 import { getSetsForExam, getQuestionsForSet } from '@/services/questionService';
@@ -45,8 +47,19 @@ import {
   deleteQuestion,
   getAllProfiles,
   updateSubscriptionTier,
+  getAdminOverview,
+  getRecentSessions,
+  getExamStats,
+  getSetStats,
+  getHourlyActivity,
   QuestionInput,
   ProfileResult,
+  OverviewStats,
+  RecentSession,
+  ExamStat,
+  SetStat,
+  HourStat,
+  WeekdayStat,
 } from '@/services/adminService';
 import type { ExamConfig, ExamSet, Question } from '@/types/exam';
 import { useAuth } from '@/contexts/AuthContext';
@@ -1064,12 +1077,347 @@ const SubscriptionManager = () => {
   );
 };
 
+// ─── Admin Stats Component ────────────────────────────────────────────────────
+const WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'];
+
+const AdminStats = () => {
+  const [activeTab, setActiveTab] = useState<'overview' | 'exams' | 'sets' | 'activity'>('overview');
+  const [loading, setLoading] = useState(true);
+  const [overview, setOverview] = useState<OverviewStats | null>(null);
+  const [recentSessions, setRecentSessions] = useState<RecentSession[]>([]);
+  const [examStats, setExamStats] = useState<ExamStat[]>([]);
+  const [setStats, setSetStats] = useState<SetStat[]>([]);
+  const [hourly, setHourly] = useState<HourStat[]>([]);
+  const [weekday, setWeekday] = useState<WeekdayStat[]>([]);
+  const [error, setError] = useState('');
+
+  const loadAll = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const [ov, recent, exam, set, activity] = await Promise.all([
+        getAdminOverview(),
+        getRecentSessions(10),
+        getExamStats(),
+        getSetStats(),
+        getHourlyActivity(30),
+      ]);
+      setOverview(ov);
+      setRecentSessions(recent);
+      setExamStats(exam);
+      setSetStats(set);
+      setHourly(activity.hourly);
+      setWeekday(activity.weekday);
+    } catch (e: any) {
+      setError(e.message ?? '데이터를 불러오는 중 오류가 발생했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { loadAll(); }, []);
+
+  const formatDuration = (sec: number | null) => {
+    if (sec === null) return '-';
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m}분 ${s}초`;
+  };
+
+  const maskEmail = (email: string | null) => {
+    if (!email) return '(비회원)';
+    const [user, domain] = email.split('@');
+    if (!domain) return email;
+    return `${user.slice(0, 2)}${'*'.repeat(Math.max(1, user.length - 2))}@${domain}`;
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center gap-2 text-destructive bg-destructive/10 p-4 rounded-lg">
+        <AlertTriangle className="h-5 w-5 shrink-0" />
+        {error}
+        <Button variant="outline" size="sm" className="ml-auto" onClick={loadAll}>재시도</Button>
+      </div>
+    );
+  }
+
+  const maxHour = Math.max(1, ...hourly.map(h => h.count));
+  const maxWeekday = Math.max(1, ...weekday.map(d => d.count));
+
+  return (
+    <div className="space-y-6">
+      {/* Refresh button */}
+      <div className="flex justify-end">
+        <Button variant="outline" size="sm" onClick={loadAll}>
+          <RefreshCw className="h-4 w-4 mr-2" />새로 고침
+        </Button>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={v => setActiveTab(v as typeof activeTab)}>
+        <TabsList className="mb-6">
+          <TabsTrigger value="overview" className="gap-1.5"><Activity className="h-4 w-4" />현황 요약</TabsTrigger>
+          <TabsTrigger value="exams" className="gap-1.5"><TrendingUp className="h-4 w-4" />시험별 통계</TabsTrigger>
+          <TabsTrigger value="sets" className="gap-1.5"><BarChart3 className="h-4 w-4" />세트별 통계</TabsTrigger>
+          <TabsTrigger value="activity" className="gap-1.5"><CalendarDays className="h-4 w-4" />시간대별 패턴</TabsTrigger>
+        </TabsList>
+
+        {/* ── 현황 요약 ── */}
+        <TabsContent value="overview">
+          {/* KPI Cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
+            {[
+              { label: '오늘 시험 응시', value: overview?.todaySessions ?? 0, icon: <Activity className="h-4 w-4" />, color: 'text-blue-500 bg-blue-50 dark:bg-blue-950/40' },
+              { label: '이번 주 제출', value: overview?.weekSubmitted ?? 0, icon: <TrendingUp className="h-4 w-4" />, color: 'text-green-500 bg-green-50 dark:bg-green-950/40' },
+              { label: '전체 평균 점수', value: overview?.avgScore !== null && overview?.avgScore !== undefined ? `${overview.avgScore}점` : '-', icon: <BarChart3 className="h-4 w-4" />, color: 'text-accent bg-accent/10' },
+              { label: '진행 중 세션', value: overview?.inProgressSessions ?? 0, icon: <Clock className="h-4 w-4" />, color: 'text-orange-500 bg-orange-50 dark:bg-orange-950/40' },
+              { label: '이번 주 신규 가입', value: overview?.newUsersWeek ?? 0, icon: <Users className="h-4 w-4" />, color: 'text-purple-500 bg-purple-50 dark:bg-purple-950/40' },
+            ].map(({ label, value, icon, color }) => (
+              <Card key={label}>
+                <CardContent className="p-4">
+                  <div className={`inline-flex p-1.5 rounded-lg mb-2 ${color}`}>{icon}</div>
+                  <p className="text-xs text-muted-foreground">{label}</p>
+                  <p className="text-2xl font-bold mt-0.5">{value}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Recent sessions feed */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">최근 제출 완료 ({recentSessions.length}건)</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {recentSessions.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-8">아직 제출 완료된 시험이 없습니다.</p>
+              ) : (
+                <div className="rounded-lg border border-border overflow-hidden">
+                  <div className="grid grid-cols-[1fr_auto_auto_auto] gap-0 bg-muted/50 px-4 py-2 text-xs font-semibold text-muted-foreground border-b">
+                    <span>회원</span>
+                    <span className="w-36 text-center">시험</span>
+                    <span className="w-16 text-center">점수</span>
+                    <span className="w-24 text-right">소요시간</span>
+                  </div>
+                  {recentSessions.map((s, idx) => (
+                    <div key={s.id} className={`grid grid-cols-[1fr_auto_auto_auto] gap-0 items-center px-4 py-2.5 text-sm ${idx !== recentSessions.length - 1 ? 'border-b border-border' : ''}`}>
+                      <span className="text-xs text-muted-foreground truncate pr-4">{maskEmail(s.userEmail)}</span>
+                      <span className="w-36 text-xs text-center truncate">{s.examTitle}</span>
+                      <span className={`w-16 text-center font-bold text-sm ${(s.score ?? 0) >= 70 ? 'text-green-600' : 'text-destructive'}`}>
+                        {s.score !== null ? `${s.score}점` : '-'}
+                      </span>
+                      <span className="w-24 text-right text-xs text-muted-foreground">{formatDuration(s.durationSec)}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* ── 시험별 통계 ── */}
+        <TabsContent value="exams">
+          {examStats.length === 0 ? (
+            <Card><CardContent className="py-12 text-center text-muted-foreground text-sm">데이터가 없습니다.</CardContent></Card>
+          ) : (
+            <div className="space-y-4">
+              {examStats.map(ex => (
+                <Card key={ex.examId}>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base">{ex.examTitle}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {/* Stats row */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                      {[
+                        { label: '총 응시', value: `${ex.totalSessions}회` },
+                        { label: '제출 완료', value: `${ex.submittedSessions}회` },
+                        { label: '평균 점수', value: ex.avgScore !== null ? `${ex.avgScore}점` : '-' },
+                        { label: '합격률 (≥70)', value: ex.passRate !== null ? `${ex.passRate}%` : '-' },
+                      ].map(({ label, value }) => (
+                        <div key={label} className="bg-muted/40 rounded-lg p-3 text-center">
+                          <p className="text-xs text-muted-foreground mb-0.5">{label}</p>
+                          <p className="font-bold">{value}</p>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Weak tags */}
+                    {ex.topWeakTags.length > 0 && (
+                      <div>
+                        <p className="text-xs font-semibold text-muted-foreground mb-2">취약 태그 TOP {ex.topWeakTags.length}</p>
+                        <div className="space-y-1.5">
+                          {ex.topWeakTags.map(t => (
+                            <div key={t.tag} className="flex items-center gap-2">
+                              <span className="text-xs w-32 shrink-0 truncate">{t.tag}</span>
+                              <div className="flex-1 bg-muted rounded-full h-2 overflow-hidden">
+                                <div
+                                  className={`h-full rounded-full transition-all ${t.correctRate < 50 ? 'bg-destructive' : t.correctRate < 70 ? 'bg-yellow-400' : 'bg-green-500'}`}
+                                  style={{ width: `${t.correctRate}%` }}
+                                />
+                              </div>
+                              <span className="text-xs w-12 text-right text-muted-foreground">{t.correctRate}%</span>
+                              <span className="text-xs text-muted-foreground/60">({t.total})</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+
+        {/* ── 세트별 통계 ── */}
+        <TabsContent value="sets">
+          {setStats.length === 0 ? (
+            <Card><CardContent className="py-12 text-center text-muted-foreground text-sm">데이터가 없습니다.</CardContent></Card>
+          ) : (
+            <Card>
+              <CardContent className="p-0">
+                <div className="rounded-lg overflow-hidden">
+                  <div className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-0 bg-muted/50 px-4 py-2.5 text-xs font-semibold text-muted-foreground border-b">
+                    <span>세트</span>
+                    <span className="w-20 text-center">총 응시</span>
+                    <span className="w-20 text-center">완료</span>
+                    <span className="w-20 text-center">평균 점수</span>
+                    <span className="w-24 text-center">평균 시간</span>
+                  </div>
+                  {setStats.map((s, idx) => (
+                    <div key={s.setId ?? '__none__'} className={`grid grid-cols-[1fr_auto_auto_auto_auto] gap-0 items-center px-4 py-3 text-sm ${idx !== setStats.length - 1 ? 'border-b border-border' : ''}`}>
+                      <div>
+                        <p className="font-medium truncate">{s.setName}</p>
+                        <p className="text-xs text-muted-foreground">{s.examTitle}</p>
+                      </div>
+                      <span className="w-20 text-center">{s.totalSessions}</span>
+                      <span className="w-20 text-center">{s.submittedSessions}</span>
+                      <span className={`w-20 text-center font-bold ${(s.avgScore ?? 0) >= 70 ? 'text-green-600' : s.avgScore !== null ? 'text-destructive' : 'text-muted-foreground'}`}>
+                        {s.avgScore !== null ? `${s.avgScore}점` : '-'}
+                      </span>
+                      <span className="w-24 text-center text-xs text-muted-foreground">
+                        {s.avgDurationMin !== null ? `${s.avgDurationMin}분` : '-'}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+
+        {/* ── 시간대별 패턴 ── */}
+        <TabsContent value="activity">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Hourly bar chart */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">시간대별 접속 (최근 30일)</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-end gap-0.5 h-36">
+                  {hourly.map(h => {
+                    const pct = Math.round((h.count / maxHour) * 100);
+                    return (
+                      <div key={h.hour} className="flex-1 flex flex-col items-center gap-0.5 group">
+                        <div
+                          className="w-full rounded-t transition-all bg-accent/60 group-hover:bg-accent"
+                          style={{ height: `${Math.max(2, pct)}%` }}
+                          title={`${h.hour}시: ${h.count}회`}
+                        />
+                        {h.hour % 6 === 0 && (
+                          <span className="text-[9px] text-muted-foreground">{h.hour}</span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <p className="text-xs text-muted-foreground mt-2 text-center">시각 (0~23시)</p>
+              </CardContent>
+            </Card>
+
+            {/* Weekday bar chart */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">요일별 접속 (최근 30일)</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-end gap-2 h-36">
+                  {weekday.map(d => {
+                    const pct = Math.round((d.count / maxWeekday) * 100);
+                    return (
+                      <div key={d.day} className="flex-1 flex flex-col items-center gap-1">
+                        <span className="text-xs text-muted-foreground">{d.count}</span>
+                        <div
+                          className="w-full rounded-t bg-accent/60 transition-all"
+                          style={{ height: `${Math.max(4, pct)}%` }}
+                          title={`${WEEKDAY_LABELS[d.day]}: ${d.count}회`}
+                        />
+                        <span className="text-xs font-medium">{WEEKDAY_LABELS[d.day]}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* 24h heatmap */}
+          <Card className="mt-6">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">시간대 히트맵</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-12 gap-1">
+                {hourly.map(h => {
+                  const intensity = h.count === 0 ? 0 : Math.ceil((h.count / maxHour) * 5);
+                  const bg = [
+                    'bg-muted/30',
+                    'bg-accent/15',
+                    'bg-accent/30',
+                    'bg-accent/50',
+                    'bg-accent/70',
+                    'bg-accent',
+                  ][intensity];
+                  return (
+                    <div
+                      key={h.hour}
+                      className={`${bg} rounded h-8 flex items-center justify-center text-xs transition-all cursor-default`}
+                      title={`${h.hour}시: ${h.count}회`}
+                    >
+                      <span className="text-[10px] font-medium opacity-80">{h.hour}</span>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="flex items-center justify-end gap-1 mt-2">
+                <span className="text-xs text-muted-foreground mr-1">낮음</span>
+                {['bg-muted/30','bg-accent/15','bg-accent/30','bg-accent/50','bg-accent/70','bg-accent'].map(c => (
+                  <div key={c} className={`${c} w-4 h-4 rounded`} />
+                ))}
+                <span className="text-xs text-muted-foreground ml-1">높음</span>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+};
+
 // ─── Main Admin Page ──────────────────────────────────────────────────────────
 const AdminPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions'>('sets');
+  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions' | 'stats'>('sets');
   const [exams, setExams] = useState<ExamConfig[]>([]);
   const [activeExamId, setActiveExamId] = useState<string>('');
   const [setsMap, setSetsMap] = useState<Record<string, ExamSet[]>>({});
@@ -1144,7 +1492,7 @@ const AdminPage = () => {
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">관리자</h1>
-            <p className="text-muted-foreground text-sm mt-1">시험 세트와 회원 구독을 관리합니다.</p>
+            <p className="text-muted-foreground text-sm mt-1">시험 세트, 회원 구독, 접속 통계를 관리합니다.</p>
           </div>
           {adminTab === 'sets' && (
             <Link to="/admin/questions">
@@ -1165,6 +1513,10 @@ const AdminPage = () => {
             <TabsTrigger value="subscriptions" className="gap-2">
               <Crown className="h-4 w-4" />
               구독 관리
+            </TabsTrigger>
+            <TabsTrigger value="stats" className="gap-2">
+              <BarChart3 className="h-4 w-4" />
+              통계
             </TabsTrigger>
           </TabsList>
 
@@ -1295,6 +1647,11 @@ const AdminPage = () => {
           {/* ── 구독 관리 탭 ── */}
           <TabsContent value="subscriptions">
             <SubscriptionManager />
+          </TabsContent>
+
+          {/* ── 통계 탭 ── */}
+          <TabsContent value="stats">
+            <AdminStats />
           </TabsContent>
         </Tabs>
       </div>
