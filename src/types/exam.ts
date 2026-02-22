@@ -52,6 +52,7 @@ export interface ExamSession {
   status: 'in_progress' | 'paused' | 'submitted';
   mode?: ExamMode;
   randomizeOptions?: boolean;
+  setType?: 'sample' | 'full';
   startedAt: number;
   pausedElapsed: number;
   submittedAt?: number;

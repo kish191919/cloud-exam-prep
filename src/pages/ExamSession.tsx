@@ -12,6 +12,7 @@ import { ChevronLeft, ChevronRight, Menu, Send, Cloud, AlertTriangle, Loader2, C
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { seededShuffle } from '@/utils/shuffle';
+import { useAuth } from '@/contexts/AuthContext';
 
 const MODE_LABEL: Record<string, { ko: string; en: string; color: string }> = {
   practice: { ko: '연습모드', en: 'Practice', color: 'bg-green-100 text-green-700' },
@@ -24,7 +25,16 @@ const ExamSession = () => {
   const isKo = i18n.language === 'ko';
   const { sessionId } = useParams();
   const navigate = useNavigate();
+  const { user, isPremium, openAuthModal } = useAuth();
   const { session, loading, selectAnswer, toggleBookmark, goToQuestion, submitExam, saveSession } = useExamSession(sessionId || null);
+
+  // setType이 'full'이고 프리미엄이 아닌 경우에만 해설/핵심암기사항 제한
+  const isRestrictedSet = !isPremium && session?.setType === 'full';
+
+  const handleUpgrade = () => {
+    if (!user) openAuthModal('signup');
+    else navigate('/');
+  };
   const [showPanel, setShowPanel] = useState(true);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
   const [navDirection, setNavDirection] = useState<'next' | 'prev'>('next');
@@ -262,6 +272,8 @@ const ExamSession = () => {
               onToggleBookmark={() => toggleBookmark(currentQuestion.id)}
               mode={mode}
               randomizeOptions={session.randomizeOptions}
+              isRestrictedSet={isRestrictedSet}
+              onRequestUpgrade={handleUpgrade}
             />
           </div>
         </div>

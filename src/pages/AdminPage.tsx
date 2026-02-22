@@ -28,6 +28,7 @@ import {
   Plus, Pencil, Trash2, BookOpen, FlaskConical,
   Loader2, Save, FileText, AlertTriangle, X,
   ChevronUp, ChevronDown, Shuffle, ArrowRightLeft,
+  Search, Crown, UserCheck, UserX,
 } from 'lucide-react';
 import { getAllExams } from '@/services/examService';
 import { getSetsForExam, getQuestionsForSet } from '@/services/questionService';
@@ -41,7 +42,10 @@ import {
   createQuestion,
   updateQuestion,
   deleteQuestion,
+  searchProfilesByEmail,
+  updateSubscriptionTier,
   QuestionInput,
+  ProfileResult,
 } from '@/services/adminService';
 import type { ExamConfig, ExamSet, Question } from '@/types/exam';
 import { useAuth } from '@/contexts/AuthContext';
@@ -754,6 +758,136 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
   );
 };
 
+// ─── Subscription Management Section ─────────────────────────────────────────
+const SubscriptionManager = () => {
+  const [searchEmail, setSearchEmail] = useState('');
+  const [searching, setSearching] = useState(false);
+  const [results, setResults] = useState<ProfileResult[]>([]);
+  const [updating, setUpdating] = useState<string | null>(null);
+  const [error, setError] = useState('');
+
+  const handleSearch = async () => {
+    if (!searchEmail.trim()) return;
+    setSearching(true);
+    setError('');
+    try {
+      const data = await searchProfilesByEmail(searchEmail.trim());
+      setResults(data);
+      if (data.length === 0) setError('일치하는 사용자가 없습니다.');
+    } catch (e: any) {
+      setError(e.message ?? '검색 중 오류가 발생했습니다.');
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  const handleTierChange = async (userId: string, tier: 'free' | 'premium') => {
+    setUpdating(userId);
+    try {
+      await updateSubscriptionTier(userId, tier);
+      setResults(prev => prev.map(r => r.id === userId ? { ...r, subscription_tier: tier } : r));
+    } catch (e: any) {
+      setError(e.message ?? '업데이트 중 오류가 발생했습니다.');
+    } finally {
+      setUpdating(null);
+    }
+  };
+
+  return (
+    <Card className="mt-6">
+      <CardHeader className="pb-4">
+        <div className="flex items-center gap-2">
+          <Crown className="h-5 w-5 text-accent" />
+          <CardTitle className="text-lg">구독 관리</CardTitle>
+        </div>
+        <p className="text-sm text-muted-foreground">이메일로 사용자를 검색하여 프리미엄 등급을 부여하거나 해제합니다.</p>
+      </CardHeader>
+      <CardContent>
+        {/* Search */}
+        <div className="flex gap-2 mb-4">
+          <Input
+            placeholder="이메일 주소로 검색..."
+            value={searchEmail}
+            onChange={e => setSearchEmail(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleSearch()}
+            className="flex-1"
+          />
+          <Button
+            onClick={handleSearch}
+            disabled={searching || !searchEmail.trim()}
+            className="bg-accent text-accent-foreground hover:bg-accent/90 shrink-0"
+          >
+            {searching ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
+            <span className="ml-1.5 hidden sm:inline">검색</span>
+          </Button>
+        </div>
+
+        {error && (
+          <p className="text-sm text-muted-foreground mb-3">{error}</p>
+        )}
+
+        {/* Results */}
+        {results.length > 0 && (
+          <div className="space-y-2">
+            {results.map(profile => (
+              <div
+                key={profile.id}
+                className="flex items-center justify-between gap-3 p-3 rounded-lg border border-border"
+              >
+                <div className="min-w-0">
+                  <p className="text-sm font-medium truncate">{profile.email ?? profile.id}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    ID: {profile.id.slice(0, 8)}…
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Badge
+                    variant="outline"
+                    className={profile.subscription_tier === 'premium'
+                      ? 'border-accent text-accent'
+                      : 'border-muted-foreground/30 text-muted-foreground'
+                    }
+                  >
+                    {profile.subscription_tier === 'premium' ? '프리미엄' : '무료'}
+                  </Badge>
+                  {profile.subscription_tier === 'free' ? (
+                    <Button
+                      size="sm"
+                      disabled={updating === profile.id}
+                      onClick={() => handleTierChange(profile.id, 'premium')}
+                      className="bg-accent text-accent-foreground hover:bg-accent/90 text-xs h-8"
+                    >
+                      {updating === profile.id
+                        ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        : <UserCheck className="h-3.5 w-3.5 mr-1" />
+                      }
+                      프리미엄 부여
+                    </Button>
+                  ) : (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={updating === profile.id}
+                      onClick={() => handleTierChange(profile.id, 'free')}
+                      className="text-xs h-8"
+                    >
+                      {updating === profile.id
+                        ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        : <UserX className="h-3.5 w-3.5 mr-1" />
+                      }
+                      무료로 변경
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
 // ─── Main Admin Page ──────────────────────────────────────────────────────────
 const AdminPage = () => {
   const navigate = useNavigate();
@@ -964,6 +1098,9 @@ const AdminPage = () => {
           ))}
         </Tabs>
       </div>
+
+      {/* ─── 구독 관리 섹션 ─── */}
+      <SubscriptionManager />
 
       {/* Set form dialog */}
       <SetFormDialog

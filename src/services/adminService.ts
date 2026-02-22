@@ -228,6 +228,36 @@ export async function moveQuestionToSet(
   }
 }
 
+// ─── 구독 / 프로필 관리 ───────────────────────────────────────────────────────
+
+export interface ProfileResult {
+  id: string;
+  email: string | null;
+  subscription_tier: 'free' | 'premium';
+  created_at: string;
+}
+
+export async function searchProfilesByEmail(email: string): Promise<ProfileResult[]> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('id, email, subscription_tier, created_at')
+    .ilike('email', `%${email}%`)
+    .limit(10);
+  if (error) throw error;
+  return (data || []) as ProfileResult[];
+}
+
+export async function updateSubscriptionTier(
+  userId: string,
+  tier: 'free' | 'premium',
+): Promise<void> {
+  const { error } = await supabase
+    .from('profiles')
+    .update({ subscription_tier: tier })
+    .eq('id', userId);
+  if (error) throw error;
+}
+
 export async function bulkCreateQuestions(
   examId: string,
   questions: Omit<QuestionInput, 'examId'>[],

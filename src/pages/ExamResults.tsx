@@ -7,8 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import {
   CheckCircle2, XCircle, RotateCcw, ArrowLeft,
   Trophy, Target, Clock, Minus, Loader2, PenTool,
-  ChevronDown, ChevronUp, Lightbulb,
+  ChevronDown, ChevronUp, Lightbulb, Lock,
 } from 'lucide-react';
+import PremiumGate from '@/components/PremiumGate';
 import AppLayout from '@/components/AppLayout';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
@@ -30,7 +31,7 @@ const ExamResults = () => {
   const isEn = !isKo;
   const { sessionId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isPremium, openAuthModal } = useAuth();
 
   const [session, setSession] = useState<ExamSession | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,6 +39,14 @@ const ExamResults = () => {
   const [tagFilter, setTagFilter] = useState<string | null>(null);
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [creating, setCreating] = useState(false);
+
+  // setType이 'full'이고 프리미엄이 아닌 경우 해설/핵심암기사항 제한
+  const isRestrictedSet = !isPremium && session?.setType === 'full';
+
+  const handleUpgrade = () => {
+    if (!user) openAuthModal('signup');
+    else navigate('/');
+  };
 
   useEffect(() => {
     async function load() {
@@ -125,7 +134,9 @@ const ExamResults = () => {
         Math.ceil(wrongQs.length * 2),
         'practice',
         false,
-        user?.id || null
+        user?.id || null,
+        [],
+        session.setType
       );
       navigate(`/session/${id}`);
     } finally { setCreating(false); }
@@ -144,7 +155,9 @@ const ExamResults = () => {
         Math.ceil(tagQuestions.length * 2),
         'practice',
         false,
-        user?.id || null
+        user?.id || null,
+        [],
+        session.setType
       );
       navigate(`/session/${id}`);
     } finally { setCreating(false); }
@@ -161,7 +174,9 @@ const ExamResults = () => {
     try {
       const id = await createSession(
         session.examId, session.examTitle, session.questions,
-        session.timeLimitSec / 60, mode, false, user?.id || null
+        session.timeLimitSec / 60, mode, false, user?.id || null,
+        [],
+        session.setType
       );
       navigate(`/session/${id}`);
     } finally { setCreating(false); }
@@ -449,9 +464,19 @@ const ExamResults = () => {
                                       </span>
                                     )}
                                     {(opt.explanation || opt.explanationEn) && (
-                                      <p className="text-xs mt-1 text-muted-foreground italic">
-                                        {isEn ? (opt.explanationEn || opt.explanation) : opt.explanation}
-                                      </p>
+                                      isRestrictedSet ? (
+                                        <div
+                                          className="mt-1 flex items-center gap-1 text-xs text-muted-foreground cursor-pointer hover:opacity-80"
+                                          onClick={(e) => { e.stopPropagation(); handleUpgrade(); }}
+                                        >
+                                          <Lock className="h-3 w-3 shrink-0" />
+                                          <span>{isKo ? '구독하면 해설 확인 가능' : 'Subscribe to see explanation'}</span>
+                                        </div>
+                                      ) : (
+                                        <p className="text-xs mt-1 text-muted-foreground italic">
+                                          {isEn ? (opt.explanationEn || opt.explanation) : opt.explanation}
+                                        </p>
+                                      )
                                     )}
                                   </div>
                                 </div>
@@ -462,29 +487,41 @@ const ExamResults = () => {
 
                         {/* Explanation */}
                         {q.explanation && (
-                          <div className="pl-3 border-l-2 border-l-border">
-                            <p className="text-xs font-semibold text-muted-foreground mb-1">
-                              {isKo ? '해설' : 'Explanation'}
-                            </p>
-                            <p className="text-xs text-foreground/80 leading-relaxed">
-                              {isEn ? (q.explanationEn || q.explanation) : q.explanation}
-                            </p>
-                          </div>
+                          <PremiumGate
+                            locked={isRestrictedSet}
+                            onUpgrade={handleUpgrade}
+                            isKo={isKo}
+                          >
+                            <div className="pl-3 border-l-2 border-l-border">
+                              <p className="text-xs font-semibold text-muted-foreground mb-1">
+                                {isKo ? '해설' : 'Explanation'}
+                              </p>
+                              <p className="text-xs text-foreground/80 leading-relaxed">
+                                {isEn ? (q.explanationEn || q.explanation) : q.explanation}
+                              </p>
+                            </div>
+                          </PremiumGate>
                         )}
 
                         {/* Key points */}
                         {q.keyPoints && (
-                          <div className="pl-3 border-l-2 border-l-accent/60">
-                            <div className="flex items-center gap-1.5 mb-1">
-                              <Lightbulb className="h-3 w-3 text-accent" />
-                              <p className="text-xs font-semibold text-accent">
-                                {isKo ? '핵심 암기사항' : 'Key Points'}
+                          <PremiumGate
+                            locked={isRestrictedSet}
+                            onUpgrade={handleUpgrade}
+                            isKo={isKo}
+                          >
+                            <div className="pl-3 border-l-2 border-l-accent/60">
+                              <div className="flex items-center gap-1.5 mb-1">
+                                <Lightbulb className="h-3 w-3 text-accent" />
+                                <p className="text-xs font-semibold text-accent">
+                                  {isKo ? '핵심 암기사항' : 'Key Points'}
+                                </p>
+                              </div>
+                              <p className="text-xs text-foreground/80 leading-relaxed whitespace-pre-line">
+                                {isEn ? (q.keyPointsEn || q.keyPoints) : q.keyPoints}
                               </p>
                             </div>
-                            <p className="text-xs text-foreground/80 leading-relaxed whitespace-pre-line">
-                              {isEn ? (q.keyPointsEn || q.keyPoints) : q.keyPoints}
-                            </p>
-                          </div>
+                          </PremiumGate>
                         )}
                       </div>
                     )}

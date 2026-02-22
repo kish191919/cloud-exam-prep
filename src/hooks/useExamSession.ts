@@ -8,6 +8,7 @@ const SESSIONS_KEY = 'cloudmaster_sessions';
 const modeKey = (id: string) => `cloudmaster_mode_${id}`;
 const randomizeKey = (id: string) => `cloudmaster_randomize_${id}`;
 const questionIdsKey = (id: string) => `cloudmaster_questionids_${id}`;
+const setTypeKey = (id: string) => `cloudmaster_settype_${id}`;
 
 // Anonymous sessions use IDs starting with 'session_'.
 // They are stored in sessionStorage so they vanish when the tab/browser is closed.
@@ -41,7 +42,8 @@ export async function createSession(
   mode: ExamMode = 'exam',
   randomizeOptions: boolean = false,
   userId: string | null = null,
-  initialBookmarks: string[] = []
+  initialBookmarks: string[] = [],
+  setType?: 'sample' | 'full'
 ): Promise<string> {
   // ── Anonymous user: skip Supabase, use sessionStorage (clears on tab close) ──
   if (!userId) {
@@ -53,6 +55,7 @@ export async function createSession(
       status: 'in_progress',
       mode,
       randomizeOptions,
+      setType,
       startedAt: Date.now(),
       pausedElapsed: 0,
       timeLimitSec: timeLimitMinutes * 60,
@@ -67,6 +70,7 @@ export async function createSession(
     sessionStorage.setItem(modeKey(sessionId), mode);
     if (randomizeOptions) sessionStorage.setItem(randomizeKey(sessionId), 'true');
     sessionStorage.setItem(questionIdsKey(sessionId), JSON.stringify(questions.map(q => q.id)));
+    if (setType) sessionStorage.setItem(setTypeKey(sessionId), setType);
     return sessionId;
   }
 
@@ -88,6 +92,7 @@ export async function createSession(
     localStorage.setItem(modeKey(sessionId), mode);
     if (randomizeOptions) localStorage.setItem(randomizeKey(sessionId), 'true');
     localStorage.setItem(questionIdsKey(sessionId), JSON.stringify(questions.map(q => q.id)));
+    if (setType) localStorage.setItem(setTypeKey(sessionId), setType);
     return sessionId;
   } catch (error) {
     console.warn('Failed to create session in Supabase, using localStorage:', error);
@@ -95,7 +100,7 @@ export async function createSession(
     const sessionId = `session_${Date.now()}`;
     const session: ExamSession = {
       id: sessionId, examId, examTitle,
-      status: 'in_progress', mode, randomizeOptions,
+      status: 'in_progress', mode, randomizeOptions, setType,
       startedAt: Date.now(), pausedElapsed: 0,
       timeLimitSec: timeLimitMinutes * 60,
       answers: {}, bookmarks: initialBookmarks, currentIndex: 0, questions,
@@ -104,6 +109,7 @@ export async function createSession(
     sessions[sessionId] = session;
     saveSessionsToStorage(sessions, localStorage);
     localStorage.setItem(questionIdsKey(sessionId), JSON.stringify(questions.map(q => q.id)));
+    if (setType) localStorage.setItem(setTypeKey(sessionId), setType);
     return sessionId;
   }
 }
@@ -134,6 +140,8 @@ export async function getSession(sessionId: string): Promise<ExamSession | null>
       if (storedMode) session.mode = storedMode;
       const storedRandomize = sessionStorage.getItem(randomizeKey(sessionId));
       if (storedRandomize === 'true') session.randomizeOptions = true;
+      const storedSetType = sessionStorage.getItem(setTypeKey(sessionId)) as 'sample' | 'full' | null;
+      if (storedSetType) session.setType = storedSetType;
     }
     return session;
   }
@@ -158,6 +166,8 @@ export async function getSession(sessionId: string): Promise<ExamSession | null>
       if (storedMode) session.mode = storedMode;
       const storedRandomize = localStorage.getItem(randomizeKey(sessionId));
       if (storedRandomize === 'true') session.randomizeOptions = true;
+      const storedSetType = localStorage.getItem(setTypeKey(sessionId)) as 'sample' | 'full' | null;
+      if (storedSetType) session.setType = storedSetType;
       return session;
     }
   } catch (error) {

@@ -1,10 +1,11 @@
 import { Question, ExamMode } from '@/types/exam';
-import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb } from 'lucide-react';
+import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { seededShuffle } from '@/utils/shuffle';
 import { translateTag } from '@/utils/tagTranslation';
+import PremiumGate from '@/components/PremiumGate';
 
 interface QuestionDisplayProps {
   question: Question;
@@ -16,6 +17,8 @@ interface QuestionDisplayProps {
   onToggleBookmark: () => void;
   mode?: ExamMode;
   randomizeOptions?: boolean;
+  isRestrictedSet?: boolean;
+  onRequestUpgrade?: () => void;
 }
 
 
@@ -29,6 +32,8 @@ const QuestionDisplay = ({
   onToggleBookmark,
   mode = 'exam',
   randomizeOptions = false,
+  isRestrictedSet = false,
+  onRequestUpgrade,
 }: QuestionDisplayProps) => {
   const { i18n } = useTranslation();
   const isEn = i18n.language === 'en';
@@ -185,11 +190,21 @@ const QuestionDisplay = ({
                     }`}>{optionText}</span>
                     {/* Per-option explanation (shown in feedback state) */}
                     {showFeedback && perOptionExplanation && (
-                      <p className={`text-xs mt-2 leading-relaxed ${
-                        isCorrect ? 'text-green-700 dark:text-green-400' : 'text-red-600 dark:text-red-400'
-                      }`}>
-                        {perOptionExplanation}
-                      </p>
+                      isRestrictedSet ? (
+                        <div
+                          className="mt-2 flex items-center gap-1 text-xs text-muted-foreground cursor-pointer hover:opacity-80"
+                          onClick={(e) => { e.stopPropagation(); onRequestUpgrade?.(); }}
+                        >
+                          <Lock className="h-3 w-3 shrink-0" />
+                          <span>{isEn ? 'Subscribe to see explanation' : '구독하면 해설 확인 가능'}</span>
+                        </div>
+                      ) : (
+                        <p className={`text-xs mt-2 leading-relaxed ${
+                          isCorrect ? 'text-green-700 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                        }`}>
+                          {perOptionExplanation}
+                        </p>
+                      )
                     )}
                   </div>
                   {showFeedback && isCorrect && (
@@ -210,17 +225,23 @@ const QuestionDisplay = ({
         <div className="mt-6 space-y-4">
           {/* 핵심 암기사항 */}
           {questionKeyPoints && (
-            <div className="rounded-xl border border-amber-200 dark:border-amber-800/50 bg-amber-50/60 dark:bg-amber-950/20 p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Lightbulb className="h-4 w-4 text-amber-500 shrink-0" />
-                <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">
-                  {isEn ? 'Key Points' : '핵심 암기사항'}
-                </span>
+            <PremiumGate
+              locked={isRestrictedSet}
+              onUpgrade={onRequestUpgrade ?? (() => {})}
+              isKo={!isEn}
+            >
+              <div className="rounded-xl border border-amber-200 dark:border-amber-800/50 bg-amber-50/60 dark:bg-amber-950/20 p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Lightbulb className="h-4 w-4 text-amber-500 shrink-0" />
+                  <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">
+                    {isEn ? 'Key Points' : '핵심 암기사항'}
+                  </span>
+                </div>
+                <p className="text-sm leading-relaxed text-foreground whitespace-pre-line">
+                  {questionKeyPoints}
+                </p>
               </div>
-              <p className="text-sm leading-relaxed text-foreground whitespace-pre-line">
-                {questionKeyPoints}
-              </p>
-            </div>
+            </PremiumGate>
           )}
 
           {/* 참고자료 */}
