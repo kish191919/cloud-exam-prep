@@ -13,6 +13,7 @@ import AppLayout from '@/components/AppLayout';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import type { ExamSession, Question } from '@/types/exam';
+import { translateTag } from '@/utils/tagTranslation';
 
 type FilterType = 'all' | 'wrong' | 'correct' | 'unanswered';
 
@@ -26,6 +27,7 @@ function formatTime(ms: number): string {
 const ExamResults = () => {
   const { i18n } = useTranslation('pages');
   const isKo = i18n.language === 'ko';
+  const isEn = !isKo;
   const { sessionId } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -305,7 +307,7 @@ const ExamResults = () => {
                     >
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-xs text-muted-foreground flex-1 mr-3 truncate group-hover:text-foreground transition-colors">
-                          {tag}
+                          {translateTag(tag, isEn)}
                         </span>
                         <span className="text-xs font-semibold shrink-0 text-green-600">
                           {correct}/{tagTotal} ({pct}%)
@@ -363,7 +365,7 @@ const ExamResults = () => {
                     <SelectContent>
                       <SelectItem value="__all__">{isKo ? '전체 도메인' : 'All Domains'}</SelectItem>
                       {tagEntries.map(([tag]) => (
-                        <SelectItem key={tag} value={tag}>{tag}</SelectItem>
+                        <SelectItem key={tag} value={tag}>{translateTag(tag, isEn)}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -400,7 +402,7 @@ const ExamResults = () => {
                       <div className="flex-1 min-w-0">
                         <span className="text-xs text-muted-foreground">Q{globalIdx}</span>
                         <p className={`text-sm leading-relaxed mt-0.5 ${!isExpanded ? 'line-clamp-2' : 'whitespace-pre-line'}`}>
-                          {q.text}
+                          {isEn ? (q.textEn || q.text) : q.text}
                         </p>
                       </div>
                       <div className="shrink-0 ml-2 mt-0.5">
@@ -434,7 +436,7 @@ const ExamResults = () => {
                                       isAnswer   ? 'text-green-800 dark:text-green-300 font-medium' :
                                       isUserPick ? 'text-red-700 dark:text-red-400' : ''
                                     }>
-                                      {opt.text}
+                                      {isEn ? (opt.textEn || opt.text) : opt.text}
                                     </span>
                                     {isAnswer && (
                                       <span className="ml-2 text-xs text-green-600 dark:text-green-400 font-medium">
@@ -446,8 +448,10 @@ const ExamResults = () => {
                                         ✗ {isKo ? '내 선택' : 'Your pick'}
                                       </span>
                                     )}
-                                    {opt.explanation && (
-                                      <p className="text-xs mt-1 text-muted-foreground italic">{opt.explanation}</p>
+                                    {(opt.explanation || opt.explanationEn) && (
+                                      <p className="text-xs mt-1 text-muted-foreground italic">
+                                        {isEn ? (opt.explanationEn || opt.explanation) : opt.explanation}
+                                      </p>
                                     )}
                                   </div>
                                 </div>
@@ -462,7 +466,9 @@ const ExamResults = () => {
                             <p className="text-xs font-semibold text-muted-foreground mb-1">
                               {isKo ? '해설' : 'Explanation'}
                             </p>
-                            <p className="text-xs text-foreground/80 leading-relaxed">{q.explanation}</p>
+                            <p className="text-xs text-foreground/80 leading-relaxed">
+                              {isEn ? (q.explanationEn || q.explanation) : q.explanation}
+                            </p>
                           </div>
                         )}
 
@@ -476,7 +482,7 @@ const ExamResults = () => {
                               </p>
                             </div>
                             <p className="text-xs text-foreground/80 leading-relaxed whitespace-pre-line">
-                              {q.keyPoints}
+                              {isEn ? (q.keyPointsEn || q.keyPoints) : q.keyPoints}
                             </p>
                           </div>
                         )}

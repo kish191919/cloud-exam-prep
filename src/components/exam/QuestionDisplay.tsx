@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { seededShuffle } from '@/utils/shuffle';
+import { translateTag } from '@/utils/tagTranslation';
 
 interface QuestionDisplayProps {
   question: Question;
@@ -131,7 +132,7 @@ const QuestionDisplay = ({
           {/* Tags */}
           {question.tags.map(tag => (
             <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
-              {tag}
+              {translateTag(tag, isEn)}
             </span>
           ))}
         </div>

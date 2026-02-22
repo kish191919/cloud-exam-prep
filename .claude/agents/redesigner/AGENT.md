@@ -89,7 +89,8 @@ Main 오케스트레이터로부터 다음 요청을 수신할 때 실행됩니�
     {"option_id": "c", "text": "...(한국어)", "text_en": "...(English)", "explanation": "왜 오답인지", "explanation_en": "Why this is incorrect", "sort_order": 3},
     {"option_id": "d", "text": "...(한국어)", "text_en": "...(English)", "explanation": "왜 오답인지", "explanation_en": "Why this is incorrect", "sort_order": 4}
   ],
-  "tag": "도메인 태그",
+  "tag": "도메인 태그 (한국어, 예: 파운데이션 모델의 적용)",
+  "tag_en": "Domain tag (English, 예: Applications of Foundation Models)",
   "conversion_log": {
     "original_answer_count": 1,
     "original_answers": ["b"],
@@ -155,6 +156,7 @@ STEP 5 품질 검증이 전체 PASS된 후 실행한다. `translation_guide`가 
 | `key_points_en` | 핵심 암기사항 |
 | `options[].text_en` | 각 보기 텍스트 |
 | `options[].explanation_en` | 각 보기별 해설 |
+| `tag_en` | 도메인 태그 영문명 (domain_tags 파일의 영문 태그 사용) |
 
 **번역 필수 규칙 (`translation_guide` 기반):**
 
