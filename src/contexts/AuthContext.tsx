@@ -50,11 +50,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    let realtimeChannel: ReturnType<typeof supabase.channel> | null = null;
+
+    const subscribeToProfileChanges = (userId: string) => {
+      if (realtimeChannel) {
+        supabase.removeChannel(realtimeChannel);
+        realtimeChannel = null;
+      }
+      realtimeChannel = supabase
+        .channel(`profile-tier-${userId}`)
+        .on(
+          'postgres_changes',
+          { event: 'UPDATE', schema: 'public', table: 'profiles', filter: `id=eq.${userId}` },
+          (payload) => {
+            const newTier = (payload.new as { subscription_tier?: string })
+              .subscription_tier as SubscriptionTier | undefined;
+            if (newTier) {
+              setSubscriptionTier(newTier);
+            } else {
+              fetchProfile(userId);
+            }
+          },
+        )
+        .subscribe();
+    };
+
+    const unsubscribeFromProfileChanges = () => {
+      if (realtimeChannel) {
+        supabase.removeChannel(realtimeChannel);
+        realtimeChannel = null;
+      }
+    };
+
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setUser(data.session?.user ?? null);
       if (data.session?.user) {
         fetchProfile(data.session.user.id);
+        subscribeToProfileChanges(data.session.user.id);
       }
       setLoading(false);
     });
@@ -64,13 +97,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(session?.user ?? null);
       if (session?.user) {
         fetchProfile(session.user.id);
+        subscribeToProfileChanges(session.user.id);
       } else {
         setSubscriptionTier('free');
+        unsubscribeFromProfileChanges();
       }
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      unsubscribeFromProfileChanges();
+    };
   }, []);
 
   const signInWithEmail = async (email: string, password: string) => {
