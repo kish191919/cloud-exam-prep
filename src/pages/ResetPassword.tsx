@@ -47,8 +47,9 @@ const ResetPassword = () => {
     if (error) {
       toast.error(t('resetPasswordFailed'));
     } else {
+      await supabase.auth.signOut();
       setDone(true);
-      setTimeout(() => navigate('/exams'), 3000);
+      setTimeout(() => navigate('/'), 3000);
     }
   };
 
