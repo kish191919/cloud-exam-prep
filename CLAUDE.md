@@ -35,7 +35,7 @@ exam_id:
 
 - `exam_id` 입력 직후 → **자동으로 exam_sets 목록 조회·출력** (별도 "조회" 입력 불필요)
 - 사용자는 **번호** 또는 **새 세트 이름**을 입력하여 세트 선택/생성
-- 세트가 확정되면 문제 텍스트 수집으로 진행
+- 세트가 확정되면 `input/` 폴더 스캔으로 진행
 
 ### 2. exam_sets 자동 조회 및 세트 선택/생성
 
@@ -81,14 +81,23 @@ curl -s -X POST \
 
 **세트가 없는 경우:** 목록 없이 이름 입력만 요청
 
-### 3. 입력 언어 감지
+### 3. input/ 폴더 스캔
 
-문제 텍스트를 수집한 직후, 입력 언어를 판별하여 `source_language` 변수에 저장한다:
+세트 확정 후 `input/` 폴더의 `.txt` 파일을 알파벳 순으로 스캔하여 출력한다:
 
-- **한국어 입력 감지 기준:** 텍스트에 한글 문자가 전체의 30% 이상 포함된 경우
-- `source_language = "ko"` (한국어 입력) 또는 `source_language = "en"` (영문 입력)
+```
+처리할 파일 목록 (input/):
+  [1] batch1.txt   (12 KB)
+  [2] batch2.txt   (8 KB)
 
-> 언어 판별은 LLM이 텍스트를 보고 직접 판단한다. 이후 `source_language` 값은 Redesigner Agent에 전달된다.
+총 2개 파일을 순차적으로 처리합니다.
+```
+
+**파일이 없는 경우** — 즉시 종료:
+```
+input/ 폴더에 .txt 파일이 없습니다.
+처리할 문제 파일을 input/ 폴더에 저장한 후 다시 실행해주세요.
+```
 
 ### 4. Supabase에서 MAX(id) 조회
 
@@ -112,27 +121,54 @@ curl -s \
   SUPABASE_SERVICE_ROLE_KEY=eyJ...
   ```
 
+### 5. 파일별 처리 루프
+
+`input/` 스캔에서 확인된 각 파일에 대해 순차 실행한다:
+
+1. **언어 감지**: 파일의 첫 500자를 읽어 한글 비율로 `source_language` 판별
+   - 한글 문자 30% 이상 → `source_language = "ko"`, 미만 → `source_language = "en"`
+   - (파일 전체를 프롬프트에 올리지 않음 — 첫 500자만 확인)
+2. **STEP 1**: Parser & SQL Agent에 `file_path` 전달 → `parse_text.py` 실행 → `parsed_questions.json` 생성
+3. **STEP 2~5.5**: Redesigner Agent 병렬 호출 → `redesigned_questions.json` 생성
+4. **STEP 6**: SQL 파일 생성
+5. **파일 이동**: 처리 완료 후 `input/done/`으로 이동
+   ```bash
+   mv input/{filename} input/done/{filename}
+   ```
+6. 다음 파일로 진행
+
 ## 전체 파이프라인
 
 ```
-[/convert] → exam_id 입력 → exam_sets 자동 조회 → 번호 선택 or 새 이름 입력(자동 생성) → Supabase MAX(id) 조회
+[/convert] → exam_id 입력 → exam_sets 자동 조회 → 번호 선택 or 새 이름 입력(자동 생성)
     │
-    ├─ [STEP 1] Parser & SQL Agent 호출 (파싱)
-    │    └─ parsed_questions.json 생성
+    ├─ input/ 폴더 스캔 → 파일 목록 출력 (알파벳 순)
+    │    └─ 파일 없으면 즉시 종료
     │
-    ├─ 파싱 실패 문제 목록 수집 → 결과 요약에 포함 예정
+    ├─ Supabase MAX(id) 조회 → start_id 확정
     │
-    ├─ [STEP 2~5.5] 참조 파일 선로드 → Redesigner Agent 병렬 호출
-    │    ├─ Main이 redesign_rules.md, domain_tags, quality_checklist.md, translation_guide.md 미리 읽기
-    │    ├─ 문제 N개 → N개 Redesigner Agent 동시 실행 (각 1개 문제 처리)
-    │    ├─ 각 Agent가 STEP 5 품질검증 후 STEP 5.5 영문 번역 수행
-    │    ├─ 결과 취합 → redesigned_questions.json 생성 (한/영 양방향 필드 포함)
-    │    └─ [에스컬레이션 발생 시] 사용자에게 실시간 전달 → 응답 → 해당 Agent 재호출
+    ├─ [파일별 루프] 각 .txt 파일에 대해 반복:
+    │    │
+    │    ├─ 파일 첫 500자로 source_language 감지 (en/ko)
+    │    │
+    │    ├─ [STEP 1] Parser & SQL Agent 호출 (file_path 전달)
+    │    │    └─ parsed_questions.json 생성
+    │    │
+    │    ├─ 파싱 실패 문제 목록 수집 → 결과 요약에 포함 예정
+    │    │
+    │    ├─ [STEP 2~5.5] 참조 파일 선로드 → Redesigner Agent 병렬 호출
+    │    │    ├─ Main이 redesign_rules.md, domain_tags, quality_checklist.md, translation_guide.md 미리 읽기
+    │    │    ├─ 문제 N개 → N개 Redesigner Agent 동시 실행 (각 1개 문제 처리)
+    │    │    ├─ 각 Agent가 STEP 5 품질검증 후 STEP 5.5 영문 번역 수행
+    │    │    ├─ 결과 취합 → redesigned_questions.json 생성 (한/영 양방향 필드 포함)
+    │    │    └─ [에스컬레이션 발생 시] 사용자에게 실시간 전달 → 응답 → 해당 Agent 재호출
+    │    │
+    │    ├─ [STEP 6] Parser & SQL Agent 호출 (SQL 생성)
+    │    │    └─ {exam_id}-YYYYMMDD-{batch}.sql 생성
+    │    │
+    │    └─ 파일 이동: input/{filename} → input/done/{filename}
     │
-    └─ [STEP 6] Parser & SQL Agent 호출 (SQL 생성)
-         └─ {exam_id}-YYYYMMDD-{batch}.sql 생성
-    │
-    └─ [STEP 7] 결과 요약 출력
+    └─ [STEP 7] 결과 요약 출력 (전체 파일 합산)
 ```
 
 ## STEP 2~5.5: 병렬 재설계 + 영문 번역 실행 절차
@@ -228,6 +264,8 @@ Redesigner Agent로부터 에스컬레이션 보고를 받으면:
 
 | 파일 | 역할 |
 |------|------|
+| `input/*.txt` | 처리 대기 중인 문제 텍스트 파일 (알파벳 순 처리) |
+| `input/done/*.txt` | 처리 완료된 파일 (자동 이동) |
 | `output/parsed_questions.json` | 파싱 결과 + 체크포인트 |
 | `output/redesigned_questions.json` | 재설계 완료 결과 (한/영 양방향 필드 포함) |
 | `output/{exam_id}-YYYYMMDD-{batch}.sql` | 최종 SQL 파일 |

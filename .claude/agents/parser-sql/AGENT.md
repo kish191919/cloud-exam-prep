@@ -11,18 +11,18 @@
 
 Main 오케스트레이터(CLAUDE.md)로부터 다음 두 가지 요청 중 하나를 수신할 때 실행됩니다:
 
-1. **파싱 요청:** `{"task": "parse", "text": "...", "exam_id": "...", "start_id": 166}`
+1. **파싱 요청:** `{"task": "parse", "file_path": "input/batch1.txt", "exam_id": "...", "start_id": 166}`
 2. **SQL 생성 요청:** `{"task": "generate_sql", "set_id": "uuid", "exam_id": "...", "sort_order_start": 66}`
 
 ## STEP 1: 텍스트 파싱
 
 ### 절차
 
-1. Main으로부터 받은 텍스트를 임시 파일(`output/input_raw.txt`)에 저장
+1. Main으로부터 받은 `file_path`를 그대로 `--input-file` 인자로 사용 (임시 파일 저장 불필요)
 2. `parse_text.py` 실행:
    ```bash
    python3 .claude/skills/question-parser/scripts/parse_text.py \
-     --input-file output/input_raw.txt \
+     --input-file {file_path} \
      --output-file output/parsed_questions.json \
      --exam-id {exam_id} \
      --start-id {start_id}
@@ -35,7 +35,7 @@ Main 오케스트레이터(CLAUDE.md)로부터 다음 두 가지 요청 중 하�
 `--append` 플래그를 사용하면 기존 `parsed_questions.json`에서 `status: "completed"` 문제를 스킵:
 ```bash
 python3 .claude/skills/question-parser/scripts/parse_text.py \
-  --input-file output/input_raw.txt \
+  --input-file {file_path} \
   --output-file output/parsed_questions.json \
   --exam-id {exam_id} \
   --start-id {start_id} \
