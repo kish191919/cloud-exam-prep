@@ -1,6 +1,8 @@
 # AWS AIF-C01 문제 변환 에이전트 설계서
 
-> Claude Code 구현 참조용 계획서
+> Claude Code 구현 참조용 문서 — 최종 업데이트: 2026-02-21
+>
+> **권위 있는 실행 스펙은 `CLAUDE.md` 및 각 에이전트/스킬 파일에 있습니다. 이 문서는 전체 아키텍처 개요용입니다.**
 
 ---
 
@@ -8,29 +10,29 @@
 
 ### 배경 및 목적
 
-영문 AWS Certified AI Practitioner (AIF-C01) 자격증 기출/모의 문제를 단순 번역이 아닌 **한국어 수험 환경에 맞게 재설계**하고, 학습 플랫폼 DB에 바로 적재 가능한 SQL 파일로 저장한다.
+영문 AWS Certified AI Practitioner (AIF-C01) 자격증 기출/모의 문제를 단순 번역이 아닌 **한국어 수험 환경에 맞게 재설계**하고, 학습 플랫폼 DB에 바로 적재 가능한 SQL 파일로 저장한다. 재설계된 문제는 한국어·영문 이중 언어(bilingual)로 저장하여 UI에서 언어 전환이 가능하다.
 
 ### 범위
 
-- 입력: 영문 AIF-C01 문제 텍스트 붙여넣기 (Phase 1: URL 입력 미지원)
-- 출력: 한국어로 재설계된 문제가 담긴 `.sql` 파일
-- 제외: 문제 외 학습 콘텐츠(강의, 요약 노트 등) 변환 작업, URL fetch (Phase 2로 이월)
+- 입력: `input/` 폴더에 저장된 `.txt` 파일 (영문 또는 한국어 AIF-C01 문제)
+- 출력: 한국어·영문 이중 언어 문제가 담긴 `.sql` 파일
+- 제외: URL fetch, 강의/요약 노트 변환 (Phase 2로 이월)
 
 ### 입출력 정의
 
 | 구분 | 내용 |
 |------|------|
-| **입력** | 영문 문제 텍스트 (붙여넣기 — `/convert` 커맨드 실행 후 멀티턴 대화) |
-| **출력** | `/output/{exam_id}-YYYYMMDD-{배치번호3자리}.sql` — INSERT 구문 포함 SQL 파일 |
-| **중간 산출물** | `/output/parsed_questions.json` — 파싱 결과 + 처리 상태 (체크포인트) |
-| **중간 산출물** | `/output/redesigned_questions.json` — 재설계 완료 결과 |
+| **입력** | `input/*.txt` — 처리 대기 중인 문제 텍스트 파일 (알파벳 순 처리) |
+| **출력** | `output/{exam_id}-YYYYMMDD-{배치번호3자리}.sql` — INSERT 구문 포함 SQL 파일 |
+| **중간 산출물** | `output/parsed_questions.json` — 파싱 결과 + 처리 상태 (체크포인트) |
+| **중간 산출물** | `output/redesigned_questions.json` — 재설계 완료 결과 (한/영 이중 언어 필드 포함) |
 
 ### 제약조건
 
 - 보기는 반드시 4개 (원문이 5개 이상이면 가장 약한 오답 제거하여 4개로 축소)
 - 정답 개념은 원문과 반드시 동일하게 유지 (보기 텍스트·순서는 재설계 가능)
-- **AWS 서비스명은 반드시 원문과 동일하게 유지** (예: Amazon SageMaker → Amazon SageMaker, 개념만 유지하는 방식 불가)
-- SQL 스키마는 실제 CLOUD-EXAM-PREP DB 구조를 준수 (아래 확정 스키마 참고)
+- **AWS 서비스명은 반드시 원문과 동일하게 유지** (번역·축약 불가)
+- SQL 스키마는 실제 CLOUD-EXAM-PREP DB 구조를 준수
 
 ### 확정된 DB 스키마
 
@@ -39,10 +41,13 @@
 questions (
   id TEXT PRIMARY KEY,                -- 예: 'awsaifc01-q166'
   exam_id TEXT NOT NULL,              -- 예: 'aws-aif-c01'
-  text TEXT NOT NULL,                 -- 문제 본문
+  text TEXT NOT NULL,                 -- 문제 본문 (한국어)
+  text_en TEXT,                       -- 문제 본문 (영문)
   correct_option_id TEXT NOT NULL,    -- 정답 보기 ID: 'a'|'b'|'c'|'d'
-  explanation TEXT NOT NULL,          -- 문제 전체 해설
-  key_points TEXT,                    -- 마크다운 불릿 리스트 3~5개
+  explanation TEXT NOT NULL,          -- 문제 전체 해설 (한국어)
+  explanation_en TEXT,                -- 문제 전체 해설 (영문)
+  key_points TEXT,                    -- 마크다운 불릿 리스트 3~5개 (한국어)
+  key_points_en TEXT,                 -- 마크다운 불릿 리스트 3~5개 (영문)
   ref_links JSONB DEFAULT '[]'        -- [{"name":"...","url":"..."}]
 )
 
@@ -51,8 +56,10 @@ question_options (
   id UUID PRIMARY KEY,
   question_id TEXT NOT NULL,
   option_id TEXT NOT NULL,            -- 'a'|'b'|'c'|'d'
-  text TEXT NOT NULL,                 -- 보기 텍스트
-  explanation TEXT,                   -- 보기별 해설
+  text TEXT NOT NULL,                 -- 보기 텍스트 (한국어)
+  text_en TEXT,                       -- 보기 텍스트 (영문)
+  explanation TEXT,                   -- 보기별 해설 (한국어)
+  explanation_en TEXT,                -- 보기별 해설 (영문)
   sort_order INTEGER NOT NULL         -- 1|2|3|4
 )
 
@@ -92,7 +99,7 @@ exam_set_questions (
 
 ### 범용 에이전트 설계 (exam_id 파라미터화)
 
-이 에이전트는 AIF-C01 전용이 아닌 **범용 구조**로 설계한다. `/convert` 실행 시 exam_id를 파라미터로 받아 SAA-C03 등 다른 시험에도 재사용 가능하다. 도메인 태그 목록 등 시험별 설정은 exam_id별 파일로 분리 관리한다.
+이 에이전트는 AIF-C01 전용이 아닌 **범용 구조**로 설계한다. `/convert` 실행 시 exam_id를 파라미터로 받아 SAA-C03 등 다른 시험에도 재사용 가능하다. 도메인 태그 목록, 번역 가이드 등 시험별 설정은 exam_id별 파일로 분리 관리한다.
 
 ### 용어 정의
 
@@ -103,6 +110,8 @@ exam_set_questions (
 | 재설계 | 원문 개념·서비스명 유지 + 한국어 시나리오·질문·보기 새롭게 작성 |
 | 보기 축소 | 5개+ 보기에서 가장 논리적으로 약한 오답을 제거하여 4개로 만드는 작업 |
 | 에스컬레이션 | LLM 재시도 한계 초과 시 실시간 채팅으로 사용자에게 개입 요청 |
+| correct_answer_concept | 원문 정답 보기 텍스트 — Redesigner에 전달하여 정답 개념 보존 보장 |
+| source_language | 입력 파일 언어 감지 결과: "en" 또는 "ko" |
 
 ---
 
@@ -113,49 +122,52 @@ exam_set_questions (
 ```
 사용자: /convert
 
-에이전트: 안녕하세요! 문제 변환을 시작합니다. 다음 정보를 순서대로 입력해주세요.
-  1. exam_id (예: aws-aif-c01)
-  2. set_id UUID (Supabase exam_sets 테이블의 UUID)
-  3. 변환할 영문 문제 텍스트를 붙여넣어 주세요.
+에이전트: 안녕하세요! AWS 시험 문제 변환을 시작합니다.
+  exam_id를 입력해주세요. (예: aws-aif-c01, aws-saa-c03)
 
-사용자: aws-aif-c01 [입력]
-에이전트: set_id UUID를 입력해주세요.
+사용자: aws-aif-c01
 
-사용자: 550e8400-e29b-41d4-a716-446655440001 [입력]
-에이전트: 변환할 영문 문제 텍스트를 붙여넣어 주세요. (여러 문제 한 번에 가능)
+에이전트: [자동으로 exam_sets 목록 조회·출력]
+  현재 세트 목록 (aws-aif-c01):
+    [1] 샘플 세트  (sample)
+    [2] 세트 1     (full)
+    [3] 세트 2     (full)
+  번호를 선택하거나 새 세트 이름을 입력하세요:
 
-사용자: [문제 텍스트 붙여넣기]
-→ 파이프라인 시작
+사용자: 3  (또는 "세트 3" 같은 새 이름)
+
+에이전트: [input/ 폴더 스캔 → 파일 목록 출력 → 파이프라인 시작]
 ```
 
 ### 전체 흐름도
 
 ```
-[/convert 실행 — 멀티턴 대화로 exam_id, set_id, 텍스트 수집]
+[/convert 실행]
     │
-    ├─ Supabase API: MAX(question id) 조회 → 배치 ID 사전 할당
+    ├─ exam_id 입력 → exam_sets 자동 조회·출력 → 번호 선택 or 새 이름 입력(자동 생성)
     │
-[STEP 1: 텍스트 파싱] (parse_text.py)
+    ├─ input/ 폴더 스캔 (알파벳 순)
+    │    └─ .txt 파일 없으면 즉시 종료
     │
-[파싱 결과 검증] ──실패─→ [해당 문제 스킵 + 로그 + 결과 요약에 표시]
-    │ 성공
-[STEP 2: 구조 분석 및 개념 추출] (LLM 판단)
+    ├─ Supabase MAX(id) 조회 → start_id 확정
     │
-[STEP 3: 복수 정답 여부 확인]
-    ├─ 정답 2개 이상 (또는 보기 5개+) → [STEP 3A: 두 정답 개념 통합 재설계] → [STEP 3B: 단일 정답 구성 확인]
-    └─ 정답 1개, 보기 4개 → 통과
-    │
-[STEP 4: 한국어 재설계] (LLM 생성 — 글로벌 중립적 시나리오)
-    │
-[STEP 5: 품질 자기검증] (LLM 자기검증) ──실패(최대 2회 재시도)──┐
-    │ 통과                                                        │
-    └────────────────────────────────────────────────────────────┘
-    │
-[체크포인트 저장: parsed_questions.json에 처리 상태 기록]
-    │
-[STEP 6: SQL 파일 생성] (generate_sql.py)
-    │
-[STEP 7: 결과 요약 출력]
+    └─ [파일별 루프] 각 .txt 파일에 대해 반복:
+         │
+         ├─ 파일 첫 500자로 source_language 감지 (en/ko)
+         │
+         ├─ [STEP 1] Parser & SQL Agent 호출 → parsed_questions.json 생성
+         │
+         ├─ [STEP 2~5.5] 참조 파일 선로드 → Redesigner Agent N개 병렬 호출
+         │    ├─ 각 Agent: 1개 문제 처리 (STEP 3~5.5)
+         │    ├─ STEP 5: 9개 항목 품질검증 (최대 2회 재시도)
+         │    ├─ STEP 5.5: 영문 번역 (text_en, explanation_en, key_points_en)
+         │    └─ [에스컬레이션 발생 시] 사용자에게 실시간 전달
+         │
+         ├─ [STEP 6] Parser & SQL Agent 호출 → SQL 파일 생성
+         │
+         └─ 파일 이동: input/{filename} → input/done/{filename}
+
+[STEP 7] 결과 요약 출력 (전체 파일 합산)
 ```
 
 ### LLM 판단 영역 vs 코드 처리 영역
@@ -163,28 +175,15 @@ exam_set_questions (
 | 단계 | 처리 주체 | 내용 |
 |------|----------|------|
 | 텍스트 파싱 | 코드(스크립트) | 정규식으로 문제 블록 추출 |
-| Supabase ID 조회 | 코드(스크립트) | API로 MAX(id) 조회 후 배치 번호 할당 |
-| 구조 분석 | LLM | 핵심 서비스, 도메인, 정답 논리 파악 |
-| 복수 정답 통합 판단 | LLM | 두 정답 개념을 하나의 보기로 통합하는 재설계 |
-| 한국어 재설계 | LLM | 시나리오, 질문, 보기, 해설, key_points 작성 |
-| 품질 자기검증 | LLM | 7개 체크리스트 항목 검증 |
+| 언어 감지 | Main(규칙) | 첫 500자 한글 비율 30% 기준 |
+| Supabase ID 조회 | 코드(API 호출) | MAX(id) 조회 후 배치 번호 할당 |
+| 구조 분석 | LLM (Redesigner) | 핵심 서비스, 도메인, 정답 논리 파악 |
+| 복수 정답 통합 판단 | LLM (Redesigner) | 두 정답 개념을 하나의 보기로 통합하는 재설계 |
+| 한국어 재설계 | LLM (Redesigner / Haiku) | 시나리오, 질문, 보기, 해설, key_points 작성 |
+| 품질 자기검증 | LLM (Redesigner / Haiku) | 9개 체크리스트 항목 검증 |
+| 영문 번역 | LLM (Redesigner / Haiku) | STEP 5.5: _en 필드 생성 |
 | SQL 파일 생성 | 코드(스크립트) | 템플릿 기반 INSERT 구문 생성 및 파일 저장 |
-| 결과 요약 | LLM | 처리 결과 메시지 작성 |
-
-### 보기 축소 상세 흐름 (STEP 3A)
-
-```
-보기 5개 이상 감지
-    │
-    ├─ 각 오답 보기에 대해 "헷갈림 점수" 평가 (LLM 판단)
-    │    기준: 정답과의 개념 유사도, 수험생이 혼동할 가능성
-    │
-    ├─ 헷갈림 점수 최하위 오답 제거 (5개→4개, 6개→4개 등)
-    │
-    └─ 정답 보기가 제거 대상에 포함되지 않았는지 확인
-         ├─ 포함됨 → 다음 후보 오답 제거 후 재확인
-         └─ 미포함 → 통과
-```
+| 결과 요약 | LLM (Main) | 처리 결과 메시지 작성 |
 
 ### 배치 체크포인트 전략
 
@@ -212,7 +211,8 @@ exam_set_questions (
 | STEP 1: 파싱 | 문제 번호, 질문, 보기, 정답이 모두 추출됨 | 스키마 검증 (필수 필드 존재) | 해당 문제 번호 별도 표시 후 스킵 + 로그 |
 | STEP 3A: 복수 정답 통합 | 단일 정답 보기 1개 + 오답 3개가 자연스럽게 구성됨 | LLM 자기검증 | 자동 재시도 (최대 2회) → 에스컬레이션 |
 | STEP 4: 재설계 | 4개 보기, 정답 명시, 해설·key_points·ref_links 포함 | 스키마 검증 + LLM 자기검증 | 자동 재시도 (최대 2회) |
-| STEP 5: 품질검증 | 7개 체크리스트 항목 모두 통과 | LLM 자기검증 | 자동 재시도 (최대 2회) → 에스컬레이션 |
+| STEP 5: 품질검증 | 9개 체크리스트 항목 모두 통과 | LLM 자기검증 | 자동 재시도 (최대 2회) → 에스컬레이션 |
+| STEP 5.5: 영문 번역 | _en 필드 모두 생성, AWS 서비스명 원문 그대로 | LLM 자기검증 (번역 가이드 준수) | 자동 재시도 (최대 1회) |
 | STEP 6: SQL 생성 | 파일 생성 성공, SQL 문법 오류 없음 | 규칙 기반 (INSERT 구문 파싱 가능 여부) | 자동 재시도 (최대 1회) → 에스컬레이션 |
 
 ### 에스컬레이션 처리 방식
@@ -245,183 +245,134 @@ exam_set_questions (
 
 ```
 /project-root
-  ├── CLAUDE.md                              # 메인 에이전트 지침 (오케스트레이터)
+  ├── CLAUDE.md                              # 메인 에이전트 지침 (오케스트레이터) ← 권위 스펙
   ├── .env                                   # SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+  ├── /input                                 # 처리 대기 중인 문제 파일
+  │   ├── batch1.txt
+  │   └── /done                             # 처리 완료 후 자동 이동
+  │       └── batch0.txt
   ├── /.claude
   │   ├── /agents
-  │   │   ├── /parser-sql                    # Parser & SQL 서브에이전트
+  │   │   ├── /parser-sql                    # Parser & SQL 서브에이전트 (Sonnet)
   │   │   │   └── AGENT.md
-  │   │   └── /redesigner                    # Redesigner 서브에이전트
+  │   │   └── /redesigner                    # Redesigner 서브에이전트 (Haiku)
   │   │       └── AGENT.md
   │   └── /skills
   │       ├── /convert                       # /convert 슬래시 커맨드
   │       │   └── SKILL.md
   │       ├── /question-parser               # 문제 텍스트 파싱
-  │       │   ├── SKILL.md
   │       │   └── /scripts
   │       │       └── parse_text.py          # 텍스트 블록 파싱 (정규식)
   │       ├── /question-redesigner           # 한국어 재설계 지침
-  │       │   ├── SKILL.md
   │       │   └── /references
-  │       │       ├── redesign_rules.md      # 재설계 규칙 (TBD)
-  │       │       ├── domain_tags/
-  │       │       │   └── aws-aif-c01.md     # AIF-C01 도메인 태그 목록
-  │       │       └── quality_checklist.md   # 품질 자기검증 체크리스트 (7개 항목)
+  │       │       ├── redesign_rules_compact.md       # 재설계 규칙 14개
+  │       │       ├── quality_checklist_compact.md    # 품질 자기검증 9개 항목
+  │       │       ├── /domain_tags
+  │       │       │   └── aws-aif-c01.md     # AIF-C01 도메인 태그 목록 (5개)
+  │       │       └── /translation_guide
+  │       │           └── aws-aif-c01.md     # AIF-C01 영문 번역 가이드
   │       └── /sql-generator                 # SQL 파일 생성
-  │           ├── SKILL.md
   │           └── /scripts
-  │               ├── generate_sql.py        # JSON → INSERT 구문 변환
-  │               └── /templates
-  │                   └── insert_template.sql # SQL INSERT 템플릿
+  │               └── generate_sql.py        # JSON → INSERT 구문 변환
   ├── /output
   │   ├── parsed_questions.json              # 파싱 중간 산출물 + 체크포인트
-  │   ├── redesigned_questions.json          # 재설계 중간 산출물
+  │   ├── redesigned_questions.json          # 재설계 중간 산출물 (한/영 이중 언어)
   │   └── {파일명}.sql                        # 최종 SQL 파일
   └── /docs
       └── sample.sql                         # 스키마 참고용 샘플
 ```
 
-> ⚠️ Phase 1에서 URL fetch는 지원하지 않으므로 `fetch_url.py`는 포함하지 않는다.
+### 에이전트 구성 및 모델
 
-### CLAUDE.md 핵심 섹션 목록 (Main 오케스트레이터)
+| 에이전트 | 파일 | 역할 | LLM 모델 |
+|---------|------|------|---------|
+| **Main** | `CLAUDE.md` | 오케스트레이터: /convert 실행, 서브에이전트 호출 조율, 에스컬레이션 전달, 결과 요약 출력 | Claude Sonnet 4.6 |
+| **Parser & SQL Agent** | `.claude/agents/parser-sql/AGENT.md` | STEP 1 파싱 + STEP 6 SQL 생성 (스크립트 호출 위주) | Claude Sonnet 4.6 |
+| **Redesigner Agent** | `.claude/agents/redesigner/AGENT.md` | STEP 3~5.5: 구조 분석, 복수 정답 통합, 한국어 재설계, 품질 검증, 영문 번역 | **Claude Haiku 4.5** |
 
-- 역할 정의: 오케스트레이터로서 전체 워크플로우 조율
-- `/convert` 커맨드 처리: 멀티턴 대화로 exam_id, set_id, 텍스트 수집
-- Supabase API 접근 방법: `.env`에서 `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` 읽기
-- 배치 ID 사전 할당: 시작 시 MAX(id) 조회 → 배치 번호 할당
-- 서브에이전트 호출 순서 및 데이터 전달 방식 (파일 경로 기반)
-- 실패 처리 규칙 (재시도 횟수, 에스컬레이션 조건 및 사용자 개입 방식)
-- 체크포인트 전략 (재개 로직)
-- SQL 파일 명명 규칙 및 저장 경로
-- 결과 요약 출력 형식
+> 서브에이전트 간 직접 호출 금지 — 반드시 Main을 통해 조율
 
-### AGENT.md 핵심 섹션 목록
+### 호출 흐름
 
-**Parser & SQL Agent (`parser-sql/AGENT.md`)**
-- 트리거 조건: Main으로부터 파싱 요청 또는 SQL 생성 요청 수신 시
-- 입출력: 텍스트 → `parsed_questions.json` / `redesigned_questions.json` → `.sql`
-- 참조 스킬: `question-parser`, `sql-generator`
-- 체크포인트: `parsed_questions.json`의 `status` 필드 업데이트
-- 에러 처리: 파싱 실패 문제 목록 Main에 반환
-
-**Redesigner Agent (`redesigner/AGENT.md`)**
-- 트리거 조건: Main으로부터 `parsed_questions.json` 경로 수신 시
-- 입출력: `parsed_questions.json` → `redesigned_questions.json`
-- 참조 스킬: `question-redesigner`
-- 복수 정답 감지 및 통합 처리 기준 명시
-- 재설계 품질 기준 및 자기검증 체크리스트 참조
-- 에스컬레이션 발생 시 Main에 보고 (Main이 사용자에게 전달)
+```
+Main (/convert 실행)
+ ├─ Supabase API: exam_sets 자동 조회 → 번호 선택 or 새 세트 자동 생성
+ ├─ input/ 폴더 스캔
+ ├─ Supabase API: MAX(id) 조회 → 배치 ID 할당
+ ├─ Parser & SQL Agent 호출 (STEP 1: 파싱)
+ │    └─ parsed_questions.json 반환
+ ├─ 참조 파일 4개 선로드 (Main이 직접 읽기)
+ │    ├─ redesign_rules_compact.md
+ │    ├─ domain_tags/{exam_id}.md
+ │    ├─ quality_checklist_compact.md
+ │    └─ translation_guide/{exam_id}.md
+ ├─ Redesigner Agent N개 병렬 호출 (STEP 3~5.5: 재설계)
+ │    ├─ 각 Agent: 문제 1개 처리, correct_answer_concept 전달 (Rule 13 보장)
+ │    ├─ redesigned_questions.json 취합
+ │    └─ [에스컬레이션 발생 시 Main에 보고 → 사용자에게 실시간 전달]
+ ├─ Parser & SQL Agent 호출 (STEP 6: SQL 생성)
+ │    └─ {파일명}.sql 반환
+ └─ 파일 이동: input/{filename} → input/done/{filename}
+```
 
 ### 스킬 목록
 
 | 스킬명 | 담당 에이전트 | 역할 | 트리거 조건 |
 |--------|-------------|------|------------|
 | `convert` | Main | 사용자 입력 수집 진입점 | /convert 커맨드 실행 시 |
-| `question-parser` | Parser & SQL Agent | 텍스트 → `parsed_questions.json` | STEP 1: 입력 수신 직후 |
-| `question-redesigner` | Redesigner Agent | 구조 분석, 복수 정답 통합, 한국어 재설계, 품질 검증 | STEP 2~5: 파싱 완료 후 |
+| `question-parser` | Parser & SQL Agent | 텍스트 → `parsed_questions.json` | STEP 1: input 파일 수신 직후 |
+| `question-redesigner` | Redesigner Agent | 구조 분석, 복수 정답 통합, 한국어 재설계, 품질 검증, 영문 번역 | STEP 3~5.5: 파싱 완료 후 |
 | `sql-generator` | Parser & SQL Agent | `redesigned_questions.json` → SQL 파일 | STEP 6: 재설계 완료 후 |
 
-**3개 에이전트** (Main 오케스트레이터 + 2개 서브에이전트)
+### redesigned_questions.json 스키마 (이중 언어 포함)
 
-재설계 단계는 재설계 규칙, 도메인 지식, 품질 체크리스트, 복수 정답 처리 로직 등 지침이 집중되므로 독립 서브에이전트로 분리한다. 파싱과 SQL 생성은 모두 스크립트 위주로 지침이 짧아 하나의 서브에이전트로 묶는다.
-
-| 에이전트 | 파일 | 역할 |
-|---------|------|------|
-| **Main** | `CLAUDE.md` | 오케스트레이터: /convert 실행, 서브에이전트 호출 조율, 에스컬레이션 전달, 결과 요약 출력 |
-| **Parser & SQL Agent** | `/.claude/agents/parser-sql/AGENT.md` | STEP 1 파싱 + STEP 6 SQL 생성 (스크립트 호출 위주) |
-| **Redesigner Agent** | `/.claude/agents/redesigner/AGENT.md` | STEP 2~5: 구조 분석, 복수 정답 통합, 한국어 재설계, 품질 검증 |
-
-**호출 흐름:**
+```json
+[{
+  "id": "awsaifc01-q166",
+  "exam_id": "aws-aif-c01",
+  "text": "한국어 문제 본문",
+  "text_en": "English question text",
+  "correct_option_id": "b",
+  "explanation": "한국어 해설",
+  "explanation_en": "English explanation",
+  "key_points": "핵심 개념 제목\n• 포인트 1\n• 포인트 2\n• 포인트 3",
+  "key_points_en": "Key Concept Title\n• Point 1\n• Point 2\n• Point 3",
+  "ref_links": "[{\"name\":\"Amazon SageMaker 개발자 가이드\",\"url\":\"https://docs.aws.amazon.com/sagemaker/latest/dg/\"}]",
+  "options": [
+    {"option_id":"a","text":"한국어 보기","text_en":"English option","explanation":"한국어 보기 해설","explanation_en":"English option explanation","sort_order":1},
+    {"option_id":"b","text":"...","text_en":"...","explanation":"...","explanation_en":"...","sort_order":2},
+    {"option_id":"c","text":"...","text_en":"...","explanation":"...","explanation_en":"...","sort_order":3},
+    {"option_id":"d","text":"...","text_en":"...","explanation":"...","explanation_en":"...","sort_order":4}
+  ],
+  "tag": "파운데이션 모델의 적용",
+  "conversion_log": {}
+}]
 ```
-Main (/convert 실행)
- ├─ Supabase API: MAX(id) 조회 → 배치 ID 할당
- ├─ Parser & SQL Agent 호출 (STEP 1: 파싱)
- │    └─ parsed_questions.json 반환
- ├─ Redesigner Agent 호출 (STEP 2~5: 재설계)
- │    ├─ redesigned_questions.json 반환
- │    └─ [에스컬레이션 발생 시 Main에 보고 → 사용자에게 실시간 전달]
- └─ Parser & SQL Agent 호출 (STEP 6: SQL 생성)
-      └─ {파일명}.sql 반환
-```
-
-> 서브에이전트 간 직접 호출 금지 — 반드시 Main을 통해 조율
-
-### 스킬별 상세
-
-**`question-parser`**
-- 입력: 원문 텍스트 문자열
-- 출력: `/output/parsed_questions.json`
-  ```json
-  [{
-    "number": 21,
-    "question": "...",
-    "options": {"a":"...","b":"...","c":"...","d":"...","e":"..."},
-    "answer": "b",
-    "option_count": 5,
-    "status": "pending",
-    "assigned_id": "awsaifc01-q166"
-  }]
-  ```
-- 스크립트: `parse_text.py` (정규식 기반 텍스트 블록 파싱)
-- 입력 텍스트 형식: TBD (첫 실제 사용 시 형식 확인 후 파서 업데이트)
-
-**`question-redesigner`**
-- 입력: `/output/parsed_questions.json` 경로
-- 출력: `/output/redesigned_questions.json`
-  ```json
-  [{
-    "id": "awsaifc01-q166",
-    "exam_id": "aws-aif-c01",
-    "text": "...",
-    "correct_option_id": "b",
-    "explanation": "...",
-    "key_points": "핵심 개념 제목\n• 포인트 1\n• 포인트 2\n• 포인트 3",
-    "ref_links": "[{\"name\":\"Amazon SageMaker 개발자 가이드\",\"url\":\"https://docs.aws.amazon.com/sagemaker/latest/dg/\"}]",
-    "options": [
-      {"option_id":"a","text":"...","explanation":"...","sort_order":1},
-      {"option_id":"b","text":"...","explanation":"...","sort_order":2},
-      {"option_id":"c","text":"...","explanation":"...","sort_order":3},
-      {"option_id":"d","text":"...","explanation":"...","sort_order":4}
-    ],
-    "tag": "파운데이션 모델의 적용",
-    "conversion_log": {...}
-  }]
-  ```
-- 참조 파일: `redesign_rules.md`, `domain_tags/aws-aif-c01.md`, `quality_checklist.md`
-
-**`sql-generator`**
-- 입력: `/output/redesigned_questions.json` 경로, set_id (UUID)
-- 출력: `/output/{exam_id}-YYYYMMDD-{배치번호}.sql`
-- 스크립트: `generate_sql.py` + `insert_template.sql`
-- 생성 테이블 순서: `questions` → `question_options` → `question_tags` → `exam_set_questions`
-
-### 주요 산출물 파일 형식
-
-| 파일 | 형식 | 설명 |
-|------|------|------|
-| `parsed_questions.json` | JSON Array | 파싱된 원문 문제 + 체크포인트 상태 |
-| `redesigned_questions.json` | JSON Array | 재설계 완료 문제 |
-| `{파일명}.sql` | SQL | 최종 INSERT 구문 파일 |
-
-### 데이터 전달 방식
-
-중간 산출물은 모두 `/output/` 디렉토리에 JSON 파일로 저장하고 다음 단계에는 **파일 경로만 전달**한다.
 
 ### Supabase 접근 방식
 
-```
+```bash
 # .env 파일 (프로젝트 루트)
 SUPABASE_URL=https://xxx.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=eyJ...
 ```
 
 에이전트가 `.env` 파일을 읽어 Supabase REST API를 호출한다:
-- **MAX(id) 조회:** `GET /rest/v1/questions?select=id&exam_id=eq.{exam_id}&order=id.desc&limit=1`
-- **set_id 조회 (선택):** 사용자가 set_id를 모르는 경우 `GET /rest/v1/exam_sets?exam_id=eq.{exam_id}` 목록을 보여주고 선택 요청
 
-### LLM 모델 선택
+```bash
+# exam_sets 자동 조회
+GET /rest/v1/exam_sets?exam_id=eq.{exam_id}&select=id,name,type,sort_order&order=sort_order.asc
 
-**전 단계 Claude Sonnet 4.6 사용** (품질 우선)
+# 새 세트 자동 생성 (새 이름 입력 시)
+POST /rest/v1/exam_sets
+  body: {"exam_id":"...","name":"세트 3","type":"full","sort_order":{max+1},"is_active":true}
+
+# MAX(id) 조회
+GET /rest/v1/questions?select=id&exam_id=eq.{exam_id}&order=id.desc&limit=1
+
+# sort_order_start 조회 (SQL 생성 시)
+GET /rest/v1/exam_set_questions?set_id=eq.{set_id}&select=sort_order&order=sort_order.desc&limit=1
+```
 
 ---
 
@@ -431,15 +382,9 @@ SUPABASE_SERVICE_ROLE_KEY=eyJ...
 
 원문 AIF-C01에는 "두 개를 선택하시오 (Choose TWO)" 형식의 복수 정답 문제가 존재한다. 본 시스템은 **정답이 반드시 1개**인 4지선다 형식만 지원하므로, 복수 정답 문제는 반드시 단일 정답 문제로 재설계해야 한다.
 
-### 트리거 조건
-
-`parsed_questions.json`의 `option_count` 값이 5 이상이거나, `answer` 필드에 정답이 2개 이상인 문제
-
 ### 처리 원칙: 두 정답 개념의 통합 재설계
 
 복수 정답 문제는 **오답을 제거하는 방식이 아니라**, 두 정답 개념을 하나의 새로운 보기로 통합하여 문제 자체를 재설계한다.
-
-**처리 흐름:**
 
 ```
 복수 정답 감지 (예: 정답 A + 정답 B)
@@ -454,40 +399,20 @@ SUPABASE_SERVICE_ROLE_KEY=eyJ...
     ├─ 이 통합 보기가 정답(correct_option_id)이 됨
     │
     └─ 나머지 3개 오답 보기: 개념 일부만 맞거나 전혀 다른 접근법으로 재작성
-         (수험생이 헷갈릴 수 있는 그럴듯한 오답으로 구성)
 ```
-
-**재설계 시 유의사항:**
-- 통합 보기가 지나치게 길어지면, 두 개념의 핵심만 요약하여 간결하게 작성
-- 오답 3개는 각각 독립적으로 그럴듯해야 하며, 통합 보기와 명확히 구별되어야 함
-- 통합된 내용이 자연스럽지 않을 경우, 질문(시나리오)도 함께 재설계하여 통합 보기가 자연스럽게 정답이 되도록 맥락을 조정
 
 ### 실패 처리
 
-- 두 정답 개념의 통합이 논리적으로 어색한 경우: 에스컬레이션 (실시간 채팅으로 사용자에게 확인 요청)
+- 두 정답 개념의 통합이 논리적으로 어색한 경우: 에스컬레이션
 - 2회 시도 후에도 자연스러운 단일 정답 구성 불가: 해당 문제 번호 표시 후 스킵 + 로그
-
-### 처리 기록
-
-재설계 결과를 `redesigned_questions.json`의 `conversion_log` 필드에 기록:
-```json
-{
-  "conversion_log": {
-    "original_answer_count": 2,
-    "original_answers": ["A", "C"],
-    "integration_method": "두 개념 통합",
-    "note": "SageMaker 학습 + S3 데이터 저장을 하나의 보기로 통합"
-  }
-}
-```
 
 ---
 
 ## 5. LLM 판단 상세 기준
 
-### 품질 자기검증 체크리스트 (STEP 5 — 7개 항목)
+### 품질 자기검증 체크리스트 (STEP 5 — 9개 항목)
 
-LLM이 자기검증 시 다음 7개 항목을 순서대로 확인한다:
+LLM이 자기검증 시 다음 9개 항목을 순서대로 확인한다:
 
 | # | 항목 | 검증 방법 |
 |---|------|----------|
@@ -495,33 +420,58 @@ LLM이 자기검증 시 다음 7개 항목을 순서대로 확인한다:
 | 2 | **오답 그럴듯함** | 각 오답이 수험생이 실제로 고민할 만큼 그럴듯한가? |
 | 3 | **한국어 자연스러움** | 번역투 표현 없이 자연스러운 한국어인가? |
 | 4 | **원문 AWS 서비스명 보존** | 원문에 등장한 서비스명이 재설계 후에도 동일하게 사용되는가? |
-| 5 | **보기 길이 유사성** | 정답 보기만 유독 길거나 짧아서 힌트가 되지 않는가? |
-| 6 | **항목 간 쏠림 없음** | 두 보기가 거의 같은 말이어서 혼동을 주지는 않는가? |
-| 7 | **두 번 읽으면 답이 명확** | 문제를 두 번 읽었을 때 정답이 일관되게 동일한가? |
+| 5 | **보기 길이·형식** | 40자 이내, 4개 길이 균일, 파이프(`|`) 구분 금지, 서비스 3개+ 나열 금지 |
+| 6 | **보기 중복 없음** | 4개 보기가 각각 서로 다른 서비스·접근법인가? |
+| 7 | **질문 명확성** | 모호함 없이 정답이 단 하나인가? |
+| 8 | **단일 개념 집중** | 하나의 핵심 판단만 테스트하는가? |
+| 9 | **규칙 12: 정답 위치 원문과 다름** | 재설계 `correct_option_id`가 원문 `answer` 위치와 다른가? |
 
-**판정:** 7개 중 하나라도 실패 시 → 재설계 재시도 트리거
+**판정:** 9개 중 하나라도 실패 시 → 재설계 재시도 트리거 (최대 2회)
+
+### STEP 5.5: 영문 번역
+
+STEP 5 품질검증 통과 후 수행. `translation_guide/{exam_id}.md` 참조:
+- AWS 시험 공식 문체 재현 ("A company is...", "Which AWS service BEST meets...")
+- AWS 서비스명 원문 그대로 (번역·축약 금지)
+- 생성 필드: `text_en`, `explanation_en`, `key_points_en`, 각 옵션의 `text_en`, `explanation_en`
 
 ### 재설계 시나리오 스타일
 
 - **글로벌 중립적 배경 사용** (특정 지역 없이)
 - 예: "한 글로벌 테크 기업의 ML 엔지니어가...", "한 금융 서비스 회사의 데이터 사이언티스트가..."
-- 언어는 한국어이지만 지역 특정 맥락(서울, 한국 기업 등)은 사용하지 않음
 
 ### 문제 본문 줄바꿈 서식 규칙
 
-읽기 편의성을 위해 다음 서식을 반드시 적용한다:
-
-- **마지막 문장(질문 문장) 앞에 항상 빈 줄 삽입**
-- **전체 문장 수가 4개 이상이면 첫 번째 문장 다음에도 빈 줄 삽입**
-
-| 문장 수 | 서식 |
-|---------|------|
-| 1~3문장 | 마지막 문장 앞에만 빈 줄 |
-| 4문장 이상 | 첫 번째 문장 뒤 + 마지막 문장 앞에 각각 빈 줄 |
+- 마지막 문장(질문 문장) 앞에 항상 빈 줄 삽입
+- 전체 문장 수가 4개 이상이면 첫 번째 문장 다음에도 빈 줄 삽입
 
 ---
 
-## 6. 도메인 태그 목록
+## 6. 재설계 규칙 14개 요약
+
+| 규칙 | 핵심 내용 |
+|------|----------|
+| **Rule 0 (최우선)** | 업종·배경·등장인물 완전히 새로 창작. 원문 시나리오 번역 금지. |
+| **Rule 1** | AWS 서비스명 원문 그대로 보존. 번역·축약·대체 불가. |
+| **Rule 2** | 자연스러운 한국어 수험 문체(-입니다/-합니다). 번역투·직역체 금지. |
+| **Rule 3** | 글로벌 중립 시나리오. 특정 국가·도시 언급 금지. |
+| **Rule 4** | 보기 40자 이내, 4개 길이 균일. 파이프(`\|`) 구분 금지, 3개+ 서비스 나열 금지. |
+| **Rule 5** | 오답 3개: 관련 서비스 포함, 수험생이 고민할 만큼 그럴듯. 오답끼리 서로 다른 개념. |
+| **Rule 6** | 보기 간 중복·혼동 금지. 4개 보기가 각각 다른 서비스나 접근법. |
+| **Rule 7** | 단일 정답 4지선다. `correct_option_id` = 'a'/'b'/'c'/'d' 중 1개. |
+| **Rule 8** | 시나리오(1~4문장) + 명확한 질문(1~2문장). 줄바꿈 서식 규칙 준수. |
+| **Rule 9** | key_points: 핵심 개념 제목 + 불릿 3~5개. `key_point_images` 필드 사용 금지. |
+| **Rule 10** | ref_links: JSON 배열 1~3개. `docs.aws.amazon.com` 또는 `aws.amazon.com` 도메인만. |
+| **Rule 11** | 하나의 핵심 개념만 테스트. 여러 요구사항→여러 서비스 동시 매핑 구조 금지. |
+| **Rule 12 (저작권 보호)** | 보기 순서 무작위화 필수. 재설계 `correct_option_id` ≠ 원문 `answer` 위치. |
+| **Rule 13 (정답 개념 보존)** | `correct_answer_concept`로 전달받은 개념/서비스가 반드시 재설계 정답. |
+| **Rule 14 (오답 다양성)** | 오답 3개 중 최소 2개는 원문 오답에 없던 새로운 서비스·접근법으로 창작. |
+
+> 상세 규칙: `.claude/skills/question-redesigner/references/redesign_rules_compact.md`
+
+---
+
+## 7. 도메인 태그 목록
 
 ### AIF-C01 (`domain_tags/aws-aif-c01.md`)
 
@@ -533,11 +483,11 @@ LLM이 자기검증 시 다음 7개 항목을 순서대로 확인한다:
 | `책임 있는 AI에 대한 가이드라인` | 공정성, 편향, 투명성, 설명 가능성 |
 | `AI 솔루션의 보안, 규정 준수 및 거버넌스` | 데이터 보안, 규정 준수, 거버넌스 프레임워크 |
 
-> 다른 시험(SAA-C03 등) 태그는 `domain_tags/{exam_id}.md` 파일로 별도 관리
+> 태그는 문제당 정확히 1개 부여. 다른 시험 태그는 `domain_tags/{exam_id}.md`로 별도 관리.
 
 ---
 
-## 7. key_points 작성 형식
+## 8. key_points 작성 형식
 
 ```
 {핵심 개념 제목}
@@ -548,32 +498,36 @@ LLM이 자기검증 시 다음 7개 항목을 순서대로 확인한다:
 • {포인트 5 (선택)}
 ```
 
-**예시:**
+**예시 (한국어):**
 ```
-Amazon SageMaker 핵심 기능
-• 인프라 관리 없이 ML 모델 학습·배포 가능한 완전 관리형 서비스
-• 학습 데이터는 Amazon S3에 저장, SageMaker가 자동으로 로드
-• 내장 알고리즘 및 커스텀 컨테이너 모두 지원
-• SageMaker Studio로 통합 개발 환경 제공
+Amazon SageMaker 비동기 추론
+• 대용량 페이로드(최대 1GB) 요청을 처리하도록 설계
+• 요청을 큐에 넣고 비동기로 처리 — 즉각적인 응답 불필요
+• 처리 결과는 Amazon S3에 저장 후 조회
+• 처리 시간이 1~15분인 워크로드에 적합 (예: 대용량 의료 이미지)
+```
+
+**예시 (영문 — STEP 5.5 생성):**
+```
+Amazon SageMaker Asynchronous Inference
+• Designed for large payload requests (up to 1 GB) that require longer processing time
+• Requests are queued and processed asynchronously — no need for immediate response
+• Results are stored in Amazon S3 for retrieval after processing
+• Ideal for workloads with 1–15 minute processing times (e.g., large medical images)
 ```
 
 ---
 
-## 8. ref_links 작성 기준
+## 9. ref_links 작성 기준
 
 - LLM이 AWS 공식 문서 URL을 자동 생성
 - **허용 도메인:** `docs.aws.amazon.com`, `aws.amazon.com`
 - **형식:** `[{"name": "문서 제목", "url": "https://docs.aws.amazon.com/..."}]`
 - hallucination 가능성을 인지하되 허용 (사후 검토 방식)
 
-**예시:**
-```json
-[{"name": "Amazon SageMaker 개발자 가이드", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/"}]
-```
-
 ---
 
-## 9. 결과 요약 출력 형식 (STEP 7)
+## 10. 결과 요약 출력 형식 (STEP 7)
 
 ```
 ✅ 변환 완료
@@ -582,9 +536,9 @@ Amazon SageMaker 핵심 기능
 변환 성공:           N개
 복수 정답 통합 처리:  N개 (정답 2개 → 단일 정답으로 재설계)
 스킵 (파싱 실패):     N개 → [문제 번호 목록]
-에스컬레이션:        N개 → [문제 번호 및 사유]
+에스컬레이션 스킵:    N개 → [문제 번호 목록]
 ━━━━━━━━━━━━━━━━━━━━━━━━
-저장 경로: /output/aws-aif-c01-20260220-001.sql
+저장 경로: output/aws-aif-c01-20260220-001.sql
 할당된 ID 범위: awsaifc01-q166 ~ awsaifc01-q175
 ```
 
@@ -598,15 +552,17 @@ Amazon SageMaker 핵심 기능
 | correct_option_id | `'a'`/`'b'`/`'c'`/`'d'` 텍스트 | 기존 DB 방식 준수 |
 | option_id | `'a'`/`'b'`/`'c'`/`'d'` 텍스트 | 기존 DB 방식 준수 |
 | key_point_images | 제거 | DB에 컬럼 없음 |
-| 난이도 | 1~3 LLM 자체 판단 | 1=하, 2=중, 3=상 |
 | ref_links | LLM 자동 생성 (hallucination 허용) | AWS 공식 URL 도메인만 |
-| URL fetch | Phase 1 미지원 | 텍스트 붙여넣기만 |
+| 입력 방식 | `input/*.txt` 파일 기반 | 알파벳 순 자동 스캔, 완료 후 `input/done/`으로 이동 |
 | SQL 파일명 | `{exam_id}-YYYYMMDD-{배치번호}.sql` | 날짜+배치번호 자동 생성 |
 | 에스컬레이션 | 실시간 채팅 개입 | 원문+시도결과+사유 제시 |
 | 배치 실패 처리 | 체크포인트 저장 (재개 가능) | parsed_questions.json의 status 필드 |
 | 서비스명 보존 | AWS 서비스명 원문 그대로 | SageMaker → SageMaker (불가: 'ML 관리형 서비스') |
 | 시나리오 배경 | 글로벌 중립적 | 특정 지역(한국) 언급 않음 |
 | 에이전트 확장성 | 범용 (exam_id 파라미터화) | SAA-C03 등 재사용 가능 |
-| set_id | Supabase API로 조회 or 사용자 직접 입력 | `.env`에 Service Role Key |
-| 재설계 규칙 (10개) | TBD | redesign_rules.md에 별도 정의 예정 |
-| LLM 모델 | Claude Sonnet 4.6 (전 단계) | 품질 우선 |
+| exam_sets 처리 | Supabase API 자동 조회 + 번호 선택 or 새 이름 자동 생성 | exam_id 입력 직후 자동 실행 |
+| 이중 언어 출력 | 한국어 + 영문 (_en 필드) | STEP 5.5에서 영문 번역 생성 |
+| 재설계 규칙 | 14개 확정 (Rules 0~14) | redesign_rules_compact.md 참조 |
+| LLM 모델 | Parser & SQL → Sonnet 4.6 / Redesigner → **Haiku 4.5** | 비용·속도 최적화 |
+| source_language 감지 | 파일 첫 500자, 한글 30% 기준 | "en" 또는 "ko" |
+| correct_answer_concept | 원문 정답 보기 텍스트를 Redesigner에 전달 | Rule 13 (정답 개념 보존) 보장 |
