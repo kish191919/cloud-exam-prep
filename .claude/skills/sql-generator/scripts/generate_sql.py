@@ -40,9 +40,15 @@ def make_question_block(q: dict, set_id: str, sort_order: int) -> str:
     qid = q['id']
     exam_id = q['exam_id']
     text = esc(q['text'])
+    text_en_val = q.get('text_en') or ''
+    text_en = esc(text_en_val) if text_en_val else None
     correct = q['correct_option_id']
     explanation = esc(q['explanation'])
+    explanation_en_val = q.get('explanation_en') or ''
+    explanation_en = esc(explanation_en_val) if explanation_en_val else None
     key_points = esc(q.get('key_points') or '')
+    key_points_en_val = q.get('key_points_en') or ''
+    key_points_en = esc(key_points_en_val) if key_points_en_val else None
 
     # ref_links: JSON 문자열 또는 리스트 → 문자열로 통일
     ref_links_raw = q.get('ref_links', '[]')
@@ -52,17 +58,24 @@ def make_question_block(q: dict, set_id: str, sort_order: int) -> str:
         ref_links_str = ref_links_raw
     ref_links = esc(ref_links_str)
 
+    # NULL or quoted string helper
+    def sql_str(val):
+        return f"'{val}'" if val is not None else 'NULL'
+
     # ── questions INSERT ──────────────────────────────────────────────────────
     lines = [
         f"-- ── 문제: {qid} ────────────────────────────────────────────",
-        "INSERT INTO questions (id, exam_id, text, correct_option_id, explanation, key_points, ref_links)",
+        "INSERT INTO questions (id, exam_id, text, text_en, correct_option_id, explanation, explanation_en, key_points, key_points_en, ref_links)",
         "VALUES (",
         f"  '{qid}',",
         f"  '{exam_id}',",
         f"  '{text}',",
+        f"  {sql_str(text_en)},",
         f"  '{correct}',",
         f"  '{explanation}',",
+        f"  {sql_str(explanation_en)},",
         f"  '{key_points}',",
+        f"  {sql_str(key_points_en)},",
         f"  '{ref_links}'::jsonb",
         ");",
         "",
@@ -77,13 +90,17 @@ def make_question_block(q: dict, set_id: str, sort_order: int) -> str:
     for opt in options:
         oid = opt['option_id']
         otext = esc(opt['text'])
+        otext_en_val = opt.get('text_en') or ''
+        otext_en = esc(otext_en_val) if otext_en_val else None
         oexpl = esc(opt.get('explanation') or '')
+        oexpl_en_val = opt.get('explanation_en') or ''
+        oexpl_en = esc(oexpl_en_val) if oexpl_en_val else None
         osort = int(opt['sort_order'])
         option_rows.append(
-            f"  ('{qid}', '{oid}', '{otext}', '{oexpl}', {osort})"
+            f"  ('{qid}', '{oid}', '{otext}', {sql_str(otext_en)}, '{oexpl}', {sql_str(oexpl_en)}, {osort})"
         )
 
-    lines.append("INSERT INTO question_options (question_id, option_id, text, explanation, sort_order) VALUES")
+    lines.append("INSERT INTO question_options (question_id, option_id, text, text_en, explanation, explanation_en, sort_order) VALUES")
     lines.append(',\n'.join(option_rows) + ';')
     lines.append("")
 

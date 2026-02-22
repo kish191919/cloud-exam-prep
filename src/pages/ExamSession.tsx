@@ -202,6 +202,17 @@ const ExamSession = () => {
             <ExamTimer startedAt={session.startedAt} timeLimitSec={session.timeLimitSec} onTimeUp={handleTimeUp} />
           )}
 
+          {/* Language toggle */}
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => i18n.changeLanguage(isKo ? 'en' : 'ko')}
+            className="text-xs sm:text-sm px-2 sm:px-2.5 h-8 text-muted-foreground hover:text-foreground"
+            title={isKo ? 'Switch to English' : '한국어로 전환'}
+          >
+            {isKo ? '🇺🇸 EN' : '🇰🇷 KO'}
+          </Button>
+
           {/* Submit: only in exam mode */}
           {isExamMode && (
             <Button size="sm" onClick={() => setShowSubmitDialog(true)} className="bg-accent text-accent-foreground hover:bg-accent/90 text-xs sm:text-sm px-2 sm:px-3">

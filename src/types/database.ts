@@ -52,9 +52,12 @@ export interface Database {
           id: string
           exam_id: string
           text: string
+          text_en: string | null
           correct_option_id: string
           explanation: string
+          explanation_en: string | null
           key_points: string | null
+          key_points_en: string | null
           ref_links: Json
           created_at: string
           updated_at: string
@@ -63,9 +66,12 @@ export interface Database {
           id: string
           exam_id: string
           text: string
+          text_en?: string | null
           correct_option_id: string
           explanation: string
+          explanation_en?: string | null
           key_points?: string | null
+          key_points_en?: string | null
           ref_links?: Json
           created_at?: string
           updated_at?: string
@@ -74,9 +80,12 @@ export interface Database {
           id?: string
           exam_id?: string
           text?: string
+          text_en?: string | null
           correct_option_id?: string
           explanation?: string
+          explanation_en?: string | null
           key_points?: string | null
+          key_points_en?: string | null
           ref_links?: Json
           created_at?: string
           updated_at?: string
@@ -88,7 +97,9 @@ export interface Database {
           question_id: string
           option_id: string
           text: string
+          text_en: string | null
           explanation: string | null
+          explanation_en: string | null
           sort_order: number
         }
         Insert: {
@@ -96,7 +107,9 @@ export interface Database {
           question_id: string
           option_id: string
           text: string
+          text_en?: string | null
           explanation?: string | null
+          explanation_en?: string | null
           sort_order: number
         }
         Update: {
@@ -104,7 +117,9 @@ export interface Database {
           question_id?: string
           option_id?: string
           text?: string
+          text_en?: string | null
           explanation?: string | null
+          explanation_en?: string | null
           sort_order?: number
         }
       }

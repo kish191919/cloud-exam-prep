@@ -1,17 +1,22 @@
 export interface QuestionOption {
   id: string;
   text: string;
+  textEn?: string;
   explanation?: string;
+  explanationEn?: string;
 }
 
 export interface Question {
   id: string;
   text: string;
+  textEn?: string;
   options: QuestionOption[];
   correctOptionId: string;
   explanation: string;
+  explanationEn?: string;
   tags: string[];
   keyPoints?: string;
+  keyPointsEn?: string;
   keyPointImages?: string[];
   refLinks?: { name: string; url: string }[];
 }

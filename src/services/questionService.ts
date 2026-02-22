@@ -5,16 +5,21 @@ interface QuestionRow {
   id: string;
   exam_id: string;
   text: string;
+  text_en: string | null;
   correct_option_id: string;
   explanation: string;
+  explanation_en: string | null;
   key_points: string | null;
+  key_points_en: string | null;
   key_point_images: string[] | null;
   ref_links: any;
   question_options: Array<{
     id: string;
     option_id: string;
     text: string;
+    text_en: string | null;
     explanation: string | null;
+    explanation_en: string | null;
     sort_order: number;
   }>;
   question_tags: Array<{
@@ -51,18 +56,23 @@ export async function getQuestionsForExam(examId: string): Promise<Question[]> {
   return (data as unknown as QuestionRow[]).map(q => ({
     id: q.id,
     text: q.text,
+    textEn: q.text_en ?? undefined,
     options: q.question_options
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(opt => ({
         id: opt.option_id,
         text: opt.text,
+        textEn: opt.text_en ?? undefined,
         explanation: opt.explanation ?? undefined,
+        explanationEn: opt.explanation_en ?? undefined,
       })),
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
+    explanationEn: q.explanation_en ?? undefined,
     tags: q.question_tags.map(t => t.tag),
 
     keyPoints: q.key_points ?? undefined,
+    keyPointsEn: q.key_points_en ?? undefined,
     keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   }));
@@ -99,18 +109,23 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
   return {
     id: q.id,
     text: q.text,
+    textEn: q.text_en ?? undefined,
     options: q.question_options
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(opt => ({
         id: opt.option_id,
         text: opt.text,
+        textEn: opt.text_en ?? undefined,
         explanation: opt.explanation ?? undefined,
+        explanationEn: opt.explanation_en ?? undefined,
       })),
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
+    explanationEn: q.explanation_en ?? undefined,
     tags: q.question_tags.map(t => t.tag),
 
     keyPoints: q.key_points ?? undefined,
+    keyPointsEn: q.key_points_en ?? undefined,
     keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   };
@@ -146,18 +161,23 @@ export async function getQuestionsByIds(questionIds: string[]): Promise<Question
   return (data as unknown as QuestionRow[]).map(q => ({
     id: q.id,
     text: q.text,
+    textEn: q.text_en ?? undefined,
     options: q.question_options
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(opt => ({
         id: opt.option_id,
         text: opt.text,
+        textEn: opt.text_en ?? undefined,
         explanation: opt.explanation ?? undefined,
+        explanationEn: opt.explanation_en ?? undefined,
       })),
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
+    explanationEn: q.explanation_en ?? undefined,
     tags: q.question_tags.map(t => t.tag),
 
     keyPoints: q.key_points ?? undefined,
+    keyPointsEn: q.key_points_en ?? undefined,
     keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   }));
@@ -220,14 +240,23 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
     return {
       id: q.id,
       text: q.text,
+      textEn: q.text_en ?? undefined,
       options: (q.question_options as any[])
         .sort((a: any, b: any) => a.sort_order - b.sort_order)
-        .map((opt: any) => ({ id: opt.option_id, text: opt.text, explanation: opt.explanation ?? undefined })),
+        .map((opt: any) => ({
+          id: opt.option_id,
+          text: opt.text,
+          textEn: opt.text_en ?? undefined,
+          explanation: opt.explanation ?? undefined,
+          explanationEn: opt.explanation_en ?? undefined,
+        })),
       correctOptionId: q.correct_option_id,
       explanation: q.explanation,
+      explanationEn: q.explanation_en ?? undefined,
       tags: (q.question_tags as any[]).map((t: any) => t.tag),
-  
+
       keyPoints: q.key_points ?? undefined,
+      keyPointsEn: q.key_points_en ?? undefined,
       refLinks: q.ref_links ?? undefined,
     };
   });
@@ -263,18 +292,23 @@ export async function getQuestionsByTag(examId: string, tag: string): Promise<Qu
   return (data as unknown as QuestionRow[]).map(q => ({
     id: q.id,
     text: q.text,
+    textEn: q.text_en ?? undefined,
     options: q.question_options
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(opt => ({
         id: opt.option_id,
         text: opt.text,
+        textEn: opt.text_en ?? undefined,
         explanation: opt.explanation ?? undefined,
+        explanationEn: opt.explanation_en ?? undefined,
       })),
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
+    explanationEn: q.explanation_en ?? undefined,
     tags: q.question_tags.map(t => t.tag),
 
     keyPoints: q.key_points ?? undefined,
+    keyPointsEn: q.key_points_en ?? undefined,
     keyPointImages: q.key_point_images ?? undefined,
     refLinks: q.ref_links ?? undefined,
   }));

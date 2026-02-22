@@ -2,6 +2,7 @@ import { Question, ExamMode } from '@/types/exam';
 import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb, ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { seededShuffle } from '@/utils/shuffle';
 
 interface QuestionDisplayProps {
@@ -28,6 +29,14 @@ const QuestionDisplay = ({
   mode = 'exam',
   randomizeOptions = false,
 }: QuestionDisplayProps) => {
+  const { i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
+
+  // Select language-appropriate content, falling back to Korean if English not available
+  const questionText = (isEn && question.textEn) ? question.textEn : question.text;
+  const questionExplanation = (isEn && question.explanationEn) ? question.explanationEn : question.explanation;
+  const questionKeyPoints = (isEn && question.keyPointsEn) ? question.keyPointsEn : question.keyPoints;
+
   const isStudy = mode === 'study';
   const isPractice = mode === 'practice';
   const isAnswered = !!selectedOptionId;
@@ -110,7 +119,7 @@ const QuestionDisplay = ({
   const canSelect = !showFeedback;
 
   const hasKeySection = showFeedback && (
-    question.keyPoints ||
+    questionKeyPoints ||
     (question.keyPointImages && question.keyPointImages.length > 0) ||
     (question.refLinks && question.refLinks.length > 0)
   );
@@ -141,7 +150,7 @@ const QuestionDisplay = ({
         </Button>
       </div>
 
-      <h2 className="text-base md:text-lg font-semibold leading-relaxed mb-5 whitespace-pre-line">{question.text}</h2>
+      <h2 className="text-base md:text-lg font-semibold leading-relaxed mb-5 whitespace-pre-line">{questionText}</h2>
 
       <div className="space-y-2.5 sm:space-y-3">
         {displayOptions.map((option, index) => {
@@ -150,8 +159,10 @@ const QuestionDisplay = ({
 
           // Per-option explanation: show own explanation if available,
           // or fall back to the overall question.explanation for the correct option
-          const perOptionExplanation = option.explanation
-            || (showFeedback && isCorrect ? question.explanation : undefined);
+          const optionText = (isEn && option.textEn) ? option.textEn : option.text;
+          const optionExplanation = (isEn && option.explanationEn) ? option.explanationEn : option.explanation;
+          const perOptionExplanation = optionExplanation
+            || (showFeedback && isCorrect ? questionExplanation : undefined);
 
           // Apply feedback animation to the selected option (practice mode only)
           const animationClass = (feedbackAnimation && isSelected)
@@ -174,7 +185,7 @@ const QuestionDisplay = ({
                   <div className="flex-1 min-w-0">
                     <span className={`text-sm leading-relaxed pt-0.5 block ${
                       showFeedback && !isCorrect ? 'text-red-600 dark:text-red-400' : ''
-                    }`}>{option.text}</span>
+                    }`}>{optionText}</span>
                     {/* Per-option explanation (shown in feedback state) */}
                     {showFeedback && perOptionExplanation && (
                       <p className={`text-xs mt-2 leading-relaxed ${
@@ -201,15 +212,17 @@ const QuestionDisplay = ({
       {hasKeySection && (
         <div className="mt-6 space-y-4">
           {/* 핵심 암기사항 */}
-          {(question.keyPoints || (question.keyPointImages && question.keyPointImages.length > 0)) && (
+          {(questionKeyPoints || (question.keyPointImages && question.keyPointImages.length > 0)) && (
             <div className="rounded-xl border border-amber-200 dark:border-amber-800/50 bg-amber-50/60 dark:bg-amber-950/20 p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Lightbulb className="h-4 w-4 text-amber-500 shrink-0" />
-                <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">핵심 암기사항</span>
+                <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">
+                  {isEn ? 'Key Points' : '핵심 암기사항'}
+                </span>
               </div>
-              {question.keyPoints && (
+              {questionKeyPoints && (
                 <p className="text-sm leading-relaxed text-foreground whitespace-pre-line mb-3">
-                  {question.keyPoints}
+                  {questionKeyPoints}
                 </p>
               )}
               {question.keyPointImages && question.keyPointImages.length > 0 && (
