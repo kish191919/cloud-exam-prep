@@ -1,6 +1,6 @@
 # AWS 시험 문제 변환 오케스트레이터
 
-이 프로젝트의 Claude Code 에이전트는 영문 또는 한국어 AWS 시험 문제를 한국어 4지선다 문제로 재설계하고, Supabase에 바로 적재 가능한 SQL 파일을 생성하는 변환 파이프라인을 실행합니다.
+이 프로젝트의 Claude Code 에이전트는 영문 또는 한국어 AWS 시험 문제를 한국어 4지선다 문제로 재설계하고, Supabase에 직접 삽입하는 완전 자동화 변환 파이프라인을 실행합니다.
 
 ## 역할
 
@@ -15,7 +15,7 @@ Main 오케스트레이터로서:
 
 | 에이전트 | 파일 | 역할 | 모델 |
 |---------|------|------|------|
-| Parser & SQL | `.claude/agents/parser-sql/AGENT.md` | STEP 1 파싱 + STEP 6 SQL 생성 | Sonnet |
+| Parser & SQL | `.claude/agents/parser-sql/AGENT.md` | STEP 1 파싱 + STEP 6 Supabase 직접 삽입 | Sonnet |
 | Redesigner | `.claude/agents/redesigner/AGENT.md` | 문제 1개 한국어 재설계 | **Haiku** |
 
 **규칙:** 서브에이전트 간 직접 호출 금지 — 반드시 Main(이 파일)을 통해 조율한다.
@@ -130,7 +130,7 @@ curl -s \
    - (파일 전체를 프롬프트에 올리지 않음 — 첫 500자만 확인)
 2. **STEP 1**: Parser & SQL Agent에 `file_path` 전달 → `parse_text.py` 실행 → `parsed_questions.json` 생성
 3. **STEP 2~5.5**: Redesigner Agent 병렬 호출 → `redesigned_questions.json` 생성
-4. **STEP 6**: SQL 파일 생성
+4. **STEP 6**: Supabase 직접 삽입
 5. **파일 이동**: 처리 완료 후 `input/done/`으로 이동
    ```bash
    mv input/{filename} input/done/{filename}
@@ -163,8 +163,8 @@ curl -s \
     │    │    ├─ 결과 취합 → redesigned_questions.json 생성 (한/영 양방향 필드 포함)
     │    │    └─ [에스컬레이션 발생 시] 사용자에게 실시간 전달 → 응답 → 해당 Agent 재호출
     │    │
-    │    ├─ [STEP 6] Parser & SQL Agent 호출 (SQL 생성)
-    │    │    └─ {exam_id}-YYYYMMDD-{batch}.sql 생성
+    │    ├─ [STEP 6] Parser & SQL Agent 호출 (Supabase 직접 삽입)
+    │    │    └─ questions / question_options / question_tags / exam_set_questions INSERT
     │    │
     │    └─ 파일 이동: input/{filename} → input/done/{filename}
     │
@@ -238,7 +238,7 @@ Redesigner Agent로부터 에스컬레이션 보고를 받으면:
 스킵 (파싱 실패):     {parse_failed}개 → [문제 번호 목록]
 에스컬레이션 스킵:    {escalated_skipped}개 → [문제 번호 목록]
 ━━━━━━━━━━━━━━━━━━━━━━━━
-저장 경로: output/{sql_filename}
+Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 할당된 ID 범위: {first_id} ~ {last_id}
 ```
 
@@ -253,13 +253,6 @@ Redesigner Agent로부터 에스컬레이션 보고를 받으면:
    ```
 2. [A] 선택 시: Parser & SQL Agent에 `--append` 플래그로 파싱 요청
 
-## SQL 파일 저장 규칙
-
-- 경로: `output/{exam_id}-YYYYMMDD-{batch:03d}.sql`
-- 예시: `output/aws-aif-c01-20260220-001.sql`
-- 같은 날짜 여러 번 실행 시 배치번호 자동 증가
-- 기존 파일 덮어쓰기 없음
-
 ## 주요 파일 경로
 
 | 파일 | 역할 |
@@ -268,11 +261,10 @@ Redesigner Agent로부터 에스컬레이션 보고를 받으면:
 | `input/done/*.txt` | 처리 완료된 파일 (자동 이동) |
 | `output/parsed_questions.json` | 파싱 결과 + 체크포인트 |
 | `output/redesigned_questions.json` | 재설계 완료 결과 (한/영 양방향 필드 포함) |
-| `output/{exam_id}-YYYYMMDD-{batch}.sql` | 최종 SQL 파일 |
 | `.env` | Supabase 접속 정보 (git에 포함되지 않음) |
-| `docs/sample.sql` | SQL 형식 참조용 샘플 |
 | `.claude/skills/question-parser/scripts/parse_text.py` | 파싱 스크립트 |
-| `.claude/skills/sql-generator/scripts/generate_sql.py` | SQL 생성 스크립트 |
+| `.claude/skills/sql-generator/scripts/insert_supabase.py` | Supabase REST API 직접 삽입 스크립트 |
+| `.claude/skills/sql-generator/scripts/generate_sql.py` | 영문 백필 전용 (`--patch-en` 모드) |
 | `.claude/skills/question-redesigner/references/translation_guide/{exam_id}.md` | AWS 자격증 영문 번역 가이드 |
 
 ## 중요 제약사항

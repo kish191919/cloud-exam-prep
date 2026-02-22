@@ -1,18 +1,18 @@
 # Parser & SQL 서브에이전트
 
-영문 AWS 시험 문제 텍스트를 파싱하고 재설계 결과를 SQL 파일로 변환하는 서브에이전트입니다.
+영문 AWS 시험 문제 텍스트를 파싱하고 재설계 결과를 Supabase에 직접 삽입하는 서브에이전트입니다.
 
 ## 역할
 
 - **STEP 1:** 원문 텍스트 파싱 → `output/parsed_questions.json`
-- **STEP 6:** `output/redesigned_questions.json` → SQL 파일
+- **STEP 6:** `output/redesigned_questions.json` → Supabase REST API 직접 삽입
 
 ## 트리거
 
 Main 오케스트레이터(CLAUDE.md)로부터 다음 두 가지 요청 중 하나를 수신할 때 실행됩니다:
 
 1. **파싱 요청:** `{"task": "parse", "file_path": "input/batch1.txt", "exam_id": "...", "start_id": 166}`
-2. **SQL 생성 요청:** `{"task": "generate_sql", "set_id": "uuid", "exam_id": "...", "sort_order_start": 66}`
+2. **Supabase 삽입 요청:** `{"task": "insert_supabase", "set_id": "uuid", "exam_id": "...", "sort_order_start": 66}`
 
 ## STEP 1: 텍스트 파싱
 
@@ -55,39 +55,40 @@ python3 .claude/skills/question-parser/scripts/parse_text.py \
 }
 ```
 
-## STEP 6: SQL 파일 생성
+## STEP 6: Supabase 직접 삽입
 
 ### 절차
 
 1. Main으로부터 `set_id`, `exam_id`, `sort_order_start` 수신
-2. `generate_sql.py` 실행:
+2. `insert_supabase.py` 실행:
    ```bash
-   python3 .claude/skills/sql-generator/scripts/generate_sql.py \
+   python3 .claude/skills/sql-generator/scripts/insert_supabase.py \
      --input-file output/redesigned_questions.json \
      --set-id {set_id} \
-     --exam-id {exam_id} \
-     --output-dir output \
      --sort-order-start {sort_order_start}
    ```
-3. 생성된 SQL 파일 경로를 Main에 반환
-4. 실패 시 1회 재시도 → 재시도 후 실패 시 Main에 에스컬레이션 보고
+3. 삽입 결과(성공/실패 수, ID 범위)를 Main에 반환
+4. 실패 문제가 있으면 failed_ids 목록을 포함하여 보고
 
 ### Main에 반환할 내용
 
 ```json
 {
-  "task": "generate_sql",
+  "task": "insert_supabase",
   "success": true,
-  "output_file": "output/aws-aif-c01-20260220-001.sql",
-  "question_count": 3,
+  "inserted_count": 3,
+  "failed_count": 0,
+  "failed_ids": [],
   "id_range": {"first": "awsaifc01-q166", "last": "awsaifc01-q168"}
 }
 ```
 
+> `--patch-en` 영문 백필이 필요한 경우에는 기존 `generate_sql.py --patch-en` 모드를 별도 사용한다.
+
 ## 에러 처리
 
 - **파싱 실패:** 해당 문제 `status: "failed"` 마킹 후 나머지 문제 계속 처리
-- **SQL 생성 실패:** 1회 재시도 → 실패 시 에스컬레이션
+- **Supabase 삽입 실패:** 해당 문제를 failed_ids에 기록 후 나머지 계속 처리, 완료 후 Main에 보고
 - **스크립트 실행 오류:** stderr 내용을 Main에 전달
 
 ## 중요 사항
