@@ -128,11 +128,19 @@ STEP 4에서 생성한 4개 보기를 재배치하여 원문과 다른 순서로
 [PASS] 규칙 12: 정답 위치 원문과 다름
 [PASS] 규칙 13: 정답 개념 correct_answer_concept와 일치
 [PASS] 규칙 14: 오답 순서 원문과 다름 + 최소 2개 새로운 보기
+[PASS] 원본 정답 AWS 기술적 유효성
 ```
 
 - **전체 PASS** → STEP 5.5로 진행
-- **하나라도 FAIL** → 해당 항목만 수정 후 재검증 (최대 2회)
-- **2회 재시도 후 FAIL** → 에스컬레이션
+- **1~11번 중 하나라도 FAIL** → 해당 항목만 수정 후 재검증 (최대 2회)
+- **1~11번 2회 재시도 후 FAIL** → 에스컬레이션
+- **12번 FAIL** → 재시도 없이 즉시 에스컬레이션 (`escalation_type: "original_answer_invalid"`)
+
+⚠️ **[12] 원본 정답 AWS 기술적 유효성 검증 규칙:**
+- 원문 질문 텍스트(`question.question`)와 원문 전체 보기(`question.options`)를 검토한다
+- `correct_answer_concept`이 원문 보기 중 AWS 공식 기능 기준으로 명확히 가장 적합한 답인지 판단한다
+- 다른 보기가 더 적합하다고 판단되면 FAIL → 재시도 없이 즉시 에스컬레이션
+- 에스컬레이션 메시지에 포함: 현재 `correct_answer_concept`, 실제 정답으로 판단되는 보기와 이유(AWS 공식 기능 근거), 원문 전체 보기 목록
 
 ### STEP 5.5: 영문 번역 (AWS 자격증 시험 공식 문체)
 
@@ -175,7 +183,7 @@ STEP 5 품질 검증이 전체 PASS된 후 실행한다. `translation_guide`가 
 
 ## 에스컬레이션 처리
 
-2회 재시도 후에도 품질 기준 미달:
+**일반 에스컬레이션** (2회 재시도 후 품질 기준 미달):
 
 ```
 ❌ 문제 {number}번 에스컬레이션 필요
@@ -184,6 +192,28 @@ STEP 5 품질 검증이 전체 PASS된 후 실행한다. `translation_guide`가 
 시도 1: "{정답보기}" → 실패 ({이유})
 시도 2: "{정답보기}" → 실패 ({이유})
 [A] 재설계 지시 입력 / [B] 스킵
+```
+
+**원본 정답 오류 에스컬레이션** (즉시, 재시도 없음):
+
+```
+❌ 문제 {number}번 에스컬레이션 필요
+사유: 원본 정답 기술적 유효성 의심
+  - 원본 정답(correct_answer_concept): "{현재 정답 개념}"
+  - 실제 정답으로 보이는 보기: Option {X} — "{해당 보기 텍스트}"
+  - 판단 근거: {AWS 공식 기능 기반 설명}
+
+원문 Q. {원문 질문 요약}
+원문 보기:
+  a) {보기 a}
+  b) {보기 b}
+  c) {보기 c}
+  d) {보기 d}
+
+어떻게 처리할까요?
+  [A] 정답 개념을 "{X 보기 텍스트}"로 변경하여 재설계
+  [B] 원본 정답이 맞습니다 — correct_answer_concept 유지하여 재설계 진행
+  [C] 이 문제를 스킵합니다
 ```
 
 ## Main에 반환
@@ -198,13 +228,26 @@ STEP 5 품질 검증이 전체 PASS된 후 실행한다. `translation_guide`가 
 }
 ```
 
-에스컬레이션:
+일반 에스컬레이션:
 ```json
 {
   "task": "redesign_single",
   "success": false,
   "question_number": 1,
+  "escalation_type": "quality_fail",
   "escalation_message": "❌ 문제 1번 에스컬레이션 필요\n..."
+}
+```
+
+원본 정답 오류 에스컬레이션:
+```json
+{
+  "task": "redesign_single",
+  "success": false,
+  "question_number": 1,
+  "escalation_type": "original_answer_invalid",
+  "suspected_correct_concept": "실제 정답으로 판단되는 보기 텍스트",
+  "escalation_message": "❌ 문제 1번 에스컬레이션 필요\n사유: 원본 정답 기술적 유효성 의심\n..."
 }
 ```
 
