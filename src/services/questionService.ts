@@ -161,28 +161,32 @@ export async function getQuestionsByIds(questionIds: string[]): Promise<Question
 
   if (!data) return [];
 
-  return (data as unknown as QuestionRow[]).map(q => ({
-    id: q.id,
-    text: q.text,
-    textEn: q.text_en ?? undefined,
-    options: q.question_options
-      .sort((a, b) => a.sort_order - b.sort_order)
-      .map(opt => ({
-        id: opt.option_id,
-        text: opt.text,
-        textEn: opt.text_en ?? undefined,
-        explanation: opt.explanation ?? undefined,
-        explanationEn: opt.explanation_en ?? undefined,
-      })),
-    correctOptionId: q.correct_option_id,
-    explanation: q.explanation,
-    explanationEn: q.explanation_en ?? undefined,
-    tags: q.question_tags.map(t => t.tag),
+  const mapped = new Map(
+    (data as unknown as QuestionRow[]).map(q => [q.id, {
+      id: q.id,
+      text: q.text,
+      textEn: q.text_en ?? undefined,
+      options: q.question_options
+        .sort((a, b) => a.sort_order - b.sort_order)
+        .map(opt => ({
+          id: opt.option_id,
+          text: opt.text,
+          textEn: opt.text_en ?? undefined,
+          explanation: opt.explanation ?? undefined,
+          explanationEn: opt.explanation_en ?? undefined,
+        })),
+      correctOptionId: q.correct_option_id,
+      explanation: q.explanation,
+      explanationEn: q.explanation_en ?? undefined,
+      tags: q.question_tags.map(t => t.tag),
+      keyPoints: q.key_points ?? undefined,
+      keyPointsEn: q.key_points_en ?? undefined,
+      refLinks: q.ref_links ?? undefined,
+    }])
+  );
 
-    keyPoints: q.key_points ?? undefined,
-    keyPointsEn: q.key_points_en ?? undefined,
-    refLinks: q.ref_links ?? undefined,
-  }));
+  // Preserve the order of questionIds (e.g. shuffled sort_order from exam_set_questions)
+  return questionIds.map(id => mapped.get(id)).filter((q): q is Question => q !== undefined);
 }
 
 
