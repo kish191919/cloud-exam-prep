@@ -15,9 +15,21 @@ insert_supabase.py — redesigned_questions.json → Supabase REST API 직접 �
 import json
 import argparse
 import sys
+import ssl
 import urllib.request
 import urllib.error
 from pathlib import Path
+
+
+def _ssl_context() -> ssl.SSLContext:
+    """macOS Python 환경에서 시스템 CA 번들을 우선 사용하는 SSL 컨텍스트."""
+    ctx = ssl.create_default_context()
+    # macOS 시스템 CA 번들 경로 시도
+    for ca_path in ('/etc/ssl/cert.pem', '/usr/local/etc/openssl/cert.pem'):
+        if Path(ca_path).exists():
+            ctx.load_verify_locations(cafile=ca_path)
+            break
+    return ctx
 
 
 # ── .env 파싱 ─────────────────────────────────────────────────────────────────
@@ -58,7 +70,7 @@ def supabase_post(url: str, key: str, table: str, body) -> tuple[int, str]:
         },
     )
     try:
-        with urllib.request.urlopen(req) as resp:
+        with urllib.request.urlopen(req, context=_ssl_context()) as resp:
             return resp.status, resp.read().decode('utf-8')
     except urllib.error.HTTPError as e:
         return e.code, e.read().decode('utf-8')
@@ -140,8 +152,8 @@ def main():
 
     # .env 읽기 (스크립트 위치 기준 프로젝트 루트 탐색)
     script_dir = Path(__file__).resolve().parent
-    # 프로젝트 루트 = 스크립트에서 5단계 상위 (.claude/skills/sql-generator/scripts/ → .claude/ → root)
-    project_root = script_dir.parents[4]
+    # 프로젝트 루트 = 스크립트에서 4단계 상위 (.claude/skills/sql-generator/scripts/ → .claude/ → root)
+    project_root = script_dir.parents[3]
     env = load_env(project_root / '.env')
 
     supabase_url = env.get('SUPABASE_URL') or env.get('VITE_SUPABASE_URL') or ''
