@@ -101,7 +101,7 @@ interface QFormProps {
 const OPTION_LABELS = ['A', 'B', 'C', 'D'] as const;
 
 const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps) => {
-  const empty = { text: '', a: '', b: '', c: '', d: '', a_exp: '', b_exp: '', c_exp: '', d_exp: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', tags: '', keyPoints: '', refLinks: [] as { name: string; url: string }[] };
+  const empty = { text: '', text_en: '', a: '', b: '', c: '', d: '', a_en: '', b_en: '', c_en: '', d_en: '', a_exp: '', b_exp: '', c_exp: '', d_exp: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', explanation_en: '', tags: '', keyPoints: '', keyPoints_en: '', refLinks: [] as { name: string; url: string }[] };
   const [form, setForm] = useState(empty);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -109,16 +109,21 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
   useEffect(() => {
     if (edit) {
       const opts: Record<string, string> = {};
+      const opts_en: Record<string, string> = {};
       const exps: Record<string, string> = {};
-      edit.options.forEach(o => { opts[o.id] = o.text; exps[o.id] = o.explanation ?? ''; });
+      edit.options.forEach(o => { opts[o.id] = o.text; opts_en[o.id] = o.textEn ?? ''; exps[o.id] = o.explanation ?? ''; });
       setForm({
         text: edit.text,
+        text_en: edit.textEn ?? '',
         a: opts['a'] ?? '', b: opts['b'] ?? '', c: opts['c'] ?? '', d: opts['d'] ?? '',
+        a_en: opts_en['a'] ?? '', b_en: opts_en['b'] ?? '', c_en: opts_en['c'] ?? '', d_en: opts_en['d'] ?? '',
         a_exp: exps['a'] ?? '', b_exp: exps['b'] ?? '', c_exp: exps['c'] ?? '', d_exp: exps['d'] ?? '',
         correct: edit.correctOptionId as 'a'|'b'|'c'|'d',
         explanation: edit.explanation,
+        explanation_en: edit.explanationEn ?? '',
         tags: edit.tags.join(', '),
         keyPoints: edit.keyPoints ?? '',
+        keyPoints_en: edit.keyPointsEn ?? '',
         refLinks: Array.isArray(edit.refLinks) ? edit.refLinks : [],
       });
     } else {
@@ -139,16 +144,19 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
     try {
       const input: Omit<QuestionInput, 'examId'> = {
         text: form.text.trim(),
+        textEn: form.text_en.trim() || undefined,
         options: ([
-          { id: 'a' as const, text: form.a.trim(), explanation: form.a_exp.trim() || undefined },
-          { id: 'b' as const, text: form.b.trim(), explanation: form.b_exp.trim() || undefined },
-          { id: 'c' as const, text: form.c.trim(), explanation: form.c_exp.trim() || undefined },
-          { id: 'd' as const, text: form.d.trim(), explanation: form.d_exp.trim() || undefined },
-        ] as { id: 'a'|'b'|'c'|'d'; text: string; explanation?: string }[]).filter(o => o.text),
+          { id: 'a' as const, text: form.a.trim(), textEn: form.a_en.trim() || undefined, explanation: form.a_exp.trim() || undefined },
+          { id: 'b' as const, text: form.b.trim(), textEn: form.b_en.trim() || undefined, explanation: form.b_exp.trim() || undefined },
+          { id: 'c' as const, text: form.c.trim(), textEn: form.c_en.trim() || undefined, explanation: form.c_exp.trim() || undefined },
+          { id: 'd' as const, text: form.d.trim(), textEn: form.d_en.trim() || undefined, explanation: form.d_exp.trim() || undefined },
+        ] as { id: 'a'|'b'|'c'|'d'; text: string; textEn?: string; explanation?: string }[]).filter(o => o.text),
         correctOptionId: form.correct,
         explanation: form.explanation.trim(),
+        explanationEn: form.explanation_en.trim() || undefined,
         tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
         keyPoints: form.keyPoints.trim() || undefined,
+        keyPointsEn: form.keyPoints_en.trim() || undefined,
         refLinks: form.refLinks.filter(r => r.name.trim() && r.url.trim()),
       };
       if (edit) {
@@ -182,6 +190,13 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
               value={form.text}
               onChange={e => set('text', e.target.value)}
             />
+            <Textarea
+              placeholder="English question text (optional)"
+              rows={2}
+              value={form.text_en}
+              onChange={e => set('text_en', e.target.value)}
+              className="mt-1.5 text-sm"
+            />
           </div>
 
           {/* Options */}
@@ -206,6 +221,14 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
                       placeholder={`보기 ${OPTION_LABELS[i]}${i < 2 ? ' *' : ''}`}
                       value={form[id]}
                       onChange={e => set(id, e.target.value)}
+                    />
+                  </div>
+                  <div className="ml-9">
+                    <Input
+                      placeholder={`Option ${OPTION_LABELS[i]} in English (optional)`}
+                      value={form[`${id}_en` as keyof typeof form] as string}
+                      onChange={e => set(`${id}_en`, e.target.value)}
+                      className="text-xs h-8"
                     />
                   </div>
                   {form[id].trim() && (
@@ -233,6 +256,13 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
               value={form.explanation}
               onChange={e => set('explanation', e.target.value)}
             />
+            <Textarea
+              placeholder="English explanation (optional)"
+              rows={2}
+              value={form.explanation_en}
+              onChange={e => set('explanation_en', e.target.value)}
+              className="mt-1.5 text-sm"
+            />
           </div>
 
           {/* Tags */}
@@ -253,6 +283,13 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
               rows={3}
               value={form.keyPoints}
               onChange={e => set('keyPoints', e.target.value)}
+            />
+            <Textarea
+              placeholder="Key points in English (optional)"
+              rows={2}
+              value={form.keyPoints_en}
+              onChange={e => set('keyPoints_en', e.target.value)}
+              className="mt-1.5 text-sm"
             />
           </div>
 

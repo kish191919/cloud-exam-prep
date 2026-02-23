@@ -83,11 +83,14 @@ export async function updateSetQuestions(setId: string, questionIds: string[]): 
 export interface QuestionInput {
   examId: string;
   text: string;
-  options: { id: 'a' | 'b' | 'c' | 'd'; text: string; explanation?: string }[];
+  textEn?: string;
+  options: { id: 'a' | 'b' | 'c' | 'd'; text: string; textEn?: string; explanation?: string }[];
   correctOptionId: 'a' | 'b' | 'c' | 'd';
   explanation: string;
+  explanationEn?: string;
   tags: string[];
   keyPoints?: string;
+  keyPointsEn?: string;
   refLinks?: { name: string; url: string }[];
 }
 
@@ -106,9 +109,12 @@ export async function createQuestion(input: QuestionInput): Promise<string> {
       id: questionId,
       exam_id: input.examId,
       text: input.text,
+      text_en: input.textEn ?? null,
       correct_option_id: input.correctOptionId,
       explanation: input.explanation,
+      explanation_en: input.explanationEn ?? null,
       key_points: input.keyPoints ?? null,
+      key_points_en: input.keyPointsEn ?? null,
       ref_links: input.refLinks ?? [],
     });
   if (qErr) throw qErr;
@@ -120,6 +126,7 @@ export async function createQuestion(input: QuestionInput): Promise<string> {
       question_id: questionId,
       option_id: opt.id,
       text: opt.text,
+      text_en: opt.textEn ?? null,
       explanation: opt.explanation ?? null,
       sort_order: idx + 1,
     })) as any);
@@ -141,9 +148,12 @@ export async function updateQuestion(questionId: string, input: Omit<QuestionInp
     .from('questions')
     .update({
       text: input.text,
+      text_en: input.textEn ?? null,
       correct_option_id: input.correctOptionId,
       explanation: input.explanation,
+      explanation_en: input.explanationEn ?? null,
       key_points: input.keyPoints ?? null,
+      key_points_en: input.keyPointsEn ?? null,
       ref_links: input.refLinks ?? [],
     })
     .eq('id', questionId);
@@ -158,6 +168,7 @@ export async function updateQuestion(questionId: string, input: Omit<QuestionInp
       question_id: questionId,
       option_id: opt.id,
       text: opt.text,
+      text_en: opt.textEn ?? null,
       explanation: opt.explanation ?? null,
       sort_order: idx + 1,
     })) as any);
