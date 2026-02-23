@@ -39,10 +39,14 @@ const Navbar = () => {
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
-          <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('navigation.features')}</a>
-          <a href="#faq" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('navigation.faq')}</a>
           <LanguageSwitcher />
           <ThemeToggle />
+
+          <Link to="/exams">
+            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
+              {t('navigation.startFree')}
+            </Button>
+          </Link>
 
           {user ? (
             <DropdownMenu>
@@ -84,12 +88,6 @@ const Navbar = () => {
               {tAuth('signIn')}
             </Button>
           )}
-
-          <Link to="/exams">
-            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
-              {t('navigation.startFree')}
-            </Button>
-          </Link>
         </nav>
 
         <div className="md:hidden flex items-center gap-2">
@@ -103,9 +101,6 @@ const Navbar = () => {
 
       {open && (
         <div className="md:hidden border-t border-border bg-card px-4 py-4 space-y-3">
-          <a href="#features" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>{t('navigation.features')}</a>
-          <a href="#faq" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>{t('navigation.faq')}</a>
-
           {user ? (
             <>
               <Link to="/dashboard" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>

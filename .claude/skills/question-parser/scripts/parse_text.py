@@ -8,9 +8,11 @@ parse_text.py — 영문/한국어 AWS 시험 문제 텍스트를 파싱하여 p
 지원 입력 형식:
   1. 문제 번호 있음: "21. Question text" 또는 "Q21. Question text"
   2. 문제 번호 없음: "Question text" (자동 번호 부여)
-  3. 보기: "A. Option" / "A) Option" (대소문자 무관)
+  3. 보기 (알파벳): "A. Option" / "A) Option" (대소문자 무관)
+     보기 (숫자):   "1) Option" / "1. Option" (1~5, a/b/c/d/e로 매핑)
   4. 정답 (영문): "Correct answer: D" / "Correct Answer: D, E" / "Answer: D"
-     정답 (한국어): "정답: D" / "정답: D, E"
+     정답 (한국어/알파벳): "정답: D" / "정답: D, E"
+     정답 (한국어/숫자):   "정답 : 2" / "정답: 2" (숫자를 알파벳으로 변환)
      정답 구분자: 콤마, 슬래시, 공백, 'and'
   5. 해설 줄 자동 스킵: "Explanation:" / "해설:" / "설명:"
 
@@ -39,21 +41,38 @@ RE_Q_NUMBER = re.compile(
     re.IGNORECASE
 )
 
-# 보기 패턴: "A." / "A)" / "(A)" / "A -"
+# 보기 패턴 (알파벳): "A." / "A)" / "(A)" / "A -"
 RE_OPTION = re.compile(
     r'^\s*(?:\()?([A-Ea-e])[.)]\s+(.+)',
 )
 
-# 정답 행 패턴: "Correct answer: D" / "Answer: D, E" / "Correct Answer: B and C" / "Answer: AC"
-# 한국어: "정답: D" / "정답: D, E"
-# [A-Ea-e]+ 로 구분자 없는 연속 문자(AC, BCE 등)도 캡처
+# 보기 패턴 (숫자): "1)" / "1." / "1 ." — 1~5까지 (문제 번호와 구분: 앞에 단어 없음)
+RE_OPTION_NUMERIC = re.compile(
+    r'^\s*([1-5])[.)]\s+(.+)',
+)
+
+# 숫자→알파벳 매핑
+NUM_TO_LETTER = {'1': 'a', '2': 'b', '3': 'c', '4': 'd', '5': 'e'}
+
+# 정답 행 패턴 (알파벳): "Correct answer: D" / "Answer: D, E" / "정답: D"
 RE_ANSWER_LINE = re.compile(
     r'(?:correct\s+answer|answer|정답)\s*:?\s*([A-Ea-e]+(?:\s*[,/]\s*[A-Ea-e]+|\s+and\s+[A-Ea-e]+)*)',
     re.IGNORECASE
 )
 
+# 정답 행 패턴 (숫자): "정답 : 2" / "정답: 2, 3" / "정답: 2/3"
+RE_ANSWER_LINE_NUMERIC = re.compile(
+    r'(?:correct\s+answer|answer|정답)\s*:?\s*([1-5]+(?:\s*[,/]\s*[1-5]+|\s+and\s+[1-5]+)*)',
+    re.IGNORECASE
+)
+
 # 답안 구분자
 RE_ANSWER_SPLIT = re.compile(r'[,/\s]+(?:and\s+)?|and\s+', re.IGNORECASE)
+
+
+def _is_answer_line(stripped: str) -> bool:
+    """정답 행 여부 판별 (알파벳 또는 숫자 형식 모두 허용)."""
+    return bool(RE_ANSWER_LINE.match(stripped) or RE_ANSWER_LINE_NUMERIC.match(stripped))
 
 
 # ── 파서 핵심 로직 ────────────────────────────────────────────────────────────
@@ -83,7 +102,7 @@ def parse_questions(raw_text: str) -> list[dict]:
 def _split_into_blocks(lines: list[str]) -> list[list[str]]:
     """
     문제 블록 분리 전략:
-    1. "Answer" 단독 행 또는 "Correct answer:" 행 이후 빈 줄이 오면 블록 종료
+    1. "Answer" 단독 행 또는 "Correct answer:" / "정답:" 행 이후 빈 줄이 오면 블록 종료
     2. 연속된 빈 줄(2개 이상)도 블록 경계로 처리
     3. 새 문제 번호("21. ..." 패턴)가 오면 새 블록 시작
     """
@@ -110,13 +129,10 @@ def _split_into_blocks(lines: list[str]) -> list[list[str]]:
         blank_count = 0
 
         # after_answer 상태에서 비어 있지 않은 새 줄이 오면 블록 분리
-        # (빈 줄 없이 다음 문제가 시작되는 경우 처리)
         if after_answer:
-            # "Answer" 단독 행, 정답 행, Explanation 행은 현재 블록에 유지
-            # (Explanation은 현재 문제의 일부이므로 다음 문제 블록으로 넘기지 않음)
             is_answer_related = (
                 re.match(r'^answer\s*$', stripped, re.IGNORECASE)
-                or RE_ANSWER_LINE.match(stripped)
+                or _is_answer_line(stripped)
                 or re.match(r'^explanation\s*:', stripped, re.IGNORECASE)
             )
             if not is_answer_related:
@@ -125,8 +141,8 @@ def _split_into_blocks(lines: list[str]) -> list[list[str]]:
                     current = []
                     after_answer = False
 
-        # 정답 행 감지 → 다음 빈 줄 또는 다음 비관련 줄에서 블록 종료
-        if RE_ANSWER_LINE.match(stripped):
+        # 정답 행 감지 (알파벳 또는 숫자 형식)
+        if _is_answer_line(stripped):
             current.append(line)
             after_answer = True
             continue
@@ -138,9 +154,7 @@ def _split_into_blocks(lines: list[str]) -> list[list[str]]:
 
         # 새 문제 번호가 오면 이전 블록 저장 후 새 블록 시작
         if RE_Q_NUMBER.match(stripped) and current:
-            # 현재 블록에 이미 정답이 없으면 저장하지 않고 이어붙임 가능성
-            # → 정답이 있는 경우에만 분리
-            if any(RE_ANSWER_LINE.search(l) for l in current):
+            if any(_is_answer_line(l.strip()) for l in current):
                 blocks.append(current)
                 current = []
                 after_answer = False
@@ -159,7 +173,7 @@ def _parse_block(block_lines: list[str], auto_number: int) -> dict | None:
     text_lines: list[str] = []
     options: dict[str, str] = {}
     answer_raw: str = ''
-    option_order = ['a', 'b', 'c', 'd', 'e']
+    answer_is_numeric: bool = False
     seen_option_keys: list[str] = []
     in_question = True
 
@@ -176,23 +190,30 @@ def _parse_block(block_lines: list[str], auto_number: int) -> dict | None:
         if re.match(r'^answer\s*$', stripped, re.IGNORECASE):
             continue
 
-        # "Explanation:" / "해설:" / "설명:" 줄 스킵 (원문 해설 — 재설계에서 새로 생성하므로 불필요)
+        # "Explanation:" / "해설:" / "설명:" 줄 스킵
         if re.match(r'^(?:explanation|해설|설명)\s*:', stripped, re.IGNORECASE):
             continue
 
-        # 정답 행
+        # 정답 행 (알파벳 형식 먼저 시도)
         m_ans = RE_ANSWER_LINE.match(stripped)
         if m_ans:
             answer_raw = m_ans.group(1).strip()
+            answer_is_numeric = False
             continue
 
-        # 보기 행
+        # 정답 행 (숫자 형식)
+        m_ans_num = RE_ANSWER_LINE_NUMERIC.match(stripped)
+        if m_ans_num:
+            answer_raw = m_ans_num.group(1).strip()
+            answer_is_numeric = True
+            continue
+
+        # 보기 행 (알파벳 형식)
         m_opt = RE_OPTION.match(stripped)
         if m_opt:
             in_question = False
             key = m_opt.group(1).lower()
             val = m_opt.group(2).strip()
-            # 보기가 여러 줄에 걸칠 수 있으므로 key 중복 시 이어붙임
             if key in options:
                 options[key] += ' ' + val
             else:
@@ -200,9 +221,23 @@ def _parse_block(block_lines: list[str], auto_number: int) -> dict | None:
                 seen_option_keys.append(key)
             continue
 
+        # 보기 행 (숫자 형식) — 문제 텍스트가 이미 수집된 경우에만 보기로 인식
+        # (문제 본문이 없는 상태에서 "46. 한 의료..." 같은 줄을 보기로 오파싱하지 않도록)
+        m_opt_num = RE_OPTION_NUMERIC.match(stripped)
+        if m_opt_num and (text_lines or not in_question):
+            in_question = False
+            num_key = m_opt_num.group(1)
+            letter_key = NUM_TO_LETTER[num_key]
+            val = m_opt_num.group(2).strip()
+            if letter_key in options:
+                options[letter_key] += ' ' + val
+            else:
+                options[letter_key] = val
+                seen_option_keys.append(letter_key)
+            continue
+
         # 질문 본문 또는 보기 연속 행
         if not in_question and seen_option_keys:
-            # 이전 보기의 연속 행
             last_key = seen_option_keys[-1]
             options[last_key] += ' ' + stripped
         else:
@@ -227,14 +262,23 @@ def _parse_block(block_lines: list[str], auto_number: int) -> dict | None:
     if not answer_raw:
         return None  # 정답 없는 블록은 스킵
 
-    # 구분자로 분리 후, 구분자 없는 연속 문자(예: "AC" → ['a','c'])도 개별 분리
-    parts = [a.strip().lower() for a in RE_ANSWER_SPLIT.split(answer_raw) if a.strip()]
-    answer_letters = []
-    for part in parts:
-        if len(part) == 1 and part in 'abcde':
-            answer_letters.append(part)
-        else:
-            answer_letters.extend(c for c in part if c in 'abcde')
+    if answer_is_numeric:
+        # 숫자 정답 → 알파벳 변환
+        parts = [a.strip() for a in RE_ANSWER_SPLIT.split(answer_raw) if a.strip()]
+        answer_letters = []
+        for part in parts:
+            for ch in part:
+                if ch in NUM_TO_LETTER:
+                    answer_letters.append(NUM_TO_LETTER[ch])
+    else:
+        # 알파벳 정답 파싱
+        parts = [a.strip().lower() for a in RE_ANSWER_SPLIT.split(answer_raw) if a.strip()]
+        answer_letters = []
+        for part in parts:
+            if len(part) == 1 and part in 'abcde':
+                answer_letters.append(part)
+            else:
+                answer_letters.extend(c for c in part if c in 'abcde')
 
     if not answer_letters:
         return None
