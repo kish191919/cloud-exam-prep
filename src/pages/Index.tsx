@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/accordion';
 import {
   Shield, BarChart3, Clock, BookOpen, ArrowRight,
-  Cloud, Zap, Target, Users, Smartphone, CheckCircle2, Star,
+  Cloud, Zap, Target, Users, Smartphone, CheckCircle2, Star, Map,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
@@ -102,6 +102,31 @@ const Index = () => {
               <div className="text-base text-primary-foreground/70 font-semibold uppercase tracking-wide">{t('index.hero.stats.providers.label')}</div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* 자격증 로드맵 CTA */}
+      <section className="py-12 px-4 bg-accent/5 border-y border-accent/10">
+        <div className="container mx-auto max-w-3xl text-center">
+          <p className="text-sm font-semibold text-accent uppercase tracking-wider mb-3">
+            어디서 시작해야 할지 모르겠나요?
+          </p>
+          <h2 className="text-2xl md:text-3xl font-bold mb-3">
+            AWS · GCP · Azure 자격증 로드맵
+          </h2>
+          <p className="text-muted-foreground mb-6" style={{ wordBreak: 'keep-all' }}>
+            입문부터 전문가까지 레벨별 자격증과 커리어 경로를 한눈에 확인하세요.
+          </p>
+          <Link to="/certifications">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-all"
+            >
+              <Map className="mr-2 h-5 w-5" />
+              자격증 로드맵 보기
+            </Button>
+          </Link>
         </div>
       </section>
 

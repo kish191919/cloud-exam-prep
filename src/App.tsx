@@ -14,6 +14,7 @@ import AdminPage from "./pages/AdminPage";
 import AdminQuestionsPage from "./pages/AdminQuestionsPage";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
+import CertificationsPage from "./pages/CertificationsPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import AuthModal from "./components/AuthModal";
@@ -32,6 +33,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<Navigate to="/exams" replace />} />
+            <Route path="/certifications" element={<CertificationsPage />} />
             <Route path="/exams" element={<ExamList />} />
             <Route path="/session/:sessionId" element={<ExamSession />} />
             <Route path="/results/:sessionId" element={<ExamResults />} />

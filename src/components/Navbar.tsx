@@ -42,6 +42,10 @@ const Navbar = () => {
           <LanguageSwitcher />
           <ThemeToggle />
 
+          <Link to="/certifications" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            로드맵
+          </Link>
+
           <Link to="/exams">
             <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
               {t('navigation.startFree')}
@@ -121,6 +125,10 @@ const Navbar = () => {
               {tAuth('signIn')}
             </button>
           )}
+
+          <Link to="/certifications" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>
+            로드맵
+          </Link>
 
           <Link to="/exams" onClick={() => setOpen(false)}>
             <Button size="sm" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">{t('navigation.startFree')}</Button>
