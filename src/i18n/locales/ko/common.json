@@ -8,7 +8,8 @@
     "dashboard": "대시보드",
     "exams": "시험",
     "review": "복습",
-    "startFree": "학습 시작"
+    "startFree": "학습 시작",
+    "roadmap": "로드맵"
   },
   "buttons": {
     "start": "시작",

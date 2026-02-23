@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowRight, ChevronDown, BookOpen } from 'lucide-react';
 import {
@@ -27,10 +27,12 @@ interface CareerFilterProps {
 }
 
 function CareerFilter({ active, onChange }: CareerFilterProps) {
+  const { t } = useTranslation('pages');
   return (
     <div className="flex flex-wrap gap-2 justify-center">
       {CAREER_FILTERS.map((c) => {
-        const meta = CAREER_META[c];
+        const emoji = CAREER_META[c].emoji;
+        const label = t(`certifications.careers.${c}.label`);
         const isActive = active === c;
         return (
           <button
@@ -45,8 +47,8 @@ function CareerFilter({ active, onChange }: CareerFilterProps) {
               }
             `}
           >
-            <span>{meta.emoji}</span>
-            {meta.label}
+            <span>{emoji}</span>
+            {label}
           </button>
         );
       })}
@@ -61,12 +63,15 @@ interface CertCardProps {
   cert: Certification;
   providerColor: string;
   activeCareer: CareerPath;
+  isKo: boolean;
 }
 
-function CertCard({ cert, providerColor, activeCareer }: CertCardProps) {
+function CertCard({ cert, providerColor, activeCareer, isKo }: CertCardProps) {
+  const { t } = useTranslation('pages');
   const levelMeta = LEVEL_META[cert.level];
   const isHighlighted = activeCareer === 'all' || cert.careerPaths.includes(activeCareer);
   const hasExam = Boolean(cert.examId);
+  const description = isKo ? cert.description : cert.descriptionEn;
 
   return (
     <div
@@ -76,7 +81,7 @@ function CertCard({ cert, providerColor, activeCareer }: CertCardProps) {
         ${isHighlighted ? 'opacity-100' : 'opacity-35'}
       `}
     >
-      {/* Level Badge */}
+      {/* Level Badge + availability */}
       <div className="flex items-start justify-between gap-2">
         <span
           className={`
@@ -84,16 +89,16 @@ function CertCard({ cert, providerColor, activeCareer }: CertCardProps) {
             ${levelMeta.colorClass} ${levelMeta.bgClass} ${levelMeta.borderClass}
           `}
         >
-          {levelMeta.label}
+          {t(`certifications.levels.${cert.level}.label`)}
         </span>
         {hasExam ? (
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20">
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-            문제 있음
+            {t('certifications.available')}
           </span>
         ) : (
           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground border border-border">
-            준비중
+            {t('certifications.comingSoon')}
           </span>
         )}
       </div>
@@ -101,26 +106,27 @@ function CertCard({ cert, providerColor, activeCareer }: CertCardProps) {
       {/* Name & Code */}
       <div>
         <h3 className="font-bold text-base leading-snug">{cert.name}</h3>
-        <p className="text-sm font-mono text-muted-foreground mt-0.5" style={{ color: providerColor }}>
+        <p className="text-sm font-mono mt-0.5" style={{ color: providerColor }}>
           {cert.code}
         </p>
       </div>
 
       {/* Description */}
       <p className="text-sm text-muted-foreground leading-relaxed flex-1" style={{ wordBreak: 'keep-all' }}>
-        {cert.description}
+        {description}
       </p>
 
       {/* Career Tags */}
       <div className="flex flex-wrap gap-1.5">
         {cert.careerPaths.map((cp) => {
-          const m = CAREER_META[cp];
+          const emoji = CAREER_META[cp].emoji;
+          const label = t(`certifications.careers.${cp}.label`);
           return (
             <span
               key={cp}
               className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-accent/10 text-accent font-medium"
             >
-              {m.emoji} {m.label}
+              {emoji} {label}
             </span>
           );
         })}
@@ -129,18 +135,15 @@ function CertCard({ cert, providerColor, activeCareer }: CertCardProps) {
       {/* CTA */}
       {hasExam ? (
         <Link to="/exams">
-          <Button
-            size="sm"
-            className="w-full bg-accent text-accent-foreground hover:bg-accent/90 mt-1"
-          >
+          <Button size="sm" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 mt-1">
             <BookOpen className="mr-1.5 h-3.5 w-3.5" />
-            실습하기
+            {t('certifications.practiceBtn')}
             <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
           </Button>
         </Link>
       ) : (
         <Button size="sm" variant="outline" disabled className="w-full mt-1 opacity-50">
-          준비중
+          {t('certifications.comingSoon')}
         </Button>
       )}
     </div>
@@ -148,16 +151,18 @@ function CertCard({ cert, providerColor, activeCareer }: CertCardProps) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Level Section (one level row in the roadmap)
+// Level Section
 // ────────────────────────────────────────────────────────────────────────────
 interface LevelSectionProps {
   level: CertLevel;
   certs: Certification[];
   providerColor: string;
   activeCareer: CareerPath;
+  isKo: boolean;
 }
 
-function LevelSection({ level, certs, providerColor, activeCareer }: LevelSectionProps) {
+function LevelSection({ level, certs, providerColor, activeCareer, isKo }: LevelSectionProps) {
+  const { t } = useTranslation('pages');
   if (certs.length === 0) return null;
   const meta = LEVEL_META[level];
 
@@ -166,9 +171,11 @@ function LevelSection({ level, certs, providerColor, activeCareer }: LevelSectio
       {/* Level header */}
       <div className={`flex items-center gap-3 rounded-xl px-5 py-3 mb-4 border ${meta.bgClass} ${meta.borderClass}`}>
         <span className={`text-sm font-black uppercase tracking-wider ${meta.colorClass}`}>
-          {meta.label}
+          {t(`certifications.levels.${level}.label`)}
         </span>
-        <span className="text-xs text-muted-foreground">{meta.description}</span>
+        <span className="text-xs text-muted-foreground">
+          {t(`certifications.levels.${level}.description`)}
+        </span>
       </div>
 
       {/* Cert cards */}
@@ -179,6 +186,7 @@ function LevelSection({ level, certs, providerColor, activeCareer }: LevelSectio
             cert={cert}
             providerColor={providerColor}
             activeCareer={activeCareer}
+            isKo={isKo}
           />
         ))}
       </div>
@@ -192,9 +200,13 @@ function LevelSection({ level, certs, providerColor, activeCareer }: LevelSectio
 interface ProviderRoadmapProps {
   provider: ProviderConfig;
   activeCareer: CareerPath;
+  isKo: boolean;
 }
 
-function ProviderRoadmap({ provider, activeCareer }: ProviderRoadmapProps) {
+function ProviderRoadmap({ provider, activeCareer, isKo }: ProviderRoadmapProps) {
+  const { t } = useTranslation('pages');
+  const tagline = isKo ? provider.tagline : provider.taglineEn;
+
   return (
     <div className="space-y-6">
       {/* Provider intro */}
@@ -207,10 +219,10 @@ function ProviderRoadmap({ provider, activeCareer }: ProviderRoadmapProps) {
         </div>
         <div>
           <h3 className="font-bold">{provider.name}</h3>
-          <p className="text-sm text-muted-foreground">{provider.tagline}</p>
+          <p className="text-sm text-muted-foreground">{tagline}</p>
         </div>
         <div className="ml-auto text-sm font-medium text-muted-foreground">
-          {provider.certifications.length}개 자격증
+          {t('certifications.certCount', { count: provider.certifications.length })}
         </div>
       </div>
 
@@ -226,8 +238,8 @@ function ProviderRoadmap({ provider, activeCareer }: ProviderRoadmapProps) {
               certs={certs}
               providerColor={provider.color}
               activeCareer={activeCareer}
+              isKo={isKo}
             />
-            {/* Arrow between levels */}
             {idx < provider.levels.length - 1 && (
               <div className="flex justify-center py-3">
                 <ChevronDown className="h-6 w-6 text-muted-foreground/40" />
@@ -245,6 +257,8 @@ function ProviderRoadmap({ provider, activeCareer }: ProviderRoadmapProps) {
 // ────────────────────────────────────────────────────────────────────────────
 const CertificationsPage = () => {
   const [activeCareer, setActiveCareer] = useState<CareerPath>('all');
+  const { t, i18n } = useTranslation('pages');
+  const isKo = i18n.language === 'ko';
 
   return (
     <div className="min-h-screen">
@@ -255,18 +269,17 @@ const CertificationsPage = () => {
         <div className="container mx-auto max-w-3xl text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/10 text-sm font-semibold mb-6">
             <span>☁️</span>
-            <span>클라우드 자격증 로드맵</span>
+            <span>{t('certifications.hero.badge')}</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight mb-5">
-            어떤 자격증부터
+            {t('certifications.hero.title')}
             <br />
             <span className="bg-gradient-to-r from-accent via-accent/80 to-accent bg-clip-text text-transparent">
-              시작해야 할까요?
+              {t('certifications.hero.titleAccent')}
             </span>
           </h1>
           <p className="text-lg text-primary-foreground/80 max-w-xl mx-auto leading-relaxed" style={{ wordBreak: 'keep-all' }}>
-            AWS · GCP · Azure 자격증 체계와 레벨별 로드맵을 한눈에 확인하고,
-            내 커리어에 맞는 첫 번째 자격증을 찾아보세요.
+            {t('certifications.hero.subtitle')}
           </p>
         </div>
       </section>
@@ -275,7 +288,7 @@ const CertificationsPage = () => {
       <section className="py-8 px-4 bg-card border-b border-border sticky top-[61px] z-40 backdrop-blur-md bg-card/90">
         <div className="container mx-auto max-w-4xl">
           <p className="text-center text-xs text-muted-foreground mb-3 font-medium uppercase tracking-wider">
-            커리어 경로로 필터링
+            {t('certifications.filterLabel')}
           </p>
           <CareerFilter active={activeCareer} onChange={setActiveCareer} />
         </div>
@@ -295,7 +308,7 @@ const CertificationsPage = () => {
 
             {PROVIDERS.map((provider) => (
               <TabsContent key={provider.id} value={provider.id}>
-                <ProviderRoadmap provider={provider} activeCareer={activeCareer} />
+                <ProviderRoadmap provider={provider} activeCareer={activeCareer} isKo={isKo} />
               </TabsContent>
             ))}
           </Tabs>
@@ -305,13 +318,15 @@ const CertificationsPage = () => {
       {/* CTA */}
       <section className="py-16 px-4 bg-card border-t border-border">
         <div className="container mx-auto max-w-2xl text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-3">지금 바로 시작하세요</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-3">
+            {t('certifications.cta.title')}
+          </h2>
           <p className="text-muted-foreground mb-8" style={{ wordBreak: 'keep-all' }}>
-            AWS AI Practitioner 문제가 준비되어 있습니다. 무료로 실력을 확인해보세요.
+            {t('certifications.cta.subtitle')}
           </p>
           <Link to="/exams">
             <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-6 accent-glow">
-              문제 풀기 시작 <ArrowRight className="ml-2 h-5 w-5" />
+              {t('certifications.cta.button')} <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
         </div>

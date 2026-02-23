@@ -43,7 +43,7 @@ const Navbar = () => {
           <ThemeToggle />
 
           <Link to="/certifications" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            로드맵
+            {t('navigation.roadmap')}
           </Link>
 
           <Link to="/exams">
@@ -127,7 +127,7 @@ const Navbar = () => {
           )}
 
           <Link to="/certifications" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>
-            로드맵
+            {t('navigation.roadmap')}
           </Link>
 
           <Link to="/exams" onClick={() => setOpen(false)}>

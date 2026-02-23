@@ -316,5 +316,45 @@
     "title": "404",
     "message": "Sorry! Page not found",
     "returnHome": "Return Home"
+  },
+  "certifications": {
+    "hero": {
+      "badge": "Cloud Certification Roadmap",
+      "title": "Which certification",
+      "titleAccent": "should you start with?",
+      "subtitle": "Explore the AWS, GCP, and Azure certification hierarchy, visualize your level-by-level roadmap, and find the perfect first certification for your career."
+    },
+    "filterLabel": "Filter by career path",
+    "certCount": "{{count}} certifications",
+    "available": "Available",
+    "comingSoon": "Coming Soon",
+    "practiceBtn": "Practice Now",
+    "careers": {
+      "all":             { "label": "All" },
+      "cloud-architect": { "label": "Cloud Architect" },
+      "devops":          { "label": "DevOps / SRE" },
+      "data-ml":         { "label": "Data / ML" },
+      "security":        { "label": "Security" },
+      "developer":       { "label": "Cloud Developer" }
+    },
+    "levels": {
+      "foundational": { "label": "Foundational", "description": "Low barrier entry-level — recommended for cloud beginners" },
+      "fundamentals": { "label": "Fundamentals", "description": "Core concept basics — the first step for newcomers" },
+      "associate":    { "label": "Associate",    "description": "Mid-level validating real-world skills — ideal for 1–2 years experience" },
+      "professional": { "label": "Professional", "description": "Advanced deep-expertise certification — recommended after Associate" },
+      "expert":       { "label": "Expert",       "description": "Highest-level professional certification" },
+      "specialty":    { "label": "Specialty",    "description": "Domain-specific expert certification for specialists" }
+    },
+    "cta": {
+      "title": "Start practicing now",
+      "subtitle": "AWS AI Practitioner questions are ready. Test your knowledge for free.",
+      "button": "Start Practice"
+    },
+    "roadmapCta": {
+      "eyebrow": "Not sure where to begin?",
+      "title": "AWS · GCP · Azure Certification Roadmap",
+      "subtitle": "See level-by-level certifications and career paths at a glance.",
+      "button": "View Certification Roadmap"
+    }
   }
 }
