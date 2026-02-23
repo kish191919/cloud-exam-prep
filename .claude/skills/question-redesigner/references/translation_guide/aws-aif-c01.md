@@ -196,25 +196,3 @@ Amazon Titan                 AWS Artifact
 Anthropic Claude (on Bedrock) Amazon OpenSearch Service
 ```
 
----
-
-## 7. 번역 시 절대 금지 사항
-
-1. **AWS 서비스명 번역 금지** — `Amazon SageMaker`를 "아마존 세이지메이커"로 쓰지 않음
-2. **직역체 금지** — "이 요구사항을 가장 잘 만족하는 것은?" → "Which solution BEST meets these requirements?"
-3. **한국어 조사·어미 직역 금지** — "~을 위해" → "to", "~에 대한" → "for"
-4. **모호한 표현 금지** — "can be used" 대신 "is designed to" 또는 "enables"
-5. **관사 누락 금지** — "company" → "A company", "solution" → "the solution"
-
----
-
-## 8. 번역 품질 자가검증 (STEP 5.5 완료 후)
-
-```
-[PASS] AWS 서비스명 원문 그대로 사용 (번역·축약 없음)
-[PASS] 시나리오 도입부 "A company..." / "An organization..." 형식 사용
-[PASS] 질문 문장에 "MOST" / "BEST" / "LEAST" 등 AWS 시험 강조 표현 사용
-[PASS] 오답 해설에 "is used for [다른 용도], not for..." 패턴 사용
-[PASS] key_points_en이 간결한 bullet 형식으로 번역됨
-[PASS] 용어 대역표의 공식 영문 표현 우선 사용
-```

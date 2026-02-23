@@ -16,7 +16,7 @@ Main 오케스트레이터로서:
 | 에이전트 | 파일 | 역할 | 모델 |
 |---------|------|------|------|
 | Parser & SQL | `.claude/agents/parser-sql/AGENT.md` | STEP 1 파싱 + STEP 6 Supabase 직접 삽입 | Sonnet |
-| Redesigner | `.claude/agents/redesigner/AGENT.md` | 문제 1개 한국어 재설계 | **Haiku** |
+| Redesigner | `.claude/agents/redesigner/AGENT.md` | 문제 5개(배치) 한국어 재설계 | **Haiku** |
 
 **규칙:** 서브에이전트 간 직접 호출 금지 — 반드시 Main(이 파일)을 통해 조율한다.
 
@@ -156,10 +156,10 @@ curl -s \
     │    │
     │    ├─ 파싱 실패 문제 목록 수집 → 결과 요약에 포함 예정
     │    │
-    │    ├─ [STEP 2~5.5] 참조 파일 선로드 → Redesigner Agent 병렬 호출
-    │    │    ├─ Main이 redesign_rules.md, domain_tags, quality_checklist.md, translation_guide.md 미리 읽기
-    │    │    ├─ 문제 N개 → N개 Redesigner Agent 동시 실행 (각 1개 문제 처리)
-    │    │    ├─ 각 Agent가 STEP 5 품질검증 후 STEP 5.5 영문 번역 수행
+    │    ├─ [STEP 2~5.5] 참조 파일 선로드 → Redesigner Agent 배치 호출
+    │    │    ├─ Main이 domain_tags, translation_guide.md 미리 읽기 (규칙/체크리스트는 AGENT.md 내장)
+    │    │    ├─ 문제 5개씩 배치 → ceil(N/5)개 Redesigner Agent 동시 실행
+    │    │    ├─ 각 Agent가 5개 문제를 순서대로 STEP 3→4→4.5→5→5.5 처리
     │    │    ├─ 결과 취합 → redesigned_questions.json 생성 (한/영 양방향 필드 포함)
     │    │    └─ [에스컬레이션 발생 시] 사용자에게 실시간 전달 → 응답 → 해당 Agent 재호출
     │    │
@@ -171,41 +171,46 @@ curl -s \
     └─ [STEP 7] 결과 요약 출력 (전체 파일 합산)
 ```
 
-## STEP 2~5.5: 병렬 재설계 + 영문 번역 실행 절차
+## STEP 2~5.5: 배치 재설계 + 영문 번역 실행 절차
 
 ### 1. 참조 파일 선로드 (Main이 직접 읽기)
 
-Redesigner Agent 호출 전에 다음 4개 파일을 읽어 텍스트로 보관한다:
+Redesigner Agent 호출 전에 다음 2개 파일을 읽어 텍스트로 보관한다:
 
 ```
-redesign_rules_content    ← .claude/skills/question-redesigner/references/redesign_rules_compact.md
 domain_tags_content       ← .claude/skills/question-redesigner/references/domain_tags/{exam_id}.md
-quality_checklist_content ← .claude/skills/question-redesigner/references/quality_checklist_compact.md
 translation_guide_content ← .claude/skills/question-redesigner/references/translation_guide/{exam_id}.md
                             (파일 없으면 null — Redesigner가 일반 번역 수행)
 ```
 
-### 2. Redesigner Agent 병렬 호출
+재설계 규칙과 품질 체크리스트는 AGENT.md에 내장되어 있으므로 별도 읽기 불필요.
 
-`parsed_questions.json`의 각 문제에 대해 **동시에** Task 호출한다:
+### 2. Redesigner Agent 배치 호출
+
+`parsed_questions.json`의 문제를 **5개씩 묶어** Task 호출한다:
 
 ```python
-# 예: 5개 문제 → 5개 에이전트 동시 실행
-for q in parsed_questions:
-    # correct_answer_concept: 원문 정답 보기 텍스트 (규칙 13 — 정답 개념 보존)
-    correct_answer_concept = q["options"].get(q["answer"], "")
+# 예: 15개 문제 → 3개 에이전트 동시 실행 (각 5개 문제 처리)
+import math
+batch_size = 5
+batches = [parsed_questions[i:i+batch_size] for i in range(0, len(parsed_questions), batch_size)]
+
+for batch in batches:
+    # correct_answer_concepts: 문제 번호 → 원문 정답 보기 텍스트 매핑 (규칙 13)
+    correct_answer_concepts = {
+        str(q["number"]): q["options"].get(q["answer"].split(",")[0].strip(), "")
+        for q in batch
+    }
     Task(
         subagent_type="general-purpose",
         model="haiku",          # Haiku 모델 사용
         prompt={
-            "task": "redesign_single",
-            "question": q,
+            "task": "redesign_batch",
+            "questions": batch,
             "exam_id": exam_id,
             "source_language": source_language,   # "en" 또는 "ko"
-            "correct_answer_concept": correct_answer_concept,   # 원문 정답 보기 텍스트
-            "redesign_rules": redesign_rules_content,
+            "correct_answer_concepts": correct_answer_concepts,   # 문제번호 → 정답 개념 매핑
             "domain_tags": domain_tags_content,
-            "quality_checklist": quality_checklist_content,
             "translation_guide": translation_guide_content   # AWS 자격증 영문 번역 가이드
         }
     )
@@ -214,18 +219,20 @@ for q in parsed_questions:
 
 ### 3. 결과 취합
 
+- 각 배치 결과의 `results` 배열을 하나로 합산
 - 성공한 결과를 `question_number` 기준으로 정렬
 - 에스컬레이션 결과는 사용자에게 전달 후 처리 (아래 참조)
 - 최종 성공 결과를 배열로 `output/redesigned_questions.json`에 저장
 
 ## 에스컬레이션 처리
 
-Redesigner Agent로부터 에스컬레이션 보고를 받으면:
+배치 결과의 `results` 배열에서 `success: false` 항목을 순서대로 처리한다:
 
 1. 사용자에게 에스컬레이션 내용을 그대로 출력
 2. 사용자 응답 대기:
-   - **[A] 직접 지시:** 해당 문제만 Redesigner를 단독으로 재호출 (지시 포함)
+   - **[A] 직접 지시:** 해당 문제만 Redesigner를 단독(`questions` 배열에 1개만) 재호출 (지시 포함)
    - **[B] 스킵:** 해당 문제 스킵 처리
+3. 모든 에스컬레이션 처리 완료 후 STEP 6(Supabase 삽입) 진행
 
 ## STEP 7: 결과 요약 출력
 
@@ -265,7 +272,7 @@ Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 | `.claude/skills/question-parser/scripts/parse_text.py` | 파싱 스크립트 |
 | `.claude/skills/sql-generator/scripts/insert_supabase.py` | Supabase REST API 직접 삽입 스크립트 |
 | `.claude/skills/sql-generator/scripts/generate_sql.py` | 영문 백필 전용 (`--patch-en` 모드) |
-| `.claude/skills/question-redesigner/references/translation_guide/{exam_id}.md` | AWS 자격증 영문 번역 가이드 |
+| `.claude/skills/question-redesigner/references/translation_guide/{exam_id}.md` | AWS 자격증 영문 번역 가이드 (문장 패턴 + 용어 대역표) |
 
 ## 중요 제약사항
 
