@@ -85,6 +85,7 @@ const awsCertifications: Certification[] = [
     careerPaths: ['all'],
     description: 'AWS 클라우드의 핵심 개념, 서비스, 요금제를 전반적으로 다루는 입문 자격증. 모든 커리어의 출발점.',
     descriptionEn: 'Entry-level certification covering core AWS cloud concepts, services, and pricing. The ideal starting point for any cloud career.',
+    examId: 'aws-clf-c02',
   },
   {
     id: 'aws-aif-c01',
