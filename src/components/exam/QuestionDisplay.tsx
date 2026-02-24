@@ -40,8 +40,8 @@ const QuestionDisplay = ({
 
   // Select language-appropriate content, falling back to Korean if English not available
   const questionText = (isEn && question.textEn) ? question.textEn : question.text;
-  const questionExplanation = (isEn && question.explanationEn) ? question.explanationEn : question.explanation;
-  const questionKeyPoints = (isEn && question.keyPointsEn) ? question.keyPointsEn : question.keyPoints;
+  const questionExplanation = isEn ? question.explanationEn : question.explanation;
+  const questionKeyPoints = isEn ? question.keyPointsEn : question.keyPoints;
 
   const isStudy = mode === 'study';
   const isPractice = mode === 'practice';
@@ -162,7 +162,7 @@ const QuestionDisplay = ({
           // Per-option explanation: show own explanation if available,
           // or fall back to the overall question.explanation for the correct option
           const optionText = (isEn && option.textEn) ? option.textEn : option.text;
-          const optionExplanation = (isEn && option.explanationEn) ? option.explanationEn : option.explanation;
+          const optionExplanation = isEn ? option.explanationEn : option.explanation;
           const perOptionExplanation = optionExplanation
             || (showFeedback && isCorrect ? questionExplanation : undefined);
 
