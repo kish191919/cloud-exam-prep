@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Cloud, BookOpen, RotateCcw, Settings2, LogOut, User } from 'lucide-react';
+import { Cloud, Home, BookOpen, RotateCcw, Settings2, LogOut, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
@@ -26,6 +26,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
     || 'U';
 
   const navItems = [
+    { to: '/', icon: Home, label: t('navigation.home') },
     { to: '/exams', icon: BookOpen, label: t('navigation.exams') },
     { to: '/review', icon: RotateCcw, label: t('navigation.review') },
     ...(isAdmin(user?.email) ? [{ to: '/admin', icon: Settings2, label: '관리자' }] : []),
