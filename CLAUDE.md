@@ -382,6 +382,123 @@ PATCH 완료:    질문 {q_patched}개, 옵션 {opt_patched}개
 
 ---
 
+## `/patch-content` 커맨드 처리
+
+Supabase에 이미 저장된 문제 중 보기별 해설(`options[].explanation`/`explanation_en`)과
+참고자료(`ref_links`)가 누락된 항목을 탐지하고 Haiku로 생성하여 PATCH하는 백필 파이프라인.
+
+### 처리 흐름
+
+```
+1. exam_id 입력 (Enter 스킵 시 전체 exam 대상)
+2. set_name 입력 (Enter 스킵 시 해당 exam 전체, exam_id 없으면 생략)
+3. --fetch-content 실행 → needs_content.json 생성 및 통계 출력
+4. needs_content.json이 비어있으면 종료
+5. translation_guide/{exam_id}.md 로드 (없으면 null)
+6. Haiku 배치 호출 (5문제씩, ceil(N/5)개 동시 실행)
+7. 결과 취합 → output/generated_content.json 저장
+8. --patch 실행 (--input-file output/generated_content.json)
+9. 결과 요약 출력
+```
+
+### Step 1: 멀티턴 정보 수집
+
+```
+보기 해설·참고자료 백필을 시작합니다.
+
+exam_id를 입력하세요 (전체 대상이면 Enter):
+exam_id: aws-aif-c01
+
+세트 이름을 입력하세요 (전체 대상이면 Enter, 예: 세트 2):
+set_name: 세트 2
+```
+
+### Step 2: --fetch-content 실행
+
+```bash
+python3 .claude/skills/sql-generator/scripts/patch_en_supabase.py \
+  --fetch-content \
+  [--exam-id {exam_id}] \
+  [--set-name "{set_name}"]
+```
+
+출력 예:
+```
+[결과] 콘텐츠 누락 문제: 45개
+  - ref_links 누락:              45개
+  - 옵션 explanation(한) 누락:   180개 (항목 기준)
+  - 옵션 explanation_en(영) 누락: 180개 (항목 기준)
+저장: output/needs_content.json
+```
+
+### Step 3: Haiku 배치 호출 (5문제씩)
+
+`output/needs_content.json`의 각 항목을 5개씩 묶어 동시 실행:
+
+```python
+Task(
+    subagent_type="general-purpose",
+    model="haiku",
+    prompt={
+        "task": "generate_content",
+        "questions": batch,          # needs_content.json의 항목 5개
+        "translation_guide": translation_guide_content,  # 없으면 null
+    }
+)
+```
+
+**Haiku 생성 지시사항 (프롬프트에 포함):**
+```
+각 질문의 'needs' 객체를 보고 누락된 필드만 생성하여 반환하라.
+
+규칙:
+- needs에 없는 필드는 출력 생략
+- AWS 서비스명 원문 보존 (Amazon Bedrock, SageMaker 등)
+- translation_guide의 용어 대역표 우선 적용
+- ref_links: docs.aws.amazon.com 또는 aws.amazon.com 도메인만, 1~3개
+- options[].explanation(한국어): is_correct가 true이면 "왜 정답인지", false이면 "왜 오답인지" (2~3문장)
+- options[].explanation_en: 동일 내용 영어로 (AWS 시험 공식 문체)
+- 각 옵션의 text와 question의 text를 충분히 참고하여 정확한 설명 생성
+
+출력 형식:
+{
+  "results": [
+    {
+      "id": "{question_id}",
+      "ref_links": "[{\"name\": \"...\", \"url\": \"...\"}]",  // needs.ref_links가 true일 때만
+      "options": [
+        {
+          "option_id": "a",
+          "explanation": "...",       // needs에 포함된 경우만
+          "explanation_en": "..."     // needs에 포함된 경우만
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Step 4: --patch 실행
+
+```bash
+python3 .claude/skills/sql-generator/scripts/patch_en_supabase.py \
+  --patch \
+  --input-file output/generated_content.json
+```
+
+### Step 5: 결과 요약 출력
+
+```
+✅ 콘텐츠 백필 완료
+━━━━━━━━━━━━━━━━━━━━━━━━
+누락 탐지:   {total}개 문제
+생성 성공:   {generated}개
+PATCH 완료:  질문(ref_links) {q_patched}개, 옵션 {opt_patched}개
+━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
 ## 주요 파일 경로
 
 | 파일 | 역할 |
@@ -392,10 +509,12 @@ PATCH 완료:    질문 {q_patched}개, 옵션 {opt_patched}개
 | `output/redesigned_questions.json` | 재설계 완료 결과 (한/영 양방향 필드 포함) |
 | `output/needs_translation.json` | 영문 백필 대상 목록 (`/patch-en` 생성) |
 | `output/translated_questions.json` | 번역 완료 결과 (`/patch-en` 생성) |
+| `output/needs_content.json` | 보기 해설·참고자료 누락 목록 (`/patch-content` 생성) |
+| `output/generated_content.json` | 생성 완료 결과 (`/patch-content` 생성) |
 | `.env` | Supabase 접속 정보 (git에 포함되지 않음) |
 | `.claude/skills/question-parser/scripts/parse_text.py` | 파싱 스크립트 |
 | `.claude/skills/sql-generator/scripts/insert_supabase.py` | Supabase REST API 직접 삽입 스크립트 |
-| `.claude/skills/sql-generator/scripts/patch_en_supabase.py` | 영문 백필 스크립트 (`--fetch` / `--patch` 모드) |
+| `.claude/skills/sql-generator/scripts/patch_en_supabase.py` | 영문 백필·콘텐츠 백필 스크립트 (`--fetch` / `--fetch-content` / `--patch` 모드) |
 | `.claude/skills/sql-generator/scripts/generate_sql.py` | 영문 백필 전용 (`--patch-en` 모드) |
 | `.claude/skills/question-redesigner/references/translation_guide/{exam_id}.md` | AWS 자격증 영문 번역 가이드 (문장 패턴 + 용어 대역표) |
 
