@@ -1,0 +1,129 @@
+{
+  "results": [
+    {
+      "id": "awsaifc01-q234",
+      "options": [
+        {
+          "option_id": "a",
+          "text_en": "Overfitting",
+          "explanation_en": "Overfitting occurs when a model learns the noise in training data and fails to generalize. The issue here is an imbalance in data distribution, not excessive model adaptation."
+        },
+        {
+          "option_id": "b",
+          "text_en": "Concept Drift",
+          "explanation_en": "Concept drift occurs when data distribution or model objectives change over time. This situation involves a sampling composition problem at the time of training data collection."
+        },
+        {
+          "option_id": "c",
+          "text_en": "Data Leakage",
+          "explanation_en": "Data leakage occurs when test data information is included in training data or target prediction information is embedded in training features. This case represents data selection bias."
+        },
+        {
+          "option_id": "d",
+          "text_en": "Sampling Bias",
+          "explanation_en": "Training data is skewed toward specific industries while other industries are insufficiently represented. This is a typical sampling bias, where the model learns a distorted data distribution, resulting in unfair predictions for underrepresented groups."
+        }
+      ]
+    },
+    {
+      "id": "awsaifc01-q235",
+      "options": [
+        {
+          "option_id": "a",
+          "text_en": "Accuracy",
+          "explanation_en": "Accuracy measures the proportion of correct predictions among all predictions in classification problems. It is unsuitable for evaluating machine translation quality."
+        },
+        {
+          "option_id": "b",
+          "text_en": "BLEU Score",
+          "explanation_en": "BLEU (Bilingual Evaluation Understudy) is the international standard for evaluating machine translation quality. Based on n-gram word matching, it automatically measures similarity between generated and reference translations and is optimized for version comparison and performance improvement tracking."
+        },
+        {
+          "option_id": "c",
+          "text_en": "F1 Score",
+          "explanation_en": "F1 Score is the harmonic mean of precision and recall, used for evaluating imbalanced classification problems. It is not suitable for translation quality assessment."
+        },
+        {
+          "option_id": "d",
+          "text_en": "AUC-ROC",
+          "explanation_en": "AUC-ROC measures the performance of binary classification models by the area under the ROC curve. It is unsuitable for evaluating machine translation quality."
+        }
+      ]
+    },
+    {
+      "id": "awsaifc01-q236",
+      "options": [
+        {
+          "option_id": "a",
+          "text_en": "Amazon S3 + AWS Glue",
+          "explanation_en": "S3 is a data storage service and Glue is a data integration tool; neither offers automatic sentiment analysis or text generation capabilities."
+        },
+        {
+          "option_id": "b",
+          "text_en": "Amazon Rekognition + Amazon Polly",
+          "explanation_en": "Rekognition is an image and video analysis service, and Polly is a text-to-speech service. They do not provide text sentiment analysis or automated report generation."
+        },
+        {
+          "option_id": "c",
+          "text_en": "Amazon EBS + Amazon CloudWatch",
+          "explanation_en": "EBS is a block storage service and CloudWatch is a monitoring service; neither provides text analysis or generation capabilities."
+        },
+        {
+          "option_id": "d",
+          "text_en": "Amazon Comprehend + Amazon Bedrock",
+          "explanation_en": "Comprehend provides text sentiment analysis and entity extraction, while Bedrock enables foundation model-based text generation, fulfilling all requirements."
+        }
+      ]
+    },
+    {
+      "id": "awsaifc01-q239",
+      "options": [
+        {
+          "option_id": "a",
+          "text_en": "Decision Trees",
+          "explanation_en": "Decision trees provide clear rule-based decision paths, enabling step-by-step explanation of how each feature influences the final decision with superior explainability."
+        },
+        {
+          "option_id": "b",
+          "text_en": "PCA (Principal Component Analysis)",
+          "explanation_en": "PCA is a dimensionality reduction technique used to compress high-dimensional data into lower dimensions. It is not directly used for classification or explaining decision-making processes."
+        },
+        {
+          "option_id": "c",
+          "text_en": "Deep Neural Network (DNN)",
+          "explanation_en": "While DNNs provide high prediction accuracy, they operate through numerous hidden layers and are considered black boxes, making it difficult to clearly explain the reasoning behind decisions."
+        },
+        {
+          "option_id": "d",
+          "text_en": "K-means Clustering",
+          "explanation_en": "K-means is an unsupervised learning algorithm used to partition data into groups. It is not suitable for binary or multiclass classification problems."
+        }
+      ]
+    },
+    {
+      "id": "awsaifc01-q243",
+      "options": [
+        {
+          "option_id": "a",
+          "text_en": "Switch to a more efficient foundation model while maintaining the current prompt length.",
+          "explanation_en": "Model switching alone does not reduce the number of input tokens, limiting cost savings."
+        },
+        {
+          "option_id": "b",
+          "text_en": "Store generated legal documents in Amazon S3 for reuse in future requests.",
+          "explanation_en": "This approach incurs additional storage costs and requires generating new documents for each case, making substantial cost reduction difficult."
+        },
+        {
+          "option_id": "c",
+          "text_en": "Reduce the number of precedents and guidelines included in each API call prompt to decrease input tokens.",
+          "explanation_en": "This is the most effective method to directly reduce input tokens. Removing unnecessary precedents and streamlining guidelines achieves both quality maintenance and cost savings."
+        },
+        {
+          "option_id": "d",
+          "text_en": "Reduce API call frequency and batch process multiple document requests into a single call.",
+          "explanation_en": "Batch processing changes the processing approach only; input tokens per document remain unchanged, limiting overall cost reduction."
+        }
+      ]
+    }
+  ]
+}

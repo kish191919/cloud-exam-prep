@@ -1,0 +1,126 @@
+[
+  {
+    "id": "awsaifc01-q325",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "정반대입니다. AI는 규칙 기반 포함(더 넓은 범위)이고, ML은 데이터 학습입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "정확합니다. ML은 AI 내 데이터 학습 방식이고, AI는 더 광범위한 범주입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "AI와 ML은 서로 다른 개념입니다. ML은 AI의 한 부분이지 동의어가 아닙니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "AI가 감정이나 자아인식을 가져야 한다는 것은 잘못된 정의입니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q326",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "처음부터 재학습은 시간과 비용이 매우 크며, 일반 의학 지식을 손상시킬 수 있습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "RAG 기반 솔루션으로, 모델 재학습 없이 기관 특화 정보를 활용합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "공개 인터넷 검색은 기관의 기밀 임상 정보를 제공할 수 없습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "추론 방식은 문서 인용 정확도와 무관합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q327",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "비지도학습만 사용하면 결함 유형의 정의를 학습하지 못합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "강화학습은 정확한 분류 라벨이 있는 상황에 적합하지 않습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "라벨 데이터의 신호와 비라벨 데이터의 내재 구조를 함께 활용하는 효과적인 기법입니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "전체 수동 라벨링은 비용 절감 목표와 반대입니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q328",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "이는 KNN 같은 메모리 기반 알고리즘의 설명입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "신경망은 무작위 탐색이 아니라 경사 하강법으로 체계적으로 가중치를 조정합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "신경망의 정확한 원리입니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "파인튜닝이나 추가 학습으로 가중치를 재조정할 수 있습니다."
+        }
+      }
+    ]
+  }
+]

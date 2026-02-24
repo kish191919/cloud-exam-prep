@@ -1,0 +1,177 @@
+[
+  {
+    "id": "awsaifc01-q244",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Shapley values는 전체 데이터셋의 평균 특성 중요도를 계산하고, PDP는 개별 거래자의 한도 결정을 설명한다.",
+          "explanation_en": "이는 두 기법의 역할을 반대로 설명했습니다. Shapley values는 지역적 방법이고 PDP는 전역적 방법입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Shapley values는 특정 예측에 대해 각 특성의 기여도를 수치로 설명하는 지역적 기법이고, PDP는 전체 데이터 기준으로 특성 값 변화에 따른 평균 예측 변화를 시각화하는 전역적 기법이다.",
+          "explanation_en": "정확합니다. 두 기법의 수준과 용도를 올바르게 설명합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Shapley values는 모델 학습 효율성을 개선하는 최적화 기법이고, PDP는 하이퍼파라미터 튜닝에 사용되는 도구이다.",
+          "explanation_en": "이는 잘못된 설명입니다. Shapley values와 PDP는 모두 설명 가능성 기법이지, 최적화나 튜닝 도구가 아닙니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Shapley values는 회귀 모델용이고 PDP는 분류 모델용이므로 함께 사용할 수 없다.",
+          "explanation_en": "두 기법 모두 회귀와 분류 모델 모두에 적용 가능합니다. 이 설명은 부정확합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q245",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Amazon Bedrock은 커스터마이징을 지원하지 않으며, 사전 정의된 기본 설정으로만 사용된다.",
+          "explanation_en": "이는 거짓입니다. Amazon Bedrock은 continued pre-training과 fine-tuning 모두를 지원합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "레이블 없는 대규모 데이터를 사용하면 강화 학습으로 공급망 제어 정책을 자동 생성한다.",
+          "explanation_en": "잘못된 설명입니다. Continued pre-training은 강화 학습이 아니며, 제어 정책 생성도 아닙니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "전문가 레이블 데이터는 Bedrock 모델의 하드웨어 성능 최적화에만 사용된다.",
+          "explanation_en": "이는 거짓입니다. 레이블 데이터는 fine-tuning을 통해 모델의 예측 성능을 직접 개선합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Continued pre-training은 레이블 없는 대규모 텍스트로 도메인에 적응시키고, fine-tuning은 전문가 레이블 데이터로 특정 태스크 성능을 최적화한다.",
+          "explanation_en": "정확합니다. Continued pre-training과 fine-tuning의 정의와 용도를 올바르게 설명합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q256",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Amazon SageMaker Feature Store",
+          "explanation_en": "Feature Store는 ML 모델 학습을 위한 피처 데이터를 저장하고 관리하는 서비스로, 모델 모니터링에는 사용되지 않습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Amazon SageMaker Model Dashboard",
+          "explanation_en": "Model Dashboard는 배포된 모든 모델의 상태, 버전, 실시간 성능 메트릭을 한곳에서 모니터링할 수 있는 통합 대시보드입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon SageMaker Clarify",
+          "explanation_en": "Clarify는 모델 편향 분석과 해석 가능성 평가 도구로, 모델 상태 모니터링용이 아닙니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Amazon SageMaker Autopilot",
+          "explanation_en": "Autopilot은 자동 머신러닝 서비스로 모델을 자동 생성하는 데 사용되며, 기존 모델 모니터링과는 무관합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q257",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "생성 길이를 제한해 응답이 너무 길어지지 않게 한다",
+          "explanation_en": "이는 Top P가 아니라 Max tokens 파라미터의 역할입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Temperature 값과 무관하게 항상 동일한 결과를 생성한다",
+          "explanation_en": "Top P도 Temperature도 생성의 다양성을 제어하는 파라미터입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "누적 확률이 특정 값에 도달할 때까지 가장 가능성 높은 토큰들을 선택 범위로 설정한다",
+          "explanation_en": "Top P는 누적 확률 임계값을 기반으로 토큰을 선택합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "특정 단어를 금지하고 부적절한 콘텐츠 필터링만 담당한다",
+          "explanation_en": "이는 프롬프트 설계나 콘텐츠 필터링 정책의 역할이며 Top P의 기능이 아닙니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q258",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Top-k 값을 1로 설정하여 선택 옵션을 최소화한다",
+          "explanation_en": "Top-k를 1로 설정하면 매번 가장 확률이 높은 토큰 하나만 선택되어 반복적인 결과가 생깁니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Max tokens를 최대한 크게 설정한다",
+          "explanation_en": "Max tokens는 응답의 최대 길이를 제어하며 창의성과는 무관합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "프롬프트에서 출력 형식을 엄격하게 지정한다",
+          "explanation_en": "엄격한 형식 지정은 모델의 창의적인 표현을 제약합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Temperature 값을 높인다",
+          "explanation_en": "Temperature를 높이면 확률이 낮은 다양한 토큰도 선택할 가능성이 증가하여 창의적인 결과를 생성합니다."
+        }
+      }
+    ]
+  }
+]

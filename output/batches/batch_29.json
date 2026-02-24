@@ -1,0 +1,157 @@
+[
+  {
+    "id": "awsaifc01-q295",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "오답: 모델 복잡도를 높이고 더 오래 훈련하면 과적합이 심화될 뿐입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "오답: 라벨 조정은 데이터 무결성을 훼손하며, 과적합을 더 악화시킵니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "정답: 과적합을 근본적으로 해결하는 표준적이고 효과적인 방법들입니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "오답: 새로운 데이터를 무시하면 시간이 지남에 따라 모델 성능은 계속 악화됩니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q309",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "객체 탐지(Object Detection)는 기존 이미지에서 객체를 식별하는 기능으로, 새로운 이미지를 생성하지 않습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "정답입니다. 이것이 생성형 AI의 핵심 기능으로, 학습한 패턴으로부터 새로운 콘텐츠를 창의적으로 만드는 것입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "이미지 유사도 검사는 기존 이미지를 비교하는 기능으로, 새로운 이미지 생성과 무관합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "이미지 세그멘테이션은 기존 이미지를 영역별로 분할하는 기능이며, 새로운 이미지 생성과는 다릅니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q310",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "오답. 파운데이션 모델은 전이 학습으로 새로운 작업에 효율적으로 적응하며, 처음부터 학습하는 것보다 훨씬 비용 효율적입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "정답. 파운데이션 모델은 광범위한 사전학습을 통해 다양한 작업에 적응하고, 기관의 특정 데이터로 파인튜닝하여 신용 평가, 사기 탐지, 문서 분류 등의 업무에 바로 활용할 수 있습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "오답. 파운데이션 모델은 다중 도메인과 다양한 작업에 적용되는 특징을 가집니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "오답. 모든 AI 모델은 적용 환경에 맞춘 최소한의 조정이 필요합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q313",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "Studio는 데이터 과학자와 ML 엔지니어를 위한 통합 IDE로, Jupyter 노트북과 코드 작성이 필수입니다. 비-기술 사용자에게는 진입 장벽이 높습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "Forecast는 시계열 데이터의 시간 기반 예측에만 특화된 서비스로, 고객 이탈 예측(분류 문제)은 처리할 수 없습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "Canvas는 노코드 ML 빌더로 정확히 이 요구사항을 충족합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "Comprehend는 텍스트 데이터의 감정 분석, 엔티티 인식 등에만 사용되며, 수요 예측이나 이탈 분석에는 설계되지 않았습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q314",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "클라우드 컴퓨팅의 세 가지 핵심 강점을 모두 설명합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "이것은 온프레미스의 한계입니다. 클라우드에서는 필요할 때만 확장하므로 선구매가 불필요합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "클라우드의 강점은 정반대입니다. 수 분~수 시간 내에 자동으로 확장 가능합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "거짓입니다. AWS와 주요 클라우드 서비스는 종량제를 기본 과금 모델로 제공합니다."
+        }
+      }
+    ]
+  }
+]

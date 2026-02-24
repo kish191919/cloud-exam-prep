@@ -1,0 +1,173 @@
+[
+  {
+    "id": "awsaifc01-q259",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Amazon SageMaker Ground Truth",
+          "explanation_en": "Ground Truth는 대규모 라벨링 작업을 관리하는 완전 관리형 서비스로 전문가 라벨링과 자동 라벨링을 조합하여 고품질 학습 데이터를 효율적으로 구축합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Amazon SageMaker Feature Store",
+          "explanation_en": "Feature Store는 ML 모델 학습에 필요한 피처 데이터를 저장하고 관리하는 서비스로 이미지 라벨링과는 무관합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon SageMaker Data Wrangler",
+          "explanation_en": "Data Wrangler는 데이터 전처리와 변환 도구이며 이미지 라벨링 작업을 수행하지 않습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Amazon Mechanical Turk",
+          "explanation_en": "Mechanical Turk는 크라우드소싱 플랫폼이며 SageMaker 서비스가 아닙니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q260",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "키워드 추출만 수행하고 검색 결과를 직접 답변으로 사용한다",
+          "explanation_en": "키워드 기반 검색만으로는 복잡한 규제 질의의 의미를 정확히 파악할 수 없습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "문서를 벡터 임베딩으로 변환·인덱싱한 후 관련 문서를 LLM에 전달하는 RAG 시스템을 구축한다",
+          "explanation_en": "RAG는 의미 기반 검색으로 정확한 규제 정보를 신속하게 찾고 문서 업데이트를 자동으로 반영합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon OpenSearch 키워드 검색만 구축하고 벡터 임베딩 없이 운영한다",
+          "explanation_en": "키워드 검색만으로는 복잡한 규제 질의에 대한 정확한 답변을 제공하기 어렵습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "모든 PDF 내용을 정기적으로 Bedrock 모델에 파인튜닝하여 최신 규제를 반영한다",
+          "explanation_en": "파인튜닝은 비용이 높고 시간이 오래 걸리며 문서 업데이트를 신속하게 반영할 수 없습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q261",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Self-attention 메커니즘으로 모든 단어가 서로를 참조하며 문맥 기반 임베딩을 생성한다",
+          "explanation_en": "Transformer의 핵심인 self-attention이 문장 내 모든 단어 간 관계를 병렬로 계산하여 정확한 문맥 이해를 가능하게 합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "CNN 합성곱 필터로 n-그램을 추출하여 문맥을 학습한다",
+          "explanation_en": "이는 CNN 아키텍처의 방식이며 Transformer와는 다릅니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "RNN처럼 단어를 순차적으로 처리하며 이전 상태를 다음 단어로 전달한다",
+          "explanation_en": "이는 RNN/LSTM의 순차 처리 방식으로 Transformer의 병렬 처리와 다릅니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "문장 전체를 고정 크기 벡터로 압축하여 그 하나의 벡터만으로 의미를 해석한다",
+          "explanation_en": "고정 벡터 압축은 문맥 손실이 발생하며 Transformer는 모든 토큰을 유지합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q263",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Amazon SageMaker Ground Truth",
+          "explanation_en": "Ground Truth는 모델 학습을 위한 데이터 라벨링 도구이며 즉시 비전 기능을 제공하지 않습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Amazon Kinesis Data Streams",
+          "explanation_en": "Kinesis는 데이터 스트림 전달 서비스이며 비전 분석 기능이 없습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon Rekognition",
+          "explanation_en": "Amazon Rekognition은 즉시 사용 가능한 사전 학습 비전 서비스로 객체·인물·장면을 즉시 감지합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Amazon OpenSearch Service",
+          "explanation_en": "OpenSearch는 검색 및 분석 엔진이며 비전 인식 기능을 제공하지 않습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q269",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "라벨링은 확장성이 없고 비용이 높습니다. 파운데이션 모델은 라벨이 없는 데이터로 학습합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "정답입니다. 다음 단어 예측, 손상된 부분 복원 등의 방식으로 라벨 없이 광범위한 지식을 습득합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "강화학습은 미세 조정 단계에서 활용될 수 있지만, 초기 광범위한 지식 습득에는 적합하지 않습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "현대 AI는 이 방식을 사용하지 않습니다. 파운데이션 모델은 데이터로부터 패턴을 자동으로 학습합니다."
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,197 @@
+[
+  {
+    "id": "awsaifc01-q157",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 고객 서비스 AI 스타트업이 대화형 챗봇의 응답 품질을 개선하려 합니다. 현재 챗봇은 SFT(지도 미세 조정)로 훈련되어 기술적으로 정확한 답변을 생성하지만, 고객이 선호하는 친근하고 공감적인 어조가 부족하여 낮은 만족도를 보이고 있습니다.\n\n개발팀은 \"고객이 실제로 더 좋아하는 응답 스타일\"을 학습시키고 싶습니다.\n\n다음 중 이 목표를 달성하기 위한 가장 적합한 기법과 그 단계를 올바르게 설명한 것은?",
+      "explanation_en": "RLHF(Reinforcement Learning from Human Feedback, 인간 피드백 기반 강화학습)가 이 목표에 가장 적합합니다.\n\nRLHF의 3단계 프로세스:\n\n1단계: SFT (Supervised Fine-Tuning) - 이미 완료\n• 레이블된 고품질 대화 데이터로 기본 모델 파인튜닝\n• 현재 챗봇이 이 단계까지 완료된 상태\n\n2단계: 보상 모델(Reward Model) 훈련\n• 인간 평가자가 같은 질문에 대한 두 응답 중 더 선호하는 것을 선택\n• 이 선호 데이터(Preference Data)로 보상 모델 훈련\n• 보상 모델은 \"어떤 응답이 더 좋은지\" 점수를 예측하는 분류기\n\n3단계: PPO(Proximal Policy Optimization)로 정책 업데이트\n• 강화학습 알고리즘(PPO)을 사용하여 보상을 최대화하는 방향으로 LLM 파라미터 업데이트\n• KL Divergence 패널티로 원래 모델에서 너무 벗어나지 않도록 제약\n• 결과: 인간이 선호하는 응답 스타일로 정렬(Alignment)\n\nRLHF의 핵심 장점:\n사람의 미묘한 선호(어조, 친근함, 공감)를 레이블이 아닌 비교 선호로 학습 가능",
+      "key_points_en": "RLHF 3단계 프로세스:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n1단계: SFT (Supervised Fine-Tuning)\n• 입력: 레이블된 고품질 데이터\n• 방법: 지도 학습\n• 결과: 기본 응답 능력 확보\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n2단계: Reward Model (RM) 훈련\n• 입력: 인간 비교 선호 데이터 (A vs B)\n• 방법: 쌍별 비교(Pairwise Comparison)\n• 결과: 응답 품질 점수 예측 모델\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n3단계: PPO (RL Fine-Tuning)\n• 입력: 보상 모델의 피드백\n• 방법: PPO 강화학습 알고리즘\n• 제약: KL Divergence (원본 모델 보존)\n• 결과: 인간 선호 정렬된 모델\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nRLHF 관련 개념:\n• Constitutional AI (CAI): Anthropic의 방법\n  - AI가 원칙을 기반으로 자체 피드백 생성\n• RLAIF: AI 피드백 기반 강화학습\n• DPO (Direct Preference Optimization):\n  - RLHF 단순화 버전, RM 없이 직접 학습\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n실제 사례:\n• ChatGPT: RLHF로 대화 품질 개선\n• Claude: Constitutional AI + RLHF"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "추가 데이터 증강(Data Augmentation)으로 더 많은 훈련 데이터를 생성하여 SFT를 반복",
+          "explanation_en": "데이터 증강과 SFT 반복은 기술적 정확성은 향상시킬 수 있지만, 인간이 선호하는 어조와 스타일을 학습하는 데는 한계가 있습니다. 선호도(preference)는 정해진 레이블이 없어 비교 학습이 필요합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "RLHF 적용: 인간 평가자가 응답 쌍(pair)을 비교하여 선호 데이터 수집 → 보상 모델(Reward Model) 훈련 → PPO 알고리즘으로 LLM 파인튜닝",
+          "explanation_en": "RLHF는 인간의 미묘한 선호(친근함, 공감, 어조)를 비교 선호 데이터로 학습하는 데 최적화된 기법입니다. 보상 모델이 \"좋은 응답\"을 정의하고 PPO가 이를 최대화하는 방향으로 모델을 업데이트합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "하이퍼파라미터 튜닝(HPT)으로 학습률, 배치 크기, 에포크 수를 최적화",
+          "explanation_en": "하이퍼파라미터 튜닝은 모델 훈련 효율성을 개선하지만, 인간이 선호하는 응답 스타일을 학습하는 것과는 관련이 없습니다. 이미 정의된 손실 함수를 최적화할 뿐, 인간 선호를 반영하는 새로운 학습 신호를 추가하지 않습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Prompt Engineering으로 시스템 프롬프트에 \"친근하고 공감적으로 답하세요\"라는 지침 추가",
+          "explanation_en": "프롬프트 엔지니어링은 빠르고 쉬운 방법이지만, 모델 파라미터 자체를 변경하지 않습니다. 일관성이 부족하고 모델이 지침을 항상 따르지 않을 수 있으며, 복잡한 대화 상황에서 한계가 있습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q158",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 법률 테크 기업이 계약서 자동 분석 시스템을 구축하고 있습니다. 이 시스템은 계약서 내 동일한 법률 용어가 조항마다 서로 다른 법적 의미로 사용되는 경우를 정확히 구분해야 합니다.\n\n예를 들어 '해지'라는 단어가 '계약의 일방적 해지' 조항에서 사용될 때와 '합의 해지' 조항에서 사용될 때 각각의 의미와 법적 효력이 달라집니다.\n\n이 요구 사항을 충족하기 위해 가장 적합한 임베딩(Embedding) 모델은 무엇입니까?",
+      "explanation_en": "BERT는 Transformer 기반의 문맥 인식 임베딩 모델로, 단어의 좌측 문맥과 우측 문맥을 동시에 고려합니다. 동일한 단어라도 주변 문장 구조에 따라 서로 다른 벡터 표현(동적 임베딩)을 생성하므로, '해지'처럼 조항마다 의미가 달라지는 법률 용어를 정확히 구분할 수 있습니다.\n\n반면 전통적 임베딩 모델(Word2Vec 등)은 동일 단어에 항상 하나의 고정 벡터를 부여하여 문맥에 따른 의미 차이를 포착하지 못합니다.",
+      "key_points_en": "BERT  :  \n양방향 문맥 고려 동적 임베딩 — 동일 단어의 문맥별 의미 차이 구분 가능\n\nWord2Vec  :  \n단어 간 의미 유사도 표현 — 문맥과 무관하게 단어당 고정 단일 벡터 사용\n\nSVD  :  \n행렬 분해 기반 수학적 차원 축소 — 문맥 인식 임베딩 불가\n\nPCA  :  \n분산 최대화 방향의 차원 축소 기법 — NLP 의미 학습 기능 없음\n\n정적 vs 동적 임베딩  :  \nWord2Vec = 고정 벡터(정적),  BERT = 문맥 반영 벡터(동적)"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "BERT (Bidirectional Encoder Representations from Transformers)",
+          "explanation_en": "BERT는 Transformer 기반의 문맥 인식 임베딩 모델로, 단어의 좌측 문맥과 우측 문맥을 동시에 고려합니다. 동일한 단어라도 주변 문장 구조에 따라 서로 다른 벡터 표현(동적 임베딩)을 생성하므로, '해지'처럼 조항마다 의미가 달라지는 법률 용어를 정확히 구분할 수 있습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Word2Vec",
+          "explanation_en": "Word2Vec은 단어 간 의미 유사도를 효과적으로 표현하지만, 각 단어에 고정된 단일 벡터를 부여합니다. '계약 해지'와 '합의 해지' 속 '해지'는 의미가 다르지만 Word2Vec은 항상 같은 벡터를 반환하므로, 이 시나리오의 요건을 충족하지 못합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "특이값 분해 (SVD, Singular Value Decomposition)",
+          "explanation_en": "SVD는 행렬 분해를 통한 수학적 차원 축소 기법으로, 잠재 의미 분석(LSA)에 활용됩니다. 문장 내 동적 문맥을 반영하는 임베딩을 생성하지 못하며, 동일 단어의 문맥별 의미 변화를 구분하는 기능이 없습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "주성분 분석 (PCA, Principal Component Analysis)",
+          "explanation_en": "PCA는 데이터의 분산을 최대화하는 방향으로 고차원 데이터를 저차원으로 압축하는 차원 축소 기법입니다. 단어의 의미를 학습하거나 문맥을 이해하는 임베딩 모델이 아니므로, 법률 용어의 문맥별 의미 구분 요건과 무관합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q159",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 법률 기업이 수십만 건의 판례와 법령 데이터베이스를 기반으로 AI 법률 검색 시스템을 구축하고 있습니다.\n\n[검색 시나리오]\n• 시나리오 A: \"제245조 3항\"처럼 정확한 조문 번호나 사건 번호로 검색\n• 시나리오 B: \"임대인의 보증금 반환 의무가 세입자 퇴거 전에 발생하는 경우\"처럼 법적 개념과 맥락으로 검색\n• 두 유형의 검색이 모두 높은 정확도를 보여야 한다\n\n현재 순수 벡터 검색만 사용하면 정확한 법조문 번호 매칭에서 성능이 떨어지고, 순수 키워드 검색만 사용하면 의미론적 유사 판례 탐색에서 성능이 떨어지는 문제가 있습니다.\n\n다음 중 두 검색 유형 모두를 최적화하는 접근 방법은?",
+      "explanation_en": "하이브리드 검색(Hybrid Search)이 이 시나리오에 가장 적합합니다.\n\n하이브리드 검색의 구성:\n1) Sparse 검색 (BM25/TF-IDF 키워드 검색)\n   - 정확한 용어, 조문 번호, 고유명사 매칭에 강함\n   - \"제245조 3항\"처럼 정확한 텍스트 일치 필요한 경우에 최적\n   - 역색인(Inverted Index) 기반\n\n2) Dense 검색 (벡터/시맨틱 검색)\n   - 의미론적 유사성 기반 검색\n   - \"임대인의 보증금 반환 의무\" 같은 법적 개념 검색에 강함\n   - 임베딩 벡터의 코사인 유사도 기반\n\n3) Reciprocal Rank Fusion (RRF)로 결과 결합\n   - 두 검색 결과를 순위 기반으로 통합\n   - 단순 점수 합산보다 안정적인 결합 방법\n   - 각 결과의 순위를 기반으로 최종 점수 계산\n\n이 방식의 장점:\n• 정확한 법조문 번호 검색 (Sparse) + 개념 유사 판례 탐색 (Dense) 동시 최적화\n• Amazon OpenSearch에서 하이브리드 검색 및 RRF를 기본 지원\n• Amazon Bedrock Knowledge Bases에서도 하이브리드 검색 설정 가능",
+      "key_points_en": "하이브리드 검색 개념:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nSparse 검색 (BM25):\n• 방법: 키워드 일치 (역색인)\n• 강점: 정확한 용어, 고유명사, 코드\n• 약점: 동의어, 의미론적 유사성 미흡\n• 예: \"제245조 3항\" → 정확히 해당 조문만\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nDense 검색 (벡터):\n• 방법: 임베딩 벡터 유사도\n• 강점: 의미론적 유사성, 동의어\n• 약점: 정확한 용어/번호 매칭 미흡\n• 예: \"보증금 반환\" → 관련 판례 모두\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nHybrid 검색 (Sparse + Dense):\n• 두 방법의 장점을 결합\n• RRF (Reciprocal Rank Fusion):\n  Score = Σ 1/(k + rank_i)\n  k = 상수 (보통 60)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAmazon Bedrock Knowledge Bases:\n• 벡터 검색 (시맨틱)\n• 하이브리드 검색 (시맨틱 + 전문 검색)\n• Amazon OpenSearch Serverless 기반\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n사용 권장 상황:\n• Dense만: 일반 Q&A, 문서 요약\n• Sparse만: 코드, 정확한 키워드 검색\n• Hybrid: 전문 도메인 (법률, 의료, 기술)"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "벡터 임베딩 검색만 사용하고 임베딩 모델을 법률 도메인으로 파인튜닝",
+          "explanation_en": "벡터 검색만으로는 정확한 법조문 번호 매칭이 어렵습니다. 법률 도메인 파인튜닝이 도움이 되지만, Sparse 검색의 정확한 키워드 매칭 능력을 대체하기는 어렵습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "BM25 키워드 검색만 사용하고 법률 용어 사전(Legal Thesaurus)으로 동의어를 확장",
+          "explanation_en": "키워드 검색은 정확한 법조문 번호 검색에 유리하지만, 의미론적 유사 판례 탐색에는 부족합니다. 동의어 사전이 도움이 되지만 Dense 검색의 풍부한 의미 표현을 대체하기 어렵습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "하이브리드 검색: BM25 키워드 검색(Sparse)과 벡터 시맨틱 검색(Dense)을 병렬로 실행하고 Reciprocal Rank Fusion(RRF)으로 결과를 결합",
+          "explanation_en": "하이브리드 검색은 Sparse의 정확한 키워드 매칭과 Dense의 의미론적 유사성 검색을 결합하여 두 시나리오 모두에서 최적의 성능을 제공합니다. Amazon Bedrock Knowledge Bases와 OpenSearch에서 기본 지원합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "그래프 데이터베이스(Neptune)에 판례 간 관계를 모델링하여 그래프 탐색으로 검색",
+          "explanation_en": "그래프 탐색은 판례 간 인용 관계나 법령 체계 탐색에 유용하지만, 텍스트 기반 키워드 검색과 의미론적 검색 모두를 대체하기는 어렵습니다. 추가적인 보완 기능으로는 적합하나 주요 검색 방법으로는 부족합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q160",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 농업 기술 기업이 드론 촬영 이미지를 분석하여 작물의 병해충 종류를\n자동으로 진단하는 멀티클래스 분류 모델을 개발했습니다.\n\n모델을 현장에 배포하기 전, 팀은 각 병해충 유형별 진단 정확도와\n특정 병해충을 다른 병해충으로 잘못 진단하는 패턴을 구체적으로 파악해야 합니다.\n이를 통해 오진이 잦은 유형에 대해 추가 학습 데이터를 수집하고자 합니다.\n\n이 요구 사항에 가장 적합한 모델 평가 방법은 무엇입니까?",
+      "explanation_en": "혼동 행렬은 멀티클래스 분류 모델에서 실제 클래스(행)와 예측 클래스(열)를 교차 비교하여 각 클래스별 정분류 수와 오분류 패턴을 한눈에 보여줍니다.\n\n예를 들어 '흰가루병'을 '탄저병'으로 잘못 진단하는 빈도가 높다면, 해당 셀의 값이 크게 나타나며 추가 데이터 수집 방향을 명확히 제시합니다. 클래스별 정밀도(Precision), 재현율(Recall), F1-Score를 혼동 행렬로부터 계산할 수 있어 분류 모델 성능 분석의 핵심 도구입니다.",
+      "key_points_en": "혼동 행렬  :  \n분류 모델 평가 핵심\n실제 vs 예측 클래스 교차 비교, 오분류 패턴 시각화\n\nPrecision (정밀도)  :  \n모델이 양성으로 예측한 것 중 실제 양성 비율\n\nRecall (재현율)  :  \n실제 양성 중 모델이 양성으로 맞게 예측한 비율\n\nMAE / RMSE  :  \n연속 수치 예측 회귀 모델 평가 지표\n분류 모델에 사용 불가\n\n상관 행렬  : \n입력 변수 간 선형 상관관계 분석 — 모델 성능 평가 도구 아님"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "평균 절대 오차 (MAE)",
+          "explanation_en": "MAE는 예측값과 실제값의 절대 차이 평균을 계산하는 지표로, 집값·온도 등 연속적인 숫자를 예측하는 회귀(Regression) 모델 평가에 사용됩니다. 병해충 '종류'처럼 이산적인 범주를 분류하는 문제에는 수치 오차 개념이 적용되지 않아 적합하지 않습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "혼동 행렬 (Confusion Matrix)",
+          "explanation_en": "혼동 행렬은 멀티클래스 분류 모델에서 실제 클래스(행)와 예측 클래스(열)를 교차 비교하여 각 클래스별 정분류 수와 오분류 패턴을 한눈에 보여줍니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "평균 제곱근 오차 (RMSE)",
+          "explanation_en": "RMSE는 예측값과 실제값의 차이를 제곱 평균하여 제곱근을 취한 값으로, MAE와 마찬가지로 회귀 모델 평가 지표입니다. 분류 모델에서는 클래스 간 수치적 거리 개념이 없어 RMSE 적용이 의미가 없습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "상관 행렬 (Correlation Matrix)",
+          "explanation_en": "상관 행렬은 피처(입력 변수) 간의 선형 상관관계를 분석하는 도구로, 특성 선택(Feature Selection)이나 다중공선성 탐지에 활용됩니다. 모델이 각 클래스를 얼마나 정확히 분류했는지, 어떤 오분류가 발생했는지를 직접 보여주지 않아 이 목적에 부합하지 않습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q161",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 금융 서비스 회사가 Amazon Bedrock으로 고객 대면 AI 금융 어시스턴트를 구축하고 있습니다. 보안팀이 다음 4가지 안전 요구사항을 제시했습니다.\n\n[보안 요구사항]\n• 요구 A: AI가 경쟁사 금융 상품을 언급하거나 비교하면 안 된다\n• 요구 B: 고객의 신용카드 번호, 주민등록번호, 계좌번호가 응답에 포함되면 자동으로 마스킹 처리해야 한다\n• 요구 C: 금융 조언이 실제 회사 정책 문서에 근거하는지 검증해야 한다\n• 요구 D: 혐오 발언, 불법 활동 조장 등 유해한 콘텐츠를 차단해야 한다\n\n다음 중 각 요구사항에 맞는 Amazon Bedrock Guardrails의 기능을 올바르게 연결한 것은?",
+      "explanation_en": "Amazon Bedrock Guardrails의 각 기능이 요구사항에 매핑됩니다.\n\nBedrock Guardrails 기능 구성:\n\n요구 A → Denied Topics (주제 거부)\n• 특정 주제에 대한 응답을 완전히 거부\n• 자연어로 금지 주제 정의: \"경쟁사 금융 상품 언급 및 비교\"\n• AI가 해당 주제로 대화를 유도하거나 답변하는 것 차단\n• 예: \"OO은행 금리가 더 낫지 않나요?\"에 대해 거부 메시지 반환\n\n요구 B → Sensitive Information Filters (민감 정보 필터)\n• PII(개인식별정보) 자동 감지 및 처리\n• 신용카드 번호, 주민등록번호, 계좌번호, 이메일, 전화번호 등\n• 처리 방식: 마스킹(***), 익명화, 또는 차단\n• 입력 및 출력 모두 적용 가능\n\n요구 C → Grounding Check (근거 검증)\n• AI 응답이 제공된 컨텍스트/문서에 근거하는지 검증\n• 환각(Hallucination) 방지\n• 근거 점수(Grounding Score) 임계값 설정 가능\n• RAG 시스템과 함께 사용 시 효과적\n\n요구 D → Content Filters (콘텐츠 필터)\n• 6가지 유해 카테고리 필터링: 혐오, 모욕, 성적 콘텐츠, 폭력, 불법 활동, 무기\n• 각 카테고리별 차단 강도 (None/Low/Medium/High) 조정\n• 입력(프롬프트)과 출력(응답) 모두에 적용",
+      "key_points_en": "Amazon Bedrock Guardrails 기능 요약:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n1) Content Filters (콘텐츠 필터):\n• 목적: 유해 콘텐츠 차단\n• 카테고리: 혐오, 모욕, 성적, 폭력, 불법, 무기\n• 강도: None → Low → Medium → High\n• 적용: 입력(프롬프트) + 출력(응답)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n2) Denied Topics (주제 거부):\n• 목적: 특정 주제 완전 차단\n• 방법: 자연어로 금지 주제 정의\n• 예: 투자 조언, 경쟁사 언급 등\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n3) Word Filters (단어 필터):\n• 목적: 특정 단어/구문 차단\n• 방법: 금지어 목록 직접 정의\n• 예: 욕설, 브랜드명, 내부 용어\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n4) Sensitive Information Filters:\n• 목적: PII 감지 및 마스킹\n• 항목: 신용카드, SSN, 이메일, 전화\n• 처리: 마스킹(***) 또는 차단\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n5) Grounding Check (근거 검증):\n• 목적: 환각(Hallucination) 방지\n• 방법: 응답이 제공 컨텍스트에 근거?\n• 점수 임계값 설정\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n6) Contextual Grounding (문맥 관련성):\n• 목적: 응답이 질문과 관련있는지?\n• Relevance Score 측정"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "요구 A: Word Filters | 요구 B: Content Filters | 요구 C: Denied Topics | 요구 D: Sensitive Information Filters",
+          "explanation_en": "기능 매핑이 잘못되었습니다. Word Filters는 단어/구문 차단, Content Filters는 유해 콘텐츠 차단, Denied Topics는 주제 거부, Sensitive Information Filters는 PII 마스킹입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "요구 A: Denied Topics | 요구 B: Sensitive Information Filters | 요구 C: Grounding Check | 요구 D: Content Filters",
+          "explanation_en": "각 요구사항에 정확히 맞는 Guardrails 기능입니다. Denied Topics(경쟁사 주제 차단), Sensitive Information Filters(PII 마스킹), Grounding Check(문서 근거 검증), Content Filters(유해 콘텐츠 차단)이 올바른 매핑입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "요구 A: Content Filters | 요구 B: Word Filters | 요구 C: Sensitive Information Filters | 요구 D: Denied Topics",
+          "explanation_en": "경쟁사 언급은 Content Filters(유해 콘텐츠)가 아닌 Denied Topics(금지 주제)로 처리합니다. PII 마스킹은 Word Filters가 아닌 Sensitive Information Filters를 사용합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "요구 A: Denied Topics | 요구 B: Word Filters | 요구 C: Content Filters | 요구 D: Grounding Check",
+          "explanation_en": "신용카드 번호 마스킹은 Word Filters(단어 차단)가 아닌 Sensitive Information Filters(PII 감지/마스킹)를 사용합니다. 근거 검증은 Content Filters가 아닌 Grounding Check를 사용합니다."
+        }
+      }
+    ]
+  }
+]

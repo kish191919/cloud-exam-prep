@@ -1,0 +1,177 @@
+[
+  {
+    "id": "awsaifc01-q203",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "TF-IDF 벡터화",
+          "explanation_en": "TF-IDF는 문서 내 단어 중요도를 계산하는 통계 기법으로, 문맥을 반영하지 않아 동일 단어의 서로 다른 의미를 구분할 수 없습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "GloVe 정적 임베딩",
+          "explanation_en": "GloVe는 단어 공존 통계를 기반으로 고정된 벡터를 생성합니다. 모든 문맥에서 동일 벡터를 사용하므로 의미 변화를 포착할 수 없습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "BERT 문맥 인식 임베딩",
+          "explanation_en": "BERT는 양방향 트랜스포머를 사용하여 단어의 벡터를 문맥에 따라 동적으로 생성합니다. 동일 단어라도 주변 문맥에 따라 완전히 다른 벡터를 생성하여 다의어를 정확히 구분합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Word2Vec Skip-gram",
+          "explanation_en": "Word2Vec는 정적 임베딩으로, 각 단어마다 하나의 고정된 벡터만 할당합니다. 문맥에 따른 의미 변화를 반영할 수 없어 다의어 처리에 한계가 있습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q204",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "온라인 학습 (Online Learning)",
+          "explanation_en": "온라인 학습은 스트리밍 데이터를 점진적으로 처리하지만, 보상 신호에 따라 정책을 최적화하는 피드백 루프 메커니즘이 없습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "강화 학습 (Reinforcement Learning)",
+          "explanation_en": "에이전트가 행동에 대한 보상/페널티 피드백으로부터 정책을 학습하는 방식으로, 고객의 구매/무시 행동이 명확한 보상 신호가 되어 추천 전략을 최적화하는 이 시나리오에 정확히 부합합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "준지도 학습 (Semi-supervised Learning)",
+          "explanation_en": "준지도 학습은 라벨된 데이터와 라벨 없는 데이터를 혼합하여 학습하는 방식으로, 지속적인 보상 신호 기반 정책 최적화 메커니즘이 없습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "능동 학습 (Active Learning)",
+          "explanation_en": "능동 학습은 모델이 학습에 가장 유용한 데이터를 선택적으로 요청하는 방식으로, 수집된 피드백을 자동으로 정책 개선에 활용하는 이 시나리오와는 다른 접근법입니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q205",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Amazon Lookout for Metrics를 사용하여 판매 데이터의 이상 패턴을 자동으로 탐지하고 이상 구간을 분류한다.",
+          "explanation_en": "이상 탐지는 시계열 예측과 다른 기술입니다. Lookout for Metrics는 데이터 이상 탐지에 특화되어 있으며, 수요 예측 용도가 아닙니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Amazon Comprehend를 활용하여 고객 리뷰 텍스트를 분석하고 상품별 감성 점수를 산출한다.",
+          "explanation_en": "텍스트 감성 분석은 자연어 처리 기반의 서비스로, 정량적 판매 데이터와 외부 변수를 활용한 수요 예측과는 무관합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon Forecast를 이용하여 월별 판매 시계열 데이터와 계절·마케팅 예산·가격 정보를 결합하여 지역별 향후 3개월 수요량을 예측한다.",
+          "explanation_en": "Amazon Forecast는 시계열 데이터와 관련 외부 변수를 결합하여 정확한 예측을 수행하는 전문 서비스입니다. 이 시나리오의 '과거 이력 + 외부 변수 → 미래 수요 예측' 요구사항을 정확히 충족합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Amazon Bedrock Knowledge Bases를 활용하여 공급망 정책 문서 기반으로 직원 재고 관리 질문에 자동으로 응답하는 AI 어시스턴트를 구축한다.",
+          "explanation_en": "지식 기반 Q&A 시스템은 기존 문서에서 정보를 검색하여 응답하는 방식으로, 데이터 기반 수요 예측과는 별개의 문제입니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q206",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Amazon SageMaker Data Wrangler를 사용하여 학습 데이터를 대규모로 전처리한다",
+          "explanation_en": "Data Wrangler는 데이터 전처리 및 피처 엔지니어링 도구입니다. 이 문제는 데이터 전처리보다는 실험 결과를 추적하고 관리하는 것이 핵심이므로 적절하지 않습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Amazon SageMaker Pipelines를 사용하여 모델 학습 워크플로우를 자동화한다",
+          "explanation_en": "SageMaker Pipelines는 ML 워크플로우의 단계를 정의하고 자동화하는 도구입니다. 실험 결과 추적 및 비교라는 요구사항을 직접 해결하지 못합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "MLflow를 사용하여 각 실험의 파라미터, 메트릭, 모델 아티팩트를 중앙에서 추적하고 관리한다",
+          "explanation_en": "MLflow는 AWS SageMaker와 통합되어 모든 실험의 파라미터, 평가 지표, 모델을 자동으로 기록하고, 팀원들이 쉽게 비교·재현할 수 있도록 지원합니다. 정확히 요구사항을 충족합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Amazon SageMaker Model Registry를 사용하여 학습된 모델 버전을 관리한다",
+          "explanation_en": "Model Registry는 모델의 최종 버전을 관리하는 도구입니다. 다양한 파라미터의 실험 과정 전체를 추적하고 비교하는 요구사항에는 적합하지 않습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q208",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "정밀도-재현율 곡선",
+          "explanation_en": "정밀도-재현율 곡선은 임계값 변경에 따른 정밀도와 재현율의 관계를 나타내지만, 각 클래스별 오분류 패턴이나 구체적인 오류 분석에는 부족합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "ROC-AUC 점수",
+          "explanation_en": "ROC-AUC는 이진 분류나 평균 성능 평가에는 유용하지만, 다중클래스 문제에서 각 클래스별 오분류 패턴을 세밀하게 분석하는 데는 적합하지 않습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "혼동 행렬",
+          "explanation_en": "혼동 행렬은 다중클래스 분류 문제에서 각 클래스별 정확도를 행과 열로 표현하여 실제 예측 대비 정확도를 한눈에 파악할 수 있게 해줍니다. 특정 클래스가 다른 클래스로 오분류되는 패턴을 명확히 보여주므로 불균형한 오분류 구간을 파악하고 추가 학습 데이터 수집 영역을 결정하는 데 최적입니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "교차 엔트로피 손실",
+          "explanation_en": "교차 엔트로피 손실은 모델 훈련 중 최적화 목표로 사용되는 손실 함수이지, 배포 후 모델 성능을 평가하거나 각 클래스별 오분류 패턴을 분석하는 평가 지표가 아닙니다."
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,197 @@
+[
+  {
+    "id": "awsaifc01-q116",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 바이오테크 회사가 의학 논문, 임상 시험 데이터, 의약품 정보를 기반으로 의료 전문 파운데이션 모델(FM)을 구축하려고 합니다. CTO가 FM 개발 전체 과정을 이사회에 설명하면서 다음 단계들을 나열했습니다.\n\n① 의학 문헌 100억 토큰의 대규모 데이터로 기본 언어 이해 능력 학습\n② 의료 Q&A 형식의 소규모 데이터셋으로 의료 응답 방식 특화 훈련\n③ 의료 윤리, 환자 안전, 의학적 사실성에 맞게 의사 피드백으로 모델 정렬\n④ 수집할 의학 데이터 소스, 품질 기준, 개인정보 보호 요건 결정\n⑤ 의료 정보 시스템과 연동하여 의사와 환자가 사용할 수 있도록 공개\n⑥ 의학 시험 벤치마크(MedQA, USMLE 등)로 모델 성능 측정\n⑦ 실제 의사 피드백과 오류 사례를 수집하여 다음 버전 개선에 반영\n\n올바른 FM 수명 주기 순서는?",
+      "explanation_en": "FM 수명 주기의 올바른 순서는: ④데이터 선택 → ①사전 훈련 → ②미세 조정 → ③RLHF → ⑥평가 → ⑤배포 → ⑦피드백입니다.\n\n먼저 어떤 데이터를 사용할지 품질 기준을 정하고(④), 대규모 데이터로 기본 언어 이해 능력을 학습시키는 사전 훈련(①)을 합니다. 이후 도메인 특화 미세 조정(②), 안전성·유용성을 위한 RLHF(인간 피드백 강화 학습)(③), 벤치마크 평가(⑥), 배포(⑤), 피드백 기반 반복 개선(⑦) 순서로 진행합니다.",
+      "key_points_en": "FM 수명 주기 7단계 (반드시 암기):\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n1단계: 데이터 선택 (Data Selection)\n  - 데이터 소스, 품질 기준, 라이선스 검토\n  - 개인정보·저작권 고려\n\n2단계: 사전 훈련 (Pre-training)\n  - 수백억~수조 토큰의 대규모 데이터 학습\n  - 막대한 GPU 자원 필요 (수천만 달러 규모)\n  - 기본 언어 이해/생성 능력 획득\n\n3단계: 미세 조정 (Fine-tuning)\n  - 소규모 특화 데이터로 도메인 능력 강화\n  - 지시 따르기(Instruction Tuning) 포함\n\n4단계: RLHF (인간 피드백 강화 학습)\n  - 인간 평가자의 선호도로 모델 정렬\n  - 안전성, 유용성, 무해성(Harmlessness) 개선\n\n5단계: 평가 (Evaluation)\n  - 벤치마크 테스트 (MMLU, HumanEval, MedQA 등)\n  - Amazon Bedrock Model Evaluation 활용 가능\n\n6단계: 배포 (Deployment)\n  - API 공개, 인프라 확장성 구성\n\n7단계: 피드백 (Feedback)\n  - 사용자 피드백 수집 → 다음 버전 개선 (반복 사이클)"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "④ → ① → ② → ③ → ⑥ → ⑤ → ⑦",
+          "explanation_en": "데이터 선택→사전 훈련→미세 조정→RLHF→평가→배포→피드백의 올바른 FM 수명 주기 순서입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "① → ④ → ② → ⑥ → ③ → ⑤ → ⑦",
+          "explanation_en": "데이터 선택 없이 사전 훈련을 먼저 할 수 없으며, 평가는 RLHF 이후에 이루어져야 합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "④ → ① → ⑥ → ② → ③ → ⑤ → ⑦",
+          "explanation_en": "평가(⑥)는 미세 조정과 RLHF 이후에 수행하여 최종 모델 성능을 측정합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "④ → ② → ① → ③ → ⑥ → ⑤ → ⑦",
+          "explanation_en": "사전 훈련은 미세 조정보다 먼저 이루어져야 합니다. 기본 언어 능력 없이 도메인 미세 조정은 불가능합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q117",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 금융 서비스 기업이 Amazon Bedrock을 사용하여 고객 상담 AI 플랫폼을 구축하려고 합니다. 다음 세 가지 요구사항에 가장 적합한 Amazon Bedrock 기능을 올바르게 매칭한 것은?\n\n• 요구사항 1: 5,000개의 내부 금융 상품 FAQ 문서를 기반으로 고객 질문에 정확한 답변 제공 (반드시 문서 출처 인용 필요)\n\n• 요구사항 2: AI가 고객의 요청을 분석하여 자동으로 계좌 조회 API 호출 → 거래 내역 조회 → 맞춤형 보고서 생성 등 여러 단계 작업을 순차적으로 자율 실행\n\n• 요구사항 3: AI가 금융 사기 관련 내용, 개인정보, 특정 투자 조언 등 금융 규제 위반 콘텐츠를 자동으로 필터링하고 PII(개인식별정보)를 마스킹",
+      "explanation_en": "요구사항 1은 Amazon Bedrock Knowledge Base입니다. 내부 문서를 자동으로 청킹·임베딩하여 벡터 DB에 저장하고, 완전관리형 RAG를 제공합니다. 소스 인용(Citation) 기능으로 답변의 출처를 명시합니다.\n\n요구사항 2는 Amazon Bedrock Agents입니다. 에이전트는 사용자 의도를 파악하고 Action Group을 통해 API나 Lambda 함수를 자율적으로 호출하여 복잡한 다단계 작업을 완수합니다.\n\n요구사항 3은 Amazon Bedrock Guardrails입니다. 유해 콘텐츠 필터링, 특정 주제 차단, PII 감지 및 마스킹을 통해 금융 규제를 준수하는 책임 있는 AI를 구현합니다.",
+      "key_points_en": "Amazon Bedrock 핵심 구성 요소:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nKnowledge Base (지식 베이스):\n• 완전관리형 RAG 구현 (자동 청킹, 임베딩, 벡터 DB 관리)\n• 소스 인용(Citation) 제공 → 답변 신뢰성 확보\n• 연결 가능 DB: OpenSearch Serverless, Aurora, Pinecone 등\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAgents (에이전트):\n• 다단계 작업 자동화 (ReAct 프레임워크 기반)\n• Action Group: API 호출, Lambda 함수 실행\n• Knowledge Base와 연동 가능\n• 자율적 의사결정 및 실행 (사람 개입 없이)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nGuardrails (가드레일):\n• 콘텐츠 필터링 (혐오, 폭력, 성인 콘텐츠 등 6가지 카테고리)\n• 주제 거부 (특정 주제 대화 자동 차단)\n• PII 감지 및 마스킹 (개인식별정보 보호)\n• 그라운딩 검사 (할루시네이션 감지)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n기타:\n• Model Evaluation: 모델 성능 자동/인간 평가\n• Fine-tuning: 커스텀 FM 훈련\n• PartyRock: 노코드 AI 앱 빌더 (프로토타입용)"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "1-Agents, 2-Knowledge Base, 3-Guardrails",
+          "explanation_en": "Knowledge Base가 문서 기반 RAG를, Agents가 다단계 작업 자동화를 담당합니다. 1번과 2번 순서가 바뀌었습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "1-Knowledge Base, 2-Agents, 3-Guardrails",
+          "explanation_en": "Knowledge Base(문서 기반 RAG+인용), Agents(다단계 API 자동화), Guardrails(콘텐츠 필터링+PII)가 정확히 매칭됩니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "1-Guardrails, 2-Knowledge Base, 3-Agents",
+          "explanation_en": "Guardrails는 콘텐츠 필터링을, Knowledge Base는 문서 기반 RAG를, Agents는 다단계 자동화를 담당합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "1-Knowledge Base, 2-Guardrails, 3-Agents",
+          "explanation_en": "Guardrails는 PII 마스킹과 콘텐츠 필터링을, Agents는 다단계 API 자동화를 담당합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q118",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 법률 AI 스타트업이 수만 건의 판례, 법령, 계약서 템플릿을 기반으로 변호사가 자연어로 질문을 입력하면 관련 판례와 조항을 즉시 검색하고 답변을 생성하는 법률 지식 검색 시스템을 구축하려 합니다.\n\n개발팀은 Amazon Bedrock의 Knowledge Bases 기능을 도입하기로 결정했으며, 문서를 임베딩으로 변환·저장하고 의미 기반 유사도 검색을 수행하는 벡터 저장소를 별도의 외부 인프라 구성 없이 기본 제공되는 옵션으로 즉시 사용하고자 합니다.\n\n추가 설정이나 외부 연동 없이 Knowledge Bases for Amazon Bedrock에서 기본으로 지원되는\n벡터 데이터베이스는 무엇입니까?",
+      "explanation_en": "Knowledge Bases for Amazon Bedrock는 문서 수집, 청킹(Chunking), 임베딩 생성, 벡터 저장, 의미 유사도 검색까지의 전체 RAG 파이프라인을 완전 관리형으로 제공합니다.\n\n이 과정에서 기본 벡터 저장소로 Amazon OpenSearch Serverless 벡터 스토어를 사용하며, 별도의 인프라 구성이나 외부 서비스 연동 없이 임베딩 기반 검색을 즉시 활용할 수 있습니다.\n\nOpenSearch Serverless는 서버 관리 부담 없이 자동 확장을 지원하므로, 수만 건의 법률 문서 인덱싱과 실시간 유사도 검색 환경에 적합합니다.",
+      "key_points_en": "Knowledge Bases for Bedrock  :  \n>  완전 관리형 RAG — 문서 수집·청킹·임베딩·벡터 저장·유사도 검색 파이프라인 일괄 제공\n\n기본 벡터 스토어  :  \n>  Amazon OpenSearch Serverless 벡터 스토어 — 추가 설정 없이 즉시 사용 가능\n\nOpenSearch Serverless  :  \n>  서버 관리 불필요·자동 확장 — 대규모 임베딩 인덱싱 및 실시간 k-NN 검색 지원\n\npgvector  :  \nAurora PostgreSQL 확장 — 별도 설치·설정 필요, Knowledge Bases 기본값 아님\n\nRAG 파이프라인  :  \n문서 청킹 → 임베딩 생성 → 벡터 저장 → 유사도 검색 → FM 답변 생성"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Redis Enterprise Cloud",
+          "explanation_en": "Redis는 고속 인메모리 데이터 저장소로, 별도 벡터 검색 플러그인(RediSearch)을 구성하면 벡터 유사도 검색에 활용할 수 있습니다. 그러나 Knowledge Bases for Amazon Bedrock에서 추가 설정 없이 기본으로 지원되는 벡터 저장소는 아닙니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Amazon OpenSearch Serverless 벡터 스토어",
+          "explanation_en": "Knowledge Bases for Amazon Bedrock는 문서 수집, 청킹(Chunking), 임베딩 생성, 벡터 저장, 의미 유사도 검색까지의 전체 RAG 파이프라인을 완전 관리형으로 제공합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon Aurora PostgreSQL",
+          "explanation_en": "Amazon Aurora PostgreSQL은 pgvector 확장을 설치하면 벡터 데이터를 저장하고 유사도 검색을 수행할 수 있습니다. 그러나 별도 설정이 필요하며, Knowledge Bases for Amazon Bedrock가 추가 구성 없이 기본으로 연동하는 벡터 스토어는 아닙니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "MongoDB Atlas",
+          "explanation_en": "MongoDB Atlas는 JSON 문서 기반 NoSQL 데이터베이스로, 벡터 검색 인덱스를 선택적으로 구성할 수 있습니다. Knowledge Bases for Amazon Bedrock의 기본 벡터 저장소로 지원되지 않으며 별도 연동 설정이 필요합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q119",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 대기업에서 세 가지 역할의 팀원들이 각자에게 맞는 AWS AI 도구가 필요합니다.\n\n• 인사팀 직원 (비개발자): 사내 HR 정책 문서, 휴가 규정, 복리후생 안내서를 바탕으로 직원들의 질문에 즉시 답변하는 AI 어시스턴트가 필요합니다. 회사 내부 문서에만 접근하며 직책별 권한 제어가 필요합니다.\n\n• 소프트웨어 개발자: 코드를 작성하는 중에 IDE에서 자동으로 코드 완성, 버그 수정 제안, 보안 취약점 스캔, 단위 테스트 자동 생성이 필요합니다.\n\n• AI 엔지니어: 회사 특화 GenAI 애플리케이션을 직접 빌드하고, 다양한 FM 모델 API를 비교 테스트하며, 커스텀 모델 훈련과 RAG 파이프라인을 구현하고 싶습니다.\n\n각 역할에 가장 적합한 AWS 서비스를 올바르게 매칭한 것은?",
+      "explanation_en": "Amazon Q Business는 기업 내부 데이터(문서, 위키, HR 시스템 등)와 연결하여 직원들의 질문에 답하는 기업용 AI 어시스턴트입니다. IAM Identity Center와 연동하여 직책별 권한 기반 접근 제어가 가능합니다.\n\nAmazon Q Developer(구 Amazon CodeWhisperer)는 개발자를 위한 AI 코딩 어시스턴트로, IDE 내에서 실시간 코드 완성, 보안 취약점 스캔, 단위 테스트 자동 생성 기능을 제공합니다.\n\nAmazon Bedrock은 다양한 FM 모델에 단일 API로 접근하고, Knowledge Base, Agents, Fine-tuning 등을 통해 커스텀 GenAI 애플리케이션을 구축하는 개발 플랫폼입니다.",
+      "key_points_en": "AWS GenAI 서비스 포트폴리오:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAmazon Q Business:\n• 기업 내부 문서/시스템 기반 AI 어시스턴트 (직원용)\n• 50+ 기업 시스템 연결 (SharePoint, Salesforce, S3 등)\n• IAM Identity Center 기반 권한 제어 (직책별 문서 접근)\n• 대상: 일반 직원 (비개발자)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAmazon Q Developer:\n• 개발자용 AI 코딩 어시스턴트 (IDE 통합)\n• 코드 완성, 버그 수정, 보안 취약점 스캔, 테스트 생성\n• 지원 IDE: VS Code, JetBrains, AWS Console, CLI\n• Amazon CodeWhisperer의 후속 서비스\n• 대상: 소프트웨어 개발자\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAmazon Bedrock:\n• FM 모델 API 플랫폼 (Claude, Titan, Llama, Mistral 등)\n• Knowledge Base (RAG), Agents, Guardrails, Fine-tuning\n• 커스텀 GenAI 앱 개발 플랫폼\n• 대상: AI/ML 엔지니어, 개발자\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAmazon SageMaker JumpStart:\n• 사전 훈련된 모델 허브 + One-click 배포\n• 도메인 특화 모델 탐색 및 실험\n• 대상: 데이터 사이언티스트, ML 엔지니어"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "인사팀-Amazon Bedrock, 개발자-Amazon Q Business, AI 엔지니어-Amazon Q Developer",
+          "explanation_en": "Amazon Q Business는 비개발자 직원용 내부 문서 AI이며, Q Developer는 개발자 코딩 도구입니다. 모두 바뀌었습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "인사팀-Amazon Q Developer, 개발자-Amazon Bedrock, AI 엔지니어-Amazon Q Business",
+          "explanation_en": "Q Developer는 코딩 어시스턴트(개발자용)이며, Q Business는 기업 내부 문서 기반 직원용 AI입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "인사팀-Amazon Q Business, 개발자-Amazon Q Developer, AI 엔지니어-Amazon Bedrock",
+          "explanation_en": "Q Business(내부 문서 직원 AI), Q Developer(IDE 코딩 어시스턴트), Bedrock(커스텀 GenAI 앱 플랫폼)이 각각 최적입니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "인사팀-Amazon Q Business, 개발자-Amazon SageMaker JumpStart, AI 엔지니어-Amazon Bedrock",
+          "explanation_en": "SageMaker JumpStart는 ML 모델 훈련/배포에 특화됩니다. 개발자 IDE 코딩 어시스턴트는 Amazon Q Developer가 더 적합합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q121",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 디지털 미디어 스타트업이 뉴스 기사 자동 요약, 독자 댓글 감성 분석, 다국어 콘텐츠 번역을\n자동화하기 위해 AI 모델 도입을 검토하고 있습니다.\n기술팀은 자연어 처리 성능과 확장성을 고려해 Transformer 아키텍처 기반 모델을 우선 검토하기로 했습니다. 팀은 후보 모델 목록을 검토하면서, 어떤 모델이 실제 Transformer 구조를 핵심 아키텍처로 사용하는지 명확하게 구분하고자 합니다.\n\n다음 보기 중 Transformer 아키텍처를 핵심 구조로 사용하는 모델의 올바른 예는 무엇입니까?",
+      "explanation_en": "GPT 계열 모델(ChatGPT 포함)은 Transformer 아키텍처를 핵심 구조로 사용하는 대규모 언어 모델(LLM)입니다. Transformer의 self-attention 메커니즘을 통해 문장 내 단어 간 관계와 장거리 문맥 의존성을 효율적으로 학습합니다.\n\n대화, 뉴스 요약, 다국어 번역, 감성 분석 같은 자연어 처리 작업에서 탁월한 성능을 발휘하며, 이것이 디지털 미디어 스타트업의 자동화 요구 사항에 가장 적합한 Transformer 언어 모델의 대표적 예입니다.\n\n시험 관점에서 'Transformer 아키텍처 기반 모델'을 묻는 질문의 정답은 언어 생성·이해를 핵심으로 하는 LLM(GPT, BERT 계열)입니다.",
+      "key_points_en": "Transformer 핵심 구조  :  \nSelf-Attention 기반 — 문장 내 단어 간 관계·장거리 문맥 이해에 탁월\n\nTransformer 언어 모델 예시  :  \nGPT 계열(ChatGPT), BERT, T5, Claude 등 — 텍스트 이해·생성 중심 LLM\n\n이미지 생성 모델 예시  :  \nStable Diffusion(확산 모델), DALL-E(멀티모달), Adobe Firefly \n>  Transformer 언어 모델 아님"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Stable Diffusion",
+          "explanation_en": "Stable Diffusion은 텍스트 설명을 기반으로 이미지를 생성하는 확산 모델입니다. 내부 텍스트 인코더에 Transformer 계열이 일부 사용될 수 있지만, 핵심 생성 구조는 Transformer가 아니라 U-Net 기반 확산 프로세스입니다. 시험에서 'Transformer 모델'을 묻는 문제는 핵심 아키텍처 기준으로 판단하므로, 이미지 생성용 확산 모델인 Stable Diffusion은 정답이 아닙니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "DALL-E",
+          "explanation_en": "DALL-E는 텍스트를 이미지로 변환하는 멀티모달 생성 모델로, 텍스트 처리에 Transformer 계열이 활용되지만 시험 관점에서는 '이미지 생성 모델'로 분류됩니다. 자연어 처리 중심의 Transformer 언어 모델 예시를 묻는 문제에서는 적절한 정답이 아닙니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Adobe Firefly",
+          "explanation_en": "Adobe Firefly는 이미지 생성과 크리에이티브 디자인 자동화에 초점이 맞춰진 생성형 AI 서비스입니다. 내부 구현은 완전히 공개되어 있지 않으며, 사용 목적과 대표 기능이 이미지 생성에 집중되어 있습니다. 자연어 처리용 Transformer 언어 모델의 대표 예로 분류되지 않으므로 오답입니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "GPT 계열 모델(예: ChatGPT)",
+          "explanation_en": "GPT 계열 모델(ChatGPT 포함)은 Transformer 아키텍처를 핵심 구조로 사용하는 대규모 언어 모델(LLM)입니다. Transformer의 self-attention 메커니즘을 통해 문장 내 단어 간 관계와 장거리 문맥 의존성을 효율적으로 학습합니다."
+        }
+      }
+    ]
+  }
+]

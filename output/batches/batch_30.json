@@ -1,0 +1,157 @@
+[
+  {
+    "id": "awsaifc01-q315",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "Ground Truth는 대규모 데이터 레이블링 및 주석 처리 서비스로, 피처 저장소 및 재사용 기능이 없습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "Feature Store는 정확히 이러한 요구사항을 충족하는 중앙 피처 저장소입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "Comprehend는 자연어 처리(NLP) 서비스로, 텍스트 분석만 수행하며, 수치형 피처 저장소 역할은 할 수 없습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "Glue Data Catalog는 데이터 소스의 메타데이터 관리 도구로, 피처 버전 관리, 학습/추론 일관성, 실시간 피처 제공 기능이 없습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q316",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "생성형 AI는 학습 시점의 데이터를 바탕으로 작동하며, 실시간 데이터 업데이트 기능을 자체적으로 가지지 않습니다. 최신 정보 활용을 위해서는 RAG 같은 별도의 기법이 필요합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "생성형 AI가 생성한 내용은 항상 검증이 필요하며, 특히 금융·법률 관련 문서는 전문가의 검토 없이 신뢰할 수 없습니다. 인간의 감독(human-in-the-loop)이 필수적입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "이것이 생성형 AI의 핵심 가치입니다. 새로운 콘텐츠 생성을 통해 업무 효율성을 크게 향상시킬 수 있습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "생성형 AI는 학습 데이터를 기반으로 작동하며, 기업 내부 문서에 접근하려면 명시적으로 제공된 문서나 RAG 방식의 연동이 필요합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q317",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "Amazon Cognito는 웹·모바일 애플리케이션의 사용자 인증에는 적합하지만, 기존 사내 IdP와의 통합 및 자동 동기화 기능이 제한적입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "IAM Identity Center는 기존 IdP와의 SAML 2.0/OIDC 연동을 지원하여 싱글 사인온을 구성하고, 직원 정보 변경 시 자동으로 AWS 권한이 동기화됩니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "AWS Organizations와 SCP는 조직 수준의 권한 경계를 설정하는 데 사용되지만, 부서 내 개별 사용자의 세밀한 권한 제어에는 적합하지 않습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "IAM 사용자를 개별적으로 생성·관리하는 방식은 수천 명의 직원을 대규모로 관리하기에 부적합합니다. 기존 사내 IdP와의 자동 동기화도 불가능합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q318",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "이것은 잘못된 설명입니다. Model Cards와 AI Service Cards는 데이터나 모델 파일을 저장하는 저장소가 아니라 모델의 용도와 책임 있는 사용에 대한 문서입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "이것도 잘못된 설명입니다. Model Cards와 AI Service Cards는 자동화 기능이나 도구가 아니라 투명성과 거버넌스를 위한 문서화 메커니즘입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "이것이 정확한 설명입니다. Model Cards는 자체 개발 모델의 투명성을 위한 기록이고, AI Service Cards는 AWS 관리형 서비스의 책임 있는 사용을 위한 AWS의 공식 정보입니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "이것은 잘못된 설명입니다. Model Cards와 AI Service Cards는 가격 정보나 코드 저장소와는 관계없이 AI 모델과 서비스의 책임 있는 사용에 대한 투명성 문서입니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q319",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "SaaS는 완전 관리형 애플리케이션 서비스를 의미합니다. EC2는 사용자가 인프라를 직접 제어해야 하므로 SaaS가 아닙니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "PaaS는 개발자가 애플리케이션 로직만 개발하면 되는 환경(예: AWS Elastic Beanstalk)을 제공합니다. EC2는 OS 선택·패치 적용을 사용자가 직접 해야 하므로 PaaS가 아닙니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "CaaS는 컨테이너 기반 배포 모델(예: AWS ECS, Amazon EKS)입니다. EC2는 가상 머신 기반의 IaaS 서비스입니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "이것이 정확한 답입니다. EC2는 IaaS 모델을 대표하는 서비스로, 사용자는 운영체제 선택, 소프트웨어 설치, 보안 구성, 네트워킹 등 전체 인프라를 직접 제어합니다."
+        }
+      }
+    ]
+  }
+]

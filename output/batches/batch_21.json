@@ -1,0 +1,177 @@
+[
+  {
+    "id": "awsaifc01-q213",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Amazon Comprehend는 의료 영상에서 종양을 자동 탐지한다",
+          "explanation_en": "Amazon Comprehend는 자연어 처리 서비스로, 텍스트 분석에만 사용됩니다. 영상 분석은 할 수 없습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Amazon Polly는 환자 음성을 분석하여 질병을 진단한다",
+          "explanation_en": "Amazon Polly는 텍스트를 음성으로 변환하는 서비스입니다. 음성 분석이나 진단 기능은 없습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon Rekognition은 의료 영상에서 이상 탐지를 수행한다",
+          "explanation_en": "정답입니다. Amazon Rekognition은 이미지와 비디오에서 객체, 얼굴, 텍스트를 감지·분석하므로, 의료 영상의 이상 탐지에 활용될 수 있습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Amazon Textract는 환자 신원을 얼굴로 인식하는 서비스이다",
+          "explanation_en": "Amazon Textract는 문서에서 텍스트와 데이터를 추출하는 서비스입니다. 얼굴 인식은 Amazon Rekognition의 기능입니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q216",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "LLM은 FM을 통합하여 만들어진 특수 목적 모델로, 이미지·음성도 처리한다.",
+          "explanation_en": "틀렸습니다. LLM은 Foundation Model의 하위 범주이며, Foundation Model이 더 광범위한 모달리티를 처리합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Foundation Model은 다양한 모달리티를 처리하는 범용 기초 모델이며, LLM은 텍스트 처리에 특화된 하위 범주이다.",
+          "explanation_en": "정답입니다. Foundation Model은 상위 개념으로 다양한 모달리티를 처리하고, LLM은 텍스트 처리에 특화된 하위 범주입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Foundation Model과 LLM은 완전히 다른 기술로, FM은 규칙 기반이고 LLM은 신경망 기반이다.",
+          "explanation_en": "틀렸습니다. Foundation Model과 LLM 모두 신경망 기반의 딥러닝 모델입니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "LLM은 단일 작업만 수행하는 특화 모델이고, FM은 통합된 멀티태스킹 플랫폼이다.",
+          "explanation_en": "틀렸습니다. LLM도 다양한 텍스트 작업을 수행할 수 있는 다목적 모델입니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q223",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "시골 지역 배송 데이터만 별도로 필터링해 독립적인 모델을 구축한다",
+          "explanation_en": "지역별 독립 모델은 시골 지역 데이터 부족 문제를 해결하지 못하며 통합된 예측 체계와 맞지 않습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "시골 지역 데이터를 오버샘플링하거나 합성 데이터를 생성해 데이터셋 균형을 맞춘다",
+          "explanation_en": "오버샘플링과 합성 데이터 생성은 underrepresented 클래스의 표현을 증가시켜 모든 지역의 패턴을 공정하게 학습하게 합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "모델 복잡도를 높이기 위해 더 깊은 신경망 아키텍처를 도입한다",
+          "explanation_en": "신경망 깊이 증가는 과적합을 악화시킬 수 있으며, 근본적인 데이터 불균형 문제를 해결하지 못합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "시골 지역 배송 기록을 더 많이 수집할 때까지 해당 지역 예측 기능을 비활성화한다",
+          "explanation_en": "예측 기능 비활성화는 비즈니스 요구사항을 충족하지 못하며, 데이터 불균형의 능동적 해결 방법이 아닙니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q226",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "지도 학습(Supervised Learning)",
+          "explanation_en": "지도 학습은 레이블이 지정된 기존 데이터를 사용하여 패턴을 학습하고 미래 값을 예측하는 기술로, 새로운 분자 구조를 창작하지는 못합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "생성형 모델 (Generative Model)",
+          "explanation_en": "생성형 AI는 기존 데이터 분석을 넘어, 학습 데이터에 없던 완전히 새로운 분자 구조, 화합물, 이미지 등을 직접 생성하는 기술입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "규칙 기반 시스템(Rule-based System)",
+          "explanation_en": "규칙 기반 시스템은 사람이 미리 정의한 규칙에 따라 동작하며, 새로운 분자 구조를 창의적으로 생성하지 못합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "데이터 전처리(Data Preprocessing)",
+          "explanation_en": "데이터 전처리는 기존 데이터를 정제하고 준비하는 기술로, 새로운 분자 구조를 생성하지 않습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q227",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "탐색적 데이터 분석 (EDA)",
+          "explanation_en": "데이터의 기본 통계, 분포, 이상치, 패턴을 파악하는 모델 학습 전 단계입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "피처 엔지니어링 및 변환",
+          "explanation_en": "EDA 이후 데이터를 모델에 맞게 변환·정규화·파생변수 생성하는 단계입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "모델 하이퍼파라미터 최적화",
+          "explanation_en": "기본 모델 학습 후 성능을 최대화하기 위해 하이퍼파라미터를 조정하는 단계입니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "테스트 데이터셋에 대한 최종 성능 평가",
+          "explanation_en": "모델 개발 완료 후 미보유 데이터로 정확도·정밀도·재현율 등을 측정하는 단계입니다."
+        }
+      }
+    ]
+  }
+]

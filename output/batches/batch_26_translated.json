@@ -1,0 +1,152 @@
+[
+  {
+    "id": "awsaifc01-q270",
+    "exam_id": "aws-aif-c01",
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "Correct. Adjusting weights in the direction of the gradient computed through backpropagation reduces errors and improves accuracy."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "This is a rule-based system. Deep learning is data-driven automatic learning."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "This is the k-NN algorithm, which differs from neural network weight learning."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "Deep learning requires iterative weight adjustments to improve accuracy. Fixed weights cannot lead to improvement."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q271",
+    "exam_id": "aws-aif-c01",
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "This is a security and storage concept unrelated to the model's text processing mechanism."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "Correct. A token is a unit of division, and embedding is its numerical representation."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "This describes dataset identification and transformation methods, not the actual definition of a token."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "This is an implementation detail that does not explain the conceptual role of tokens and embeddings."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q272",
+    "exam_id": "aws-aif-c01",
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "Textract is a document image processing service and CloudWatch is a general monitoring tool, neither of which provides model bias detection or explainability."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "Rekognition is an image recognition service and CloudTrail is an audit logging service, neither of which meets the core requirements for responsible AI."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "Correct. Clarify provides bias detection and explainability, while Model Monitor offers data drift detection and performance monitoring directly."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "Comprehend is a natural language processing service and GuardDuty is a security threat detection service, neither of which provides model bias detection or drift monitoring capabilities."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q273",
+    "exam_id": "aws-aif-c01",
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "Correct. Overfitting and underfitting are distinguished by the gap between training and validation performance."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "The number of parameters and data volume have an impact, but alone they cannot accurately distinguish between the two phenomena."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "Overfitting and underfitting can occur in all problems regardless of model type."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "Regularization is one approach to solving overfitting but not the only one. Underfitting can be addressed by increasing model complexity and other methods."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q275",
+    "exam_id": "aws-aif-c01",
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "Invoking an expensive model for every report would incur excessive costs when processing large volumes."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "Correct. Embedding-based search processes large volumes of reports at low cost while maintaining high accuracy."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "Weekly retraining is excessive in cost and time, and deploying a model every week is unsuitable for real-time processing."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "Using images solely for validation purposes cannot provide accurate responses when text and image information conflict."
+        }
+      }
+    ]
+  }
+]

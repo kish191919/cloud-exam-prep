@@ -260,6 +260,128 @@ Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
    ```
 2. [A] 선택 시: Parser & SQL Agent에 `--append` 플래그로 파싱 요청
 
+---
+
+## `/patch-en` 커맨드 처리
+
+Supabase에 이미 저장된 문제 중 영어 필드(`text_en`, `explanation_en`, `key_points_en`)가
+누락된 항목을 탐지하고 Haiku로 번역하여 PATCH하는 백필 파이프라인.
+
+### 처리 흐름
+
+```
+1. exam_id 입력 (Enter 스킵 시 전체 exam 대상)
+2. set_name 입력 (Enter 스킵 시 해당 exam 전체, exam_id 없으면 생략)
+3. --fetch 실행 → needs_translation.json 생성 및 통계 출력
+4. needs_translation.json이 비어있으면 종료
+5. translation_guide/{exam_id}.md 로드 (없으면 null)
+6. Haiku 배치 호출 (5문제씩, ceil(N/5)개 동시 실행)
+7. 결과 취합 → output/translated_questions.json 저장
+8. --patch 실행 → Supabase PATCH
+9. 결과 요약 출력
+```
+
+### Step 1: 멀티턴 정보 수집
+
+```
+영문 백필을 시작합니다.
+
+exam_id를 입력하세요 (전체 대상이면 Enter):
+exam_id: aws-aif-c01
+
+세트 이름을 입력하세요 (전체 대상이면 Enter, 예: 샘플 세트):
+set_name: 샘플 세트
+```
+
+- `exam_id`를 Enter로 스킵하면 set_name 입력 없이 전체 대상 진행
+- `set_name`을 입력하면 해당 세트 소속 문제만 처리 (문제 수 대폭 축소)
+
+### Step 2: --fetch 실행
+
+```bash
+python3 .claude/skills/sql-generator/scripts/patch_en_supabase.py \
+  --fetch \
+  [--exam-id {exam_id}] \
+  [--set-name "{set_name}"]   # set_name 입력 시 추가 (--exam-id 필수)
+```
+
+- `--set-name` 지정 시 `--exam-id`도 반드시 함께 전달
+- 세트 필터가 없으면 기존 동작(exam 전체 또는 전체 exam) 그대로
+
+출력 예:
+```
+[결과] 미번역 문제: 43개
+  - 질문 text_en 누락:         5개
+  - 질문 explanation_en 누락:  12개
+  - 옵션 text_en 누락:         38개 (항목 기준)
+  - 옵션 explanation_en 누락:  30개 (항목 기준)
+저장: output/needs_translation.json
+```
+
+### Step 3: Haiku 배치 호출 (5문제씩)
+
+`output/needs_translation.json`의 각 항목을 5개씩 묶어 동시 실행:
+
+```python
+Task(
+    subagent_type="general-purpose",
+    model="haiku",
+    prompt={
+        "task": "translate_to_en",
+        "questions": batch,          # needs_translation.json의 항목 5개
+        "translation_guide": translation_guide_content,  # 없으면 null
+    }
+)
+```
+
+**Haiku 번역 지시사항 (프롬프트에 포함):**
+```
+각 질문의 'needs' 객체 안에 있는 필드만 영어로 번역하여 반환하라.
+- AWS 서비스명(Amazon Bedrock, SageMaker 등)은 원문 그대로 유지
+- translation_guide의 용어 대역표를 우선 적용
+- 번역 불필요한 필드(needs에 없는 필드)는 출력에서 생략
+
+출력 형식:
+{
+  "results": [
+    {
+      "id": "{question_id}",
+      "text_en": "...",          // needs.text_en이 있을 때만
+      "explanation_en": "...",   // needs.explanation_en이 있을 때만
+      "key_points_en": "...",    // needs.key_points_en이 있을 때만
+      "options": [
+        {
+          "option_id": "A",
+          "text_en": "...",         // needs.text_en이 있을 때만
+          "explanation_en": "..."   // needs.explanation_en이 있을 때만
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Step 4: --patch 실행
+
+```bash
+python3 .claude/skills/sql-generator/scripts/patch_en_supabase.py \
+  --patch \
+  --input-file output/translated_questions.json
+```
+
+### Step 5: 결과 요약 출력
+
+```
+✅ 영문 백필 완료
+━━━━━━━━━━━━━━━━━━━━━━━━
+미번역 탐지:   {total}개 문제
+번역 성공:     {translated}개
+PATCH 완료:    질문 {q_patched}개, 옵션 {opt_patched}개
+━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
 ## 주요 파일 경로
 
 | 파일 | 역할 |
@@ -268,9 +390,12 @@ Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 | `input/done/*.txt` | 처리 완료된 파일 (자동 이동) |
 | `output/parsed_questions.json` | 파싱 결과 + 체크포인트 |
 | `output/redesigned_questions.json` | 재설계 완료 결과 (한/영 양방향 필드 포함) |
+| `output/needs_translation.json` | 영문 백필 대상 목록 (`/patch-en` 생성) |
+| `output/translated_questions.json` | 번역 완료 결과 (`/patch-en` 생성) |
 | `.env` | Supabase 접속 정보 (git에 포함되지 않음) |
 | `.claude/skills/question-parser/scripts/parse_text.py` | 파싱 스크립트 |
 | `.claude/skills/sql-generator/scripts/insert_supabase.py` | Supabase REST API 직접 삽입 스크립트 |
+| `.claude/skills/sql-generator/scripts/patch_en_supabase.py` | 영문 백필 스크립트 (`--fetch` / `--patch` 모드) |
 | `.claude/skills/sql-generator/scripts/generate_sql.py` | 영문 백필 전용 (`--patch-en` 모드) |
 | `.claude/skills/question-redesigner/references/translation_guide/{exam_id}.md` | AWS 자격증 영문 번역 가이드 (문장 패턴 + 용어 대역표) |
 

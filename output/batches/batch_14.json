@@ -1,0 +1,197 @@
+[
+  {
+    "id": "awsaifc01-q167",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 글로벌 미디어 기업이 시청자 행동 데이터와 인구 통계 정보를 분석하여 개인화 콘텐츠 추천 시스템을 구축했습니다. 커스텀 ML 모델을 프로덕션 환경에 배포한 후, 시간이 지남에 따라 모델의 예측 품질이 저하되는지 지속적으로 모니터링하고자 합니다.\n\n이 요구사항을 충족하는 AWS 서비스는 무엇인가?",
+      "explanation_en": "Amazon SageMaker Model Monitor는 프로덕션 환경에 배포된 ML 모델의 데이터 품질, 모델 품질, 편향 드리프트, 피처 속성 드리프트를 지속적으로 모니터링합니다. 모델의 예측 성능이 시간이 지나면서 저하될 때 자동으로 알림을 발생시킵니다.\n\n• Amazon Rekognition: 이미지·동영상 분석 서비스로, ML 모델 품질 드리프트 모니터링 기능이 없습니다.\n• Amazon SageMaker Clarify: 모델의 편향(bias) 감지 및 설명 가능성(explainability) 분석에 특화된 서비스로, 지속적인 모델 품질 드리프트 추적보다는 초기 평가에 주로 사용됩니다.\n• Amazon Comprehend: 텍스트 분석 NLP 서비스로, ML 모델 모니터링 기능이 없습니다.\n• Amazon SageMaker Model Monitor: 프로덕션 모델의 품질 드리프트를 지속적으로 감지하고 알림을 제공하는 서비스로, 이 요구사항에 가장 적합합니다.",
+      "key_points_en": "Amazon SageMaker Model Monitor\n• 프로덕션 ML 모델의 데이터 품질·모델 품질 드리프트를 지속적으로 모니터링\n• 데이터 드리프트, 모델 품질 저하, 편향 드리프트, 피처 속성 변화 감지\n• 기준선(baseline) 통계와 실시간 데이터를 비교하여 이상 시 알림 발생\n• SageMaker Clarify와 달리, 배포 이후 지속적인 추적에 특화"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Amazon Rekognition",
+          "explanation_en": "이미지·동영상에서 객체, 얼굴, 장면을 인식하는 서비스입니다. 배포된 ML 모델의 품질 드리프트를 모니터링하는 기능이 없습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Amazon SageMaker Clarify",
+          "explanation_en": "모델 편향 감지와 설명 가능성 분석에 특화된 서비스입니다. 시간에 따른 지속적인 모델 품질 드리프트 추적보다는 학습·평가 단계의 편향 분석에 주로 활용됩니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon Comprehend",
+          "explanation_en": "텍스트 분석(감정, 개체, 토픽 등) NLP 서비스입니다. ML 모델의 품질 변화를 모니터링하는 기능이 없습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Amazon SageMaker Model Monitor",
+          "explanation_en": "프로덕션 환경에 배포된 ML 모델의 데이터 품질 및 모델 품질 드리프트를 지속적으로 감지하고 알림을 제공합니다. 시간 경과에 따른 모델 성능 저하를 추적하는 이 요구사항에 가장 적합합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q168",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 글로벌 금융 서비스 기업이 AWS를 사용하여 AI/ML 모델을 배포하고 있습니다. 규정 준수 팀은 모델의 의사 결정 과정을 이해 관계자에게 투명하게 공개하고, 모델 출력에 대한 설명을 문서화하여 제공할 것을 요구하고 있습니다.\n\n이 요구사항을 가장 잘 충족하는 AWS 서비스 또는 기능은 무엇인가?",
+      "explanation_en": "Amazon SageMaker Model Cards는 ML 모델의 의도된 용도, 평가 결과, 훈련 데이터, 편향 분석, 리스크 등을 표준화된 형식으로 문서화하는 기능입니다. 모델 투명성을 확보하고 이해 관계자에게 모델 동작 방식과 출력에 대한 설명을 제공하기 위한 목적으로 설계되었습니다.\n\n• Amazon SageMaker Model Cards: 모델의 의사 결정 과정과 출력을 문서화하여 투명성과 설명 가능성을 제공합니다.\n• Amazon Rekognition: 이미지·동영상 분석 서비스로, 모델 투명성 문서화 기능이 없습니다.\n• Amazon Comprehend: 텍스트 분석 NLP 서비스로, AI 모델 투명성 및 설명 문서화에는 적합하지 않습니다.\n• Amazon Lex: 대화형 챗봇 구축 서비스로, 모델 의사 결정 과정 투명성 제공 기능이 없습니다.",
+      "key_points_en": "Amazon SageMaker Model Cards\n• ML 모델의 목적, 훈련 데이터, 평가 지표, 리스크를 표준 문서로 정리\n• 모델 투명성(transparency)과 설명 가능성(explainability) 지원\n• 이해 관계자·규정 준수 팀에 모델 동작 방식을 공식 문서로 제공\n• 모델 라이프사이클 전반의 거버넌스 기록 역할"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Amazon SageMaker Model Cards",
+          "explanation_en": "모델의 의도된 용도, 훈련 세부 사항, 평가 결과, 편향 분석 등을 표준화된 문서로 기록하여 AI 모델의 투명성과 설명 가능성을 제공합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Amazon Rekognition",
+          "explanation_en": "이미지·동영상에서 객체, 얼굴, 장면을 인식하는 컴퓨터 비전 서비스입니다. AI 모델 의사 결정 과정의 투명성 문서화 기능이 없습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon Comprehend",
+          "explanation_en": "텍스트에서 감정, 개체명, 언어 등을 분석하는 NLP 서비스입니다. AI 모델의 투명성 확보나 출력 설명 문서화 기능은 제공하지 않습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Amazon Lex",
+          "explanation_en": "음성 및 텍스트 기반 대화형 챗봇을 구축하는 서비스입니다. 모델 의사 결정 과정의 투명성이나 출력 설명 문서화와는 무관합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q169",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 글로벌 제조 기업이 자사 제품의 설명 문구를 다양한 언어로 자동 생성하여 각 지역 시장에 제공하려 합니다. 기존에 작성된 제품 설명을 여러 언어로 변환하는 작업을 자동화하고자 합니다.\n\n이 요구사항에 가장 적합한 AWS 서비스는 무엇인가?",
+      "explanation_en": "Amazon Translate는 딥러닝 기반의 완전 관리형 신경망 기계 번역 서비스로, 텍스트를 다수의 언어로 빠르고 정확하게 번역합니다. 제품 설명과 같은 텍스트 콘텐츠를 여러 언어로 자동 변환하는 데 적합합니다.\n\n• Amazon Translate: 텍스트를 75개 이상의 언어로 자동 번역하는 신경망 기계 번역 서비스로, 이 요구사항에 가장 적합합니다.\n• Amazon Transcribe: 음성(오디오)을 텍스트로 변환하는 STT 서비스로, 언어 번역 기능은 제공하지 않습니다.\n• Amazon Kendra: 문서와 콘텐츠에서 지능형 검색을 수행하는 서비스로, 다국어 번역 기능이 없습니다.\n• Amazon Polly: 텍스트를 음성으로 변환하는 TTS 서비스로, 언어 번역 기능은 제공하지 않습니다.",
+      "key_points_en": "Amazon Translate\n• 딥러닝 기반 신경망 기계 번역(Neural Machine Translation) 서비스\n• 75개 이상의 언어 간 번역 지원\n• 실시간 번역 및 배치 번역 모두 가능\n• 커스텀 용어집(Custom Terminology)으로 도메인 특화 번역 품질 향상 가능"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Amazon Translate",
+          "explanation_en": "딥러닝 기반 신경망 기계 번역 서비스로, 텍스트 콘텐츠를 75개 이상의 언어로 자동 변환합니다. 다국어 제품 설명 생성에 가장 적합합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Amazon Transcribe",
+          "explanation_en": "음성(오디오)을 텍스트로 변환하는 STT(Speech-to-Text) 서비스입니다. 텍스트 번역 기능은 제공하지 않습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon Kendra",
+          "explanation_en": "ML 기반 지능형 문서 검색 서비스입니다. 콘텐츠 검색 및 질의응답에 사용되며, 다국어 번역 기능이 없습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Amazon Polly",
+          "explanation_en": "텍스트를 음성으로 변환하는 TTS(Text-to-Speech) 서비스입니다. 언어 번역 기능은 제공하지 않습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q170",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 글로벌 헬스케어 기업이 AWS에서 운영하는 ML 모델의 거버넌스 체계를 강화하려 합니다. ML 인스턴스 데이터, 모델 훈련 정보, 평가 지표 등 세부 사항을 기록하고 규정 준수 보고서를 생성하는 데 활용할 수 있는 기능이 필요합니다.\n\n이 요구사항에 가장 적합한 AWS 기능은 무엇인가?",
+      "explanation_en": "Amazon SageMaker Model Cards는 ML 모델의 훈련 데이터, 인스턴스 정보, 평가 지표, 의도된 용도, 리스크 및 윤리적 고려사항을 표준화된 문서 형식으로 기록합니다. 거버넌스 및 규정 준수 보고 목적에 적합한 기능입니다.\n\n• Amazon SageMaker Model Cards: ML 인스턴스 데이터와 모델 세부 정보를 구조화된 문서로 기록하여 거버넌스 및 보고를 지원합니다.\n• Amazon SageMaker Debugger: 모델 훈련 중 텐서 값, 그래디언트, 활성화 함수 등을 실시간으로 디버깅하는 도구로, 거버넌스 기록보다는 훈련 오류 진단에 사용됩니다.\n• Amazon SageMaker Model Monitor: 프로덕션 모델의 데이터 품질 및 드리프트를 지속적으로 감지하는 서비스로, 사후 모니터링에 특화되어 있습니다.\n• Amazon SageMaker JumpStart: 사전 훈련된 모델과 솔루션 템플릿을 제공하는 허브로, 거버넌스 기록 기능이 없습니다.",
+      "key_points_en": "Amazon SageMaker Model Cards\n• ML 모델의 세부 정보를 거버넌스·보고 목적으로 표준 문서화\n• 훈련 데이터, 인스턴스 유형, 평가 지표, 의도된 용도를 포함\n• 규정 준수(compliance) 감사(audit) 보고서 생성에 활용\n• 모델 라이프사이클 전반의 책임 추적 가능"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "Amazon SageMaker Model Cards",
+          "explanation_en": "ML 인스턴스 데이터, 훈련 정보, 평가 지표 등 모델 세부 사항을 표준화된 문서로 기록하여 거버넌스 및 규정 준수 보고에 활용할 수 있습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "Amazon SageMaker Debugger",
+          "explanation_en": "모델 훈련 중 텐서, 그래디언트 등의 값을 실시간으로 분석하는 디버깅 도구입니다. 거버넌스 기록이나 규정 준수 보고서 생성 목적에는 적합하지 않습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon SageMaker Model Monitor",
+          "explanation_en": "배포 후 프로덕션 환경에서 모델 품질 드리프트를 지속적으로 감지하는 서비스입니다. 모델 세부 정보의 사전 기록 및 거버넌스 문서화와는 목적이 다릅니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "Amazon SageMaker JumpStart",
+          "explanation_en": "사전 훈련된 모델, 알고리즘, 솔루션 템플릿을 제공하는 ML 허브입니다. 모델 거버넌스 정보 기록이나 규정 준수 보고 기능은 없습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q171",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 온라인 리테일 회사가 고객 경험을 개선하기 위해 AI 기술을 도입하고 있습니다. 고객이 구매한 제품 카테고리, 구매 빈도, 지난 3개월간의 구매 이력 등의 패턴을 분석하여 다음 달 소비 가능성이 높은 상품군을 예측하려 합니다.\n\n이 요구사항에 해당하는 생성형 AI의 사용 사례는 무엇인가?",
+      "explanation_en": "생성형 AI는 패턴 인식과 데이터 기반 콘텐츠 생성 기능이 뛰어나 고객 행동 데이터를 요약하고 미래 구매 트렌드를 텍스트 형태의 인사이트로 생성해낼 수 있습니다. 이는 생성형 AI의 핵심 역할입니다.\n\n• 고객 구매 이력 요약 및 인사이트 생성: 생성형 AI는 자연어 생성(NLG) 능력으로 고객 데이터 요약과 미래 구매 트렌드 인사이트를 생성하는 데 가장 적합합니다.\n• 구매 행동 패턴에 따른 고객 분류: 이는 분류(Classification) 작업으로, 지도 학습 기반의 기존 ML 모델이 적합합니다. 생성형 AI가 반드시 필요하지 않습니다.\n• 투자 유형과 위험도에 따른 고객 세분화: 이는 클러스터링(Clustering) 작업으로, 기존의 비지도 학습 알고리즘이 적합합니다.\n• 과거 판매량으로 매출액 예측: 이는 시계열 예측(Forecasting) 작업으로, 회귀 모델이나 통계 기반 알고리즘이 더 적합합니다.",
+      "key_points_en": "생성형 AI 대 전통 ML의 역할 구분\n• 생성형 AI: 텍스트·이미지·데이터 요약, 인사이트 생성, 자연어 응답 생성에 최적화\n• 분류·군집화: SageMaker 지도·비지도 학습 알고리즘으로 충분\n• 예측·시계열: 회귀 모델, 시계열 예측 알고리즘이 더 효율적"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "고객 구매 이력과 패턴을 분석하여 미래 구매 트렌드 인사이트를 자동 생성",
+          "explanation_en": "생성형 AI의 핵심 능력인 자연어 생성(NLG)을 활용하여 구조화된 고객 데이터로부터 인사이트 텍스트를 생성하는 것이 생성형 AI의 가장 전형적인 사용 사례입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "구매 행동 패턴에 따라 고객을 여러 그룹으로 자동 분류",
+          "explanation_en": "고객을 그룹으로 분류하는 것은 머신러닝의 분류(Classification) 작업입니다. Amazon SageMaker의 기존 ML 알고리즘이 더 적합하며, 생성형 AI의 주요 역할이 아닙니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "투자 유형과 위험도에 따라 고객을 세분화하여 맞춤형 상품 추천",
+          "explanation_en": "투자 유형과 위험도 수준에 따른 세분화는 비지도 학습(Clustering)의 전형적인 예시로, SageMaker의 비지도 학습 알고리즘이 적합합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "과거 3개월간의 판매량 데이터로 향후 분기별 매출액을 자동 산출",
+          "explanation_en": "시계열 데이터를 기반으로 미래의 연속적인 숫자(매출액) 값을 예측하는 것은 회귀(Regression) 또는 시계열 예측 작업입니다. 생성형 AI의 주된 역할이 아닙니다."
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,197 @@
+[
+  {
+    "id": "awsaifc01-q132",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 기업이 고객 서비스 챗봇에 사용할 FM을 선택하기 위해 Claude 3 Sonnet, Llama 3 70B, Amazon Titan Text Premier 세 모델을 비교 평가하려 합니다. 각 모델의 성능을 자신들의 고객 서비스 도메인에 맞게 체계적이고 객관적으로 평가하고 싶습니다.\n\n다음 중 이 상황에 가장 적합한 FM 평가 접근 방식은?",
+      "explanation_en": "Amazon Bedrock Model Evaluation이 이 상황에 가장 적합합니다.\n\n주요 기능:\n1) 자동 평가: 기업이 보유한 실제 고객 서비스 Q&A 데이터셋으로 여러 모델을 동시에 자동 평가\n2) 인간 평가: AWS의 관리형 작업 인력(Amazon Mechanical Turk 또는 자체 팀)이 모델 응답을 비교 평가\n3) 도메인 특화: 기업의 실제 고객 서비스 시나리오에 맞춘 맞춤형 평가\n4) 다양한 지표: 정확도, 견고성, 독성, 유해성, 적절성 등 다차원 평가\n\n평가 유형:\n- 자동 평가: ROUGE, BLEU, 정확도, 코드 실행 가능성 등 측정 가능한 지표\n- 인간 기반 평가: 유창성, 관련성, 일관성 등 주관적 품질 평가",
+      "key_points_en": "FM 성능 평가 접근 방식:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAmazon Bedrock Model Evaluation:\n• 자동 평가: 자체 데이터셋으로 여러 모델 동시 비교\n• 인간 평가: 관리형 평가 인력 또는 자체 팀 활용\n• 내장 데이터셋: AWS 제공 표준 벤치마크 활용\n• 평가 항목: 정확도, 독성, 견고성, 적절성\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n벤치마크 데이터셋 (Benchmark Datasets):\n• MMLU: 다학문 언어 이해 (57개 주제)\n• HumanEval: 코드 생성 능력 평가\n• HellaSwag: 상식 추론 평가\n• TruthfulQA: 사실성/진실성 평가\n• MT-Bench: 다단계 대화 평가\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n인간 평가 (Human Evaluation):\n• 가장 신뢰성 높음, 비용 높음\n• 유창성, 관련성, 일관성, 안전성 평가\n• Amazon SageMaker Ground Truth Plus 활용 가능\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n평가 시 고려사항:\n• 자체 도메인 데이터로 평가해야 실제 성능 반영\n• 여러 지표를 종합적으로 평가 (단일 지표 신뢰 금지)"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "팀원 3명이 각자 좋아하는 모델을 선택하여 다수결로 결정한다",
+          "explanation_en": "주관적 선호도는 객관적 성능 평가를 대체할 수 없습니다. 체계적인 평가 없이는 최적 모델을 선택하기 어렵습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "AWS가 공개한 일반 벤치마크(MMLU 점수)만 보고 가장 높은 점수의 모델을 선택한다",
+          "explanation_en": "일반 벤치마크는 특정 기업의 고객 서비스 도메인 성능을 직접 반영하지 않습니다. 자체 도메인 데이터로 평가해야 합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon Bedrock Model Evaluation을 사용하여 실제 고객 서비스 Q&A 데이터셋으로 세 모델을 자동 평가하고, 필요 시 인간 평가자가 응답 품질을 비교 평가한다",
+          "explanation_en": "정확합니다. Bedrock Model Evaluation은 자체 도메인 데이터셋으로 여러 모델을 체계적으로 비교 평가할 수 있습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "가장 비싼 모델이 항상 가장 성능이 좋으므로 비용 기준으로만 선택한다",
+          "explanation_en": "비용과 성능은 항상 비례하지 않습니다. 작업 특성에 따라 소형 모델이 대형 모델보다 특정 작업에서 더 적합할 수 있습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q133",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "세 개의 NLP 프로젝트 팀이 각자 다른 GenAI 애플리케이션의 성능을 측정하려 합니다.\n\n   > 프로젝트 A (문서 요약 AI): \n긴 보고서를 요약한 결과가 인간이 작성한 참조 요약과 얼마나 겹치는지(단어/구문 중복) 측정합니다.\n\n    > 프로젝트 B (기계 번역 AI): \n한국어→영어 번역 결과가 전문 번역가의 번역과 얼마나 일치하는지 n-gram 정밀도로 평가합니다.\n\n    > 프로젝트 C (의미 유사도 AI): \n두 문장이 같은 의미인지 단어 일치율이 아닌 문맥적·의미적 유사도를 심층 언어 모델로 평가합니다.\n\n각 프로젝트에 가장 적합한 평가 지표를 올바르게 매칭한 것은?",
+      "explanation_en": "프로젝트 A - ROUGE(Recall-Oriented Understudy for Gisting Evaluation):\n텍스트 요약 품질 평가에 특화된 지표입니다. \nROUGE-N은 n-gram 재현율을 측정하며, 생성된 요약이 참조 요약의 중요 정보를 얼마나 포함하는지 평가합니다.\n\n프로젝트 B - BLEU(Bilingual Evaluation Understudy):\n기계 번역 품질 평가의 표준 지표입니다. \n생성된 번역의 n-gram 정밀도를 참조 번역과 비교합니다. \n1-4 gram을 함께 평가하여 번역 품질을 수치화합니다.\n\n프로젝트 C - BERTScore:\nBERT 등 사전 훈련된 언어 모델의 컨텍스트 임베딩을 사용하여 두 텍스트의 의미론적 유사도를 측정합니다. \n\"자동차\"와 \"차량\" 같은 의미적으로 유사한 표현도 높은 점수를 줍니다. \nROUGE와 BLEU가 놓치는 의미적 동등성을 포착합니다.",
+      "key_points_en": "FM 평가 지표 비교:\nROUGE (재현율 기반 요약 평가):\n>  주요 용도: 텍스트 요약, 질문 응답\n>  한계: 의미 동등성 미포착 (\"차\" ≠ \"자동차\"로 계산)\n\nBLEU (정밀도 기반 번역 평가):\n>  주요 용도: 기계 번역, 코드 생성 평가\n>  한계: 단어 순서, 의미 유사성 부분 반영\n\nBERTScore (의미 기반 유사도):\n>  주요 용도: 의미 유사도, 생성 품질 전반\n>  강점: 단어 표면 형태가 달라도 의미 파악\n\n암기팁:\n• 요약→ROUGE / 번역→BLEU / 의미유사→BERTScore"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "A-ROUGE,   B-BLEU,   C-BERTScore",
+          "explanation_en": "문서 요약 평가→ROUGE(재현율 기반 n-gram), 기계 번역 평가→BLEU(정밀도 기반 n-gram), 의미적 유사도→BERTScore(임베딩 기반)로 정확히 매칭됩니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "A-BLEU,   B-ROUGE,   C-BERTScore",
+          "explanation_en": "ROUGE는 요약 평가에, BLEU는 번역 평가에 주로 사용됩니다. A와 B가 바뀌었습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "A-BERTScore,   B-BLEU,   C-ROUGE",
+          "explanation_en": "ROUGE가 요약 평가의 표준이며, BERTScore는 의미론적 유사도 평가에 적합합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "A-ROUGE,   B-BERTScore,   C-BLEU",
+          "explanation_en": "BLEU가 번역 평가의 표준이며, BERTScore는 단어 단순 일치가 아닌 의미 기반 평가입니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q134",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 글로벌 IT 기업이 직원 생산성 향상을 위해 Amazon Q Developer 기반 AI 코딩 어시스턴트를 500명 개발자에게 배포했습니다. 도입 3개월 후, CEO가 \"이 AI 투자가 실제로 비즈니스 가치를 창출하고 있는가?\"라고 묻고 있습니다.\n\n다음 중 AI 어시스턴트가 비즈니스 목표에 효과적으로 부합하는지 판단하는 데 가장 종합적이고 적절한 지표 세트는?",
+      "explanation_en": "AI 투자의 비즈니스 가치를 종합적으로 평가하려면 기술적 지표와 비즈니스 지표를 함께 측정해야 합니다.\n\n옵션 D의 지표 분석:\n1) 생산성 (Productivity): 개발자 1인당 일일 코드 커밋 수, 기능 개발 소요 시간 (주 단위 단축) → AI가 실제로 시간을 절약했는지\n2) 사용자 참여 (User Engagement): AI 어시스턴트 일일 활성 사용률, 코드 제안 수락률 → 개발자가 실제로 활용하는지\n3) 코드 품질: AI 지원 코드의 버그율, 코드 리뷰 통과율 → 품질이 향상되었는지\n4) 비즈니스 성과: 개발팀 운영 비용 대비 도입 ROI, 제품 출시 사이클 단축 → 비용 효율화\n5) 태스크 엔지니어링: 어떤 유형의 코딩 작업에 AI가 효과적인지 분석 → 최적 활용 방향 파악",
+      "key_points_en": "FM의 비즈니스 가치 평가 지표 체계:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n생산성 (Productivity):\n• 작업 완료 시간 단축률\n• 코드 생성량 증가 (줄/시간)\n• 반복 업무 자동화 비율\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n사용자 참여 (User Engagement):\n• DAU/MAU (일/월간 활성 사용자)\n• 기능 수락률 (코드 제안 중 채택 비율)\n• 세션 시간, 기능 활용 빈도\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n품질 지표:\n• 버그율 감소, 코드 리뷰 통과율\n• 고객 만족도 (CSAT), NPS\n• 오류율, 재작업 비율\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n비즈니스 성과:\n• ROI (투자 대비 수익)\n• 비용 절감액 (시간당 비용 × 절감 시간)\n• 매출 영향 (전환율, ARPU 향상)\n• 제품 출시 속도 (Time-to-Market)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n태스크 엔지니어링:\n• AI가 가장 효과적인 작업 유형 분석\n• 고효율 vs 저효율 활용 사례 파악\n• 지속적 프롬프트/워크플로 최적화"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "AI 모델의 토큰 사용량과 API 호출 횟수만 측정한다",
+          "explanation_en": "토큰 사용량은 비용 지표이지 비즈니스 가치 지표가 아닙니다. 사용량이 많다고 비즈니스 가치가 높은 것은 아닙니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "BLEU 및 ROUGE 점수만 측정한다",
+          "explanation_en": "BLEU와 ROUGE는 텍스트 생성 품질 지표이지 코딩 어시스턴트의 비즈니스 가치(생산성, ROI, 사용자 참여)를 측정하지 않습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "AI 응답 속도(지연 시간)만 측정한다",
+          "explanation_en": "응답 속도는 기술적 지표이지 비즈니스 가치를 직접 나타내지 않습니다. 빠른 응답도 활용되지 않으면 가치가 없습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "개발자 생산성 향상(코드 완료 시간 단축), 사용자 참여율(일일 활성 사용률, 코드 제안 수락률), AI 지원 코드 품질(버그율 감소), 비용 절감 ROI, 태스크 엔지니어링(AI 효과적 활용 영역 분석)을 종합 측정한다",
+          "explanation_en": "생산성, 참여율, 품질, ROI, 태스크 분석을 모두 포함한 종합적인 비즈니스 가치 측정 체계입니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q135",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 법률 AI 스타트업이 Amazon Bedrock Knowledge Base 기반 RAG 시스템을 구축하여 변호사들이 판례 문서를 검색하고 질문에 답변받는 시스템을 운영 중입니다. QA팀이 이 RAG 시스템의 성능을 종합적으로 평가하는 프레임워크를 설계하려 합니다.\n\n다음 중 RAG 기반 법률 AI 시스템의 성능을 가장 종합적으로 평가하는 접근 방식은?",
+      "explanation_en": "RAG 시스템은 일반적인 텍스트 생성 지표 외에 RAG 고유의 평가 지표가 필요합니다.\n\n옵션 B의 평가 지표 설명:\n\n1) 충실성 (Faithfulness): AI 답변이 검색된 문서에만 근거하는지 측정. \"검색된 문서에 없는 내용을 만들어냈는가?\" → 환각(Hallucination) 방지 핵심 지표\n\n2) 답변 관련성 (Answer Relevancy): 생성된 답변이 사용자의 질문에 실제로 답하는지 측정. \"질문에 맞는 답변인가?\" → 무관한 장황한 답변 방지\n\n3) 컨텍스트 정밀도 (Context Precision): 검색된 문서 청크 중 실제로 관련 있는 청크의 비율. \"노이즈 없이 필요한 판례만 검색됐는가?\" → 검색 품질\n\n4) 컨텍스트 재현율 (Context Recall): 정답에 필요한 모든 관련 판례가 검색됐는지 측정. \"중요한 판례를 놓치지 않았는가?\" → 검색 완전성\n\n5) 소스 인용 정확성: 참조된 판례 번호가 실제로 존재하고 정확한지 → 법률 시스템 필수",
+      "key_points_en": "RAG 시스템 평가 지표 (RAGAS 프레임워크):\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n1. 충실성 (Faithfulness):\n   • 생성된 답변이 검색된 컨텍스트에 근거하는지\n   • 높을수록 환각 가능성 낮음\n   • 목표: Faithfulness ≥ 0.9\n\n2. 답변 관련성 (Answer Relevancy):\n   • 답변이 질문에 얼마나 직접적으로 답하는지\n   • 높을수록 무관한 정보 포함 적음\n\n3. 컨텍스트 정밀도 (Context Precision):\n   • 검색된 청크 중 관련 있는 비율\n   • 검색기(Retriever) 품질 측정\n\n4. 컨텍스트 재현율 (Context Recall):\n   • 필요한 정보가 검색된 비율\n   • 중요 정보 누락 여부 측정\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n에이전트 평가 추가 지표:\n• 작업 완료율 (Task Completion Rate)\n• 도구 호출 정확도 (Tool Call Accuracy)\n• 단계 수 효율성 (Steps to Completion)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nAmazon Bedrock 지원 평가 도구:\n• Amazon Bedrock Model Evaluation\n• 자체 평가 파이프라인 구축 (SageMaker + Lambda)"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "RAG 시스템 응답 속도(지연 시간)만 측정하면 충분하다",
+          "explanation_en": "응답 속도는 기술적 지표이지만, 답변이 정확하지 않거나 환각을 포함하면 아무리 빨라도 법률 시스템에서 사용할 수 없습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "충실성(Faithfulness: 검색 문서 기반 답변 여부), 답변 관련성(Answer Relevancy: 질문에 직접 답하는지), 컨텍스트 정밀도(Context Precision: 관련 판례만 검색되는지), 컨텍스트 재현율(Context Recall: 필요한 판례 모두 검색되는지), 소스 인용 정확성을 종합 평가한다",
+          "explanation_en": "충실성, 관련성, 검색 정밀도와 재현율, 소스 정확성을 모두 포함한 RAG 시스템 종합 평가 프레임워크입니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "일반 텍스트 생성 지표인 ROUGE 점수만 측정하면 RAG 시스템 성능을 충분히 평가할 수 있다",
+          "explanation_en": "ROUGE는 단어 중복 기반 요약 지표입니다. RAG의 핵심인 검색 품질(컨텍스트 정밀도/재현율)과 환각 방지(충실성)를 측정하지 않습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "답변 길이가 길수록 더 많은 정보를 포함하므로, 답변의 평균 단어 수만 측정한다",
+          "explanation_en": "답변 길이는 품질을 보장하지 않습니다. 장황하고 무관한 내용을 포함한 긴 답변은 법률 실무에서 오히려 해롭습니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q136",
+    "exam_id": "aws-aif-c01",
+    "needs": {
+      "text_en": "한 핀테크 기업이 Amazon Bedrock으로 대출 심사 AI 챗봇을 구축하려 합니다. 다음 요구사항을 충족해야 합니다.\n\n    >  인종, 성별, 나이에 따른 차별적 대출 결정 금지\n    >  금리·수수료 등 금융 정보는 반드시 사실에 근거한 정확한 정보만 제공\n    >  악의적 입력(적대적 공격)에도 일관된 결과 유지\n    >  부적절한 콘텐츠(욕설, 음란물, 혐오 발언) 자동 차단\n    >  개인 금융 정보를 응답에 노출하지 않음\n\n다음 중 이 요구사항을 충족하는 책임감 있는 AI의 특성과 AWS 도구를 가장 올바르게 설명한 것은?",
+      "explanation_en": "책임감 있는 AI는 단일 특성이 아닌 여러 특성의 조합으로 구현됩니다.\n\n요구사항 매핑:\n1)  차별 금지 → 공정성(Fairness): 모든 인구통계 그룹에 균등한 처우\n2)  사실 기반 정보 → 진실성(Truthfulness): 검증된 정보만 제공, 환각 방지\n3)  적대적 입력 대응 → 견고성(Robustness): 비정상 입력에도 안정적 작동\n4)  부적절 콘텐츠 차단 → 안전성(Safety): 유해 출력 방지\n5)  개인정보 보호 → 포용성·프라이버시\n\nAmazon Bedrock Guardrails 기능:\n>  콘텐츠 필터(Content Filters): 유해 콘텐츠 분류 및 차단 (증오, 폭력, 성인)\n>  민감 정보 레독션(Sensitive Information Redaction): 개인정보 자동 마스킹\n>  주제 거부(Denied Topics): 특정 주제 응답 금지 설정\n>  단어 필터(Word Filters): 특정 단어/문구 차단\n>  그라운딩 체크(Grounding Check): 환각 방지 - 응답이 근거 문서에 기반하는지 확인",
+      "key_points_en": "책임감 있는 AI 핵심 특성:\n공정성 (Fairness)\n포용성 (Inclusivity)\n견고성 (Robustness)\n안전성 (Safety):\n진실성 (Truthfulness):\n\nAmazon Bedrock Guardrails 주요 기능:\n• 콘텐츠 필터 / 민감 정보 레독션\n• 주제 거부 / 단어 필터 / 그라운딩 체크"
+    },
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "text_en": "모델 정확도(Accuracy)만 최대화하면 공정성과 안전성은 자동으로 보장된다",
+          "explanation_en": "정확도가 높아도 특정 그룹에 편향될 수 있고, 유해 콘텐츠를 정확하게 생성할 수도 있습니다. 책임감 있는 AI는 정확도 외 추가 특성이 필요합니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "text_en": "공정성(차별 금지), 진실성(사실 기반 정보), 견고성(적대적 입력 대응), 안전성(유해 콘텐츠 차단)을 갖추고, Amazon Bedrock Guardrails의 콘텐츠 필터·민감 정보 레독션·주제 거부·그라운딩 체크로 각 요구사항을 기술적으로 구현한다",
+          "explanation_en": "책임감 있는 AI의 4가지 핵심 특성(공정성, 진실성, 견고성, 안전성)과 Bedrock Guardrails의 구체적 기능이 요구사항에 정확히 매핑됩니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "text_en": "Amazon SageMaker Clarify만 사용하면 모든 책임감 있는 AI 요구사항을 충족할 수 있다",
+          "explanation_en": "SageMaker Clarify는 편향 탐지와 설명 가능성 도구이며, 콘텐츠 필터링이나 실시간 안전 가드레일 기능은 없습니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "text_en": "책임감 있는 AI 특성 중 안전성(Safety)만 구현하면 나머지 특성은 선택적으로 적용해도 된다",
+          "explanation_en": "금융 AI에서 공정성, 진실성, 견고성은 법적 의무 사항이 될 수 있습니다. 안전성 하나만으로는 부족합니다."
+        }
+      }
+    ]
+  }
+]

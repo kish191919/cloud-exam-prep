@@ -1,0 +1,157 @@
+[
+  {
+    "id": "awsaifc01-q277",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "Temperature는 확률 분포 전체를 조정하지만, '누적 확률 기준 선택'이라는 요구사항과 다릅니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "Max tokens는 생성 길이를 제한할 뿐, 단어 선택의 품질이나 환각 방지와 무관합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "정답입니다. Top P(nucleus sampling)는 누적 확률 기준으로 후보 단어를 동적으로 선택하여 전문성과 일관성을 유지합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "Top-k는 상위 k개 단어를 고정 선택하므로, 누적 확률 기반의 동적 제어가 아닙니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q278",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "암호화는 기밀성(Confidentiality)이고, 이중화는 가용성(Availability)입니다. 접근 제어 및 무결성의 정의와 다릅니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "정답입니다. 접근 제어는 누가 접근하는지 관리하고, 무결성은 데이터가 변경되지 않았음을 보장합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "대역폭 제한은 접근 제어와 무관하며, 수정 권한은 무결성이 아닌 접근 제어의 개념입니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "로그 수집은 감사(Audit)이고, 기밀성(Confidentiality)은 무결성과 별도의 CIA 속성입니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q279",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "Bedrock은 온디맨드 외에도 Provisioned Throughput 과금 옵션을 지원합니다. 파인튜닝 모델에는 Provisioned Throughput이 필수입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "파인튜닝 모델은 Provisioned Throughput 모드에서만 사용 가능하며, 온디맨드 모드는 지원되지 않습니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "정답입니다. 파인튜닝 모델은 Provisioned Throughput 모드에서만 운영 가능하여 안정적인 성능을 보장합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "Amazon Bedrock의 파인튜닝 모델은 AWS 관리형 서비스로 운영되며, 로컬 다운로드나 온프레미스 배포는 불가합니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q280",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "의료 영상 분석은 컴퓨터 비전 모델이 필요하며, RAG의 텍스트 검색 방식과 맞지 않습니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "개인 치료 결과 예측은 지도학습 예측 모델이 필요하며, 문서 검색 기반 RAG와는 다릅니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "대화 스타일 개선은 파인튜닝이 필요하며, RAG는 문서 검색 기반 답변 생성에 특화됩니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "정답입니다. 기존 문서에서 관련 정보를 검색하여 근거 있는 답변을 생성하는 것이 RAG의 핵심 강점입니다."
+        }
+      }
+    ]
+  },
+  {
+    "id": "awsaifc01-q285",
+    "exam_id": "aws-aif-c01",
+    "needs": {},
+    "options": [
+      {
+        "option_id": "a",
+        "needs": {
+          "explanation_en": "오답입니다. 데이터 유형과 ML 알고리즘 선택은 독립적입니다."
+        }
+      },
+      {
+        "option_id": "b",
+        "needs": {
+          "explanation_en": "오답입니다. 설명이 역입니다. 토큰화는 텍스트 처리의 핵심이고, 결측치 처리는 구조화 데이터가 필요로 합니다."
+        }
+      },
+      {
+        "option_id": "c",
+        "needs": {
+          "explanation_en": "정답입니다. 각 데이터 유형의 특성과 그에 따른 feature engineering 방식의 차이를 정확하게 설명합니다."
+        }
+      },
+      {
+        "option_id": "d",
+        "needs": {
+          "explanation_en": "오답입니다. 스케일링만으로는 비정형 데이터를 수치로 변환할 수 없습니다."
+        }
+      }
+    ]
+  }
+]
