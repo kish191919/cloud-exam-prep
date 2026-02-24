@@ -215,8 +215,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* 합격 후기 */}
-      <section className="py-20 px-4 bg-card">
+      {/* 합격 후기 — hidden until real reviews are available */}
+      {false && <section className="py-20 px-4 bg-card">
         <div className="container mx-auto max-w-5xl">
           <div className="text-center mb-14">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-semibold mb-6">
@@ -256,7 +256,7 @@ const Index = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* Pricing — hidden during beta */}
 
