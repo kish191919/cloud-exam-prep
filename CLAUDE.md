@@ -501,29 +501,25 @@ PATCH 완료:  질문(ref_links) {q_patched}개, 옵션 {opt_patched}개
 
 ## `/generate` 커맨드 처리
 
-원본 문제(또는 개념 설명)를 대화에서 직접 입력받아 즉석으로 한국어 4지선다 문제를
-생성하고, 사용자 검토 후 Supabase에 삽입하는 인터랙티브 단일 문제 생성 파이프라인.
+`input/` 폴더의 문제 텍스트 파일을 읽어 한국어 4지선다 문제를 배치 생성하고,
+사용자 개념 검토 후 Supabase에 삽입하는 자동화 파이프라인.
 
 ### 처리 흐름
 
 ```
 1. exam_id 입력 → exam_sets 자동 조회 → 세트 선택/생성
-2. 원본 문제 입력 (멀티라인, 빈 줄에서 Enter로 종료)
-3. 입력 형식 감지 → parsed_question 합성 + 핵심 개념 추출
-4. Supabase MAX(id) 조회 → assigned_id 확정
-5. 참조 파일 선로드 (domain_tags, translation_guide)
-6. Redesigner Agent 단일 호출 (questions 배열 1개)
-7. 에스컬레이션 처리 (발생 시)
-8. 결과 출력 → 사용자 검토 루프 (승인/재생성/취소)
-9. [A] 승인 → Supabase 삽입 → 완료 요약
-   [B] 재생성 → Step 6으로 복귀 (횟수 제한 없음)
-   [C] 취소 → 종료
+2. input/ 폴더 스캔 → 파일 목록 출력 (알파벳 순)
+3. 파일별: 언어 감지 → 질문 텍스트 추출 → 핵심 개념 추출 → 사용자 검토
+4. 참조 파일 선로드 + Redesigner(Haiku) 5개씩 배치 병렬 호출
+5. 결과 취합 → output/redesigned_question_generate.json 저장
+6. Supabase 삽입 → 파일 input/done/ 이동
+7. 완료 요약 출력
 ```
 
 ### Step 1: 멀티턴 정보 수집
 
 ```
-AWS 시험 문제 즉석 생성을 시작합니다.
+AWS 시험 문제 생성을 시작합니다.
 
 먼저 시험 ID를 입력해주세요. (예: aws-aif-c01, aws-saa-c03)
 exam_id:
@@ -532,130 +528,9 @@ exam_id:
 - exam_id 입력 직후 → `/convert`와 동일하게 exam_sets 자동 조회·출력
 - 번호 선택 또는 새 이름 입력으로 세트 확정
 
-### Step 2: 원본 문제 입력
+### Step 2~8: B-mode 파일 처리 흐름
 
-```
-생성할 문제의 원본 내용을 입력해주세요.
-
-다음 형식 중 하나를 사용할 수 있습니다:
-  [A] 전체 문제 (보기 + 정답 포함)
-  [B] 문제 텍스트만 (보기/정답 없이)
-  [C] 개념 설명만 (예: "Amazon Bedrock의 Knowledge Base 기능")
-
-입력 완료 후 빈 줄에서 Enter를 눌러주세요:
-```
-
-**[B] 선택 시 — 입력 방식 서브 프롬프트:**
-
-```
-[B] 문제 텍스트만 방식을 선택하셨습니다.
-
-입력 방식을 선택해주세요:
-  [1] 직접 입력 — 문제 텍스트를 여기에 붙여넣습니다
-  [2] input/ 폴더 자동 처리 — input/ 폴더의 .txt 파일을 일괄 처리합니다
-```
-
-- **[1] 직접 입력:** 기존 단일 문제 생성 흐름 그대로 진행 (Step 3~10)
-- **[2] input/ 폴더 자동 처리:** 아래 **Step 7.5 B-mode 파일 처리 흐름** 진행 — Step 3~10은 건너뜀
-
-### Step 3: 입력 형식 감지 및 parsed_question 합성
-
-Main이 인라인으로 처리한다 (외부 스크립트 없음):
-
-**형식 A 판별:** 정답 행(`Answer:` / `Correct answer:` / `정답:`) 또는 보기 행 4개 이상(`A.` / `A)` / `a.` 패턴) 감지
-
-**형식 A 처리:**
-```python
-parsed_question = {
-    "number": 1,
-    "question": <문제 텍스트>,
-    "options": {"a": <보기A>, "b": <보기B>, "c": <보기C>, "d": <보기D>},
-    "answer": <정답 글자 소문자>,
-    "option_count": 4,
-    "status": "pending",
-    "assigned_id": <Supabase에서 조회한 다음 ID>
-}
-correct_answer_concept = options[answer]  # 정답 보기 텍스트
-```
-
-**형식 B/C (보기·정답 없음):**
-```python
-parsed_question = {
-    "number": 1,
-    "question": <입력 텍스트>,
-    "options": {"a": "option_a", "b": "option_b", "c": "option_c", "d": "option_d"},
-    "answer": "a",   # Redesigner Rule 12이 이 위치를 피해 정답 배치
-    "option_count": 4,
-    "status": "pending",
-    "assigned_id": <Supabase에서 조회한 다음 ID>
-}
-# Main(Sonnet)이 입력에서 핵심 AWS 서비스명/개념 추출
-correct_answer_concept = <추출된 핵심 개념>
-```
-
-합성 결과 확인 메시지:
-```
-핵심 개념 추출 완료:
-  정답 개념: {correct_answer_concept}
-  입력 형식: {A/B/C}
-  할당 ID: {assigned_id}
-
-재설계를 시작합니다...
-```
-
-`source_language` 감지: 입력 텍스트 첫 200자의 한글 문자 비율 30% 이상 → `"ko"`, 미만 → `"en"`
-
-### Step 4: Supabase MAX(id) 조회
-
-`/convert` Step 4와 동일한 API 호출로 `assigned_id` 확정:
-
-```bash
-curl -s \
-  -H "apikey: {SUPABASE_SERVICE_ROLE_KEY}" \
-  -H "Authorization: Bearer {SUPABASE_SERVICE_ROLE_KEY}" \
-  "{SUPABASE_URL}/rest/v1/questions?select=id&exam_id=eq.{exam_id}&order=id.desc&limit=1"
-```
-
-### Step 5: 참조 파일 선로드
-
-`/convert` Step 2~5.5와 동일:
-```
-domain_tags_content       ← .claude/skills/question-redesigner/references/domain_tags/{exam_id}.md
-translation_guide_content ← .claude/skills/question-redesigner/references/translation_guide/{exam_id}.md
-                            (파일 없으면 null)
-```
-
-### Step 6: Redesigner Agent 단일 호출
-
-단 1개의 문제를 담은 배열로 Task 호출한다:
-
-```python
-Task(
-    subagent_type="general-purpose",
-    model="haiku",
-    prompt={
-        "task": "redesign_batch",
-        "questions": [parsed_question],
-        "exam_id": exam_id,
-        "source_language": source_language,
-        "correct_answer_concepts": {"1": correct_answer_concept},
-        "domain_tags": domain_tags_content,
-        "translation_guide": translation_guide_content
-    }
-)
-```
-
-### Step 7: 에스컬레이션 처리
-
-`success: false` 항목 발생 시:
-1. 에스컬레이션 메시지 출력
-2. 사용자 응답 대기:
-   - **[A] 재설계 지시:** 지시 포함하여 Redesigner 단독 재호출
-   - **[B] 스킵:** 생성 취소 후 종료
-
-### Step 7.5: B-mode 파일 처리 흐름 (Step 2에서 [B]-[2] 선택 시 전용)
-
-Step 2에서 **[B] → [2] input/ 폴더 자동 처리**를 선택한 경우, Step 3~7과 Step 8~10 대신 아래 흐름을 실행한다.
+세트 확정 후 아래 흐름을 실행한다.
 
 **[B-1] input/ 폴더 스캔**
 
@@ -777,74 +652,6 @@ mv input/{filename} input/done/{filename}
 ━━━━━━━━━━━━━━━━━━━━━━━━
 Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 할당된 ID 범위: {first_id} ~ {last_id}
-```
-
----
-
-### Step 8: 결과 출력 및 검토 루프
-
-```
-생성 완료! 결과를 검토해주세요:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[문제]
-{text}
-
-[보기]
-  a) {options[a].text}
-  b) {options[b].text}
-  c) {options[c].text}
-  d) {options[d].text}
-
-[정답] {correct_option_id}
-
-[해설]
-{explanation}
-
-[핵심 포인트]
-{key_points}
-
-[도메인 태그] {tag} / {tag_en}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-어떻게 처리할까요?
-  [A] Supabase에 삽입합니다
-  [B] 다시 생성합니다
-  [C] 취소합니다
-```
-
-**[B] 재생성 선택 시:**
-```
-추가 지시가 있으시면 입력해주세요 (없으면 Enter):
-```
-추가 지시 포함/미포함으로 Step 6 재실행 — 횟수 제한 없음
-
-### Step 9: Supabase 삽입
-
-[A] 선택 시 `output/redesigned_question_generate.json`에 단일 항목 배열 저장 후 삽입:
-
-```bash
-# sort_order 결정: 세트 내 현재 MAX(sort_order) + 1
-curl -s \
-  -H "apikey: {SUPABASE_SERVICE_ROLE_KEY}" \
-  -H "Authorization: Bearer {SUPABASE_SERVICE_ROLE_KEY}" \
-  "{SUPABASE_URL}/rest/v1/exam_set_questions?set_id=eq.{set_id}&select=sort_order&order=sort_order.desc&limit=1"
-
-# 삽입
-python3 .claude/skills/sql-generator/scripts/insert_supabase.py \
-  --input-file output/redesigned_question_generate.json \
-  --set-id {set_id} \
-  --sort-order-start {sort_order}
-```
-
-### Step 10: 결과 요약
-
-```
-✅ 생성 완료
-━━━━━━━━━━━━━━━━━━━━━━━━
-Supabase 삽입 완료: 1개 성공
-할당된 ID: {assigned_id}
-세트: {exam_id} / {set_name}
-━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 ---

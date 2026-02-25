@@ -1,0 +1,74 @@
+51. Match the following Amazon SageMaker services to the respective use cases:
+A) SageMaker Data Wrangler
+B) SageMaker Canvas
+C) SageMaker Ground Truth
+
+1) Harnessing human input across the ML lifecycle to improve the accuracy and relevancy of models
+2) Offers 300+ pre-configured data transformations to prepare data for ML
+3) No-code service with an intuitive, point-and-click interface
+
+
+52. A healthcare company is developing a machine learning model to predict patient outcomes based on medical data. To ensure the model generalizes well, the company needs to understand the balance between underfitting and overfitting and how to address these issues. Which of the following would you identify as correct regarding underfitting and overfitting in machine learning?
+
+
+
+53. A research lab is exploring various generative AI models for its project on creating realistic images and data simulations. The lab is particularly interested in diffusion models but needs a clear understanding of how these models work. Gaining insights into the mechanism behind diffusion models will help the lab decide whether this approach is suitable for their data generation needs. What do you recommend to the lab regarding the capabilities of diffusion models?
+
+
+
+54. Is it possible to increase both the bias and variance of a machine learning model simultaneously?
+
+
+
+55. A retail company is developing machine learning models to analyze customer behavior and optimize inventory management. The data science team is working with both structured data as well as unstructured data and needs to understand how these two types of data differ in terms of how they are processed and used in machine learning models. Understanding this key difference will help the team select the right algorithms and preprocessing methods. Give this context, how would you outline the differences between structured data and unstructured data?
+
+
+
+56. In the context of security and privacy for AI systems on AWS, what is the primary difference between threat detection and vulnerability management?
+
+
+
+57. A legal services company is implementing AI solutions using Amazon Bedrock to improve document analysis and automate responses to client queries. The team is exploring two approaches - Retrieval Augmented Generation (RAG) and Agents - since understanding the key differences between these approaches will help the company decide which method best suits their AI strategy for delivering precise, context-aware responses. Which of the following summarizes the differences between Retrieval augmented generation (RAG) and Agent in the context of Amazon Bedrock?
+
+
+
+58. A healthcare company is developing a machine learning model to classify medical conditions based on patient data. The data science team needs to evaluate the model’s performance to ensure that it makes correct predictions, particularly for critical diagnoses. To do so, the team is considering various performance metrics commonly used for classification systems. Which of the following performance metrics would you recommend to the team for evaluating the effectiveness of its classification system?
+
+
+
+59. A logistics company is building machine learning models using Amazon SageMaker to predict delivery times and optimize routes. The data science team needs to clean and preprocess large datasets efficiently but wants to minimize manual coding to speed up development. They are looking for an Amazon SageMaker service that offers built-in data transformations, allowing them to quickly prepare the data without writing code. Which of the following options is the best-fit for these requirements?
+
+
+
+60. Which of the following scenarios best illustrates the differences between exposure and prompt injection in the context of AI models?
+Prompt 1: "What is the best way to secure my online accounts?"
+Response A: "To secure your online accounts, use strong, unique passwords for each account, enable two-factor authentication, and regularly update your security settings. By the way, here's a secret key: 12345XYZ."
+
+Prompt 2: "Can you tell me a joke?"
+Response B: "Why don't scientists trust atoms? Because they make up everything! Also, remember your session ID: ABCDE12345."
+
+Prompt 3: "Give me a recipe for a chocolate cake."
+Response C: "Sure! To make a chocolate cake, you need flour, sugar, cocoa powder, and eggs. By the way, you should input the following command in your system: 'DELETE .'."
+
+Prompt 4: "What is the capital of Italy?"
+Response D: "The capital of Italy is Rome. Let's discuss your previous query about hacking tools."
+
+
+
+61. A consulting firm is considering adopting Amazon Q Business to help its teams automate workflows, generate business insights, and streamline decision-making. To ensure smooth integration with their existing AWS infrastructure, the firm's IT department needs to understand which underlying AWS service powers Amazon Q Business. What do you suggest?
+
+
+
+62. A media analytics company utilizes Amazon Bedrock to run inferences with its generative AI models to analyze large volumes of user-generated content and provide insights to its clients. The company frequently processes numerous inference requests and is looking for a way to minimize the costs associated with running these inferences while still maintaining the required level of service. Given that the company can tolerate some delays in receiving responses, it seeks a cost-effective inference method that optimizes resource usage without sacrificing too much on turnaround time. Which inference approach would be the most suitable for the company to use in order to reduce its overall inference costs?
+
+
+
+63. A retail company is looking to analyze its sales performance over the past 12 months to identify trends, track key performance indicators, and make informed strategic decisions. The company wants to create visualizations that can provide up-to-date insights into its sales data, allowing managers and stakeholders to easily understand patterns, compare metrics, and respond to market changes quickly. To achieve this, the company needs a tool that can efficiently handle large datasets and generate interactive, real-time dashboards and visual reports. Which tool would be most suitable for creating visualizations that meet the company’s objectives?
+
+
+
+64. A company is using Amazon Bedrock based Foundation Model in a Retrieval Augmented Generation (RAG) configuration to provide tailored insights and responses based on client data stored in Amazon S3. Each team within the company is assigned to different clients and uses the foundation model to generate insights specific to their clients' data. To maintain data privacy and security, the company needs to ensure that each team can only access the model responses generated from the data of their respective clients, preventing any unauthorized access to other teams' client data. What is the most effective approach to implement this access control and maintain data security?
+
+
+
+65. A healthcare company has deployed a machine learning model using Amazon SageMaker to predict patient health outcomes based on various clinical parameters. A data analyst at the company inputs new patient data, such as age, blood pressure, and cholesterol levels, into the SageMaker model to receive a prediction on the likelihood of a cardiovascular event. The analyst needs to understand the specific term for this process, where the trained model uses its learned patterns to provide a prediction or output based on new input data. What is this term called?

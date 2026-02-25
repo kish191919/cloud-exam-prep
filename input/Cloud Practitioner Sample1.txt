@@ -1,0 +1,66 @@
+1. Which of the following AWS services has encryption enabled by default?
+
+
+
+2. Which tool/service will help you access AWS services using programming language-specific APIs?
+
+
+
+3. Which of the following statements are CORRECT regarding the Availability Zone (AZ) specific characteristics of Amazon Elastic Block Store (EBS) and Amazon Elastic File System (Amazon EFS) storage types?
+
+
+
+4. A big data analytics company is moving its IT infrastructure from an on-premises data center to AWS Cloud. The company has some server-bound software licenses that it wants to use on AWS. As a Cloud Practitioner, which of the following EC2 instance types would you recommend to the company?
+
+
+
+5. A company wants to improve the resiliency of its flagship application so it wants to move from its traditional database system to a managed AWS NoSQL database service to support active-active configuration in both the East and West US AWS regions. The active-active configuration with cross-region support is the prime criteria for any database solution that the company considers. Which AWS database service is the right fit for this requirement?
+
+
+
+6. AWS Shield Advanced provides expanded DDoS attack protection for web applications running on which of the following resources? 
+
+
+
+
+7. An intern at an IT company provisioned a Linux based On-demand EC2 instance with per-second billing but terminated it within 30 seconds as he wanted to provision another instance type. What is the duration for which the instance would be charged?
+
+
+
+
+8. Which AWS services can be used to decouple components of a microservices based application on AWS Cloud?
+
+
+
+
+9. Which of the following is an AWS database service?
+
+
+
+
+10. The DevOps team at an IT company is moving 500 GB of data from an EC2 instance to an S3 bucket in the same region. Which of the following scenario captures the correct charges for this data transfer?
+
+
+
+
+11. What are the advantages that AWS Cloud offers over a traditional on-premises IT infrastructure?
+
+
+
+
+12. Which of the following AWS services should be used to automatically distribute incoming traffic across multiple targets?
+
+
+
+
+13. Which of the following AWS services can be used to connect a company's on-premises environment to a VPC without using the public internet?
+
+
+
+
+14. Which of the following AWS services support reservations to optimize costs? (
+
+
+
+
+15. Which AWS Route 53 routing policy would you use to route traffic to multiple resources and also choose how much traffic is routed to each resource?
