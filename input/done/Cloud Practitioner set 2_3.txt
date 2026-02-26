@@ -1,0 +1,57 @@
+31. Which of the following is a perspective of the AWS Cloud Adoption Framework (AWS CAF)?
+
+
+
+32. Which feature of AWS Cloud offers the ability to innovate faster and rapidly develop, test and launch software applications?
+
+
+
+33. Which of the following is a part of the AWS Global Infrastructure?
+
+
+
+34. AWS Trusted Advisor analyzes your AWS environment and provides best practice recommendations for which of the following categories?
+
+
+
+35. A financial services enterprise plans to enable Multi-Factor Authentication (MFA) for its employees. For ease of travel, they prefer not to use any physical devices to implement Multi-Factor Authentication (MFA). Which of the below options is best suited for this use case?
+
+
+
+36. Which AWS service can be used as an in-memory database with high-performance and low latency?
+
+
+
+37. Which of the following AWS services are regional in scope?
+
+
+
+38. A company is looking for a guided path to help deploy, configure, and secure its new workloads while ensuring that it is ready for on-going operations in the cloud. Which of the following AWS services/tools can be leveraged for this use case?
+
+
+
+39. Which of the following Cloud Computing models does the 'gmail' service represent?
+
+
+
+40. A development team is looking for a forum where the most frequent questions and requests from AWS customers are listed along with AWS provided solutions. Which AWS forum/service can be used for troubleshooting an issue or checking for a solution?
+
+
+
+41. Which of the following are components of an AWS Site-to-Site VPN?
+
+
+
+42. An IT company would like to move its IT resources (including any data and applications) from an AWS Region in the US to another AWS Region in Europe. Which of the following represents the correct solution for this use-case?
+
+
+
+43. Which AWS service can be used to automate code deployment to Amazon Elastic Compute Cloud (Amazon EC2) instances as well as on-premises instances?
+
+
+
+44. Compared to the on-demand instance prices, what is the highest possible discount offered for reserved instances (RI)?
+
+
+
+45. A multi-national company has its business-critical data stored on a fleet of Amazon Elastic Compute Cloud (Amazon EC2) instances, in various countries, configured in region-specific compliance rules. To demonstrate compliance, the company needs to submit historical configurations on a regular basis. Which AWS service is best suited for this requirement?
