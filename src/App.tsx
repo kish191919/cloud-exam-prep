@@ -19,6 +19,7 @@ import BoardPage from "./pages/BoardPage";
 import BoardDetailPage from "./pages/BoardDetailPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { FontSizeProvider } from "./contexts/FontSizeContext";
 import AuthModal from "./components/AuthModal";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
+    <FontSizeProvider>
     <TooltipProvider>
       <Toaster />
       <Sonner />
@@ -52,6 +54,7 @@ const App = () => (
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
+    </FontSizeProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );

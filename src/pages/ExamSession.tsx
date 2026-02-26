@@ -13,6 +13,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { seededShuffle } from '@/utils/shuffle';
 import { useAuth } from '@/contexts/AuthContext';
+import ThemeToggle from '@/components/ThemeToggle';
+import FontSizeToggle from '@/components/FontSizeToggle';
 
 const MODE_LABEL: Record<string, { ko: string; en: string; color: string }> = {
   practice: { ko: '연습모드', en: 'Practice', color: 'bg-green-100 text-green-700' },
@@ -211,6 +213,12 @@ const ExamSession = () => {
           {isExamMode && (
             <ExamTimer startedAt={session.startedAt} timeLimitSec={session.timeLimitSec} onTimeUp={handleTimeUp} />
           )}
+
+          {/* Dark mode toggle */}
+          <ThemeToggle />
+
+          {/* Font size toggle */}
+          <FontSizeToggle />
 
           {/* Language toggle */}
           <Button
