@@ -201,6 +201,8 @@ export interface Database {
           is_pinned: boolean
           is_active: boolean
           author_id: string | null
+          cover_image_url: string | null
+          ref_links: string | null
           created_at: string
           updated_at: string
         }
@@ -215,6 +217,8 @@ export interface Database {
           is_pinned?: boolean
           is_active?: boolean
           author_id?: string | null
+          cover_image_url?: string | null
+          ref_links?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -229,6 +233,8 @@ export interface Database {
           is_pinned?: boolean
           is_active?: boolean
           author_id?: string | null
+          cover_image_url?: string | null
+          ref_links?: string | null
           created_at?: string
           updated_at?: string
         }

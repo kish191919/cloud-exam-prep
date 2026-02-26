@@ -1491,6 +1491,8 @@ const AnnFormDialog = ({ exams, editItem, open, onClose, onSaved }: AnnFormDialo
   const [examId, setExamId] = useState<string>('');
   const [isPinned, setIsPinned] = useState(false);
   const [isActive, setIsActive] = useState(true);
+  const [coverImageUrl, setCoverImageUrl] = useState('');
+  const [refLinkPairs, setRefLinkPairs] = useState<{ name: string; url: string }[]>([{ name: '', url: '' }]);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -1503,6 +1505,13 @@ const AnnFormDialog = ({ exams, editItem, open, onClose, onSaved }: AnnFormDialo
       setExamId(editItem.examId ?? '');
       setIsPinned(editItem.isPinned);
       setIsActive(editItem.isActive);
+      setCoverImageUrl(editItem.coverImageUrl ?? '');
+      try {
+        const parsed = editItem.refLinks ? JSON.parse(editItem.refLinks) : [];
+        setRefLinkPairs(parsed.length ? parsed : [{ name: '', url: '' }]);
+      } catch {
+        setRefLinkPairs([{ name: '', url: '' }]);
+      }
     } else {
       setCategory('notice');
       setTitle('');
@@ -1512,6 +1521,8 @@ const AnnFormDialog = ({ exams, editItem, open, onClose, onSaved }: AnnFormDialo
       setExamId('');
       setIsPinned(false);
       setIsActive(true);
+      setCoverImageUrl('');
+      setRefLinkPairs([{ name: '', url: '' }]);
     }
   }, [editItem, open]);
 
@@ -1528,6 +1539,11 @@ const AnnFormDialog = ({ exams, editItem, open, onClose, onSaved }: AnnFormDialo
         examId: examId || null,
         isPinned,
         isActive,
+        coverImageUrl: coverImageUrl.trim() || null,
+        refLinks: (() => {
+          const valid = refLinkPairs.filter(p => p.name.trim() && p.url.trim());
+          return valid.length ? JSON.stringify(valid) : null;
+        })(),
       };
       if (editItem) {
         await updateAnnouncement(editItem.id, input);
@@ -1621,6 +1637,69 @@ const AnnFormDialog = ({ exams, editItem, open, onClose, onSaved }: AnnFormDialo
                 <option key={exam.id} value={exam.id}>{exam.code} — {exam.title}</option>
               ))}
             </select>
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">커버 이미지 URL (선택)</label>
+            <Input
+              placeholder="https://images.unsplash.com/photo-xxx?w=1200&q=80"
+              value={coverImageUrl}
+              onChange={e => setCoverImageUrl(e.target.value)}
+            />
+            {coverImageUrl.trim() && (
+              <img
+                src={coverImageUrl.trim()}
+                alt="preview"
+                className="mt-2 rounded-lg h-24 w-full object-cover border border-border"
+              />
+            )}
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">출처·참고자료 (선택, 최대 5개)</label>
+            <div className="space-y-2">
+              {refLinkPairs.map((pair, idx) => (
+                <div key={idx} className="flex gap-2 items-center">
+                  <Input
+                    placeholder="이름 (예: AWS 공식 문서)"
+                    value={pair.name}
+                    onChange={e => {
+                      const next = [...refLinkPairs];
+                      next[idx] = { ...next[idx], name: e.target.value };
+                      setRefLinkPairs(next);
+                    }}
+                    className="flex-1"
+                  />
+                  <Input
+                    placeholder="URL (https://...)"
+                    value={pair.url}
+                    onChange={e => {
+                      const next = [...refLinkPairs];
+                      next[idx] = { ...next[idx], url: e.target.value };
+                      setRefLinkPairs(next);
+                    }}
+                    className="flex-[2]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setRefLinkPairs(refLinkPairs.filter((_, i) => i !== idx))}
+                    className="text-muted-foreground hover:text-destructive transition-colors shrink-0 text-lg leading-none"
+                    aria-label="삭제"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+            {refLinkPairs.length < 5 && (
+              <button
+                type="button"
+                onClick={() => setRefLinkPairs([...refLinkPairs, { name: '', url: '' }])}
+                className="mt-2 text-xs text-accent hover:underline"
+              >
+                + 출처 추가
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-6">

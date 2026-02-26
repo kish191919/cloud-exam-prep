@@ -59,6 +59,17 @@ function AnnouncementCard({ item }: { item: Announcement }) {
       to={`/board/${item.id}`}
       className={`group flex flex-col h-full bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-accent/30 transition-all border-l-4 ${cfg.cardAccent}`}
     >
+      {/* Thumbnail image */}
+      {item.coverImageUrl && (
+        <div className="w-full h-32 overflow-hidden shrink-0">
+          <img
+            src={item.coverImageUrl}
+            alt={title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      )}
+
       {/* Card header */}
       <div className="p-5 flex-1">
         <div className="flex items-start gap-3 mb-3">

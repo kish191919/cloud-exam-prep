@@ -11,6 +11,8 @@ export interface Announcement {
   isPinned: boolean;
   isActive: boolean;
   authorId: string | null;
+  coverImageUrl: string | null;
+  refLinks: string | null;       // JSON: [{"name":"...","url":"..."}]
   createdAt: string;
   updatedAt: string;
 }
@@ -24,4 +26,6 @@ export interface AnnouncementInput {
   examId?: string | null;
   isPinned?: boolean;
   isActive?: boolean;
+  coverImageUrl?: string | null;
+  refLinks?: string | null;
 }

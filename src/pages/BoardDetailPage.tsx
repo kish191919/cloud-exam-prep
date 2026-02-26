@@ -9,6 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { SalaryBarChart, MarketShareChart } from '@/components/BoardCharts';
 import { getAnnouncements, getAnnouncementById } from '@/services/boardService';
 import type { Announcement, AnnouncementCategory } from '@/types/announcement';
 
@@ -73,6 +74,7 @@ type ContentBlock =
   | { type: 'bullet'; text: string; icon: string; level: number }
   | { type: 'label'; text: string }
   | { type: 'note'; text: string }
+  | { type: 'chart'; chartType: 'salary' | 'market-share' }
   | { type: 'blank' };
 
 function parseContent(raw: string): ContentBlock[] {
@@ -83,6 +85,14 @@ function parseContent(raw: string): ContentBlock[] {
     const trimmed = line.trim();
 
     if (!trimmed) { blocks.push({ type: 'blank' }); continue; }
+
+    // {{chart:salary}} or {{chart:market-share}} markers
+    if (trimmed === '{{chart:salary}}') {
+      blocks.push({ type: 'chart', chartType: 'salary' }); continue;
+    }
+    if (trimmed === '{{chart:market-share}}') {
+      blocks.push({ type: 'chart', chartType: 'market-share' }); continue;
+    }
 
     // ━━ Section Header ━━
     if (/^━━\s+.+\s+━━$/.test(trimmed)) {
@@ -228,6 +238,11 @@ function ArticleContent({ content, accentColor }: { content: string; accentColor
               </p>
             );
 
+          case 'chart':
+            return block.chartType === 'salary'
+              ? <SalaryBarChart key={i} />
+              : <MarketShareChart key={i} />;
+
           case 'paragraph':
           default:
             return (
@@ -242,16 +257,42 @@ function ArticleContent({ content, accentColor }: { content: string; accentColor
 }
 
 // ─── Sources Section ──────────────────────────────────────────────────────────
-function SourcesSection({ sources }: { sources: string[] }) {
-  if (sources.length === 0) return null;
+interface RefLink { name: string; url: string; }
+
+function SourcesSection({ sources, refLinks }: { sources: string[]; refLinks: string | null }) {
+  const links: RefLink[] = (() => {
+    try { return refLinks ? JSON.parse(refLinks) : []; }
+    catch { return []; }
+  })();
+
+  const hasLinks = links.length > 0;
+  const hasSources = sources.length > 0;
+  if (!hasLinks && !hasSources) return null;
+
   return (
     <div className="mt-10 pt-6 border-t border-border">
       <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
         출처 및 참고자료 / Sources & References
       </h3>
-      <ul className="space-y-1">
-        {sources.map((src, i) => (
-          <li key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
+      <ul className="space-y-1.5">
+        {links.map((link, i) => (
+          <li key={`link-${i}`} className="flex items-center gap-2 text-xs">
+            <span className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold shrink-0 text-muted-foreground">
+              {i + 1}
+            </span>
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline inline-flex items-center gap-1"
+            >
+              {link.name}
+              <ExternalLink className="h-3 w-3 shrink-0" />
+            </a>
+          </li>
+        ))}
+        {!hasLinks && sources.map((src, i) => (
+          <li key={`src-${i}`} className="flex items-center gap-2 text-xs text-muted-foreground">
             <span className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold shrink-0">
               {i + 1}
             </span>
@@ -452,9 +493,21 @@ const BoardDetailPage = () => {
         <div className="container mx-auto px-4 max-w-3xl py-10">
 
           {/* content card */}
-          <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-sm">
-            <ArticleContent content={content} accentColor={cfg.accentColor} />
-            <SourcesSection sources={sources} />
+          <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+            {/* Cover image */}
+            {item.coverImageUrl && (
+              <div className="w-full h-48 sm:h-64 overflow-hidden">
+                <img
+                  src={item.coverImageUrl}
+                  alt={title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+            <div className="p-6 sm:p-8">
+              <ArticleContent content={content} accentColor={cfg.accentColor} />
+              <SourcesSection sources={sources} refLinks={item.refLinks} />
+            </div>
           </div>
 
           {/* action bar */}

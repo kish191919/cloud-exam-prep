@@ -599,3 +599,58 @@ We'll continue to update this board with the latest exam trends. Stay tuned!$EN$
 WHERE NOT EXISTS (
   SELECT 1 FROM announcements a WHERE a.title = v.title
 );
+
+-- ── Phase 2: 커버 이미지 + 출처 링크 업데이트 ──────────────────────────────────
+-- Unsplash 이미지 URL 및 ref_links(JSON) 추가
+-- 이미 위의 INSERT가 실행된 후 이 UPDATE를 실행하세요.
+
+-- [1] 환영 공지
+UPDATE announcements SET
+  cover_image_url = 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80&auto=format&fit=crop'
+WHERE title = 'CloudMaster에 오신 것을 환영합니다 🎉'
+  AND cover_image_url IS NULL;
+
+-- [2] AWS 자격증 취업 현황
+UPDATE announcements SET
+  cover_image_url = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80&auto=format&fit=crop',
+  ref_links = '[{"name":"Global Knowledge 2025 IT Skills & Salary Report","url":"https://www.globalknowledge.com/us-en/resources/resource-library/articles/it-skills-and-salary-report/"},{"name":"LinkedIn Jobs Insights 2025","url":"https://economicgraph.linkedin.com/research/linkedin-jobs-on-the-rise"}]'
+WHERE title = 'AWS 자격증이 취업에 미치는 실질적 영향 (2026년 현황)'
+  AND cover_image_url IS NULL;
+
+-- [3] GCP 자격증 취업 현황
+UPDATE announcements SET
+  cover_image_url = 'https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=1200&q=80&auto=format&fit=crop',
+  ref_links = '[{"name":"IDC Cloud Spending Forecast 2025","url":"https://www.idc.com/getdoc.jsp?containerId=prUS52371224"}]'
+WHERE title = 'Google Cloud 자격증, 지금이 취득 적기인 이유 (2026)'
+  AND cover_image_url IS NULL;
+
+-- [4] Azure 자격증 취업 현황
+UPDATE announcements SET
+  cover_image_url = 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1200&q=80&auto=format&fit=crop',
+  ref_links = '[{"name":"Gartner Cloud Market Share Q4 2025","url":"https://www.gartner.com/en/newsroom/press-releases/2025-06-cloud-market-share"},{"name":"Microsoft Azure Customer Stories","url":"https://customers.microsoft.com/en-us/home"}]'
+WHERE title = 'Microsoft Azure 자격증이 대기업·공공기관에서 주목받는 이유'
+  AND cover_image_url IS NULL;
+
+-- [5] 연봉 비교 — 커버 이미지 + ref_links + {{chart:salary}} 마커 삽입
+UPDATE announcements SET
+  cover_image_url = 'https://images.unsplash.com/photo-1579621970590-9d152b94e55c?w=1200&q=80&auto=format&fit=crop',
+  ref_links = '[{"name":"Glassdoor Cloud Engineer Salaries","url":"https://www.glassdoor.com/Salaries/cloud-engineer-salary-SRCH_KO0,14.htm"},{"name":"LinkedIn Salary Insights","url":"https://www.linkedin.com/salary/"},{"name":"Levels.fyi Cloud Roles","url":"https://www.levels.fyi/t/software-engineer/focus/cloud"}]',
+  content = replace(
+    content,
+    '━━ 글로벌 평균 연봉 (USD 기준, 미국 시장) ━━',
+    E'{{chart:salary}}\n\n━━ 글로벌 평균 연봉 (USD 기준, 미국 시장) ━━'
+  ),
+  content_en = replace(
+    content_en,
+    '━━ Global Average Salaries (USD, US Market) ━━',
+    E'{{chart:salary}}\n\n━━ Global Average Salaries (USD, US Market) ━━'
+  )
+WHERE title = '2026 클라우드 자격증별 연봉 비교 — AWS vs GCP vs Azure'
+  AND cover_image_url IS NULL;
+
+-- [6] 시험 출제 범위 변경
+UPDATE announcements SET
+  cover_image_url = 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&q=80&auto=format&fit=crop',
+  ref_links = '[{"name":"AWS Certified Solutions Architect Exam Guide","url":"https://d1.awsstatic.com/training-and-certification/docs-sa-assoc/AWS-Certified-Solutions-Architect-Associate_Exam-Guide.pdf"},{"name":"Google Cloud Certification Exams","url":"https://cloud.google.com/learn/certification"},{"name":"Microsoft Learn Certifications","url":"https://learn.microsoft.com/en-us/credentials/browse/"}]'
+WHERE title = '2025~2026 AWS·GCP·Azure 시험 출제 범위 주요 변경사항 총정리'
+  AND cover_image_url IS NULL;

@@ -1,0 +1,59 @@
+51. A company is using a message broker service on its on-premises application and wants to move this messaging functionality to AWS Cloud. Which of the following AWS services is the right choice to move the existing functionality easily?
+
+
+
+52. Which service gives a personalized view of the status of the AWS services that are part of your Cloud architecture so that you can quickly assess the impact on your business when AWS service(s) are experiencing issues?
+
+
+
+53. What are the different gateway types supported by AWS Storage Gateway service?
+
+
+
+54. The engineering team at an IT company wants to monitor the CPU utilization for its fleet of Amazon Elastic Compute Cloud (Amazon EC2) instances and send an email to the administrator if the utilization exceeds 80%. As a Cloud Practitioner, which AWS services would you recommend to build this solution? 
+
+
+
+55. The AWS Well-Architected Framework provides guidance on building cloud based applications using AWS best practices. Which of the following options are the pillars mentioned in the AWS Well-Architected Framework?
+
+
+
+56. A developer has written a simple web application in PHP and he wants to just upload his code to AWS Cloud and have AWS handle the deployment automatically but still wants access to the underlying operating system for further enhancements. As a Cloud Practioner, which of the following AWS services would you recommend for this use-case?
+
+
+
+57. Which AWS technology/service helps you to scale your resources to match supply with demand while still keeping your cloud solution cost-effective?
+
+
+
+58. Which Amazon Elastic Compute Cloud (Amazon EC2) pricing model is the most cost-effective and flexible with no requirement for a long term resource commitment or upfront payment but still guarantees that instance would not be interrupted?
+
+
+
+59. Access Key ID and Secret Access Key are tied to which of the following AWS Identity and Access Management (AWS IAM) entities?
+
+
+
+60. Which of the following AWS services is essential for implementing security of resources in AWS Cloud?
+
+
+
+61. A social media company wants to protect its web application from common web exploits such as SQL injection and cross-site scripting. Which of the following AWS services can be used to address this use-case?
+
+
+
+62. AWS Compute Optimizer delivers recommendations for which of the following AWS resources?
+
+
+
+63. An organization has a complex IT architecture involving a lot of system dependencies and it wants to track the history of changes to each resource. Which AWS service will help the organization track the history of configuration changes for all the resources?
+
+
+
+
+64. As per the AWS Shared Responsibility Model, which of the following is a responsibility of the customer from a security and compliance point of view?
+
+
+
+
+65. Which tool will help you review your workloads against current AWS best practices for cost optimization, security, and performance improvement and then obtain advice to architect them better?

@@ -12,7 +12,9 @@ function toAnnouncement(row: Record<string, unknown>): Announcement {
     examId:    (row.exam_id as string | null) ?? null,
     isPinned:  row.is_pinned as boolean,
     isActive:  row.is_active as boolean,
-    authorId:  (row.author_id as string | null) ?? null,
+    authorId:      (row.author_id as string | null) ?? null,
+    coverImageUrl: (row.cover_image_url as string | null) ?? null,
+    refLinks:      (row.ref_links as string | null) ?? null,
     createdAt: row.created_at as string,
     updatedAt: row.updated_at as string,
   };
@@ -80,8 +82,10 @@ export async function createAnnouncement(input: AnnouncementInput): Promise<stri
       content:    input.content,
       content_en: input.contentEn ?? null,
       exam_id:    input.examId ?? null,
-      is_pinned:  input.isPinned ?? false,
-      is_active:  input.isActive ?? true,
+      is_pinned:       input.isPinned ?? false,
+      is_active:       input.isActive ?? true,
+      cover_image_url: input.coverImageUrl ?? null,
+      ref_links:       input.refLinks ?? null,
     })
     .select('id')
     .single();
@@ -101,8 +105,10 @@ export async function updateAnnouncement(
   if (input.content    !== undefined) payload.content    = input.content;
   if (input.contentEn  !== undefined) payload.content_en = input.contentEn;
   if (input.examId     !== undefined) payload.exam_id    = input.examId;
-  if (input.isPinned   !== undefined) payload.is_pinned  = input.isPinned;
-  if (input.isActive   !== undefined) payload.is_active  = input.isActive;
+  if (input.isPinned      !== undefined) payload.is_pinned       = input.isPinned;
+  if (input.isActive      !== undefined) payload.is_active       = input.isActive;
+  if (input.coverImageUrl !== undefined) payload.cover_image_url = input.coverImageUrl;
+  if (input.refLinks      !== undefined) payload.ref_links       = input.refLinks;
 
   const { error } = await supabase
     .from('announcements')
