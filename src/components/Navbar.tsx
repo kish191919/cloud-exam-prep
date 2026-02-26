@@ -46,6 +46,10 @@ const Navbar = () => {
             {t('navigation.roadmap')}
           </Link>
 
+          <Link to="/board" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            {t('navigation.board')}
+          </Link>
+
           <Link to="/exams">
             <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
               {t('navigation.startFree')}
@@ -128,6 +132,10 @@ const Navbar = () => {
 
           <Link to="/certifications" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>
             {t('navigation.roadmap')}
+          </Link>
+
+          <Link to="/board" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>
+            {t('navigation.board')}
           </Link>
 
           <Link to="/exams" onClick={() => setOpen(false)}>

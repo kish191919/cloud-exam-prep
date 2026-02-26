@@ -10,7 +10,8 @@
     "exams": "시험",
     "review": "복습",
     "startFree": "학습 시작",
-    "roadmap": "로드맵"
+    "roadmap": "로드맵",
+    "board": "게시판"
   },
   "buttons": {
     "start": "시작",

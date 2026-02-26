@@ -28,6 +28,9 @@ const Footer = () => {
           >
             {t('pages:index.footer.community')}
           </a>
+          <Link to="/board" className="hover:text-foreground transition-colors">
+            {t('pages:index.footer.board')}
+          </Link>
         </div>
         <p className="text-xs text-muted-foreground">
           © {year} CloudMaster. All rights reserved.

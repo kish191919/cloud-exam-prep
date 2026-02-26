@@ -1,0 +1,37 @@
+16. Which of the following AWS services are global in scope? 
+
+
+
+17. An e-commerce company wants to assess its applications deployed on Amazon Elastic Compute Cloud (Amazon EC2) instances for vulnerabilities and deviations from AWS best practices. Which AWS service can be used to facilitate this?
+
+
+
+18. An organization is planning to move its infrastructure from the on-premises datacenter to AWS Cloud. As a Cloud Practioner, which options would you recommend so that the organization can identify the right AWS services to build solutions on AWS Cloud?
+
+
+
+19. An IT company wants to run a log backup process every Monday at 2 AM. The usual runtime of the process is 5 minutes. As a Cloud Practitioner, which AWS services would you recommend to build a serverless solution for this use-case? 
+
+
+
+20. Which AWS service can be used to provision resources to run big data workloads on Hadoop clusters?
+
+
+
+21. A company's flagship application runs on a fleet of Amazon Elastic Compute Cloud (Amazon EC2) instances. As per the new policies, the system administrators are looking for the best way to provide secure shell access to Amazon Elastic Compute Cloud (Amazon EC2) instances without opening new ports or using public IP addresses. Which tool/service will help you achieve this requirement?
+
+
+
+22. Which AWS service should be used when you want to run container applications, but want to avoid the operational overhead of scaling, patching, securing, and managing servers?
+
+
+
+23. Which characteristic of Cloud Computing imparts the ability to acquire resources as you need and release when you no longer need them?
+
+
+
+24. Which AWS service enables users to find, buy, and immediately start using software solutions in their AWS environment?
+
+
+
+25. A data analytics company stores its data on Amazon Simple Storage Service (Amazon S3) and wants to do SQL based analysis on this data with minimum effort. As a Cloud Practitioner, which of the following AWS services will you suggest for this use case?

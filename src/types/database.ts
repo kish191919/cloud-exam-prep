@@ -189,6 +189,50 @@ export interface Database {
           tag?: string
         }
       }
+      announcements: {
+        Row: {
+          id: string
+          category: 'notice' | 'info' | 'tip' | 'update'
+          title: string
+          title_en: string | null
+          content: string
+          content_en: string | null
+          exam_id: string | null
+          is_pinned: boolean
+          is_active: boolean
+          author_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          category: 'notice' | 'info' | 'tip' | 'update'
+          title: string
+          title_en?: string | null
+          content: string
+          content_en?: string | null
+          exam_id?: string | null
+          is_pinned?: boolean
+          is_active?: boolean
+          author_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          category?: 'notice' | 'info' | 'tip' | 'update'
+          title?: string
+          title_en?: string | null
+          content?: string
+          content_en?: string | null
+          exam_id?: string | null
+          is_pinned?: boolean
+          is_active?: boolean
+          author_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
       exam_sessions: {
         Row: {
           id: string

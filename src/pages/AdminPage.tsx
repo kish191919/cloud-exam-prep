@@ -31,8 +31,15 @@ import {
   Search, Crown, UserCheck, UserX, Users,
   ChevronLeft, ChevronRight,
   BarChart3, TrendingUp, Clock, Activity, CalendarDays,
-  RefreshCw,
+  RefreshCw, Megaphone, Pin,
 } from 'lucide-react';
+import {
+  getAllAnnouncementsAdmin,
+  createAnnouncement,
+  updateAnnouncement,
+  deleteAnnouncement,
+} from '@/services/boardService';
+import type { Announcement, AnnouncementInput, AnnouncementCategory } from '@/types/announcement';
 import { getAllExams } from '@/services/examService';
 import { getSetsForExam, getQuestionsForSet } from '@/services/questionService';
 import {
@@ -1461,12 +1468,364 @@ const AdminStats = () => {
   );
 };
 
+// ─── Announcement Manager ─────────────────────────────────────────────────────
+const CATEGORY_OPTIONS: AnnouncementCategory[] = ['notice', 'info', 'tip', 'update'];
+const CATEGORY_LABELS: Record<AnnouncementCategory, string> = {
+  notice: '공지', info: '정보', tip: '팁', update: '업데이트',
+};
+
+interface AnnFormDialogProps {
+  exams: ExamConfig[];
+  editItem?: Announcement | null;
+  open: boolean;
+  onClose: () => void;
+  onSaved: () => void;
+}
+
+const AnnFormDialog = ({ exams, editItem, open, onClose, onSaved }: AnnFormDialogProps) => {
+  const [category, setCategory] = useState<AnnouncementCategory>('notice');
+  const [title, setTitle] = useState('');
+  const [titleEn, setTitleEn] = useState('');
+  const [content, setContent] = useState('');
+  const [contentEn, setContentEn] = useState('');
+  const [examId, setExamId] = useState<string>('');
+  const [isPinned, setIsPinned] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (editItem) {
+      setCategory(editItem.category);
+      setTitle(editItem.title);
+      setTitleEn(editItem.titleEn ?? '');
+      setContent(editItem.content);
+      setContentEn(editItem.contentEn ?? '');
+      setExamId(editItem.examId ?? '');
+      setIsPinned(editItem.isPinned);
+      setIsActive(editItem.isActive);
+    } else {
+      setCategory('notice');
+      setTitle('');
+      setTitleEn('');
+      setContent('');
+      setContentEn('');
+      setExamId('');
+      setIsPinned(false);
+      setIsActive(true);
+    }
+  }, [editItem, open]);
+
+  const handleSave = async () => {
+    if (!title.trim() || !content.trim()) return;
+    setSaving(true);
+    try {
+      const input: AnnouncementInput = {
+        category,
+        title: title.trim(),
+        titleEn: titleEn.trim() || undefined,
+        content: content.trim(),
+        contentEn: contentEn.trim() || undefined,
+        examId: examId || null,
+        isPinned,
+        isActive,
+      };
+      if (editItem) {
+        await updateAnnouncement(editItem.id, input);
+      } else {
+        await createAnnouncement(input);
+      }
+      onSaved();
+      onClose();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={v => !v && onClose()}>
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>{editItem ? '게시글 편집' : '새 게시글'}</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4 py-2">
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">카테고리</label>
+            <div className="flex flex-wrap gap-2">
+              {CATEGORY_OPTIONS.map(cat => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setCategory(cat)}
+                  className={`px-3 py-1.5 rounded-lg border text-sm font-medium transition-all ${
+                    category === cat
+                      ? 'border-accent bg-accent/10 text-accent'
+                      : 'border-border text-muted-foreground hover:border-accent/40'
+                  }`}
+                >
+                  {CATEGORY_LABELS[cat]}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">제목 (한국어) *</label>
+            <Input
+              placeholder="제목을 입력하세요"
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">제목 (English, 선택)</label>
+            <Input
+              placeholder="Title in English (optional)"
+              value={titleEn}
+              onChange={e => setTitleEn(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">내용 (한국어) *</label>
+            <Textarea
+              placeholder="내용을 입력하세요"
+              value={content}
+              onChange={e => setContent(e.target.value)}
+              rows={5}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">내용 (English, 선택)</label>
+            <Textarea
+              placeholder="Content in English (optional)"
+              value={contentEn}
+              onChange={e => setContentEn(e.target.value)}
+              rows={4}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">관련 시험 (선택)</label>
+            <select
+              value={examId}
+              onChange={e => setExamId(e.target.value)}
+              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring"
+            >
+              <option value="">관련 시험 없음</option>
+              {exams.map(exam => (
+                <option key={exam.id} value={exam.id}>{exam.code} — {exam.title}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <label className="flex items-center gap-2 cursor-pointer text-sm">
+              <input
+                type="checkbox"
+                checked={isPinned}
+                onChange={e => setIsPinned(e.target.checked)}
+                className="h-4 w-4 rounded border-input accent-accent"
+              />
+              상단 고정
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer text-sm">
+              <input
+                type="checkbox"
+                checked={isActive}
+                onChange={e => setIsActive(e.target.checked)}
+                className="h-4 w-4 rounded border-input accent-accent"
+              />
+              게시 활성화
+            </label>
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>취소</Button>
+          <Button
+            disabled={!title.trim() || !content.trim() || saving}
+            onClick={handleSave}
+            className="bg-accent text-accent-foreground hover:bg-accent/90"
+          >
+            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4 mr-1" />}
+            저장
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+interface AnnouncementManagerProps {
+  exams: ExamConfig[];
+}
+
+const AnnouncementManager = ({ exams }: AnnouncementManagerProps) => {
+  const [items, setItems] = useState<Announcement[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [formOpen, setFormOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<Announcement | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Announcement | null>(null);
+
+  const load = () => {
+    setLoading(true);
+    getAllAnnouncementsAdmin()
+      .then(setItems)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    await deleteAnnouncement(deleteTarget.id);
+    setDeleteTarget(null);
+    load();
+  };
+
+  const handleTogglePin = async (item: Announcement) => {
+    await updateAnnouncement(item.id, { isPinned: !item.isPinned });
+    load();
+  };
+
+  const handleToggleActive = async (item: Announcement) => {
+    await updateAnnouncement(item.id, { isActive: !item.isActive });
+    load();
+  };
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between pb-4">
+        <div>
+          <CardTitle className="text-lg">게시판 관리</CardTitle>
+          <p className="text-sm text-muted-foreground mt-0.5">{items.length}개 게시글</p>
+        </div>
+        <Button
+          onClick={() => { setEditTarget(null); setFormOpen(true); }}
+          className="bg-accent text-accent-foreground hover:bg-accent/90 shrink-0"
+        >
+          <Plus className="h-4 w-4 mr-2" />새 게시글
+        </Button>
+      </CardHeader>
+
+      <CardContent>
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        ) : items.length === 0 ? (
+          <div className="text-center py-12 text-muted-foreground">
+            <Megaphone className="h-10 w-10 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">게시글이 없습니다. "새 게시글" 버튼으로 추가하세요.</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {items.map(item => (
+              <div
+                key={item.id}
+                className={`flex items-center gap-3 p-3 rounded-lg border transition-colors ${
+                  item.isActive ? 'border-border' : 'border-border/50 opacity-50'
+                }`}
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                    {item.isPinned && <Pin className="h-3.5 w-3.5 text-accent shrink-0" />}
+                    <Badge variant="outline" className="text-xs">{CATEGORY_LABELS[item.category]}</Badge>
+                    {!item.isActive && <Badge variant="outline" className="text-xs text-muted-foreground">비활성</Badge>}
+                  </div>
+                  <p className="text-sm font-medium truncate">{item.title}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {new Date(item.createdAt).toLocaleDateString('ko-KR')}
+                  </p>
+                </div>
+                <div className="flex items-center gap-1 shrink-0">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    title={item.isPinned ? '고정 해제' : '상단 고정'}
+                    onClick={() => handleTogglePin(item)}
+                    className="h-8 w-8"
+                  >
+                    <Pin className={`h-4 w-4 ${item.isPinned ? 'text-accent' : 'text-muted-foreground'}`} />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    title={item.isActive ? '비활성화' : '활성화'}
+                    onClick={() => handleToggleActive(item)}
+                    className="h-8 w-8"
+                  >
+                    {item.isActive
+                      ? <X className="h-4 w-4 text-muted-foreground" />
+                      : <Plus className="h-4 w-4 text-green-500" />
+                    }
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => { setEditTarget(item); setFormOpen(true); }}
+                    className="h-8 w-8"
+                  >
+                    <Pencil className="h-4 w-4 text-muted-foreground" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setDeleteTarget(item)}
+                    className="h-8 w-8"
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+
+      <AnnFormDialog
+        exams={exams}
+        editItem={editTarget}
+        open={formOpen}
+        onClose={() => { setFormOpen(false); setEditTarget(null); }}
+        onSaved={load}
+      />
+
+      <AlertDialog open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>게시글을 삭제하시겠습니까?</AlertDialogTitle>
+            <AlertDialogDescription>
+              <strong>{deleteTarget?.title}</strong> 게시글이 비활성화됩니다.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>취소</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              삭제
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </Card>
+  );
+};
+
 // ─── Main Admin Page ──────────────────────────────────────────────────────────
 const AdminPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions' | 'stats'>('sets');
+  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions' | 'stats' | 'board'>('sets');
   const [exams, setExams] = useState<ExamConfig[]>([]);
   const [activeExamId, setActiveExamId] = useState<string>('');
   const [setsMap, setSetsMap] = useState<Record<string, ExamSet[]>>({});
@@ -1566,6 +1925,10 @@ const AdminPage = () => {
             <TabsTrigger value="stats" className="gap-2">
               <BarChart3 className="h-4 w-4" />
               통계
+            </TabsTrigger>
+            <TabsTrigger value="board" className="gap-2">
+              <Megaphone className="h-4 w-4" />
+              게시판 관리
             </TabsTrigger>
           </TabsList>
 
@@ -1701,6 +2064,11 @@ const AdminPage = () => {
           {/* ── 통계 탭 ── */}
           <TabsContent value="stats">
             <AdminStats />
+          </TabsContent>
+
+          {/* ── 게시판 관리 탭 ── */}
+          <TabsContent value="board">
+            <AnnouncementManager exams={exams} />
           </TabsContent>
         </Tabs>
       </div>

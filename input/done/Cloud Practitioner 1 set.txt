@@ -1,0 +1,57 @@
+1. Which of the following use-cases is NOT supported by Amazon Rekognition?
+
+
+2. Which AWS service helps with global application availability and performance using the AWS global network?
+
+
+
+3. Which AWS support plan provides access to a designated Technical Account Manager (TAM)?
+
+
+
+4. Which policy describes prohibited uses of the web services offered by Amazon Web Services?
+
+
+
+5. Which of the following statements is INCORRECT about AWS Auto Scaling?
+
+
+
+6. A customer has created a VPC and a subnet within AWS Cloud. Which of the following statements is correct?
+
+
+
+7. Multi-AZ deployment is an example of which of the following?
+
+
+
+8. Which of the following AWS services can be used to prevent Distributed Denial-of-Service (DDoS) attack? 
+
+
+
+9. Which of the following options can be used to access and manage all AWS services?
+
+
+
+10. An e-commerce company wants to store data from a recommendation engine in a database. As a Cloud Practioner, which AWS service would you recommend to provide this functionality with the LEAST operational overhead for any scale?
+
+
+
+
+11. The AWS Cloud Adoption Framework (AWS CAF) recommends four iterative and incremental cloud transformation phases. Which cloud transformation journey phase of the AWS Cloud Adoption Framework (AWS CAF) focuses on demonstrating how the cloud will help accelerate your business outcomes?
+
+
+
+12. What foundational capability under the operations perspective is part of the AWS Cloud Adoption Framework (AWS CAF)?
+
+
+
+13. An organization deploys its IT infrastructure in a combination of its on-premises data center along with AWS Cloud. How would you categorize this deployment model?
+
+
+
+14. Which of the following AWS services allows a database to have flexible schema and supports document data models?
+
+
+
+15. Which AWS service publishes up-to-the-minute information on the general status and availability of all AWS services in all the Regions of AWS Cloud?

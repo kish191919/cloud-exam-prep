@@ -15,6 +15,8 @@ import AdminQuestionsPage from "./pages/AdminQuestionsPage";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import CertificationsPage from "./pages/CertificationsPage";
+import BoardPage from "./pages/BoardPage";
+import BoardDetailPage from "./pages/BoardDetailPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import AuthModal from "./components/AuthModal";
@@ -38,6 +40,8 @@ const App = () => (
             <Route path="/session/:sessionId" element={<ExamSession />} />
             <Route path="/results/:sessionId" element={<ExamResults />} />
             <Route path="/review" element={<ReviewPage />} />
+            <Route path="/board" element={<BoardPage />} />
+            <Route path="/board/:id" element={<BoardDetailPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/admin" element={<AdminPage />} />

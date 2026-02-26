@@ -221,7 +221,43 @@
       "privacy": "Privacy Policy",
       "terms": "Terms of Service",
       "community": "Community",
+      "board": "Board",
       "copyright": "© 2026 CloudMaster. All rights reserved."
+    }
+  },
+  "board": {
+    "title": "Announcements & Info",
+    "subtitle": "Stay updated on exam changes, study tips, and useful resources.",
+    "empty": "No posts yet.",
+    "backToList": "← Back to Board",
+    "categories": {
+      "all": "All",
+      "notice": "Notice",
+      "info": "Info",
+      "tip": "Tip",
+      "update": "Update"
+    },
+    "pinned": "Pinned",
+    "examBadge": "Related Exam",
+    "notFound": "Post not found.",
+    "postedOn": "Posted {{date}}",
+    "admin": {
+      "title": "Board Management",
+      "newPost": "New Post",
+      "editPost": "Edit Post",
+      "deleteConfirmTitle": "Delete this post?",
+      "deleteConfirmDesc": "This post will be deactivated.",
+      "fields": {
+        "category": "Category",
+        "title": "Title (Korean)",
+        "titleEn": "Title (English, optional)",
+        "content": "Content (Korean)",
+        "contentEn": "Content (English, optional)",
+        "relatedExam": "Related Exam (optional)",
+        "isPinned": "Pin to top",
+        "isActive": "Active (published)",
+        "noExam": "No related exam"
+      }
     }
   },
   "dashboard": {

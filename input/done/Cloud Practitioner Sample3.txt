@@ -1,0 +1,57 @@
+31. Compared to the on-demand instance prices, what is the highest possible discount offered for spot instances?
+
+
+
+32. A company uses reserved EC2 instances across multiple units with each unit having its own AWS account. However, some of the units under-utilize their reserved instances while other units need more reserved instances. As a Cloud Practitioner, which of the following would you recommend as the most cost-optimal solution?
+
+
+
+33. A cyber forensics team has detected that AWS owned IP-addresses are being used to carry out malicious attacks. As this constitutes prohibited use of AWS services, which of the following is the correct solution to address this issue?
+
+
+
+34. Which of the following Amazon S3 storage classes takes the most time to retrieve data (also known as first byte latency)?
+
+
+
+35. A startup wants to provision an EC2 instance for the lowest possible cost for a long-term duration but needs to make sure that the instance would never be interrupted. As a Cloud Practitioner, which of the following options would you recommend?
+
+
+
+36. An e-commerce company has deployed an RDS database in a single Availability Zone (AZ). The engineering team wants to ensure that in case of an AZ outage, the database should continue working on the same endpoint without any manual administrative intervention. Which of the following solutions can address this use-case?
+
+
+
+37. Which of the following entities applies patches to the underlying OS for Amazon Aurora?
+
+
+
+38. Which of the following is an INCORRECT statement about Scaling, a design principle of Reliability pillar of the AWS Well-Architected Framework?
+
+
+
+39. A medical research startup wants to understand the compliance of AWS services concerning HIPAA guidelines. Which AWS service can be used to review the HIPAA compliance and governance-related documents on AWS?
+
+
+
+40. A multi-national company has just moved its infrastructure from its on-premises data center to AWS Cloud. As part of the shared responsibility model, AWS is responsible for which of the following?
+
+
+
+41. Which of the following AWS Support plans provide access to only core checks from the AWS Trusted Advisor Best Practice Checks? 
+
+
+
+42. A silicon valley based healthcare startup stores anonymized patient health data on Amazon S3. The CTO further wants to ensure that any sensitive data on S3 is discovered and identified to prevent any sensitive data leaks. As a Cloud Practitioner, which AWS service would you recommend addressing this use-case?
+
+
+
+43. A startup wants to set up its IT infrastructure on AWS Cloud. The CTO would like to get an estimate of the monthly AWS bill based on the AWS services that the startup wants to use. As a Cloud Practitioner, which AWS service would you suggest for this use-case?
+
+
+
+44. A research group wants to use EC2 instances to run a scientific computation application that has a fault tolerant architecture. The application needs high-performance hardware disks that provide fast I/O performance. As a Cloud Practitioner, which of the following storage options would you recommend as the MOST cost-effective solution?
+
+
+
+45. Which of the following AWS Support plans provide access to guidance, configuration, and troubleshooting of AWS interoperability with third-party software?

@@ -1,0 +1,58 @@
+16. Which of the following is a serverless AWS service?
+
+
+
+17. Which of the following statements are CORRECT regarding the AWS VPC service?
+
+
+
+18. Which type of cloud computing does Amazon Elastic Compute Cloud (EC2) represent?
+
+
+
+19. Which AWS Service can be used to mitigate a Distributed Denial of Service (DDoS) attack?
+
+
+
+
+20. Which of the following is a recommended way to provide programmatic access to AWS resources?
+
+
+
+21. A multi-national corporation wants to get expert professional advice on migrating to AWS and managing their applications on AWS Cloud. Which of the following entities would you recommend for this engagement?
+
+
+
+22. Which of the following is the MOST cost-effective option to purchase an EC2 Reserved Instance (RI)?
+
+
+
+23. Under the AWS Shared Responsibility Model, which of the following is a shared responsibility of both AWS and the customer?
+
+
+
+24. According to the AWS Shared Responsibility Model, which of the following are responsibilities of AWS?
+
+
+
+25. A company needs a storage solution for a project wherein the data is accessed less frequently but needs rapid access when required. Which S3 storage class is the MOST cost-effective for the given use-case?
+
+
+
+26. Which security service of AWS is enabled for all AWS customers, by default, at no additional cost?
+
+
+
+27. The DevOps team at an e-commerce company is trying to debug performance issues for its serverless application built using a microservices architecture. As a Cloud Practitioner, which AWS service would you recommend addressing this use-case?
+
+
+
+28. Which of the following is a benefit of using AWS managed services such as Amazon Relational Database Service (Amazon RDS)?
+
+
+
+29. Which AWS services can be used to facilitate organizational change management, part of the Reliability pillar of AWS Well-Architected Framework?
+
+
+
+30. Which AWS Support plan provides architectural guidance contextual to your specific use-cases?

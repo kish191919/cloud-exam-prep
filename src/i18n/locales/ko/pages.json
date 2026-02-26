@@ -221,7 +221,43 @@
       "privacy": "개인정보 처리방침",
       "terms": "이용약관",
       "community": "커뮤니티",
+      "board": "게시판",
       "copyright": "© 2026 CloudMaster. All rights reserved."
+    }
+  },
+  "board": {
+    "title": "공지 · 정보 게시판",
+    "subtitle": "시험 변경사항, 학습 팁, 유용한 정보를 확인하세요.",
+    "empty": "게시된 글이 없습니다.",
+    "backToList": "← 게시판으로",
+    "categories": {
+      "all": "전체",
+      "notice": "공지",
+      "info": "정보",
+      "tip": "팁",
+      "update": "업데이트"
+    },
+    "pinned": "공지",
+    "examBadge": "관련 시험",
+    "notFound": "게시글을 찾을 수 없습니다.",
+    "postedOn": "{{date}} 작성",
+    "admin": {
+      "title": "게시판 관리",
+      "newPost": "새 게시글",
+      "editPost": "게시글 편집",
+      "deleteConfirmTitle": "게시글을 삭제하시겠습니까?",
+      "deleteConfirmDesc": "이 게시글이 비활성화됩니다.",
+      "fields": {
+        "category": "카테고리",
+        "title": "제목 (한국어)",
+        "titleEn": "제목 (English, 선택)",
+        "content": "내용 (한국어)",
+        "contentEn": "내용 (English, 선택)",
+        "relatedExam": "관련 시험 (선택)",
+        "isPinned": "상단 고정",
+        "isActive": "게시 활성화",
+        "noExam": "관련 시험 없음"
+      }
     }
   },
   "dashboard": {
