@@ -1,0 +1,58 @@
+1. A company has a static website hosted on an Amazon Simple Storage Service (Amazon S3) bucket in an AWS Region in Asia. Although most of its users are in Asia, now it wants to drive growth globally. How can it improve the global performance of its static website?
+
+
+
+2. Which AWS services/features support High Availability by default?
+
+
+
+3. What is the primary benefit of deploying an Amazon Relational Database Service (Amazon RDS) database in a Read Replica configuration?
+
+
+
+4. Which of the following is the best way to protect your data from accidental deletion on Amazon S3?
+
+
+
+5. Which of the following statements are CORRECT regarding security groups and network access control lists (network ACL)?
+
+
+
+6. AWS Identity and Access Management (AWS IAM) policies are written as JSON documents. Which of the following are mandatory elements of an IAM policy?
+
+
+
+7. Which AWS service will you use to privately connect your virtual private cloud (VPC) to Amazon Simple Storage Service (Amazon S3)?
+
+
+
+8. An organization maintains separate Amazon Virtual Private Clouds (Amazon VPC) for each of its departments. With expanding business, the organization now wants to connect all Amazon Virtual Private Clouds (Amazon VPC) for better departmental collaboration. Which AWS service will help the organization tackle the issue effectively?
+
+
+
+
+9. An AWS hardware failure has impacted one of your Amazon Elastic Block Store (Amazon EBS) volumes. Which AWS service will alert you of the affected resources and provide a remedial action?
+
+
+
+10. Which AWS service protects your AWS account by monitoring malicious activity and detecting threats?
+
+
+
+11. Which of the following are correct statements regarding the AWS Shared Responsibility Model?
+
+
+
+12. Which Amazon Simple Storage Service (Amazon S3) storage class offers the lowest availability?
+
+
+
+13. An IT company is on a cost-optimization spree and wants to identify all Amazon Elastic Compute Cloud (Amazon EC2) instances that are under-utilized. Which AWS services can be used off-the-shelf to address this use-case without needing any manual configurations?
+
+
+
+14. Which of the following AWS entities provides the information required to launch an Amazon Elastic Compute Cloud (Amazon EC2) instance?
+
+
+
+15. Which of the following statements is correct regarding the Amazon Elastic File System (Amazon EFS) storage service?
