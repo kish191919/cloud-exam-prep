@@ -31,8 +31,9 @@ import {
   Search, Crown, UserCheck, UserX, Users,
   ChevronLeft, ChevronRight,
   BarChart3, TrendingUp, Clock, Activity, CalendarDays,
-  RefreshCw, Megaphone, Pin,
+  RefreshCw, Megaphone, Pin, CheckSquare,
 } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   getAllAnnouncementsAdmin,
   createAnnouncement,
@@ -49,6 +50,7 @@ import {
   getSetQuestionIds,
   updateSetQuestions,
   moveQuestionToSet,
+  moveQuestionsToSet,
   createQuestion,
   updateQuestion,
   deleteQuestion,
@@ -473,6 +475,11 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
   const [moveTargetSetId, setMoveTargetSetId] = useState('');
   const [moving, setMoving] = useState(false);
   const [scrollToId, setScrollToId] = useState<string | null>(null);
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkMoveDialogOpen, setBulkMoveDialogOpen] = useState(false);
+  const [bulkMoveTargetSetId, setBulkMoveTargetSetId] = useState('');
+  const [bulkMoving, setBulkMoving] = useState(false);
 
   const otherSets = allSets.filter(s => s.id !== set.id);
 
@@ -488,6 +495,8 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
     loadQuestions();
     setEditingId(null);
     setAddingNew(false);
+    setSelectionMode(false);
+    setSelectedIds(new Set());
   }, [open, set.id]);
 
   useEffect(() => {
@@ -550,6 +559,37 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
     setMoving(false);
   };
 
+  const handleBulkMoveToOtherSet = async () => {
+    if (selectedIds.size === 0 || !bulkMoveTargetSetId) return;
+    setBulkMoving(true);
+    await moveQuestionsToSet([...selectedIds], bulkMoveTargetSetId, set.id);
+    setBulkMoveDialogOpen(false);
+    setSelectedIds(new Set());
+    setSelectionMode(false);
+    await loadQuestions();
+    onSaved();
+    setBulkMoving(false);
+  };
+
+  const toggleSelectQuestion = (id: string) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const allSelected = questions.length > 0 && selectedIds.size === questions.length;
+  const someSelected = selectedIds.size > 0 && selectedIds.size < questions.length;
+
+  const handleToggleAll = () => {
+    if (allSelected) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(questions.map(q => q.id)));
+    }
+  };
+
   const handleDeleteQuestion = async () => {
     if (!deleteTarget) return;
     const existingIds = await getSetQuestionIds(set.id);
@@ -576,8 +616,48 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
           </DialogHeader>
 
           {!loading && questions.length > 0 && (
-            <div className="flex items-center justify-between px-1 pb-2 border-b">
-              <span className="text-xs text-muted-foreground">▲/▼ 버튼으로 순서 변경, → 버튼으로 다른 세트로 이동</span>
+            <div className="flex items-center justify-between px-1 pb-2 border-b gap-2 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap">
+                <Button
+                  variant={selectionMode ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => {
+                    setSelectionMode(v => !v);
+                    setSelectedIds(new Set());
+                  }}
+                >
+                  <CheckSquare className="h-4 w-4 mr-1.5" />
+                  {selectionMode ? '선택 취소' : '선택'}
+                </Button>
+                {selectionMode && (
+                  <>
+                    <Checkbox
+                      checked={allSelected ? true : someSelected ? 'indeterminate' : false}
+                      onCheckedChange={handleToggleAll}
+                      id="select-all"
+                    />
+                    <label htmlFor="select-all" className="text-xs text-muted-foreground cursor-pointer select-none">
+                      {selectedIds.size > 0 ? `${selectedIds.size}개 선택됨` : '전체 선택'}
+                    </label>
+                    <Button
+                      size="sm"
+                      disabled={selectedIds.size === 0 || otherSets.length === 0}
+                      title={otherSets.length === 0 ? '이동할 다른 세트가 없습니다' : undefined}
+                      onClick={() => {
+                        setBulkMoveTargetSetId(otherSets[0]?.id ?? '');
+                        setBulkMoveDialogOpen(true);
+                      }}
+                      className="bg-accent text-accent-foreground hover:bg-accent/90"
+                    >
+                      <ArrowRightLeft className="h-4 w-4 mr-1.5" />
+                      선택 이동 ({selectedIds.size})
+                    </Button>
+                  </>
+                )}
+                {!selectionMode && (
+                  <span className="text-xs text-muted-foreground">▲/▼ 순서 변경, → 다른 세트로 이동</span>
+                )}
+              </div>
               <Button
                 variant="outline"
                 size="sm"
@@ -610,8 +690,25 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
                         onCancel={() => setEditingId(null)}
                       />
                     ) : (
-                      <div className="border rounded-xl p-4 hover:border-accent/30 transition-colors">
+                      <div
+                        className={`border rounded-xl p-4 transition-colors ${
+                          selectionMode
+                            ? selectedIds.has(q.id)
+                              ? 'border-accent bg-accent/5 cursor-pointer'
+                              : 'hover:border-accent/30 cursor-pointer'
+                            : 'hover:border-accent/30'
+                        }`}
+                        onClick={selectionMode ? () => toggleSelectQuestion(q.id) : undefined}
+                      >
                         <div className="flex items-start justify-between gap-3">
+                          {selectionMode && (
+                            <Checkbox
+                              checked={selectedIds.has(q.id)}
+                              onCheckedChange={() => toggleSelectQuestion(q.id)}
+                              onClick={e => e.stopPropagation()}
+                              className="mt-0.5 shrink-0"
+                            />
+                          )}
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
                               <span className="text-xs font-bold text-muted-foreground">Q{idx + 1}</span>
@@ -656,57 +753,59 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
                               </div>
                             )}
                           </div>
-                          <div className="flex items-start gap-1 shrink-0">
-                            <div className="flex flex-col gap-0.5">
+                          {!selectionMode && (
+                            <div className="flex items-start gap-1 shrink-0">
+                              <div className="flex flex-col gap-0.5">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-7 w-7"
+                                  disabled={idx === 0 || reordering}
+                                  onClick={() => handleReorderQuestion(idx, 'up')}
+                                >
+                                  <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-7 w-7"
+                                  disabled={idx === questions.length - 1 || reordering}
+                                  onClick={() => handleReorderQuestion(idx, 'down')}
+                                >
+                                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                                </Button>
+                              </div>
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-7 w-7"
-                                disabled={idx === 0 || reordering}
-                                onClick={() => handleReorderQuestion(idx, 'up')}
+                                className="h-8 w-8"
+                                disabled={otherSets.length === 0}
+                                title={otherSets.length === 0 ? '이동할 다른 세트가 없습니다' : '다른 세트로 이동'}
+                                onClick={() => {
+                                  setMoveDialogQuestion(q);
+                                  setMoveTargetSetId(otherSets[0]?.id ?? '');
+                                }}
                               >
-                                <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                                <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />
                               </Button>
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-7 w-7"
-                                disabled={idx === questions.length - 1 || reordering}
-                                onClick={() => handleReorderQuestion(idx, 'down')}
+                                className="h-8 w-8"
+                                onClick={() => { setAddingNew(false); setEditingId(q.id); }}
                               >
-                                <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                                <Pencil className="h-4 w-4 text-muted-foreground" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={() => setDeleteTarget(q)}
+                              >
+                                <Trash2 className="h-4 w-4 text-destructive" />
                               </Button>
                             </div>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                              disabled={otherSets.length === 0}
-                              title={otherSets.length === 0 ? '이동할 다른 세트가 없습니다' : '다른 세트로 이동'}
-                              onClick={() => {
-                                setMoveDialogQuestion(q);
-                                setMoveTargetSetId(otherSets[0]?.id ?? '');
-                              }}
-                            >
-                              <ArrowRightLeft className="h-4 w-4 text-muted-foreground" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                              onClick={() => { setAddingNew(false); setEditingId(q.id); }}
-                            >
-                              <Pencil className="h-4 w-4 text-muted-foreground" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                              onClick={() => setDeleteTarget(q)}
-                            >
-                              <Trash2 className="h-4 w-4 text-destructive" />
-                            </Button>
-                          </div>
+                          )}
                         </div>
                       </div>
                     )}
@@ -806,6 +905,44 @@ const SetQuestionsDialog = ({ set, examId, allSets, open, onClose, onSaved }: Se
                 : <ArrowRightLeft className="h-4 w-4 mr-2" />
               }
               이동
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={bulkMoveDialogOpen} onOpenChange={v => !v && setBulkMoveDialogOpen(false)}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>{selectedIds.size}개 문제를 다른 세트로 이동</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 py-2">
+            <p className="text-sm text-muted-foreground">
+              선택한 <strong>{selectedIds.size}개</strong> 문제를 현재 세트(<strong>{set.name}</strong>)에서 제거하고 선택한 세트에 추가합니다.
+            </p>
+            <select
+              value={bulkMoveTargetSetId}
+              onChange={e => setBulkMoveTargetSetId(e.target.value)}
+              className="w-full border rounded-lg px-3 py-2 text-sm bg-background"
+            >
+              {otherSets.map(s => (
+                <option key={s.id} value={s.id}>
+                  {s.name} ({s.questionCount}문제)
+                </option>
+              ))}
+            </select>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setBulkMoveDialogOpen(false)}>취소</Button>
+            <Button
+              disabled={bulkMoving || !bulkMoveTargetSetId}
+              onClick={handleBulkMoveToOtherSet}
+              className="bg-accent text-accent-foreground hover:bg-accent/90"
+            >
+              {bulkMoving
+                ? <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                : <ArrowRightLeft className="h-4 w-4 mr-2" />
+              }
+              이동 ({selectedIds.size}개)
             </Button>
           </DialogFooter>
         </DialogContent>

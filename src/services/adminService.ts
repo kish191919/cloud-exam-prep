@@ -239,6 +239,29 @@ export async function moveQuestionToSet(
   }
 }
 
+/**
+ * Move multiple questions from one set to another (batch).
+ * More efficient than calling moveQuestionToSet() N times — uses 4 DB calls total.
+ */
+export async function moveQuestionsToSet(
+  questionIds: string[],
+  newSetId: string,
+  oldSetId?: string,
+): Promise<void> {
+  if (questionIds.length === 0) return;
+
+  if (oldSetId) {
+    const oldIds = await getSetQuestionIds(oldSetId);
+    await updateSetQuestions(oldSetId, oldIds.filter(id => !questionIds.includes(id)));
+  }
+
+  const newIds = await getSetQuestionIds(newSetId);
+  const toAdd = questionIds.filter(id => !newIds.includes(id));
+  if (toAdd.length > 0) {
+    await updateSetQuestions(newSetId, [...newIds, ...toAdd]);
+  }
+}
+
 // ─── 구독 / 프로필 관리 ───────────────────────────────────────────────────────
 
 export interface ProfileResult {
