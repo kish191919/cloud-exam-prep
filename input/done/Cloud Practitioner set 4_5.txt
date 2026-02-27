@@ -1,0 +1,37 @@
+56. A Cloud Practitioner would like to deploy identical resources across all AWS regions and accounts using templates while estimating costs. Which AWS service can assist with this task?
+
+
+
+57. Which of the following AWS services can be used to generate, use, and manage encryption keys on the AWS Cloud?
+
+
+
+58. Which of the following are the advantages of using the AWS Cloud?
+
+
+
+59. A developer would like to automate operations on his on-premises environment using Chef and Puppet. Which AWS service can help with this task?
+
+
+
+60. Which types of monitoring can be provided by Amazon CloudWatch?
+
+
+
+61. According to the AWS Well-Architected Framework, which of the following action is recommended in the Security pillar?
+
+
+
+62. Which of the following statements is INCORRECT regarding Amazon EBS Elastic Volumes?
+
+
+
+63. Which AWS serverless service allows you to prepare data for analytics?
+
+
+
+64. According to the AWS Shared Responsibility Model, which of the following is the responsibility of the customer?
+
+
+
+65. A media company wants to enable customized content suggestions for the users of its movie streaming platform. Which AWS service can provide these personalized recommendations based on historic data?

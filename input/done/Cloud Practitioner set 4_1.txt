@@ -1,0 +1,57 @@
+1. An organization would like to copy data across different Availability Zones (AZs) using Amazon EBS snapshots. Where are Amazon EBS snapshots stored in the AWS Cloud?
+
+
+
+2. Which of the following options are the benefits of using AWS Elastic Load Balancing (ELB)?
+
+
+
+3. The IT infrastructure at a university is deployed on AWS Cloud and it's experiencing a read-intensive workload. As a Cloud Practitioner, which AWS service would you use to take the load off databases?
+
+
+
+4. A research lab needs to be notified in case of a configuration change for security and compliance reasons. Which AWS service can assist with this task?
+
+
+
+5. According to the AWS Well-Architected Framework, which of the following statements are recommendations in the Operational Excellence pillar? 
+
+
+
+6. Which service/tool will you use to create and provide trusted users with temporary security credentials that can control access to your AWS resources?
+
+
+
+7. A company is planning to implement Chaos Engineering to expose any blind spots that can disrupt the resiliency of the application. Which AWS service will help implement this requirement with the least effort?
+
+
+
+8. Which of the following AWS Support plans is the MOST cost-effective when getting enhanced technical support by Cloud Support Engineers?
+
+
+
+9. Which AWS service allows you to quickly and easily add user sign-up, sign-in, and access control to web and mobile applications?
+
+
+
+10. Which of the following statements is the MOST accurate when describing AWS Elastic Beanstalk?
+
+
+
+11. A production company would like to establish an AWS managed virtual private network (VPN) service between its on-premises network and AWS. Which item needs to be set up on the company's side?
+
+
+
+12. A brand-new startup would like to remove its need to manage the underlying infrastructure and focus on the deployment and management of its applications. Which type of cloud computing does this refer to?
+
+
+
+13. A start-up would like to quickly deploy a popular technology on AWS. As a Cloud Practitioner, which AWS tool would you use for this task?
+
+
+
+14. Adding more CPU/RAM to an Amazon Elastic Compute Cloud (Amazon EC2) instance represents which of the following?
+
+
+
+15. A growing start-up has trouble identifying and protecting sensitive data at scale. Which AWS fully managed service can assist with this task?
