@@ -239,6 +239,80 @@ export interface Database {
           updated_at?: string
         }
       }
+      blog_posts: {
+        Row: {
+          id: string
+          slug: string
+          provider: 'aws' | 'gcp' | 'azure' | 'general'
+          exam_id: string | null
+          category: string | null
+          tags: string[]
+          title: string
+          title_en: string | null
+          excerpt: string | null
+          excerpt_en: string | null
+          content: string
+          content_en: string | null
+          cover_image_url: string | null
+          read_time_minutes: number | null
+          ref_links: Json
+          is_published: boolean
+          published_at: string | null
+          is_pinned: boolean
+          author_id: string | null
+          view_count: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          slug: string
+          provider: 'aws' | 'gcp' | 'azure' | 'general'
+          exam_id?: string | null
+          category?: string | null
+          tags?: string[]
+          title: string
+          title_en?: string | null
+          excerpt?: string | null
+          excerpt_en?: string | null
+          content?: string
+          content_en?: string | null
+          cover_image_url?: string | null
+          read_time_minutes?: number | null
+          ref_links?: Json
+          is_published?: boolean
+          published_at?: string | null
+          is_pinned?: boolean
+          author_id?: string | null
+          view_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          slug?: string
+          provider?: 'aws' | 'gcp' | 'azure' | 'general'
+          exam_id?: string | null
+          category?: string | null
+          tags?: string[]
+          title?: string
+          title_en?: string | null
+          excerpt?: string | null
+          excerpt_en?: string | null
+          content?: string
+          content_en?: string | null
+          cover_image_url?: string | null
+          read_time_minutes?: number | null
+          ref_links?: Json
+          is_published?: boolean
+          published_at?: string | null
+          is_pinned?: boolean
+          author_id?: string | null
+          view_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
       exam_sessions: {
         Row: {
           id: string

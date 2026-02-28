@@ -353,6 +353,55 @@
     "message": "Sorry! Page not found",
     "returnHome": "Return Home"
   },
+  "blog": {
+    "title": "Study Resources",
+    "subtitle": "Free study notes, service comparisons, and cheatsheets to help you pass AWS, GCP, and Azure certifications.",
+    "seoTitle": "AWS·GCP·Azure Certification Study Resources | CloudMaster",
+    "seoDesc": "Free study notes, service comparison tables, and cheatsheets for AWS, GCP, and Azure certifications.",
+    "tabs": {
+      "all": "All",
+      "aws": "AWS",
+      "gcp": "GCP",
+      "azure": "Azure"
+    },
+    "readTime": "{{min}} min read",
+    "publishedOn": "{{date}}",
+    "noResults": "No study resources yet. Check back soon!",
+    "backToList": "← Back to Study Resources",
+    "relatedQuestions": "Practice Related Questions",
+    "relatedPosts": "Related Resources",
+    "practiceNow": "Practice",
+    "tags": "Tags",
+    "filterByExam": "Filter by Exam",
+    "allExams": "All Exams",
+    "pinned": "Pinned",
+    "admin": {
+      "title": "Blog Management",
+      "newPost": "New Post",
+      "editPost": "Edit Post",
+      "deleteConfirmTitle": "Delete this post?",
+      "deleteConfirmDesc": "The post will be set to unpublished.",
+      "fields": {
+        "slug": "Slug (URL)",
+        "slugHelp": "Lowercase letters, numbers, hyphens only (e.g., amazon-bedrock-intro)",
+        "provider": "Platform",
+        "exam": "Related Exam (optional)",
+        "noExam": "No related exam",
+        "category": "Category (optional)",
+        "tags": "Tags (comma-separated)",
+        "title": "Title (Korean)",
+        "titleEn": "Title (English, optional)",
+        "excerpt": "Excerpt (SEO, max 160 chars)",
+        "excerptEn": "Excerpt (English, optional)",
+        "content": "Content (Korean, Markdown)",
+        "contentEn": "Content (English, optional)",
+        "coverImage": "Cover Image URL (optional)",
+        "isPinned": "Pin to top",
+        "isPublished": "Published (public)",
+        "preview": "Preview"
+      }
+    }
+  },
   "certifications": {
     "hero": {
       "badge": "Cloud Certification Roadmap",

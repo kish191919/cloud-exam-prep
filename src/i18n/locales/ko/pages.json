@@ -353,6 +353,55 @@
     "message": "죄송합니다! 페이지를 찾을 수 없습니다",
     "returnHome": "홈으로 돌아가기"
   },
+  "blog": {
+    "title": "공부자료",
+    "subtitle": "AWS · GCP · Azure 자격증 합격을 위한 핵심 개념, 서비스 비교, 치트시트를 무료로 제공합니다.",
+    "seoTitle": "AWS·GCP·Azure 자격증 공부자료 | CloudMaster",
+    "seoDesc": "AWS, GCP, Azure 자격증 합격을 위한 핵심 개념 정리, 서비스 비교표, 치트시트를 무료로 제공합니다.",
+    "tabs": {
+      "all": "전체",
+      "aws": "AWS",
+      "gcp": "GCP",
+      "azure": "Azure"
+    },
+    "readTime": "{{min}}분 읽기",
+    "publishedOn": "{{date}}",
+    "noResults": "아직 등록된 공부자료가 없습니다.",
+    "backToList": "공부자료 목록으로",
+    "relatedQuestions": "이 내용 관련 문제 풀기",
+    "relatedPosts": "관련 공부자료",
+    "practiceNow": "문제 풀기",
+    "tags": "태그",
+    "filterByExam": "자격증 필터",
+    "allExams": "전체 자격증",
+    "pinned": "고정",
+    "admin": {
+      "title": "블로그 관리",
+      "newPost": "새 포스트",
+      "editPost": "포스트 편집",
+      "deleteConfirmTitle": "이 포스트를 삭제하시겠습니까?",
+      "deleteConfirmDesc": "포스트가 비공개 상태로 전환됩니다.",
+      "fields": {
+        "slug": "슬러그 (URL)",
+        "slugHelp": "영문 소문자, 숫자, 하이픈만 사용 (예: amazon-bedrock-intro)",
+        "provider": "플랫폼",
+        "exam": "관련 자격증 (선택)",
+        "noExam": "관련 자격증 없음",
+        "category": "카테고리 (선택)",
+        "tags": "태그 (쉼표로 구분)",
+        "title": "제목 (한국어)",
+        "titleEn": "제목 (English, 선택)",
+        "excerpt": "요약 (SEO용, 160자 이내)",
+        "excerptEn": "요약 (English, 선택)",
+        "content": "내용 (한국어, 마크다운)",
+        "contentEn": "내용 (English, 선택)",
+        "coverImage": "커버 이미지 URL (선택)",
+        "isPinned": "상단 고정",
+        "isPublished": "발행 (공개)",
+        "preview": "미리보기"
+      }
+    }
+  },
   "certifications": {
     "hero": {
       "badge": "클라우드 자격증 로드맵",

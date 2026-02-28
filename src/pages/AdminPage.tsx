@@ -31,7 +31,7 @@ import {
   Search, Crown, UserCheck, UserX, Users,
   ChevronLeft, ChevronRight,
   BarChart3, TrendingUp, Clock, Activity, CalendarDays,
-  RefreshCw, Megaphone, Pin, CheckSquare,
+  RefreshCw, Megaphone, Pin, CheckSquare, NotebookPen, Eye, EyeOff,
 } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -41,6 +41,14 @@ import {
   deleteAnnouncement,
 } from '@/services/boardService';
 import type { Announcement, AnnouncementInput, AnnouncementCategory } from '@/types/announcement';
+import {
+  getAllBlogPostsAdmin,
+  createBlogPost,
+  updateBlogPost,
+  deleteBlogPost,
+  calcReadTime,
+} from '@/services/blogService';
+import type { BlogPost, BlogPostInput, BlogProvider } from '@/services/blogService';
 import { getAllExams } from '@/services/examService';
 import { getSetsForExam, getQuestionsForSet } from '@/services/questionService';
 import {
@@ -2036,12 +2044,523 @@ const AnnouncementManager = ({ exams }: AnnouncementManagerProps) => {
   );
 };
 
+// ─── Blog Form Dialog ─────────────────────────────────────────────────────────
+const PROVIDER_OPTIONS: BlogProvider[] = ['aws', 'gcp', 'azure', 'general'];
+const PROVIDER_LABELS: Record<BlogProvider, string> = {
+  aws: 'AWS', gcp: 'GCP', azure: 'Azure', general: '일반',
+};
+
+interface BlogFormDialogProps {
+  exams: ExamConfig[];
+  editItem?: BlogPost | null;
+  open: boolean;
+  onClose: () => void;
+  onSaved: () => void;
+}
+
+const BlogFormDialog = ({ exams, editItem, open, onClose, onSaved }: BlogFormDialogProps) => {
+  const [slug, setSlug] = useState('');
+  const [provider, setProvider] = useState<BlogProvider>('aws');
+  const [examId, setExamId] = useState('');
+  const [category, setCategory] = useState('');
+  const [tagsStr, setTagsStr] = useState('');
+  const [title, setTitle] = useState('');
+  const [titleEn, setTitleEn] = useState('');
+  const [excerpt, setExcerpt] = useState('');
+  const [excerptEn, setExcerptEn] = useState('');
+  const [content, setContent] = useState('');
+  const [contentEn, setContentEn] = useState('');
+  const [coverImageUrl, setCoverImageUrl] = useState('');
+  const [isPinned, setIsPinned] = useState(false);
+  const [isPublished, setIsPublished] = useState(false);
+  const [refLinkPairs, setRefLinkPairs] = useState<{ name: string; url: string }[]>([{ name: '', url: '' }]);
+  const [showPreview, setShowPreview] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (editItem) {
+      setSlug(editItem.slug);
+      setProvider(editItem.provider);
+      setExamId(editItem.examId ?? '');
+      setCategory(editItem.category ?? '');
+      setTagsStr(editItem.tags.join(', '));
+      setTitle(editItem.title);
+      setTitleEn(editItem.titleEn ?? '');
+      setExcerpt(editItem.excerpt ?? '');
+      setExcerptEn(editItem.excerptEn ?? '');
+      setContent(editItem.content);
+      setContentEn(editItem.contentEn ?? '');
+      setCoverImageUrl(editItem.coverImageUrl ?? '');
+      setIsPinned(editItem.isPinned);
+      setIsPublished(editItem.isPublished);
+      const links = Array.isArray(editItem.refLinks)
+        ? (editItem.refLinks as { name: string; url: string }[])
+        : [];
+      setRefLinkPairs(links.length ? links : [{ name: '', url: '' }]);
+    } else {
+      setSlug('');
+      setProvider('aws');
+      setExamId('');
+      setCategory('');
+      setTagsStr('');
+      setTitle('');
+      setTitleEn('');
+      setExcerpt('');
+      setExcerptEn('');
+      setContent('');
+      setContentEn('');
+      setCoverImageUrl('');
+      setIsPinned(false);
+      setIsPublished(false);
+      setRefLinkPairs([{ name: '', url: '' }]);
+    }
+    setShowPreview(false);
+  }, [editItem, open]);
+
+  const handleSave = async () => {
+    if (!slug.trim() || !title.trim() || !content.trim()) return;
+    setSaving(true);
+    try {
+      const validLinks = refLinkPairs.filter(p => p.name.trim() && p.url.trim());
+      const input: BlogPostInput = {
+        slug: slug.trim(),
+        provider,
+        examId: examId || null,
+        category: category.trim() || null,
+        tags: tagsStr.split(',').map(t => t.trim()).filter(Boolean),
+        title: title.trim(),
+        titleEn: titleEn.trim() || null,
+        excerpt: excerpt.trim() || null,
+        excerptEn: excerptEn.trim() || null,
+        content: content.trim(),
+        contentEn: contentEn.trim() || null,
+        coverImageUrl: coverImageUrl.trim() || null,
+        readTimeMinutes: calcReadTime(content.trim()),
+        refLinks: validLinks.length ? validLinks : [],
+        isPublished,
+        isPinned,
+      };
+      if (editItem) {
+        await updateBlogPost(editItem.id, input);
+      } else {
+        await createBlogPost(input);
+      }
+      onSaved();
+      onClose();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={v => !v && onClose()}>
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>{editItem ? '포스트 편집' : '새 블로그 포스트'}</DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4 py-2">
+          {/* Slug */}
+          <div>
+            <label className="text-sm font-medium mb-1 block">슬러그 (URL) *</label>
+            <Input
+              placeholder="amazon-bedrock-intro"
+              value={slug}
+              onChange={e => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))}
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              영문 소문자, 숫자, 하이픈만 사용. URL: /blog/{slug || '슬러그'}
+            </p>
+          </div>
+
+          {/* Provider + Exam */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-sm font-medium mb-1 block">플랫폼 *</label>
+              <div className="flex flex-wrap gap-2">
+                {PROVIDER_OPTIONS.map(p => (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => setProvider(p)}
+                    className={`px-3 py-1 rounded-lg border text-sm font-medium transition-all ${
+                      provider === p
+                        ? 'border-accent bg-accent/10 text-accent'
+                        : 'border-border text-muted-foreground hover:border-accent/40'
+                    }`}
+                  >
+                    {PROVIDER_LABELS[p]}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">관련 자격증 (선택)</label>
+              <select
+                value={examId}
+                onChange={e => setExamId(e.target.value)}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              >
+                <option value="">없음</option>
+                {exams.map(exam => (
+                  <option key={exam.id} value={exam.id}>{exam.code}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Category + Tags */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-sm font-medium mb-1 block">카테고리 (선택)</label>
+              <Input
+                placeholder="예: AI/ML, Storage, Networking"
+                value={category}
+                onChange={e => setCategory(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">태그 (쉼표 구분)</label>
+              <Input
+                placeholder="Amazon Bedrock, RAG, S3"
+                value={tagsStr}
+                onChange={e => setTagsStr(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Title */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-sm font-medium mb-1 block">제목 (한국어) *</label>
+              <Input placeholder="제목 입력" value={title} onChange={e => setTitle(e.target.value)} />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">제목 (English, 선택)</label>
+              <Input placeholder="Title in English" value={titleEn} onChange={e => setTitleEn(e.target.value)} />
+            </div>
+          </div>
+
+          {/* Excerpt */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-sm font-medium mb-1 block">요약 (한국어, 160자 이내)</label>
+              <Input placeholder="SEO 메타 설명..." value={excerpt} onChange={e => setExcerpt(e.target.value)} maxLength={160} />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">요약 (English, 선택)</label>
+              <Input placeholder="SEO description..." value={excerptEn} onChange={e => setExcerptEn(e.target.value)} maxLength={160} />
+            </div>
+          </div>
+
+          {/* Content */}
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-sm font-medium">내용 (한국어, 마크다운) *</label>
+              <button
+                type="button"
+                onClick={() => setShowPreview(!showPreview)}
+                className="flex items-center gap-1 text-xs text-muted-foreground hover:text-accent transition-colors"
+              >
+                {showPreview ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                {showPreview ? '편집' : '미리보기'}
+              </button>
+            </div>
+            {showPreview ? (
+              <div className="min-h-[160px] max-h-[300px] overflow-y-auto p-3 rounded-md border border-input text-sm prose-sm">
+                <pre className="whitespace-pre-wrap text-xs text-muted-foreground">{content || '(내용 없음)'}</pre>
+              </div>
+            ) : (
+              <Textarea
+                placeholder="## 제목&#10;&#10;본문 내용을 마크다운으로 작성하세요..."
+                value={content}
+                onChange={e => setContent(e.target.value)}
+                rows={8}
+                className="font-mono text-sm"
+              />
+            )}
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-1 block">내용 (English, 선택)</label>
+            <Textarea
+              placeholder="## Title&#10;&#10;Content in English..."
+              value={contentEn}
+              onChange={e => setContentEn(e.target.value)}
+              rows={4}
+              className="font-mono text-sm"
+            />
+          </div>
+
+          {/* Cover image */}
+          <div>
+            <label className="text-sm font-medium mb-1 block">커버 이미지 URL (선택)</label>
+            <Input
+              placeholder="https://images.unsplash.com/photo-xxx?w=1200"
+              value={coverImageUrl}
+              onChange={e => setCoverImageUrl(e.target.value)}
+            />
+            {coverImageUrl.trim() && (
+              <img
+                src={coverImageUrl.trim()}
+                alt="preview"
+                className="mt-2 rounded-lg h-24 w-full object-cover border border-border"
+              />
+            )}
+          </div>
+
+          {/* Ref links */}
+          <div>
+            <label className="text-sm font-medium mb-1 block">참고자료 (선택, 최대 5개)</label>
+            <div className="space-y-2">
+              {refLinkPairs.map((pair, idx) => (
+                <div key={idx} className="flex gap-2 items-center">
+                  <Input
+                    placeholder="이름 (예: AWS 공식 문서)"
+                    value={pair.name}
+                    onChange={e => {
+                      const next = [...refLinkPairs];
+                      next[idx] = { ...next[idx], name: e.target.value };
+                      setRefLinkPairs(next);
+                    }}
+                    className="flex-1"
+                  />
+                  <Input
+                    placeholder="URL"
+                    value={pair.url}
+                    onChange={e => {
+                      const next = [...refLinkPairs];
+                      next[idx] = { ...next[idx], url: e.target.value };
+                      setRefLinkPairs(next);
+                    }}
+                    className="flex-[2]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setRefLinkPairs(refLinkPairs.filter((_, i) => i !== idx))}
+                    className="text-muted-foreground hover:text-destructive text-lg leading-none shrink-0"
+                  >×</button>
+                </div>
+              ))}
+            </div>
+            {refLinkPairs.length < 5 && (
+              <button
+                type="button"
+                onClick={() => setRefLinkPairs([...refLinkPairs, { name: '', url: '' }])}
+                className="mt-2 text-xs text-accent hover:underline"
+              >
+                + 추가
+              </button>
+            )}
+          </div>
+
+          {/* Toggles */}
+          <div className="flex items-center gap-6">
+            <label className="flex items-center gap-2 cursor-pointer text-sm">
+              <input type="checkbox" checked={isPinned} onChange={e => setIsPinned(e.target.checked)} className="h-4 w-4 rounded border-input accent-accent" />
+              상단 고정
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer text-sm">
+              <input type="checkbox" checked={isPublished} onChange={e => setIsPublished(e.target.checked)} className="h-4 w-4 rounded border-input accent-accent" />
+              발행 (공개)
+            </label>
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>취소</Button>
+          <Button
+            disabled={!slug.trim() || !title.trim() || !content.trim() || saving}
+            onClick={handleSave}
+            className="bg-accent text-accent-foreground hover:bg-accent/90"
+          >
+            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4 mr-1" />}
+            저장
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+// ─── Blog Manager ─────────────────────────────────────────────────────────────
+interface BlogManagerProps { exams: ExamConfig[]; }
+
+const BlogManager = ({ exams }: BlogManagerProps) => {
+  const [items, setItems] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [formOpen, setFormOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<BlogPost | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<BlogPost | null>(null);
+
+  const load = () => {
+    setLoading(true);
+    getAllBlogPostsAdmin()
+      .then(setItems)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    await deleteBlogPost(deleteTarget.id);
+    setDeleteTarget(null);
+    load();
+  };
+
+  const handleTogglePublish = async (item: BlogPost) => {
+    await updateBlogPost(item.id, { isPublished: !item.isPublished });
+    load();
+  };
+
+  const handleTogglePin = async (item: BlogPost) => {
+    await updateBlogPost(item.id, { isPinned: !item.isPinned });
+    load();
+  };
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between pb-4">
+        <div>
+          <CardTitle className="text-lg">블로그 관리</CardTitle>
+          <p className="text-sm text-muted-foreground mt-0.5">{items.length}개 포스트</p>
+        </div>
+        <Button
+          onClick={() => { setEditTarget(null); setFormOpen(true); }}
+          className="bg-accent text-accent-foreground hover:bg-accent/90 shrink-0"
+        >
+          <Plus className="h-4 w-4 mr-2" />새 포스트
+        </Button>
+      </CardHeader>
+
+      <CardContent>
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        ) : items.length === 0 ? (
+          <div className="text-center py-12 text-muted-foreground">
+            <NotebookPen className="h-10 w-10 mx-auto mb-3 opacity-30" />
+            <p className="text-sm">포스트가 없습니다. "새 포스트" 버튼으로 추가하세요.</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {items.map(item => (
+              <div
+                key={item.id}
+                className={`flex items-center gap-3 p-3 rounded-lg border transition-colors ${
+                  item.isPublished ? 'border-border' : 'border-border/50 opacity-60'
+                }`}
+              >
+                {item.coverImageUrl && (
+                  <img
+                    src={item.coverImageUrl}
+                    alt={item.title}
+                    className="h-10 w-14 rounded object-cover shrink-0 border border-border"
+                  />
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                    {item.isPinned && <Pin className="h-3.5 w-3.5 text-accent shrink-0" />}
+                    <Badge variant="outline" className="text-xs">{item.provider.toUpperCase()}</Badge>
+                    {!item.isPublished && (
+                      <Badge variant="outline" className="text-xs text-muted-foreground">비공개</Badge>
+                    )}
+                    {item.readTimeMinutes && (
+                      <span className="text-xs text-muted-foreground">{item.readTimeMinutes}분</span>
+                    )}
+                  </div>
+                  <p className="text-sm font-medium truncate">{item.title}</p>
+                  <p className="text-xs text-muted-foreground">
+                    /blog/{item.slug} · {new Date(item.createdAt).toLocaleDateString('ko-KR')}
+                  </p>
+                </div>
+                <div className="flex items-center gap-1 shrink-0">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    title={item.isPinned ? '고정 해제' : '상단 고정'}
+                    onClick={() => handleTogglePin(item)}
+                    className="h-8 w-8"
+                  >
+                    <Pin className={`h-4 w-4 ${item.isPinned ? 'text-accent' : 'text-muted-foreground'}`} />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    title={item.isPublished ? '비공개' : '발행'}
+                    onClick={() => handleTogglePublish(item)}
+                    className="h-8 w-8"
+                  >
+                    {item.isPublished
+                      ? <EyeOff className="h-4 w-4 text-muted-foreground" />
+                      : <Eye className="h-4 w-4 text-green-500" />
+                    }
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => { setEditTarget(item); setFormOpen(true); }}
+                    className="h-8 w-8"
+                  >
+                    <Pencil className="h-4 w-4 text-muted-foreground" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setDeleteTarget(item)}
+                    className="h-8 w-8"
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+
+      <BlogFormDialog
+        exams={exams}
+        editItem={editTarget}
+        open={formOpen}
+        onClose={() => { setFormOpen(false); setEditTarget(null); }}
+        onSaved={load}
+      />
+
+      <AlertDialog open={!!deleteTarget} onOpenChange={v => !v && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>포스트를 삭제하시겠습니까?</AlertDialogTitle>
+            <AlertDialogDescription>
+              <strong>{deleteTarget?.title}</strong> 포스트가 비공개 상태로 전환됩니다.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>취소</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              삭제
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </Card>
+  );
+};
+
 // ─── Main Admin Page ──────────────────────────────────────────────────────────
 const AdminPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions' | 'stats' | 'board'>('sets');
+  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions' | 'stats' | 'board' | 'blog'>('sets');
   const [exams, setExams] = useState<ExamConfig[]>([]);
   const [activeExamId, setActiveExamId] = useState<string>('');
   const [setsMap, setSetsMap] = useState<Record<string, ExamSet[]>>({});
@@ -2145,6 +2664,10 @@ const AdminPage = () => {
             <TabsTrigger value="board" className="gap-2">
               <Megaphone className="h-4 w-4" />
               게시판 관리
+            </TabsTrigger>
+            <TabsTrigger value="blog" className="gap-2">
+              <NotebookPen className="h-4 w-4" />
+              블로그 관리
             </TabsTrigger>
           </TabsList>
 
@@ -2285,6 +2808,11 @@ const AdminPage = () => {
           {/* ── 게시판 관리 탭 ── */}
           <TabsContent value="board">
             <AnnouncementManager exams={exams} />
+          </TabsContent>
+
+          {/* ── 블로그 관리 탭 ── */}
+          <TabsContent value="blog">
+            <BlogManager exams={exams} />
           </TabsContent>
         </Tabs>
       </div>

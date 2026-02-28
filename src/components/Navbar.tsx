@@ -46,6 +46,10 @@ const Navbar = () => {
             {t('navigation.roadmap')}
           </Link>
 
+          <Link to="/blog" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            {t('navigation.blog')}
+          </Link>
+
           <Link to="/board" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             {t('navigation.board')}
           </Link>
@@ -132,6 +136,10 @@ const Navbar = () => {
 
           <Link to="/certifications" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>
             {t('navigation.roadmap')}
+          </Link>
+
+          <Link to="/blog" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>
+            {t('navigation.blog')}
           </Link>
 
           <Link to="/board" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>

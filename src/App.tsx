@@ -17,6 +17,8 @@ import NotFound from "./pages/NotFound";
 import CertificationsPage from "./pages/CertificationsPage";
 import BoardPage from "./pages/BoardPage";
 import BoardDetailPage from "./pages/BoardDetailPage";
+import BlogListPage from "./pages/BlogListPage";
+import BlogPostPage from "./pages/BlogPostPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { FontSizeProvider } from "./contexts/FontSizeContext";
@@ -44,6 +46,8 @@ const App = () => (
             <Route path="/review" element={<ReviewPage />} />
             <Route path="/board" element={<BoardPage />} />
             <Route path="/board/:id" element={<BoardDetailPage />} />
+            <Route path="/blog" element={<BlogListPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/admin" element={<AdminPage />} />
