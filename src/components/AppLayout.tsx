@@ -91,26 +91,26 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
             {t('brand')}
           </Link>
 
-          {/* 데스크탑 내비게이션 (md 이상에서만 표시) */}
-          <nav className="hidden md:flex items-center gap-1">
-            {navItems.map(item => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  location.pathname === item.to
-                    ? 'bg-secondary text-accent'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                <item.icon className="h-4 w-4" />
-                <span>{item.label}</span>
-              </Link>
-            ))}
-          </nav>
-
-          {/* 유틸리티 영역 - 모바일 포함 항상 표시 */}
+          {/* 오른쪽: 데스크탑 nav + 구분선 + 유틸리티 */}
           <div className="flex items-center gap-1">
+            {/* 데스크탑 내비게이션 (md 이상에서만 표시) */}
+            <nav className="hidden md:flex items-center gap-1">
+              {navItems.map(item => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    location.pathname === item.to
+                      ? 'bg-secondary text-accent'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <item.icon className="h-4 w-4" />
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </nav>
+            <div className="hidden md:block w-px h-5 bg-border mx-2" />
             <LanguageSwitcher />
             <ThemeToggle />
             {userMenu}
