@@ -38,23 +38,6 @@ const Index = () => {
     Briefcase, GraduationCap, Rocket, Brain, Database, TrendingUp,
   };
 
-  // 자격증 배지 마퀴 데이터
-  const certBadges = [
-    { provider: 'AWS', code: 'CLF-C02', style: 'bg-amber-500/15 border-amber-400/40 text-amber-300' },
-    { provider: 'AWS', code: 'SAA-C03', style: 'bg-amber-500/15 border-amber-400/40 text-amber-300' },
-    { provider: 'AWS', code: 'AIF-C01', style: 'bg-amber-500/15 border-amber-400/40 text-amber-300' },
-    { provider: 'AWS', code: 'DEA-C01', style: 'bg-amber-500/15 border-amber-400/40 text-amber-300' },
-    { provider: 'AWS', code: 'DVA-C02', style: 'bg-amber-500/15 border-amber-400/40 text-amber-300' },
-    { provider: 'AWS', code: 'SOA-C02', style: 'bg-amber-500/15 border-amber-400/40 text-amber-300' },
-    { provider: 'GCP', code: 'ACE',     style: 'bg-blue-500/15  border-blue-400/40  text-blue-300'  },
-    { provider: 'GCP', code: 'PCA',     style: 'bg-blue-500/15  border-blue-400/40  text-blue-300'  },
-    { provider: 'GCP', code: 'PDE',     style: 'bg-blue-500/15  border-blue-400/40  text-blue-300'  },
-    { provider: 'Azure', code: 'AZ-900', style: 'bg-sky-500/15  border-sky-400/40   text-sky-300'   },
-    { provider: 'Azure', code: 'AZ-104', style: 'bg-sky-500/15  border-sky-400/40   text-sky-300'   },
-    { provider: 'Azure', code: 'AZ-204', style: 'bg-sky-500/15  border-sky-400/40   text-sky-300'   },
-    { provider: 'Azure', code: 'AI-900', style: 'bg-sky-500/15  border-sky-400/40   text-sky-300'   },
-  ];
-
   // 기업 스크롤 데이터 (텍스트 전용 — 상표권 안전)
   const companiesRow1 = ['Netflix', '삼성전자', 'Kakao', 'Naver', '현대자동차', 'LG전자', '쿠팡', 'SK텔레콤', 'LINE', 'Airbnb', 'Spotify', 'Toyota', 'BMW'];
   const companiesRow2 = ['NASA', 'Slack', 'Zoom', 'Adobe', 'Dropbox', 'Reddit', 'Pinterest', 'Twitch', 'McDonald\'s', 'GE', 'Pfizer', '배달의민족', 'Hyundai'];
@@ -62,6 +45,18 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
+
+      {/* Beta Announcement Bar */}
+      <div className="w-full bg-gradient-to-r from-accent/12 via-accent/8 to-accent/12 border-b border-accent/20">
+        <div className="flex items-center justify-center gap-2 sm:gap-3 px-4 py-3 sm:py-4 flex-wrap text-center">
+          <Gift className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0" />
+          <span className="text-sm sm:text-base font-black uppercase tracking-widest text-accent">베타 오픈 기간</span>
+          <span className="text-xs sm:text-sm bg-accent text-accent-foreground font-bold px-2.5 py-0.5 rounded-full">FREE</span>
+          <p className="text-sm sm:text-base text-foreground/80 font-medium leading-relaxed break-keep">
+            지금은 <strong className="text-accent font-bold">AWS · GCP · Azure 전체 문제</strong>를 완전 무료로 이용하실 수 있어요.
+          </p>
+        </div>
+      </div>
 
       {/* Hero */}
       <section className="relative hero-gradient text-primary-foreground pt-24 md:pt-32 pb-20 md:pb-28 px-4 overflow-hidden">
@@ -94,25 +89,6 @@ const Index = () => {
         </div>
 
         <div className="container mx-auto text-center max-w-5xl relative z-10">
-          {/* Beta Open Banner */}
-          <div className="w-full max-w-xl mx-auto mb-8 md:mb-10">
-            <div className="flex items-start gap-3 bg-accent/15 backdrop-blur-md border border-accent/30 rounded-2xl px-4 py-3 sm:px-6 sm:py-4 shadow-lg text-left">
-              <div className="w-9 h-9 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Gift className="h-4 w-4 text-accent" />
-              </div>
-              <div>
-                <div className="flex flex-wrap items-center gap-2 mb-1">
-                  <span className="text-xs font-black uppercase tracking-widest text-accent">베타 오픈 기간</span>
-                  <span className="text-xs bg-accent text-accent-foreground font-bold px-2 py-0.5 rounded-full">BETA</span>
-                </div>
-                <p className="text-xs sm:text-sm text-primary-foreground/90 font-medium leading-relaxed break-keep">
-                  지금은 <strong className="text-accent font-bold">AWS · GCP · Azure 전체 문제</strong>를 완전 무료로 이용하실 수 있어요.
-                  프리미엄 구독 없이도 모든 문제에 자유롭게 접근하세요.
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-accent/30 text-sm mb-6 bg-accent/10 backdrop-blur-sm shadow-lg">
             <Zap className="h-4 w-4 text-accent animate-pulse" />
@@ -170,22 +146,6 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Animated cert badge strip */}
-          <div className="mt-10 md:mt-14 overflow-hidden marquee-wrapper -mx-4">
-            <div className="flex gap-3 animate-marquee" style={{ width: 'max-content' }}>
-              {[...certBadges, ...certBadges].map((b, i) => (
-                <span
-                  key={i}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold flex-shrink-0 backdrop-blur-sm ${b.style}`}
-                >
-                  <span className="font-black text-[10px] tracking-wider">{b.provider}</span>
-                  <span className="w-px h-3 bg-current opacity-30" />
-                  <span className="opacity-80">{b.code}</span>
-                </span>
-              ))}
-            </div>
-          </div>
-
         </div>
       </section>
 
@@ -233,7 +193,7 @@ const Index = () => {
             {[...companiesRow1, ...companiesRow1].map((name, i) => (
               <span
                 key={i}
-                className="inline-flex items-center px-5 py-2.5 rounded-full bg-background border border-border text-sm font-semibold text-muted-foreground hover:text-foreground hover:border-accent/50 transition-colors flex-shrink-0 cursor-default"
+                className="inline-flex items-center px-5 py-2.5 rounded-full bg-background dark:bg-white/10 border border-border dark:border-white/20 text-sm font-semibold text-muted-foreground dark:text-white/75 hover:text-foreground hover:border-accent/50 transition-colors flex-shrink-0 cursor-default"
               >
                 {name}
               </span>
@@ -247,7 +207,7 @@ const Index = () => {
             {[...companiesRow2, ...companiesRow2].map((name, i) => (
               <span
                 key={i}
-                className="inline-flex items-center px-5 py-2.5 rounded-full bg-background border border-border text-sm font-semibold text-muted-foreground hover:text-foreground hover:border-accent/50 transition-colors flex-shrink-0 cursor-default"
+                className="inline-flex items-center px-5 py-2.5 rounded-full bg-background dark:bg-white/10 border border-border dark:border-white/20 text-sm font-semibold text-muted-foreground dark:text-white/75 hover:text-foreground hover:border-accent/50 transition-colors flex-shrink-0 cursor-default"
               >
                 {name}
               </span>
