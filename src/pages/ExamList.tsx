@@ -351,7 +351,7 @@ const ExamList = () => {
           <X className="h-3 w-3 shrink-0" />
         </button>
 
-        {/* 세트 목록 (2열 grid, compact) */}
+        {/* 세트 목록 (최대 2행, 세트 수에 따라 열 동적 확장) */}
         {isLoadingSet ? (
           <div className="flex items-center gap-2 px-3 text-muted-foreground text-sm">
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -360,7 +360,10 @@ const ExamList = () => {
         ) : sets.length === 0 ? (
           <p className="text-sm text-muted-foreground px-2">{t('examList.noSets')}</p>
         ) : (
-          <div className="grid grid-cols-2 gap-1.5 max-w-[280px]">
+          <div
+            className="grid gap-1.5"
+            style={{ gridTemplateColumns: `repeat(${sets.length <= 1 ? 1 : Math.max(2, Math.ceil(sets.length / 2))}, 110px)` }}
+          >
             {sets.map(set => {
               const isSelected = selectedSetId === set.id;
               return (
@@ -380,7 +383,7 @@ const ExamList = () => {
                     }
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-xs truncate max-w-[88px]">{set.name}</p>
+                    <p className="font-medium text-xs truncate">{set.name}</p>
                     <p className="text-[10px] text-muted-foreground">{set.questionCount}{t('examList.questions')}</p>
                   </div>
                   {isSelected && <CheckCircle2 className="h-3 w-3 text-green-500 shrink-0" />}
