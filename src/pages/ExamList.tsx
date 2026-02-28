@@ -124,8 +124,10 @@ const ExamList = () => {
       return;
     }
 
+    const isSwitchingExam = expandedId !== examId;
+
     // 다른 exam으로 전환 → set selection 초기화
-    if (expandedId !== examId) {
+    if (isSwitchingExam) {
       setSelectedSetId(null);
       setRandomizeOptions(false);
     }
@@ -133,12 +135,22 @@ const ExamList = () => {
     setExpandedId(examId);
     setSelectedMode(mode);
 
+    // 샘플 세트 자동 선택 (없으면 첫 번째 세트)
+    const autoSelectSample = (sets: ExamSet[]) => {
+      const sample = sets.find(s => s.type === 'sample');
+      setSelectedSetId(sample?.id ?? sets[0]?.id ?? null);
+    };
+
     if (!setsMap[examId]) {
       setLoadingSets(prev => ({ ...prev, [examId]: true }));
       const sets = await getSetsForExam(examId);
       setSetsMap(prev => ({ ...prev, [examId]: sets }));
       setLoadingSets(prev => ({ ...prev, [examId]: false }));
+      autoSelectSample(sets);
+    } else if (isSwitchingExam) {
+      autoSelectSample(setsMap[examId]);
     }
+    // 같은 exam에서 모드만 전환 → 기존 세트 선택 유지
   };
 
   const handleCollapse = (e: React.MouseEvent) => {
@@ -348,7 +360,7 @@ const ExamList = () => {
         ) : sets.length === 0 ? (
           <p className="text-sm text-muted-foreground px-2">{t('examList.noSets')}</p>
         ) : (
-          <div className="grid grid-cols-2 gap-1.5">
+          <div className="grid grid-cols-2 gap-1.5 max-w-[280px]">
             {sets.map(set => {
               const isSelected = selectedSetId === set.id;
               return (
