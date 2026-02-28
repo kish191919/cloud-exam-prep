@@ -17,6 +17,7 @@ Main 오케스트레이터로서:
 |---------|------|------|------|
 | Parser & SQL | `.claude/agents/parser-sql/AGENT.md` | STEP 1 파싱 + STEP 6 Supabase 직접 삽입 | Sonnet |
 | Redesigner | `.claude/agents/redesigner/AGENT.md` | 문제 5개(배치) 한국어 재설계 | **Haiku** |
+| Blog Writer | `.claude/agents/blog-writer/AGENT.md` | txt 기반 SEO 블로그 포스트 배치 생성 | **Haiku** |
 
 **규칙:** 서브에이전트 간 직접 호출 금지 — 반드시 Main(이 파일)을 통해 조율한다.
 
@@ -503,6 +504,193 @@ PATCH 완료:  질문(ref_links) {q_patched}개, 옵션 {opt_patched}개
 
 ---
 
+## `/blog-write` 커맨드 처리
+
+`input/` 폴더의 txt 파일(사용자 제공 공부 자료, 메모, 서비스 설명 등)을 읽어
+SEO 최적화된 한/영 양방향 블로그 포스트를 배치 생성하고 Supabase에 삽입하는 파이프라인.
+
+### 처리 흐름
+
+```
+[/blog-write]
+  → input/ 폴더 스캔 (.txt 파일, 알파벳 순)
+  → 파일별 YAML 헤더 파싱 or Main 자동 감지
+  → 파일 목록·주제 출력 → 사용자 확인
+  → 참조 파일 선로드 (domain_tags, blog_guide, translation_guide)
+  → Blog Writer Agent (Haiku, 5개씩 배치 병렬) — SEO 최적화 포함
+  → 에스컬레이션 처리 → output/draft_blog_posts.json
+  → 사용자 검토 → 초안/즉시 게시 선택
+  → insert_blog_supabase.py 실행
+  → 파일 input/done/ 이동
+  → 결과 요약 출력
+```
+
+### input/ txt 파일 형식
+
+`input/` 폴더의 txt 파일은 **선택적 YAML 헤더 + 본문**으로 구성된다:
+
+```
+---
+provider: aws
+exam_id: aws-aif-c01
+content_type: domain_guide
+topic: Amazon Bedrock 파운데이션 모델 활용 가이드
+slug_hint: aws-aif-c01-bedrock-guide
+---
+[본문: 공부 메모, 공식 문서 발췌, 핵심 개념 정리 등 자유 형식]
+```
+
+- YAML 헤더가 없으면 Main(Sonnet)이 본문 내용에서 provider·content_type·topic 자동 감지
+- `exam_id`, `slug_hint`는 선택사항
+- `content_type` 선택지: `overview` / `domain_guide` / `service_comparison` / `exam_strategy`
+
+**파일이 없는 경우** — 즉시 종료:
+```
+input/ 폴더에 .txt 파일이 없습니다.
+블로그로 작성할 내용을 .txt 파일로 input/ 폴더에 저장한 후 다시 실행해주세요.
+```
+
+### Step 1: input/ 폴더 스캔 + 파일 분석
+
+파일 목록을 알파벳 순으로 스캔하고 각 파일의 YAML 헤더를 파싱한다.
+헤더가 없는 파일은 Main(Sonnet)이 첫 500자를 읽어 provider·topic 자동 감지.
+
+출력 예:
+```
+처리할 파일 목록 (input/):
+  [1] bedrock_study.txt      — provider: aws | content_type: domain_guide | 주제: Amazon Bedrock 파운데이션 모델
+  [2] clf_overview.txt       — provider: aws | content_type: overview     | 주제: AWS Cloud Practitioner 개요
+  [3] sagemaker_vs_bedrock.txt — provider: aws | content_type: service_comparison | 주제: SageMaker vs Bedrock
+
+총 3개 파일을 처리합니다.
+
+[A] 모두 그대로 진행합니다
+[B] 특정 파일의 설정을 수정합니다 (예: "2번 content_type: exam_strategy로 변경")
+[C] 취소합니다
+```
+
+### Step 2: 참조 파일 선로드
+
+Blog Writer Agent 호출 전에 다음 파일을 읽어 텍스트로 보관한다:
+
+```
+blog_guide_content    ← .claude/skills/blog-write/references/blog_writing_guide/{provider}.md
+                        (파일 없으면 null)
+domain_tags_content   ← .claude/skills/question-redesigner/references/domain_tags/{exam_id}.md
+                        (exam_id가 null이면 null)
+translation_guide_content ← .claude/skills/question-redesigner/references/translation_guide/{exam_id}.md
+                             (파일 없으면 null)
+```
+
+### Step 3: Blog Writer Agent 배치 호출 (5개씩)
+
+파일 목록의 각 항목을 **5개씩 묶어** Task 호출한다.
+각 항목에 `source_content` (txt 파일 전체 내용)를 포함해 전달한다:
+
+```python
+batch_size = 5
+batches = [items[i:i+batch_size] for i in range(0, len(items), batch_size)]
+
+for batch in batches:
+    Task(
+        subagent_type="general-purpose",
+        model="haiku",
+        prompt={
+            "task": "write_blog_batch",
+            "items": [
+                {
+                    "number": item["number"],
+                    "provider": item["provider"],
+                    "exam_id": item.get("exam_id"),
+                    "content_type": item["content_type"],
+                    "topic": item["topic"],
+                    "slug_hint": item.get("slug_hint"),
+                    "source_content": item["source_content"]   # txt 파일 전체 내용
+                }
+                for item in batch
+            ],
+            "blog_guide": blog_guide_content,
+            "domain_tags": domain_tags_content,
+            "translation_guide": translation_guide_content,
+        }
+    )
+# 모든 Task를 단일 메시지에 묶어 동시 실행
+```
+
+**provider가 파일마다 다를 경우:** provider별로 blog_guide 파일을 각각 로드하여 해당 배치에 전달한다.
+
+### Step 4: 결과 취합 → output/draft_blog_posts.json 저장
+
+- 각 배치 결과의 `results` 배열을 number 기준 정렬 후 합산
+- 성공 결과만 `output/draft_blog_posts.json`에 배열로 저장
+- 에스컬레이션 결과는 사용자에게 전달 (아래 에스컬레이션 처리 참조)
+
+### Step 5: 사용자 검토
+
+```
+{N}개 포스트 초안이 완성되었습니다:
+
+  [1] aws-aif-c01-bedrock-foundation-model-guide
+      제목: "Amazon Bedrock 파운데이션 모델 완벽 가이드 | AIF-C01 합격 전략"
+      분량: 약 2,800자 | 읽기 시간: 6분 | provider: aws
+  [2] aws-clf-c02-overview
+      제목: "AWS Cloud Practitioner(CLF-C02) 완벽 합격 가이드"
+      분량: 약 2,300자 | 읽기 시간: 5분 | provider: aws
+
+처리 방법을 선택하세요:
+  [A] 모두 초안으로 저장 (is_published=false, 어드민에서 추후 게시)
+  [B] 모두 즉시 게시 (is_published=true)
+  [C] 개별 선택 (예: "1번 게시, 2번 초안")
+  [D] 특정 포스트 수정 후 저장 (예: "1번 수정: 시험 전략 섹션 강화")
+```
+
+[D] 수정 선택 시 → 해당 항목만 Blog Writer Agent 단독 재호출 (수정 지시 + source_content 포함).
+
+### Step 6: insert_blog_supabase.py 실행
+
+```bash
+# [A] 초안 저장 (기본)
+python3 .claude/skills/sql-generator/scripts/insert_blog_supabase.py \
+  --input-file output/draft_blog_posts.json
+
+# [B] 즉시 게시
+python3 .claude/skills/sql-generator/scripts/insert_blog_supabase.py \
+  --input-file output/draft_blog_posts.json \
+  --publish
+```
+
+### Step 7: 파일 이동
+
+```bash
+mv input/{filename} input/done/{filename}
+```
+
+### Step 8: 결과 요약 출력
+
+```
+✅ 블로그 포스트 생성 완료
+━━━━━━━━━━━━━━━━━━━━━━━━
+총 입력 파일:    {total}개
+작성 성공:       {success}개
+에스컬레이션 스킵: {escalated_skipped}개 → [주제 목록]
+━━━━━━━━━━━━━━━━━━━━━━━━
+Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
+게시 상태: {published}개 게시됨 | {draft}개 초안
+```
+
+## 에스컬레이션 처리 (`/blog-write`)
+
+배치 결과의 `results`에서 `success: false` 항목을 순서대로 처리한다:
+
+1. 사용자에게 에스컬레이션 내용을 그대로 출력
+2. 사용자 응답 대기:
+   - **[A] 직접 지시:** 해당 항목만 Blog Writer를 단독(`items` 배열에 1개만) 재호출 (지시 + source_content 포함)
+   - **[B] 스킵:** 해당 항목 스킵 처리
+
+모든 에스컬레이션 처리 완료 후 Step 5(사용자 검토)로 진행.
+
+---
+
 ## `/generate` 커맨드 처리
 
 `input/` 폴더의 문제 텍스트 파일을 읽어 한국어 4지선다 문제를 배치 생성하고,
@@ -677,15 +865,19 @@ Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 | `output/translated_questions.json` | 번역 완료 결과 (`/patch-en` 생성) |
 | `output/needs_content.json` | 보기 해설·참고자료 누락 목록 (`/patch-content` 생성) |
 | `output/generated_content.json` | 생성 완료 결과 (`/patch-content` 생성) |
+| `output/draft_blog_posts.json` | 블로그 포스트 초안 (`/blog-write` 생성) |
 | `.env` | Supabase 접속 정보 (git에 포함되지 않음) |
 | `.claude/skills/question-parser/scripts/parse_text.py` | 파싱 스크립트 |
 | `.claude/skills/sql-generator/scripts/insert_supabase.py` | Supabase REST API 직접 삽입 스크립트 |
 | `.claude/skills/sql-generator/scripts/patch_en_supabase.py` | 영문 백필·콘텐츠 백필 스크립트 (`--fetch` / `--fetch-content` / `--patch` 모드) |
 | `.claude/skills/sql-generator/scripts/generate_sql.py` | 영문 백필 전용 (`--patch-en` 모드) |
+| `.claude/skills/sql-generator/scripts/insert_blog_supabase.py` | 블로그 포스트 Supabase 삽입 스크립트 (`--publish` / `--dry-run` 모드) |
 | `.claude/skills/question-redesigner/references/translation_guide/{exam_id}.md` | AWS 자격증 영문 번역 가이드 (문장 패턴 + 용어 대역표) |
+| `.claude/skills/blog-write/references/blog_writing_guide/{provider}.md` | 블로그 작성 가이드 (서비스명 표기·SEO 전략·ref_links 우선순위) |
 
 ## 중요 제약사항
 
 - AWS 서비스명은 원문 그대로 보존 (번역·축약 금지)
 - 출력 문제는 반드시 단일 정답 4지선다 형식
-- LLM 모델: Parser & SQL → Claude Sonnet 4.6 / Redesigner → Claude Haiku 4.5
+- LLM 모델: Parser & SQL → Claude Sonnet 4.6 / Redesigner → Claude Haiku 4.5 / Blog Writer → Claude Haiku 4.5
+- 블로그 포스트 SEO 필수: title 60자 이내, excerpt 150~160자, content H2/H3 구조, ref_links 공식 문서 2개↑
