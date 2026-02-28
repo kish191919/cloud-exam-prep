@@ -5,7 +5,12 @@ migrate_ids.py — 비패딩 question ID를 3자리 zero-padding 형식으로 �
 비패딩 예: awsdeac01-q2, awsdeac01-q9, awsdeac01-q30
 패딩 후:   awsdeac01-q002, awsdeac01-q009, awsdeac01-q030
 
-영향받는 테이블: questions(PK), question_options(FK), question_tags(FK), exam_set_questions(FK)
+처리 순서 (FK 제약 우회):
+  각 question에 대해:
+  1. 새 ID로 questions 레코드 복사 (POST)
+  2. 새 question_id로 question_options / question_tags / exam_set_questions 복사 (POST)
+  3. 구 자식 레코드 삭제 (DELETE)
+  4. 구 questions 레코드 삭제 (DELETE)
 
 사용법:
   python3 migrate_ids.py --exam-id aws-dea-c01 --dry-run  # 미리 보기
@@ -64,13 +69,32 @@ def supabase_get(url: str, key: str, table: str, params: str = '') -> tuple[int,
         return e.code, e.read().decode('utf-8')
 
 
-def supabase_patch(url: str, key: str, table: str, params: str, body: dict) -> tuple[int, str]:
-    endpoint = f"{url}/rest/v1/{table}?{params}"
+def supabase_post(url: str, key: str, table: str, body) -> tuple[int, str]:
+    endpoint = f"{url}/rest/v1/{table}"
     data = json.dumps(body, ensure_ascii=False).encode('utf-8')
     req = urllib.request.Request(
         endpoint,
         data=data,
-        method='PATCH',
+        method='POST',
+        headers={
+            'apikey': key,
+            'Authorization': f'Bearer {key}',
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal',
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, context=_ssl_context()) as resp:
+            return resp.status, resp.read().decode('utf-8')
+    except urllib.error.HTTPError as e:
+        return e.code, e.read().decode('utf-8')
+
+
+def supabase_delete(url: str, key: str, table: str, params: str) -> tuple[int, str]:
+    endpoint = f"{url}/rest/v1/{table}?{params}"
+    req = urllib.request.Request(
+        endpoint,
+        method='DELETE',
         headers={
             'apikey': key,
             'Authorization': f'Bearer {key}',
@@ -86,30 +110,107 @@ def supabase_patch(url: str, key: str, table: str, params: str, body: dict) -> t
 
 
 def migrate_one(old_id: str, new_id: str, supabase_url: str, supabase_key: str) -> list[str]:
-    """ID 1개를 4개 테이블에서 old → new로 변경. 실패 메시지 목록 반환."""
+    """
+    question ID 1개를 old_id → new_id로 마이그레이션.
+    FK 제약 우회를 위해 새 레코드 복사 후 구 레코드 삭제.
+    실패 메시지 목록 반환 (성공 시 빈 리스트).
+    """
     errors = []
     enc_old = urllib.parse.quote(old_id, safe='')
 
-    # 1. FK 자식 테이블 먼저 (question_id 컬럼)
+    # ── STEP 1: 원본 데이터 조회 ───────────────────────────────────────────────
+
+    status, q_data = supabase_get(
+        supabase_url, supabase_key, 'questions',
+        f'id=eq.{enc_old}&select=*',
+    )
+    if status != 200 or not q_data:
+        errors.append(f'questions GET 실패: {status} {str(q_data)[:120]}')
+        return errors
+    q = q_data[0]
+
+    status, opts = supabase_get(
+        supabase_url, supabase_key, 'question_options',
+        f'question_id=eq.{enc_old}&select=*',
+    )
+    if status != 200:
+        errors.append(f'question_options GET 실패: {status} {str(opts)[:120]}')
+        return errors
+
+    status, tags = supabase_get(
+        supabase_url, supabase_key, 'question_tags',
+        f'question_id=eq.{enc_old}&select=*',
+    )
+    if status != 200:
+        errors.append(f'question_tags GET 실패: {status} {str(tags)[:120]}')
+        return errors
+
+    status, sets = supabase_get(
+        supabase_url, supabase_key, 'exam_set_questions',
+        f'question_id=eq.{enc_old}&select=*',
+    )
+    if status != 200:
+        errors.append(f'exam_set_questions GET 실패: {status} {str(sets)[:120]}')
+        return errors
+
+    # ── STEP 2: 새 ID로 questions 복사 ────────────────────────────────────────
+
+    new_q = {k: v for k, v in q.items() if k != 'id'}
+    new_q['id'] = new_id
+
+    status, body = supabase_post(supabase_url, supabase_key, 'questions', new_q)
+    if status not in (200, 201):
+        errors.append(f'questions POST 실패: {status} {str(body)[:120]}')
+        return errors
+
+    # ── STEP 3: 자식 테이블 복사 (new question_id) ────────────────────────────
+
+    # question_options — 각 행의 UUID id는 제외하고 복사 (새 UUID 자동 생성)
+    if opts:
+        new_opts = [{k: v for k, v in o.items() if k != 'id'} | {'question_id': new_id} for o in opts]
+        status, body = supabase_post(supabase_url, supabase_key, 'question_options', new_opts)
+        if status not in (200, 201):
+            errors.append(f'question_options POST 실패: {status} {str(body)[:120]}')
+
+    # question_tags — 각 행의 UUID id는 제외하고 복사
+    if tags:
+        new_tags = [{k: v for k, v in t.items() if k != 'id'} | {'question_id': new_id} for t in tags]
+        status, body = supabase_post(supabase_url, supabase_key, 'question_tags', new_tags)
+        if status not in (200, 201):
+            errors.append(f'question_tags POST 실패: {status} {str(body)[:120]}')
+
+    # exam_set_questions — UUID id는 제외하고 복사
+    if sets:
+        new_sets = [{k: v for k, v in s.items() if k != 'id'} | {'question_id': new_id} for s in sets]
+        status, body = supabase_post(supabase_url, supabase_key, 'exam_set_questions', new_sets)
+        if status not in (200, 201):
+            errors.append(f'exam_set_questions POST 실패: {status} {str(body)[:120]}')
+
+    # 여기까지 POST에서 에러가 있으면 삭제 단계 진행 안 함
+    if errors:
+        return errors
+
+    # ── STEP 4: 구 자식 레코드 삭제 ───────────────────────────────────────────
+
     for table in ('question_options', 'question_tags', 'exam_set_questions'):
-        status, body = supabase_patch(
-            supabase_url, supabase_key,
-            table,
+        status, body = supabase_delete(
+            supabase_url, supabase_key, table,
             f'question_id=eq.{enc_old}',
-            {'question_id': new_id},
         )
         if status not in (200, 204):
-            errors.append(f'{table} PATCH 실패: {status} {str(body)[:120]}')
+            errors.append(f'{table} DELETE 실패: {status} {str(body)[:120]}')
 
-    # 2. PK 마지막
-    status, body = supabase_patch(
-        supabase_url, supabase_key,
-        'questions',
+    if errors:
+        return errors
+
+    # ── STEP 5: 구 questions 레코드 삭제 ─────────────────────────────────────
+
+    status, body = supabase_delete(
+        supabase_url, supabase_key, 'questions',
         f'id=eq.{enc_old}',
-        {'id': new_id},
     )
     if status not in (200, 204):
-        errors.append(f'questions PK PATCH 실패: {status} {str(body)[:120]}')
+        errors.append(f'questions DELETE 실패: {status} {str(body)[:120]}')
 
     return errors
 
@@ -170,7 +271,8 @@ def main():
         print(f'[DRY-RUN] {args.exam_id} 비패딩 ID {len(migrations)}개:')
         for old_id, new_id in migrations:
             print(f'  {old_id} → {new_id}')
-        print(f'\n총 {len(migrations)}개 ID 변경 예정 (4개 테이블 각각)')
+        print(f'\n총 {len(migrations)}개 ID 변경 예정')
+        print('처리 순서: questions 복사 → 자식 테이블 복사 → 구 자식 삭제 → 구 questions 삭제')
         return
 
     # 실제 마이그레이션

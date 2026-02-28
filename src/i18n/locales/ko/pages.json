@@ -226,10 +226,10 @@
     }
   },
   "board": {
-    "title": "공지 · 정보 게시판",
+    "title": "게시판",
     "subtitle": "시험 변경사항, 학습 팁, 유용한 정보를 확인하세요.",
     "empty": "게시된 글이 없습니다.",
-    "backToList": "← 게시판으로",
+    "backToList": "게시판으로",
     "categories": {
       "all": "전체",
       "notice": "공지",
