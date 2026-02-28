@@ -32,6 +32,56 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
     ...(isAdmin(user?.email) ? [{ to: '/admin', icon: Settings2, label: '관리자' }] : []),
   ];
 
+  const userMenu = (
+    <>
+      {user ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="rounded-full h-9 w-9">
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-accent text-accent-foreground text-sm font-bold">
+                  {userInitial}
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <div className="px-3 py-2">
+              <p className="text-sm font-medium truncate">{user.user_metadata?.full_name || user.email}</p>
+              <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+            </div>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link to="/exams" className="flex items-center gap-2 cursor-pointer">
+                <User className="h-4 w-4" />
+                {tAuth('myPage')}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={signOut} className="flex items-center gap-2 text-destructive focus:text-destructive cursor-pointer">
+              <LogOut className="h-4 w-4" />
+              {tAuth('logout')}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="rounded-full h-9 w-9"
+          onClick={() => openAuthModal('login')}
+          title={tAuth('signIn')}
+        >
+          <Avatar className="h-8 w-8">
+            <AvatarFallback className="bg-muted text-muted-foreground text-sm">
+              <User className="h-4 w-4" />
+            </AvatarFallback>
+          </Avatar>
+        </Button>
+      )}
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card px-4 py-3">
@@ -40,7 +90,9 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
             <Cloud className="h-6 w-6 text-accent" />
             {t('brand')}
           </Link>
-          <nav className="flex items-center gap-1">
+
+          {/* 데스크탑 내비게이션 (md 이상에서만 표시) */}
+          <nav className="hidden md:flex items-center gap-1">
             {navItems.map(item => (
               <Link
                 key={item.to}
@@ -52,61 +104,41 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 }`}
               >
                 <item.icon className="h-4 w-4" />
-                <span className="hidden sm:inline">{item.label}</span>
+                <span>{item.label}</span>
               </Link>
             ))}
+          </nav>
+
+          {/* 유틸리티 영역 - 모바일 포함 항상 표시 */}
+          <div className="flex items-center gap-1">
             <LanguageSwitcher />
             <ThemeToggle />
-
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full h-9 w-9">
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-accent text-accent-foreground text-sm font-bold">
-                        {userInitial}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <div className="px-3 py-2">
-                    <p className="text-sm font-medium truncate">{user.user_metadata?.full_name || user.email}</p>
-                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/exams" className="flex items-center gap-2 cursor-pointer">
-                      <User className="h-4 w-4" />
-                      {tAuth('myPage')}
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={signOut} className="flex items-center gap-2 text-destructive focus:text-destructive cursor-pointer">
-                    <LogOut className="h-4 w-4" />
-                    {tAuth('logout')}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full h-9 w-9"
-                onClick={() => openAuthModal('login')}
-                title={tAuth('signIn')}
-              >
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback className="bg-muted text-muted-foreground text-sm">
-                    <User className="h-4 w-4" />
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
-            )}
-          </nav>
+            {userMenu}
+          </div>
         </div>
       </header>
-      <main className="container mx-auto px-4 py-6">{children}</main>
+
+      <main className="container mx-auto px-4 py-6 pb-24 md:pb-6">{children}</main>
+
+      {/* 모바일 하단 탭 바 (md 미만에서만 표시) */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-card border-t">
+        <div className="flex items-center justify-around">
+          {navItems.map(item => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className={`flex flex-col items-center gap-0.5 py-2 px-4 text-xs font-medium transition-colors ${
+                location.pathname === item.to
+                  ? 'text-accent'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <item.icon className="h-5 w-5" />
+              <span>{item.label}</span>
+            </Link>
+          ))}
+        </div>
+      </nav>
     </div>
   );
 };
