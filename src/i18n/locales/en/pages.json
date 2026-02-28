@@ -1,10 +1,10 @@
 {
   "index": {
     "hero": {
-      "badge": "AWS · GCP · Azure Certification Platform",
-      "title": "Understand in Korean,",
-      "titleAccent": "Pass with Confidence",
-      "subtitle": "A structured Korean CBT learning platform for professionals, students, and career changers alike. 500+ questions with detailed explanations — pass on your first attempt.",
+      "badge": "The Essential Cert for the AI & Cloud Era",
+      "title": "AI Runs on Cloud.",
+      "titleAccent": "So Should Your Career.",
+      "subtitle": "ChatGPT, Netflix, every major tech product runs on cloud infrastructure. AWS, GCP, and Azure certifications are the key to the fastest-growing careers in the AI era. Start with clear Korean explanations.",
       "ctaPrimary": "Start Free Now",
       "ctaSecondary": "See How It Works",
       "stats": {
@@ -139,6 +139,27 @@
         }
       ]
     },
+    "whyCloud": {
+      "title": "Why Cloud Certifications?",
+      "subtitle": "In the AI era, cloud is no longer optional — it's the foundation of everything",
+      "items": [
+        {
+          "icon": "Brain",
+          "title": "The Backbone of Every AI Service",
+          "desc": "ChatGPT, image generation AI, self-driving cars — every AI service runs on cloud infrastructure. Understanding cloud is the first step to truly understanding AI."
+        },
+        {
+          "icon": "Database",
+          "title": "The Engine Behind Big Data & ML",
+          "desc": "Data pipelines, ML model deployment, real-time analytics — all built on AWS, GCP, or Azure. A cloud certification is non-negotiable for any data career."
+        },
+        {
+          "icon": "TrendingUp",
+          "title": "The Fastest-Growing Career Credential",
+          "desc": "AWS, GCP, and Azure certifications consistently rank in the Top 5 most valued IT credentials worldwide. One cert can transform your salary, your job prospects, and your career trajectory."
+        }
+      ]
+    },
     "audience": {
       "title": "Built for Every Type of Learner",
       "subtitle": "Different goals, same path to passing",
@@ -212,12 +233,12 @@
       "title": "Frequently Asked Questions",
       "questions": [
         {
-          "q": "How much time do I need to study each day?",
-          "a": "30 minutes a day is enough. A routine of 15–20 CBT questions and reviewing wrong answers consistently for 2–3 months builds solid exam-ready skills."
+          "q": "What are AWS, GCP, and Azure — and why do I need them?",
+          "a": "AWS (Amazon), GCP (Google), and Azure (Microsoft) are the three cloud platforms that power over 70% of the world's digital infrastructure. ChatGPT, Netflix, and countless everyday services run on them. Since 90%+ of AI and big data work is cloud-based, these certifications are essential for anyone in or entering the tech industry."
         },
         {
-          "q": "Can I pass the English exam by studying in Korean?",
-          "a": "Yes. AWS officially supports Korean-language exams. Understanding concepts deeply in Korean first, then training with English CBT questions, is actually a highly effective strategy."
+          "q": "Can non-IT backgrounds take these exams?",
+          "a": "Absolutely. Entry-level cloud certifications like AWS CLF-C02 require no coding experience. CloudMaster's Korean explanations break down every concept accessibly, so anyone can study systematically and pass."
         },
         {
           "q": "Which AWS exams are available?",

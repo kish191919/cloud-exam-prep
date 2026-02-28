@@ -1,0 +1,38 @@
+46. A development team has created a new IAM user that has s3:putObject permission to write to an S3 bucket. This S3 bucket uses server-side encryption with AWS KMS managed keys (SSE-KMS) as the default encryption. Using the access key ID and the secret access key of the IAM user, the application received an access denied error when calling the PutObject API. As a Developer Associate, how would you resolve this issue?
+
+
+
+47. You are running a cloud file storage website with an Internet-facing Application Load Balancer, which routes requests from users over the internet to 10 registered Amazon EC2 instances. Users are complaining that your website always asks them to re-authenticate when they switch pages. You are puzzled because this behavior is not seen in your local machine or dev environment. What could be the reason?
+
+
+
+48. As a developer, you are looking at creating a custom configuration for Amazon EC2 instances running in an Auto Scaling group. The solution should allow the group to auto-scale based on the metric of 'average RAM usage' for your Amazon EC2 instances. Which option provides the best solution?
+
+
+
+49. An e-commerce company has an order processing workflow with several tasks to be done in parallel as well as decision steps to be evaluated for successful processing of the order. All the tasks are implemented via Lambda functions. Which of the following is the BEST solution to meet these business requirements?
+
+
+
+50. A banking application needs to send real-time alerts and notifications based on any updates from the backend services. The company wants to avoid implementing complex polling mechanisms for these notifications. Which of the following types of APIs supported by the Amazon API Gateway is the right fit?
+
+
+
+51. A multi-national enterprise uses AWS Organizations to manage its users across different divisions. Even though CloudTrail is enabled on the member accounts, managers have noticed that access issues to CloudTrail logs across different divisions and AWS Regions is becoming a bottleneck in troubleshooting issues. They have decided to use the organization trail to keep things simple. What are the important points to remember when configuring an organization trail? 
+
+
+
+52. A recruit has created an Amazon Simple Storage Service (S3) bucket. He needs assistance in getting the security principles right for this bucket. Which of the following is NOT a security practice for access control to S3 buckets?
+
+
+
+53. A company follows collaborative development practices. The engineering manager wants to isolate the development effort by setting up simulations of API components owned by various development teams. Which API integration type is best suited for this requirement?
+
+
+54. A HealthCare mobile app uses proprietary Machine Learning algorithms to provide early diagnosis using patient health metrics. To protect this sensitive data, the development team wants to transition to a scalable user management system with log-in/sign-up functionality that also supports Multi-Factor Authentication (MFA). Which of the following options can be used to implement a solution with the LEAST amount of development effort? 
+
+
+
+55. AWS CloudFormation helps model and provision all the cloud infrastructure resources needed for your business. Which of the following services rely on CloudFormation to provision resources?
+
+

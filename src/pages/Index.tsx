@@ -11,7 +11,7 @@ import {
 import {
   Shield, BarChart3, Clock, BookOpen, ArrowRight,
   Cloud, Zap, Target, Users, Smartphone, CheckCircle2, Star, Map, Gift,
-  Briefcase, GraduationCap, Rocket,
+  Briefcase, GraduationCap, Rocket, Brain, Database, TrendingUp,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
@@ -31,10 +31,11 @@ const Index = () => {
   }>;
 
   const audienceItems = t('index.audience.items', { returnObjects: true }) as Array<{ icon: string; title: string; desc: string }>;
+  const whyCloudItems = t('index.whyCloud.items', { returnObjects: true }) as Array<{ icon: string; title: string; desc: string }>;
 
   const iconMap: Record<string, any> = {
     Shield, BarChart3, Clock, BookOpen, Target, Users, Smartphone,
-    Briefcase, GraduationCap, Rocket,
+    Briefcase, GraduationCap, Rocket, Brain, Database, TrendingUp,
   };
 
   return (
@@ -79,7 +80,7 @@ const Index = () => {
           </div>
 
           {/* Main Title */}
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-[1.15] mt-4 mb-6 md:mb-10 tracking-tight break-keep">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.2] mt-4 mb-5 md:mb-8 tracking-tight break-keep">
             {t('index.hero.title')}
             <br />
             <span className="bg-gradient-to-r from-accent via-accent/80 to-accent bg-clip-text text-transparent">
@@ -88,7 +89,7 @@ const Index = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-xl md:text-2xl text-primary-foreground/80 max-w-2xl mx-auto mb-10 md:mb-14 leading-relaxed font-medium break-keep">
+          <p className="text-sm sm:text-base md:text-lg text-primary-foreground/80 max-w-2xl mx-auto mb-10 md:mb-14 leading-relaxed font-medium break-keep">
             {t('index.hero.subtitle')}
           </p>
 
@@ -129,6 +130,33 @@ const Index = () => {
             </div>
           </div>
 
+        </div>
+      </section>
+
+      {/* 왜 클라우드 자격증인가 */}
+      <section className="relative hero-gradient text-primary-foreground py-16 md:py-20 px-4 overflow-hidden">
+        <div className="absolute inset-0 hero-dots pointer-events-none opacity-50" />
+        <div className="container mx-auto max-w-5xl relative z-10">
+          <div className="text-center mb-10 md:mb-14">
+            <h2 className="text-2xl md:text-4xl font-bold mb-3 break-keep">{t('index.whyCloud.title')}</h2>
+            <p className="text-primary-foreground/70 text-base md:text-lg max-w-2xl mx-auto break-keep">
+              {t('index.whyCloud.subtitle')}
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-5 md:gap-8">
+            {whyCloudItems.map((item, i) => {
+              const IconComponent = iconMap[item.icon];
+              return (
+                <div key={i} className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-primary-foreground/20 hover:bg-primary-foreground/15 transition-all duration-300 hover:scale-105">
+                  <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4">
+                    {IconComponent && <IconComponent className="h-6 w-6 text-accent" />}
+                  </div>
+                  <h3 className="font-bold text-lg md:text-xl mb-3 break-keep">{item.title}</h3>
+                  <p className="text-sm md:text-base text-primary-foreground/70 leading-relaxed break-keep">{item.desc}</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
