@@ -1,0 +1,58 @@
+1. A pharmaceutical company uses Amazon EC2 instances for application hosting and Amazon CloudFront for content delivery. A new research paper with critical findings has to be shared with a research team that is spread across the world. Which of the following represents the most optimal solution to address this requirement without compromising the security of the content?
+
+
+
+2. An Auto Scaling group has a maximum capacity of 5, a current capacity of 3, and a scaling policy that adds 4 instances. When executing this scaling policy, what is the expected outcome?
+
+
+
+3. The Development team at a media company is working on securing their databases. Which of the following AWS database engines can be configured with IAM Database Authentication?
+
+
+
+4. As a Senior Developer, you are tasked with creating several API Gateway powered APIs along with your team of developers. The developers are working on the API in the development environment, but they find the changes made to the APIs are not reflected when the API is called. As a Developer Associate, which of the following solutions would you recommend for this use-case?
+
+
+
+5. A company is using a Border Gateway Protocol (BGP) based AWS VPN connection to connect from its on-premises data center to Amazon EC2 instances in the company’s account. The development team can access an EC2 instance in subnet aaa but is unable to access an EC2 instance in subnet bbb in the same VPC. Which logs can be used to verify whether the traffic is reaching subnet bbb?
+
+
+
+6. The app development team at a social gaming mobile app wants to simplify the user sign up process for the app. The team is looking for a fully managed scalable solution for user management in anticipation of the rapid growth that the app foresees. As a Developer Associate, which of the following solutions would you suggest so that it requires the LEAST amount of development effort?
+
+
+
+7. A development team has configured their Amazon EC2 instances for Auto Scaling. A Developer during routine checks has realized that only basic monitoring is active, as opposed to detailed monitoring. Which of the following represents the best root-cause behind the issue?
+
+
+
+8. A developer needs to automate software package deployment to both Amazon EC2 instances and virtual servers running on-premises, as part of continuous integration and delivery that the business has adopted. Which AWS service should he use to accomplish this task?
+
+
+
+9. While troubleshooting, a developer realized that the Amazon EC2 instance is unable to connect to the Internet using the Internet Gateway. Which conditions should be met for Internet connectivity to be established?
+
+
+
+10. A company uses Amazon Simple Email Service (SES) to cost-effectively send susbscription emails to the customers. Intermittently, the SES service throws the error: Throttling – Maximum sending rate exceeded. As a developer associate, which of the following would you recommend to fix this issue?
+
+
+
+11. After a code review, a developer has been asked to make his publicly accessible S3 buckets private, and enable access to objects with a time-bound constraint. Which of the following options will address the given use-case?
+
+
+12. Your team lead has asked you to learn AWS CloudFormation to create a collection of related AWS resources and provision them in an orderly fashion. You decide to provide AWS-specific parameter types to catch invalid values. When specifying parameters which of the following is not a valid Parameter type?
+
+
+
+13. You are a development team lead setting permissions for other IAM users with limited permissions. On the AWS Management Console, you created a dev group where new developers will be added, and on your workstation, you configured a developer profile. You would like to test that this user cannot terminate instances. Which of the following options would you execute?
+
+
+
+14. A new recruit is trying to configure what an Amazon EC2 should do when it interrupts a Spot Instance. Which of the below CANNOT be configured as an interruption behavior?
+
+
+
+15. You have created a continuous delivery service model with automated steps using AWS CodePipeline. Your pipeline uses your code, maintained in a CodeCommit repository, AWS CodeBuild, and AWS Elastic Beanstalk to automatically deploy your code every time there is a code change. However, the deployment part to Elastic Beanstalk is taking a very long time due to resolving dependencies on all of your 100 target EC2 instances. Which of the following actions should you take to improve performance with limited code changes?
+
+

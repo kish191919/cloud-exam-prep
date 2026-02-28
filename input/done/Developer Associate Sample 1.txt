@@ -1,0 +1,57 @@
+1. As an AWS Certified Developer Associate, you are given a document written in YAML that represents the architecture of a serverless application. The first line of the document contains Transform: 'AWS::Serverless-2025-02-11'. What does the Transform section in the document represent?
+
+
+
+2. The development team at a company creates serverless solutions using AWS Lambda. Functions are invoked by clients via AWS API Gateway which anyone can access. The team lead would like to control access using a 3rd party authorization mechanism. As a Developer Associate, which of the following options would you recommend for the given use-case?
+
+
+
+3. A developer is testing Amazon Simple Queue Service (SQS) queues in a development environment. The queue along with all its contents has to be deleted after testing. Which SQS API should be used for this requirement?
+
+
+
+4. An e-commerce company has developed an API that is hosted on Amazon ECS. Variable traffic spikes on the application are causing order processing to take too long. The application processes orders using Amazon SQS queues. The ApproximateNumberOfMessagesVisible metric spikes at very high values throughout the day which triggers the CloudWatch alarm. Other ECS metrics for the API containers are well within limits. As a Developer Associate, which of the following will you recommend for improving performance while keeping costs low?
+
+
+
+5. A company is looking at optimizing their Amazon EC2 instance costs. Few instances are sure to run for a few years, but the instance type might change based on business requirements. Which EC2 instance purchasing option should they opt to meet the reduced cost criteria?
+
+
+
+6. You have deployed a Java application to an EC2 instance where it uses the X-Ray SDK. When testing from your personal computer, the application sends data to X-Ray but when the application runs from within EC2, the application fails to send data to X-Ray. Which of the following does NOT help with debugging the issue?
+
+
+
+7. A development team has configured inbound traffic for the relevant ports in both the Security Group of the EC2 instance as well as the Network Access Control List (NACL) of the subnet for the EC2 instance. The team is, however, unable to connect to the service running on the Amazon EC2 instance. As a developer associate, which of the following will you recommend to fix this issue?
+
+
+
+8. A Developer at a company is working on a CloudFormation template to set up resources. Resources will be defined using code and provisioned based on certain conditions. Which section of a CloudFormation template does not allow for conditions?
+
+
+
+9. ECS Fargate container tasks are usually spread across Availability Zones (AZs) and the underlying workloads need persistent cross-AZ shared access to the data volumes configured for the container tasks. Which of the following solutions is the best choice for these workloads?
+
+
+
+10. The development team at an IT company wants to make changes to a current application written in Node.js and deployed on a Linux server. The team lead would like to decouple the application into microservices, package the application to a Docker container which is then run on the AWS infrastructure.ㅊWhich AWS service is best suited for this change?
+
+
+
+11. Which of the following best describes how KMS Encryption works?
+
+
+
+12. A media company has created a video streaming application and it would like their Brazilian users to be served by the company's Brazilian servers. Other users around the globe should not be able to access the servers through DNS queries. Which Route 53 routing policy meets this requirement?
+
+
+
+13. You are a developer in a manufacturing company that has several servers on-site. The company decides to move new development to the cloud using serverless technology. You decide to use the AWS Serverless Application Model (AWS SAM) and work with an AWS SAM template file to represent your serverless architecture. Which of the following is NOT a valid serverless resource type?
+
+
+
+14. A multi-national company has multiple business units with each unit having its own AWS account. The development team at the company would like to debug and trace data across accounts and visualize it in a centralized account. As a Developer Associate, which of the following solutions would you suggest for the given use-case?
+
+
+
+15. You are running workloads on AWS and have embedded RDS database connection strings within each web server hosting your applications. After failing a security audit, you are looking at a different approach to store your secrets securely and automatically rotate the database credentials. Which AWS service can you use to address this use-case?

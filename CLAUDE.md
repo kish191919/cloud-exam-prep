@@ -107,13 +107,17 @@ input/ 폴더에 .txt 파일이 없습니다.
 curl -s \
   -H "apikey: {SUPABASE_SERVICE_ROLE_KEY}" \
   -H "Authorization: Bearer {SUPABASE_SERVICE_ROLE_KEY}" \
-  "{SUPABASE_URL}/rest/v1/questions?select=id&exam_id=eq.{exam_id}&order=id.desc&limit=1"
+  "{SUPABASE_URL}/rest/v1/questions?select=id&exam_id=eq.{exam_id}"
 ```
 
-응답 예: `[{"id":"awsaifc01-q165"}]`
+응답 예: `[{"id":"awsaifc01-q001"}, ..., {"id":"awsaifc01-q9"}, ..., {"id":"awsaifc01-q165"}]`
 
-- `awsaifc01-q165` → 숫자 `165` 추출 → `start_id = 166`
-- 결과가 없으면 `start_id = 1`
+**⚠️ 주의: `order=id.desc` 알파벳 정렬을 사용하면 안 된다.**
+ID 형식이 혼재(예: `q9`, `q10`, `q071`)하면 알파벳 최댓값 ≠ 숫자 최댓값이 되어 오계산된다.
+
+- 응답 배열의 모든 ID에서 숫자 접미사를 추출: `-q` 뒤 숫자 부분 (예: `q165` → `165`, `q9` → `9`)
+- 숫자 최댓값을 계산 → `start_id = max_num + 1`
+- 배열이 비어 있으면 `start_id = 1`
 - `.env` 파일이 없으면 사용자에게 안내:
   ```
   .env 파일이 없습니다. 다음 형식으로 프로젝트 루트에 생성해주세요:
@@ -549,6 +553,11 @@ exam_id:
 각 파일에 대해 `/convert`의 파일별 처리 루프와 동일하게:
 - 파일 첫 500자로 `source_language` 감지 (`"ko"` / `"en"`)
 - Parser & SQL Agent에 `file_path` 전달 → `parse_text.py` 실행 → `output/parsed_questions.json` 생성
+
+> **ID 할당 규칙 (인라인 파싱 시):** `parse_text.py`를 사용할 수 없을 때 (options/answers 없는 파일 등)
+> Main이 직접 ID를 할당해야 하는 경우, 반드시 **3자리 zero-padding**을 사용한다.
+> 형식: `{exam_code}-q{N:03d}` (예: `awsdeac01-q087`, `awsdeac01-q088`, ...)
+> **절대 비패딩 형식 (`q87`, `q88`) 사용 금지** — 알파벳 정렬과 숫자 정렬이 달라져 MAX(id) 오계산 원인이 됨.
 
 **[B-3] 핵심 개념 추출 (Main 인라인 분석)**
 

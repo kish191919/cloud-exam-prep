@@ -1,0 +1,66 @@
+16. The manager at an IT company wants to set up member access to user-specific folders in an Amazon S3 bucket - bucket_test. So, user_temp1 can only access files in his folder - bucket_test/user/temp1/ and user y can only access files in her folder - bucket-a/user/temp2/ and so on. As a Developer Associate, which of the following IAM constructs would you recommend so that the policy snippet can be made generic for all team members and the manager does not need to create separate IAM policy for each team member?
+
+
+
+17. The development team at an IT company would like to provision their own Docker images that can be used as input sources for CodeBuild. These images will contain cached dependencies as well as special tooling for builds that are proprietary to the company. Which of the following services can be used to store and deploy these Docker images?
+
+
+
+18. A development team wants to deploy an AWS Lambda function that requires significant CPU utilization. As a Developer Associate, which of the following would you suggest for reducing the average runtime of the function?
+
+
+
+19. A development team wants to build an application using serverless architecture. The team plans to use AWS Lambda functions extensively to achieve this goal. The developers of the team work on different programming languages like Python, .NET and Javascript. The team wants to model the cloud infrastructure using any of these programming languages. Which AWS service/tool should the team use for the given use-case?
+
+
+
+20. A developer is configuring a bucket policy that denies upload object permission to any requests that do not include the x-amz-server-side-encryption header requesting server-side encryption with SSE-KMS for an Amazon S3 bucket. Which of the following policies is the right fit for the given requirement?
+
+
+
+
+21. You are creating a Cloud Formation template to deploy your CMS application running on an EC2 instance within your AWS account. Since the application will be deployed across multiple regions, you need to create a map of all the possible values for the base AMI. How will you invoke the Score function to fulfill this use case?
+
+
+
+22. An organization has hosted its EC2 instances in two AZs. AZa has 3 instances and AZb has 5 instances. The Elastic Load Balancer managing the instances in the two AZs has cross-zone load balancing enabled in its configuration. What percentage traffic will each of the instances in AZa receive?
+
+
+
+23. As a developer, you are working on creating an application using AWS Cloud Development Kit (CDK). Which of the following represents the correct order of steps to be followed for creating an app using AWS CDK?
+
+
+
+24. A company has built its technology stack on AWS serverless architecture for managing all its business functions. To expedite development for a new business requirement, the company is looking at using pre-built serverless applications. Which AWS service represents the easiest solution to address this use-case?
+
+
+
+25. You have chosen AWS Elastic Beanstalk to upload your application code and allow it to handle details such as provisioning resources and monitoring. When creating configuration files for AWS Elastic Beanstalk which naming convention should you follow?
+
+
+
+26. An application is hosted by a 3rd party and exposed at app.xxxx.com. You would like to have your users access your application using www.domain.com, which you own and manage under Route 53. What Route 53 record should you create?
+
+
+
+27. You have created an Elastic Load Balancer that has marked all the EC2 instances in the target group as unhealthy. Surprisingly, when you enter the IP address of the EC2 instances in your web browser, you can access your website. What could be the reason your instances are being marked as unhealthy?
+
+
+
+
+28. A developer has been asked to create an application that can be deployed across a fleet of EC2 instances. The configuration must allow for full control over the deployment steps using the blue-green deployment. Which service will help you achieve that?
+
+
+
+
+
+29. A firm runs its technology operations on a fleet of Amazon EC2 instances. The firm needs a certain software to be available on the instances to support their daily workflows. The developer team has been told to use the user data feature of EC2 instances. Which of the following are true about the user data EC2 configuration?
+
+
+
+
+30. A company has hired you as an AWS Certified Developer Associate to help with redesigning a real-time data processor. The company wants to build custom applications that process and analyze the streaming data for its specialized needs. Which solution will you recommend to address this use-case?
+
+
+
+

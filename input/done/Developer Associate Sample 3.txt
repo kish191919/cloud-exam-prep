@@ -1,0 +1,58 @@
+31. A Developer has been entrusted with the job of securing certain S3 buckets that are shared by a large team of users. Last time, a bucket policy was changed, the bucket was erroneously available for everyone, outside the organization too. Which feature/service will help the developer identify similar security issues with minimum effort?
+
+
+32. As part of his development work, an AWS Certified Developer Associate is creating policies and attaching them to IAM identities. After creating necessary Identity-based policies, he is now creating Resource-based policies. Which is the only resource-based policy that the IAM service supports?
+
+
+
+33. A company uses Elastic Beanstalk to manage its IT infrastructure on AWS Cloud and it would like to deploy the new application version to the EC2 instances. When the deployment is executed, some instances should serve requests with the old application version, while other instances should serve requests using the new application version until the deployment is completed. Which deployment meets this requirement without incurring additional costs?
+
+
+
+34. A development team lead is responsible for managing access for her IAM principals. At the start of the cycle, she has granted excess privileges to users to keep them motivated for trying new things. She now wants to ensure that the team has only the minimum permissions required to finish their work. Which of the following will help her identify unused IAM roles and remove them without disrupting any service?
+
+
+
+35. You have created a Java application that uses RDS for its main data storage and ElastiCache for user session storage. The application needs to be deployed using Elastic Beanstalk and every new deployment should allow the application servers to reuse the RDS database. On the other hand, user session data stored in ElastiCache can be re-created for every deployment. Which of the following configurations will allow you to achieve this?
+
+
+
+36. When running a Rolling deployment in Elastic Beanstalk environment, only two batches completed the deployment successfully, while rest of the batches failed to deploy the updated version. Following this, the development team terminated the instances from the failed deployment. What will be the status of these failed instances post termination?
+
+
+
+
+37. After a test deployment in ElasticBeanstalk environment, a developer noticed that all accumulated Amazon EC2 burst balances were lost. Which of the following options can lead to this behavior?
+
+
+
+
+38. An E-commerce business, has its applications built on a fleet of Amazon EC2 instances, spread across various Regions and AZs. The technical team has suggested using Elastic Load Balancers for better architectural design. What characteristics of an Elastic Load Balancer make it a winning choice? 
+
+
+
+39. Your company has configured AWS Organizations to manage multiple AWS accounts. Within each AWS account, there are many CloudFormation scripts running. Your manager has requested that each script output the account number of the account the script was executed in. Which Pseudo parameter will you use to get this information?
+
+
+
+40. A multi-national company has just moved to AWS Cloud and it has configured forecast-based AWS Budgets alerts for cost management. However, no alerts have been received even though the account and the budgets have been created almost three weeks ago. What could be the issue with the AWS Budgets configuration?
+
+
+
+41. Which of the following security credentials can only be created by the AWS Account root user?
+
+
+
+42. You're a developer working on a large scale order processing application. After developing the features, you commit your code to AWS CodeCommit and begin building the project with AWS CodeBuild before it gets deployed to the server. The build is taking too long and the error points to an issue resolving dependencies from a third-party. You would like to prevent a build running this long in the future for similar underlying reasons. Which of the following options represents the best solution to address this use-case?
+
+
+
+43. Your global organization has an IT infrastructure that is deployed using CloudFormation on AWS Cloud. One employee, in us-east-1 Region, has created a stack 'Application_test' and made an exported output with the name 'TestName'. Another employee has created a stack for a different application 'Application2' in us-east-2 Region and also exported an output with the name 'TestName'. The first employee wanted to deploy the CloudFormation stack 'Application_test' in us-east-2, but it got an error. What is the cause of the error?
+
+
+
+44. You're a developer doing contract work for the media sector. Since you work alone, you opt for technologies that require little maintenance, which allows you to focus more on your coding. You have chosen AWS Elastic Beanstalk to assist with the deployment of your applications. While reading online documentation you find that Elastic Beanstalk relies on another AWS service to provision your resources. Which of the following represents this AWS service?
+
+
+
+45. The development team has just configured and attached the IAM policy needed to access AWS Billing and Cost Management for all users under the Finance department. But, the users are unable to see AWS Billing and Cost Management service in the AWS console. What could be the reason for this issue?

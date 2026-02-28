@@ -1,0 +1,40 @@
+46. A development team at a social media company uses AWS Lambda for its serverless stack on AWS Cloud. For a new deployment, the Team Lead wants to send only a certain portion of the traffic to the new Lambda version. In case the deployment goes wrong, the solution should also support the ability to roll back to a previous version of the Lambda function, with MIMINUM downtime for the application. As a Developer Associate, which of the following options would you recommend to address this use-case?
+
+
+
+47. A financial services company is undergoing a compliance audit by the regulator. The company has hundreds of IAM users that make API calls but specifically it needs to be determined who is making KMS API calls. Which of the following services should the audit team use?
+
+
+
+48. CodeCommit is a managed version control service that hosts private Git repositories in the AWS cloud. Which of the following credential types is NOT supported by IAM for CodeCommit?
+
+
+
+49. A SaaS company runs a HealthCare web application that is used worldwide by users. There have been requests by mobile developers to expose public APIs for the application-specific functionality. You decide to make the APIs available to mobile developers as product offerings. Which of the following options will allow you to do that?
+
+
+
+50. A developer at a company is trying to create a digital signature for SSH'ing into the Amazon EC2 instances. Which of the following entities can be used to facilitate this use-case?
+
+
+
+51. A cybersecurity firm wants to run their applications on single-tenant hardware to meet security guidelines. Which of the following is the MOST cost-effective way of isolating their Amazon EC2 instances to a single tenant?
+
+
+
+52. Amazon Simple Queue Service (SQS) has a set of APIs for various actions supported by the service. As a developer associate, which of the following would you identify as correct regarding the CreateQueue API?
+
+
+53. As an AWS Certified Developer Associate, you have configured the AWS CLI on your workstation. Your default region is us-east-1 and your IAM user has permissions to operate commands on services such as EC2, S3 and RDS in any region. You would like to execute a command to stop an EC2 instance in the us-east-2 region. What of the following is the MOST optimal solution to address this use-case?
+
+
+
+54. A developer has been asked to create a web application to be deployed on EC2 instances. The developer just wants to focus on writing application code without worrying about server provisioning, configuration and deployment. As a Developer Associate, which AWS service would you recommend for the given use-case?
+
+
+
+55. You are a developer for a web application written in .NET which uses the AWS SDK. You need to implement an authentication mechanism that returns a JWT (JSON Web Token). Which AWS service will help you with token handling and management?
+
+
+
+56. A development team lead is configuring policies for his team at an IT company. Which of the following policy types only limit permissions but cannot grant permissions?
