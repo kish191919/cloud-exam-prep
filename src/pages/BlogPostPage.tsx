@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { MermaidBlock } from '@/components/MermaidBlock';
 import {
   ArrowLeft, Clock, Calendar, Tag, ExternalLink,
   BookOpen, Share2, ChevronRight,
@@ -89,8 +90,11 @@ const mdComponents = {
       {children}
     </blockquote>
   ),
-  code: ({ inline, children, ...props }: { inline?: boolean; children?: React.ReactNode }) =>
-    inline ? (
+  code: ({ inline, children, className, ...props }: { inline?: boolean; children?: React.ReactNode; className?: string }) => {
+    if (!inline && className === 'language-mermaid') {
+      return <MermaidBlock code={String(children).trim()} />;
+    }
+    return inline ? (
       <code className="px-1.5 py-0.5 rounded bg-muted text-accent text-[0.85em] font-mono" {...props}>
         {children}
       </code>
@@ -98,7 +102,8 @@ const mdComponents = {
       <code className="block p-4 rounded-lg bg-slate-900 dark:bg-slate-800 text-slate-100 text-sm font-mono overflow-x-auto" {...props}>
         {children}
       </code>
-    ),
+    );
+  },
   pre: ({ children }: { children?: React.ReactNode }) => (
     <pre className="my-4 rounded-lg overflow-hidden">{children}</pre>
   ),

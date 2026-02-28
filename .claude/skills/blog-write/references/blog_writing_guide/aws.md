@@ -215,3 +215,60 @@ A) Amazon SQS  B) Amazon SNS  C) Amazon EventBridge  D) AWS Step Functions
 - [ ] 취약점이 되기 쉬운 함정 유형 3개 이상
 - [ ] 시간 배분 전략
 - [ ] D-Day 준비 체크리스트
+
+---
+
+## 시각 콘텐츠 가이드
+
+### Mermaid 다이어그램 필수 규칙
+
+블로그 렌더러가 Mermaid를 지원합니다. ` ```mermaid ` 코드블록으로 삽입하면 SVG 다이어그램으로 자동 렌더링됩니다.
+
+### 예시 1: 출제 비중 파이 차트 (overview 필수)
+
+```
+pie title AIF-C01 시험 출제 비중
+    "Foundation 모델 응용 (Domain 3)" : 28
+    "생성형 AI 기초 (Domain 2)" : 24
+    "AI·ML 기초 (Domain 1)" : 20
+    "책임 있는 AI (Domain 4)" : 14
+    "보안·거버넌스 (Domain 5)" : 14
+```
+
+### 예시 2: 서비스 선택 플로우차트 (domain_guide / service_comparison)
+
+```
+flowchart TD
+    A[어떤 AI 작업?] --> B{텍스트 처리}
+    A --> C{이미지·영상 처리}
+    A --> D{생성형 AI 응용}
+    B --> E[Amazon Comprehend]
+    C --> F[Amazon Rekognition]
+    D --> G[Amazon Bedrock]
+    G --> H{RAG 필요?}
+    H -->|Yes| I[Bedrock Knowledge Bases]
+    H -->|No| J[직접 API 호출]
+```
+
+### 예시 3: 학습 로드맵 (exam_strategy)
+
+```
+flowchart LR
+    A[기초 개념 학습\n2~3주] --> B[AWS 서비스 실습\n2~3주]
+    B --> C[책임 있는 AI·보안\n1~2주]
+    C --> D[모의고사·점검\n1~2주]
+    D --> E[시험 합격 🎯]
+```
+
+### 이모지 사용 패턴
+
+| 상황 | 형식 |
+|------|------|
+| 시험 포인트 강조 | `> 💡 **시험 포인트**: 내용` |
+| 함정·주의 경고 | `> ⚠️ **주의**: 내용` |
+| 올바른 선택 | ✅ 앞에 붙임 |
+| 잘못된 선택 | ❌ 앞에 붙임 |
+| AI·ML 관련 | 🤖 선택적 사용 |
+| 보안 관련 | 🔐 선택적 사용 |
+
+**이모지 사용 원칙**: H2 제목에 이모지는 전체 포스트에서 4~6개 이내. 과용 금지.
