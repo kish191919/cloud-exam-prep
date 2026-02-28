@@ -118,10 +118,16 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 pb-24 md:pb-6">{children}</main>
+      <main
+        className="container mx-auto px-4 py-6 md:pb-6"
+        style={{ paddingBottom: 'calc(4rem + env(safe-area-inset-bottom))' }}
+      >{children}</main>
 
       {/* 모바일 하단 탭 바 (md 미만에서만 표시) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-card border-t">
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-card border-t"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
         <div className="flex items-center justify-around">
           {navItems.map(item => (
             <Link
