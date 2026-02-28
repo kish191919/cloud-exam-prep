@@ -493,49 +493,33 @@ const ExamList = () => {
                         </p>
                       </div>
 
-                      {/* 데스크탑 우측 패널: 모드 버튼 OR 세트 선택 패널 */}
-                      <div className="hidden md:block shrink-0">
-                        {isExpanded && selectedMode ? (
-                          renderSetPanel(exam, false)
-                        ) : (
-                          <div className="flex flex-col gap-2 w-36">
-                            {MODE_OPTIONS.map(m => {
-                              return (
-                                <button
-                                  key={m.id}
-                                  onClick={(e) => handleModeSelect(exam.id, m.id, e)}
-                                  disabled={!available}
-                                  className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 transition-all text-left
-                                    ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
-                                    border-border hover:border-muted-foreground/40 bg-card hover:bg-muted/30`}
-                                >
-                                  <m.Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
-                                  <span className="font-semibold text-sm">{isKo ? m.labelKo : m.labelEn}</span>
-                                </button>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </div>
+                      {/* 데스크탑: 세트 선택 패널 (확장 시에만 우측 표시) */}
+                      {isExpanded && selectedMode && (
+                        <div className="hidden md:block shrink-0">
+                          {renderSetPanel(exam, false)}
+                        </div>
+                      )}
                     </div>
 
-                    {/* ── 모바일 하단: 모드 버튼 OR 세트 선택 패널 ── */}
-                    <div className="md:hidden mt-3">
+                    {/* ── 하단: 모드 버튼 (가로) OR 세트 선택 패널 (모바일) ── */}
+                    <div className="mt-3 md:mt-4">
                       {isExpanded && selectedMode ? (
-                        renderSetPanel(exam, true)
+                        <div className="md:hidden">
+                          {renderSetPanel(exam, true)}
+                        </div>
                       ) : (
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-3 gap-2 md:gap-3">
                           {MODE_OPTIONS.map(m => (
                             <button
                               key={m.id}
                               onClick={(e) => handleModeSelect(exam.id, m.id, e)}
                               disabled={!available}
-                              className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border-2 transition-all
+                              className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border-2 transition-all
                                 ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                                 border-border hover:border-muted-foreground/40 bg-card hover:bg-muted/30`}
                             >
-                              <m.Icon className="h-4 w-4 text-muted-foreground" />
-                              <span className="font-semibold text-xs">{isKo ? m.labelKo : m.labelEn}</span>
+                              <m.Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+                              <span className="font-semibold text-sm">{isKo ? m.labelKo : m.labelEn}</span>
                             </button>
                           ))}
                         </div>
