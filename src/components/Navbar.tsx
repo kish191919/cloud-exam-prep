@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Cloud, Menu, X, LogOut, User } from 'lucide-react';
+import { Cloud, Menu, X, LogOut, User, Map, BookOpen, MessageSquare, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -112,42 +112,70 @@ const Navbar = () => {
       </div>
 
       {open && (
-        <div className="md:hidden border-t border-border bg-card px-4 py-4 space-y-3">
+        <div className="md:hidden border-t border-border bg-card/95 backdrop-blur-sm px-3 py-3 space-y-1 animate-in slide-in-from-top-2 duration-200">
           {user ? (
             <>
-              <Link to="/dashboard" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>
+              <Link
+                to="/dashboard"
+                className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-foreground hover:bg-accent/10 active:bg-accent/20 transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                <User className="h-5 w-5 text-muted-foreground" />
                 {tAuth('myPage')}
               </Link>
               <button
-                className="block text-sm font-medium text-destructive text-left"
+                className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-destructive hover:bg-destructive/10 active:bg-destructive/20 transition-colors text-left"
                 onClick={handleSignOut}
               >
+                <LogOut className="h-5 w-5" />
                 {tAuth('logout')}
               </button>
             </>
           ) : (
             <button
-              className="block text-sm font-medium text-muted-foreground text-left"
+              className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-accent hover:bg-accent/10 active:bg-accent/20 transition-colors text-left"
               onClick={() => { openAuthModal('login'); setOpen(false); }}
             >
+              <LogIn className="h-5 w-5" />
               {tAuth('signIn')}
             </button>
           )}
 
-          <Link to="/certifications" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>
+          <div className="h-px bg-border my-1" />
+
+          <Link
+            to="/certifications"
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-foreground hover:bg-accent/10 active:bg-accent/20 transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            <Map className="h-5 w-5 text-muted-foreground" />
             {t('navigation.roadmap')}
           </Link>
 
-          <Link to="/blog" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>
+          <Link
+            to="/blog"
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-foreground hover:bg-accent/10 active:bg-accent/20 transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            <BookOpen className="h-5 w-5 text-muted-foreground" />
             {t('navigation.blog')}
           </Link>
 
-          <Link to="/board" className="block text-sm font-medium text-muted-foreground" onClick={() => setOpen(false)}>
+          <Link
+            to="/board"
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-foreground hover:bg-accent/10 active:bg-accent/20 transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            <MessageSquare className="h-5 w-5 text-muted-foreground" />
             {t('navigation.board')}
           </Link>
 
-          <Link to="/exams" onClick={() => setOpen(false)}>
-            <Button size="sm" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">{t('navigation.startFree')}</Button>
+          <div className="h-px bg-border my-1" />
+
+          <Link to="/exams" onClick={() => setOpen(false)} className="block px-1">
+            <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+              {t('navigation.startFree')}
+            </Button>
           </Link>
         </div>
       )}

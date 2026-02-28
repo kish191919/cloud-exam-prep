@@ -509,17 +509,34 @@ PATCH 완료:  질문(ref_links) {q_patched}개, 옵션 {opt_patched}개
 `input/` 폴더의 txt 파일(사용자 제공 공부 자료, 메모, 서비스 설명 등)을 읽어
 SEO 최적화된 한/영 양방향 블로그 포스트를 배치 생성하고 Supabase에 삽입하는 파이프라인.
 
+### 인자 파싱
+
+사용자가 `/blog-write` 실행 시 다음 인자를 지원한다:
+
+| 인자 | 동작 |
+|------|------|
+| (인자 없음) | 기존 대화형 진행 (Step 1 확인 + Step 5 검토 모두 표시) |
+| `--draft` | YAML 헤더 완전 시 Step 1 확인 생략 + Step 5 건너뜀 (모두 초안 저장) |
+| `--publish` | YAML 헤더 완전 시 Step 1 확인 생략 + Step 5 건너뜀 (모두 즉시 게시) |
+
+예: `/blog-write --draft`, `/blog-write --publish`
+
 ### 처리 흐름
 
 ```
-[/blog-write]
+[/blog-write [--draft|--publish]]
+  → 인자 파싱 (--draft / --publish 여부 확인)
   → input/ 폴더 스캔 (.txt 파일, 알파벳 순)
   → 파일별 YAML 헤더 파싱 or Main 자동 감지
-  → 파일 목록·주제 출력 → 사용자 확인
+  → 파일 목록·주제 출력
+      ├─ YAML 헤더 완전 + --draft/--publish → 확인 없이 자동 진행
+      └─ 그 외 → [A/B/C] 사용자 확인
+  → YAML 자동 감지 파일 있으면: 헤더 추가 힌트 표시
   → 참조 파일 선로드 (domain_tags, blog_guide, translation_guide)
   → Blog Writer Agent (Haiku, 5개씩 배치 병렬) — SEO 최적화 포함
   → 에스컬레이션 처리 → output/draft_blog_posts.json
-  → 사용자 검토 → 초안/즉시 게시 선택
+      ├─ --draft/--publish 지정 시 → 자동으로 삽입 진행 (Step 5 생략)
+      └─ 인자 없음 → Step 5 사용자 검토 → 초안/즉시 게시 선택
   → insert_blog_supabase.py 실행
   → 파일 input/done/ 이동
   → 결과 요약 출력
@@ -567,6 +584,35 @@ input/ 폴더에 .txt 파일이 없습니다.
 [A] 모두 그대로 진행합니다
 [B] 특정 파일의 설정을 수정합니다 (예: "2번 content_type: exam_strategy로 변경")
 [C] 취소합니다
+```
+
+**자동 진행 조건 (Step 1 확인 생략):**
+
+다음 조건이 **모두** 충족되면 [A/B/C] 질문 없이 파일 목록만 출력 후 자동으로 Step 2로 진행한다:
+1. 모든 파일의 YAML 헤더에 `provider` + `content_type` + `topic`이 모두 명시되어 있음
+2. `--draft` 또는 `--publish` 인자가 전달되었음
+
+자동 진행 시 출력 예:
+```
+처리할 파일 목록 (input/):
+  [1] bedrock_study.txt   — provider: aws | content_type: domain_guide | 주제: Amazon Bedrock 파운데이션 모델
+  [2] clf_overview.txt    — provider: aws | content_type: overview     | 주제: AWS Cloud Practitioner 개요
+
+총 2개 파일 처리를 시작합니다. (--draft 모드)
+```
+
+**YAML 헤더 없는 파일이 있는 경우 — 힌트 표시:**
+
+자동 감지가 필요한 파일이 하나라도 있으면, 파일 목록 + [A/B/C] 확인 출력 후 다음 힌트를 추가로 표시한다:
+```
+💡 다음 실행 시 확인 단계를 생략하려면 아래 YAML 헤더를 파일 상단에 추가하세요:
+---
+provider: aws
+exam_id: aws-aif-c01      (선택사항)
+content_type: domain_guide
+topic: [주제 입력]
+slug_hint: [url-slug]     (선택사항)
+---
 ```
 
 ### Step 2: 참조 파일 선로드
@@ -626,6 +672,19 @@ for batch in batches:
 - 에스컬레이션 결과는 사용자에게 전달 (아래 에스컬레이션 처리 참조)
 
 ### Step 5: 사용자 검토
+
+**`--draft` 또는 `--publish` 인자가 전달된 경우 → 이 단계를 건너뛴다:**
+
+- `--draft`: 포스트 목록과 수만 간략히 출력 후 자동으로 Step 6 (초안 저장) 진행
+  ```
+  3개 포스트를 초안으로 저장합니다.
+    [1] aws-aif-c01-bedrock-foundation-model-guide — "Amazon Bedrock 완벽 가이드 | AIF-C01"
+    [2] aws-clf-c02-overview — "AWS Cloud Practitioner(CLF-C02) 완벽 합격 가이드"
+    ...
+  ```
+- `--publish`: 동일하게 목록 출력 후 자동으로 Step 6 (즉시 게시) 진행
+
+**인자가 없는 경우 → 아래 대화형 선택을 진행한다:**
 
 ```
 {N}개 포스트 초안이 완성되었습니다:
