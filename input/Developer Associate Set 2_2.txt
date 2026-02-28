@@ -1,0 +1,57 @@
+16. A high-frequency stock trading firm is migrating their messaging queues from self-managed message-oriented middleware systems to Amazon SQS. The development team at the company wants to minimize the costs of using SQS. As a Developer Associate, which of the following options would you recommend to address the given use-case?
+
+
+
+17. A cybersecurity company is running a serverless backend with several compute-heavy workflows running on Lambda functions. The development team has noticed a performance lag after analyzing the performance metrics for the Lambda functions. As a Developer Associate, which of the following options would you suggest as the BEST solution to address the compute-heavy workloads?
+
+
+
+18. As a Senior Developer, you manage 10 Amazon EC2 instances that make read-heavy database requests to the Amazon RDS for PostgreSQL. You need to make this architecture resilient for disaster recovery. Which of the following features will help you prepare for database disaster recovery?
+
+
+
+19. Your team lead has requested code review of your code for Lambda functions. Your code is written in Python and makes use of the Amazon Simple Storage Service (S3) to upload logs to an S3 bucket. After the review, your team lead has recommended reuse of execution context to improve the Lambda performance. Which of the following actions will help you implement the recommendation?
+
+
+
+20. You are a developer working with the AWS CLI to create Lambda functions that contain environment variables. Your functions will require over 50 environment variables consisting of sensitive information of database table names. What is the total set size/number of environment variables you can create for AWS Lambda?
+
+
+
+21. Your web application reads and writes data to your DynamoDB table. The table is provisioned with 400 Write Capacity Units (WCU’s) shared across 4 partitions. One of the partitions receives 250 WCU/second while others receive much less. You receive the error 'ProvisionedThroughputExceededException'. What is the likely cause of this error?
+
+
+
+22. A company has more than 100 million members worldwide enjoying 125 million hours of TV shows and movies each day. The company uses AWS for nearly all its computing and storage needs, which use more than 10,000 server instances on AWS. This results in an extremely complex and dynamic networking environment where applications are constantly communicating inside AWS and across the Internet. Monitoring and optimizing its network is critical for the company. The company needs a solution for ingesting and analyzing the multiple terabytes of real-time data its network generates daily in the form of flow logs. Which technology/service should the company use to ingest this data economically and has the flexibility to direct this data to other downstream systems?
+
+
+
+23. An application runs on an EC2 instance and processes orders on a nightly basis. This EC2 instance needs to access the orders that are stored in S3. How would you recommend the EC2 instance access the orders securely?
+
+
+
+24. You are working for a shipping company that is automating the creation of ECS clusters with an Auto Scaling Group using an AWS CloudFormation template that accepts cluster name as its parameters. Initially, you launch the template with input value 'MainCluster', which deployed five instances across two availability zones. The second time, you launch the template with an input value 'SecondCluster'. However, the instances created in the second run were also launched in 'MainCluster' even after specifying a different cluster name. What is the root cause of this issue?
+
+
+
+25. An IT company has migrated to a serverless application stack on the AWS Cloud with the compute layer being implemented via Lambda functions. The engineering managers would like to actively troubleshoot any failures in the Lambda functions. As a Developer Associate, which of the following solutions would you suggest for this use-case?
+
+
+
+26. A telecommunications company that provides internet service for mobile device users maintains over 100 c4.large instances in the us-east-1 region. The EC2 instances run complex algorithms. The manager would like to track CPU utilization of the EC2 instances as frequently as every 10 seconds. Which of the following represents the BEST solution for the given use-case?
+
+
+
+27. Your company is planning to move away from reserving EC2 instances and would like to adopt a more agile form of serverless architecture. Which of the folloiwng is the simplest and the least effort way of deploying the Docker containers on this serverless architecture?
+
+
+
+28. You have migrated an on-premise SQL Server database to an Amazon Relational Database Service (RDS) database attached to a VPC inside a private subnet. Also, the related Java application, hosted on-premise, has been moved to an Amazon Lambda function. Which of the following should you implement to connect AWS Lambda function to its RDS instance?
+
+
+
+29. The development team at a company wants to encrypt a 111 GB object using AWS KMS. Which of the following represents the best solution?
+
+
+
+30. A large firm stores its static data assets on Amazon S3 buckets. Each service line of the firm has its own AWS account. For a business use case, the Finance department needs to give access to their S3 bucket's data to the Human Resources department. Which of the below options is NOT feasible for cross-account access of S3 bucket objects?

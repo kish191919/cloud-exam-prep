@@ -303,6 +303,25 @@ export async function updateSubscriptionTier(
   if (error) throw error;
 }
 
+// ─── 무료 이벤트 관리 ─────────────────────────────────────────────────────────
+
+export async function getFreeAccessEvent(): Promise<{ expiresAt: string | null }> {
+  const { data } = await supabase
+    .from('app_settings')
+    .select('value')
+    .eq('key', 'free_access_event')
+    .single();
+  return { expiresAt: data?.value?.expires_at ?? null };
+}
+
+export async function setFreeAccessEvent(expiresAt: string | null): Promise<void> {
+  const { error } = await supabase
+    .from('app_settings')
+    .update({ value: { expires_at: expiresAt }, updated_at: new Date().toISOString() })
+    .eq('key', 'free_access_event');
+  if (error) throw error;
+}
+
 // ─── 통계 / 분석 ──────────────────────────────────────────────────────────────
 
 export interface OverviewStats {

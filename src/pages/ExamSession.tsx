@@ -27,11 +27,11 @@ const ExamSession = () => {
   const isKo = i18n.language === 'ko';
   const { sessionId } = useParams();
   const navigate = useNavigate();
-  const { user, isPremium, openAuthModal } = useAuth();
+  const { user, hasFullAccess, openAuthModal } = useAuth();
   const { session, loading, selectAnswer, toggleBookmark, goToQuestion, submitExam, saveSession } = useExamSession(sessionId || null);
 
-  // setType이 'full'이고 프리미엄이 아닌 경우에만 해설/핵심암기사항 제한
-  const isRestrictedSet = !isPremium && session?.setType === 'full';
+  // setType이 'full'이고 전체 접근 권한이 없는 경우에만 해설/핵심암기사항 제한
+  const isRestrictedSet = !hasFullAccess && session?.setType === 'full';
 
   const handleUpgrade = () => {
     if (!user) openAuthModal('signup');

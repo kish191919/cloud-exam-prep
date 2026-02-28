@@ -31,7 +31,7 @@ const ExamResults = () => {
   const isEn = !isKo;
   const { sessionId } = useParams();
   const navigate = useNavigate();
-  const { user, isPremium, openAuthModal } = useAuth();
+  const { user, hasFullAccess, openAuthModal } = useAuth();
 
   const [session, setSession] = useState<ExamSession | null>(null);
   const [loading, setLoading] = useState(true);
@@ -40,8 +40,8 @@ const ExamResults = () => {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [creating, setCreating] = useState(false);
 
-  // setType이 'full'이고 프리미엄이 아닌 경우 해설/핵심암기사항 제한
-  const isRestrictedSet = !isPremium && session?.setType === 'full';
+  // setType이 'full'이고 전체 접근 권한이 없는 경우 해설/핵심암기사항 제한
+  const isRestrictedSet = !hasFullAccess && session?.setType === 'full';
 
   const handleUpgrade = () => {
     if (!user) openAuthModal('signup');

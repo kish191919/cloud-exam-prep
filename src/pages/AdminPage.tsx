@@ -31,7 +31,7 @@ import {
   Search, Crown, UserCheck, UserX, Users,
   ChevronLeft, ChevronRight,
   BarChart3, TrendingUp, Clock, Activity, CalendarDays,
-  RefreshCw, Megaphone, Pin, CheckSquare, NotebookPen, Eye, EyeOff,
+  RefreshCw, Megaphone, Pin, CheckSquare, NotebookPen, Eye, EyeOff, Gift,
 } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -69,6 +69,8 @@ import {
   getExamStats,
   getSetStats,
   getHourlyActivity,
+  getFreeAccessEvent,
+  setFreeAccessEvent,
   QuestionInput,
   ProfileResult,
   OverviewStats,
@@ -2560,7 +2562,12 @@ const AdminPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions' | 'stats' | 'board' | 'blog'>('sets');
+  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions' | 'stats' | 'board' | 'blog' | 'event'>('sets');
+  const [eventExpiresAt, setEventExpiresAt] = useState<string | null>(null);
+  const [eventInput, setEventInput] = useState('');
+  const [eventLoading, setEventLoading] = useState(false);
+  const [eventSaving, setEventSaving] = useState(false);
+  const [eventError, setEventError] = useState<string | null>(null);
   const [exams, setExams] = useState<ExamConfig[]>([]);
   const [activeExamId, setActiveExamId] = useState<string>('');
   const [setsMap, setSetsMap] = useState<Record<string, ExamSet[]>>({});
@@ -2588,6 +2595,22 @@ const AdminPage = () => {
     if (!activeExamId) return;
     loadSets(activeExamId);
   }, [activeExamId]);
+
+  useEffect(() => {
+    if (adminTab !== 'event') return;
+    setEventLoading(true);
+    getFreeAccessEvent()
+      .then(({ expiresAt }) => {
+        setEventExpiresAt(expiresAt);
+        if (expiresAt) {
+          // datetime-local input은 'YYYY-MM-DDTHH:mm' 형식 필요
+          setEventInput(expiresAt.slice(0, 16));
+        } else {
+          setEventInput('');
+        }
+      })
+      .finally(() => setEventLoading(false));
+  }, [adminTab]);
 
   const loadSets = async (examId: string) => {
     const sets = await getSetsForExam(examId);
@@ -2668,6 +2691,10 @@ const AdminPage = () => {
             <TabsTrigger value="blog" className="gap-2">
               <NotebookPen className="h-4 w-4" />
               블로그 관리
+            </TabsTrigger>
+            <TabsTrigger value="event" className="gap-2">
+              <Gift className="h-4 w-4" />
+              이벤트
             </TabsTrigger>
           </TabsList>
 
@@ -2813,6 +2840,117 @@ const AdminPage = () => {
           {/* ── 블로그 관리 탭 ── */}
           <TabsContent value="blog">
             <BlogManager exams={exams} />
+          </TabsContent>
+
+          {/* ── 이벤트 관리 탭 ── */}
+          <TabsContent value="event">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Gift className="h-5 w-5" />
+                  무료 이벤트 접근 관리
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  기간을 설정하면 무료 사용자(비로그인 포함)도 모든 문제 세트의 해설을 볼 수 있습니다.
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {eventLoading ? (
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span className="text-sm">불러오는 중...</span>
+                  </div>
+                ) : (
+                  <>
+                    {/* 현재 상태 */}
+                    <div className="rounded-lg border p-4 space-y-1">
+                      <p className="text-sm font-medium text-muted-foreground">현재 상태</p>
+                      {eventExpiresAt && new Date() < new Date(eventExpiresAt) ? (
+                        <>
+                          <div className="flex items-center gap-2">
+                            <span className="inline-block h-2 w-2 rounded-full bg-green-500" />
+                            <span className="font-semibold text-green-700 dark:text-green-400">이벤트 활성 중</span>
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            종료 시각: {new Date(eventExpiresAt).toLocaleString('ko-KR')}
+                          </p>
+                        </>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <span className="inline-block h-2 w-2 rounded-full bg-muted-foreground" />
+                          <span className="text-muted-foreground">비활성 (해설 잠금 중)</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 이벤트 활성화 */}
+                    <div className="space-y-3">
+                      <p className="text-sm font-medium">이벤트 종료 일시 설정</p>
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="datetime-local"
+                          value={eventInput}
+                          onChange={e => setEventInput(e.target.value)}
+                          className="flex h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        />
+                        <Button
+                          size="sm"
+                          disabled={eventSaving || !eventInput}
+                          onClick={async () => {
+                            if (!eventInput) return;
+                            setEventSaving(true);
+                            setEventError(null);
+                            try {
+                              const isoStr = new Date(eventInput).toISOString();
+                              await setFreeAccessEvent(isoStr);
+                              setEventExpiresAt(isoStr);
+                            } catch (e: any) {
+                              setEventError(e.message ?? '저장 중 오류가 발생했습니다.');
+                            } finally {
+                              setEventSaving(false);
+                            }
+                          }}
+                        >
+                          {eventSaving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
+                          이벤트 활성화
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* 즉시 종료 버튼 */}
+                    {eventExpiresAt && new Date() < new Date(eventExpiresAt) && (
+                      <div className="space-y-2">
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          disabled={eventSaving}
+                          onClick={async () => {
+                            setEventSaving(true);
+                            setEventError(null);
+                            try {
+                              await setFreeAccessEvent(null);
+                              setEventExpiresAt(null);
+                              setEventInput('');
+                            } catch (e: any) {
+                              setEventError(e.message ?? '종료 처리 중 오류가 발생했습니다.');
+                            } finally {
+                              setEventSaving(false);
+                            }
+                          }}
+                        >
+                          {eventSaving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
+                          이벤트 즉시 종료
+                        </Button>
+                      </div>
+                    )}
+
+                    {eventError && (
+                      <p className="text-sm text-destructive">{eventError}</p>
+                    )}
+                  </>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>

@@ -9,6 +9,7 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   isPremium: boolean;
+  hasFullAccess: boolean;
   subscriptionTier: SubscriptionTier;
   signInWithEmail: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUpWithEmail: (email: string, password: string, name: string) => Promise<{ data: any; error: Error | null }>;
@@ -36,8 +37,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [subscriptionTier, setSubscriptionTier] = useState<SubscriptionTier>('free');
+  const [freeEventExpiresAt, setFreeEventExpiresAt] = useState<string | null>(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'signup'>('login');
+
+  // 무료 이벤트 설정 조회
+  const fetchFreeEvent = async () => {
+    const { data } = await supabase
+      .from('app_settings')
+      .select('value')
+      .eq('key', 'free_access_event')
+      .single();
+    setFreeEventExpiresAt(data?.value?.expires_at ?? null);
+  };
 
   // 사용자 구독 등급 조회
   const fetchProfile = async (userId: string) => {
@@ -51,6 +63,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     let realtimeChannel: ReturnType<typeof supabase.channel> | null = null;
+
+    // 앱 시작 시 무료 이벤트 설정 조회 및 realtime 구독
+    fetchFreeEvent();
+    const freeEventChannel = supabase
+      .channel('free-access-event')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'app_settings', filter: 'key=eq.free_access_event' },
+        (payload) => {
+          const expiresAt = (payload.new as { value?: { expires_at?: string } }).value?.expires_at ?? null;
+          setFreeEventExpiresAt(expiresAt);
+        },
+      )
+      .subscribe();
 
     const subscribeToProfileChanges = (userId: string) => {
       if (realtimeChannel) {
@@ -108,6 +134,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       subscription.unsubscribe();
       unsubscribeFromProfileChanges();
+      supabase.removeChannel(freeEventChannel);
     };
   }, []);
 
@@ -159,10 +186,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const closeAuthModal = () => setAuthModalOpen(false);
 
+  const isPremium = subscriptionTier === 'premium';
+  const isFreeEventActive =
+    freeEventExpiresAt !== null && new Date() < new Date(freeEventExpiresAt);
+  const hasFullAccess = isPremium || isFreeEventActive;
+
   return (
     <AuthContext.Provider value={{
       user, session, loading,
-      isPremium: subscriptionTier === 'premium',
+      isPremium,
+      hasFullAccess,
       subscriptionTier,
       signInWithEmail, signUpWithEmail, signInWithGoogle, signInWithKakao, signInWithNaver, signOut, resetPasswordForEmail,
       openAuthModal, closeAuthModal, authModalOpen, authModalTab,
