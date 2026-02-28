@@ -1,12 +1,12 @@
 {
   "index": {
     "hero": {
-      "badge": "30-Min Daily AWS Study Routine",
-      "title": "30 Minutes After Work,",
-      "titleAccent": "Your AWS Pass Routine",
-      "subtitle": "Understand concepts in Korean first, then conquer the English exam. A structured CBT study plan designed for working professionals.",
+      "badge": "AWS · GCP · Azure Certification Platform",
+      "title": "Understand in Korean,",
+      "titleAccent": "Pass with Confidence",
+      "subtitle": "A structured Korean CBT learning platform for professionals, students, and career changers alike. 500+ questions with detailed explanations — pass on your first attempt.",
       "ctaPrimary": "Start Free Now",
-      "ctaSecondary": "See the Routine",
+      "ctaSecondary": "See How It Works",
       "stats": {
         "questions": {
           "value": "500+",
@@ -23,7 +23,7 @@
       }
     },
     "featuresSection": {
-      "title": "Why Busy Professionals Pass with CloudMaster",
+      "title": "Why Anyone Can Pass with CloudMaster",
       "subtitle": "Maximum efficiency in minimum time. Korean explanations, real CBT practice — everything you need."
     },
     "features": [
@@ -45,7 +45,7 @@
       {
         "icon": "Clock",
         "title": "30-Minute Session Design",
-        "desc": "Short sessions after work or on weekends — consistent 30-minute blocks that stack into real exam-ready skills."
+        "desc": "30 minutes a day or an hour on weekends — short, consistent sessions that stack into real exam-ready skills."
       },
       {
         "icon": "Target",
@@ -54,12 +54,12 @@
       },
       {
         "icon": "Smartphone",
-        "title": "Study on Your Commute",
-        "desc": "Study on the subway, bus, or during lunch. Install as a PWA for app-like speed anywhere."
+        "title": "Study Anywhere, Anytime",
+        "desc": "Phone, tablet, or PC — pick up right where you left off. Install as a PWA for app-like speed anywhere."
       }
     ],
     "howItWorks": {
-      "title": "The 30-Minute Pass Routine"
+      "title": "Your 3-Step Path to Passing"
     },
     "steps": [
       {
@@ -79,12 +79,12 @@
       }
     ],
     "routine": {
-      "title": "The 30-Min AWS Pass Routine",
+      "title": "The 30-Min Exam Pass Routine",
       "subtitle": "Follow this routine daily and you'll be ready to pass in 2–3 months.",
       "badge": "Proven Study Routine",
       "steps": [
         {
-          "time": "Right After Work",
+          "time": "Start Studying",
           "duration": "15 min",
           "title": "Solve Today's CBT Questions",
           "desc": "Work through 10–20 questions in a timed CBT environment to keep your exam instincts sharp.",
@@ -136,6 +136,27 @@
           "score": "850 pts",
           "quote": "Meetings, overtime — the works. But the short session format meant I could always squeeze in study time. The weak-spot drills right before the exam pushed me over the line.",
           "period": "3 months"
+        }
+      ]
+    },
+    "audience": {
+      "title": "Built for Every Type of Learner",
+      "subtitle": "Different goals, same path to passing",
+      "items": [
+        {
+          "icon": "Briefcase",
+          "title": "Working Professionals",
+          "desc": "30 minutes after work or during your commute is all it takes. Short, efficient sessions let you balance a busy schedule without sacrificing progress."
+        },
+        {
+          "icon": "GraduationCap",
+          "title": "Students",
+          "desc": "A cloud certification sets you apart in a competitive job market. Use Korean explanations to master concepts fast and land your first certification."
+        },
+        {
+          "icon": "Rocket",
+          "title": "Dedicated Exam Takers",
+          "desc": "With structured curriculum and domain-focused drills, aim for a fast pass. Wrong-answer analytics help you close gaps quickly."
         }
       ]
     },
@@ -213,8 +234,8 @@
       ]
     },
     "cta": {
-      "title": "Start Your 30-Min Routine Tonight",
-      "subtitle": "Thousands of working professionals have passed AWS exams with CloudMaster. You're next.",
+      "title": "Start Learning Today",
+      "subtitle": "Thousands of learners have earned cloud certifications with CloudMaster. You're next.",
       "button": "Start Free Now"
     },
     "footer": {

@@ -11,6 +11,7 @@ import {
 import {
   Shield, BarChart3, Clock, BookOpen, ArrowRight,
   Cloud, Zap, Target, Users, Smartphone, CheckCircle2, Star, Map, Gift,
+  Briefcase, GraduationCap, Rocket,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
@@ -29,8 +30,11 @@ const Index = () => {
     name: string; role: string; cert: string; score: string; quote: string; period: string;
   }>;
 
+  const audienceItems = t('index.audience.items', { returnObjects: true }) as Array<{ icon: string; title: string; desc: string }>;
+
   const iconMap: Record<string, any> = {
     Shield, BarChart3, Clock, BookOpen, Target, Users, Smartphone,
+    Briefcase, GraduationCap, Rocket,
   };
 
   return (
@@ -98,7 +102,7 @@ const Index = () => {
                 {t('index.hero.ctaPrimary')} <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <a href="#routine" className="w-full sm:w-auto">
+            <a href="#features" className="w-full sm:w-auto">
               <Button
                 size="lg"
                 variant="ghost"
@@ -125,20 +129,6 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Cert badges strip */}
-          <div className="mt-10 md:mt-12 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-            {[
-              'AWS SAA-C03', 'AWS AIF-C01', 'AWS CLF-C02', 'AWS DEA-C01',
-              'GCP ACE', 'Azure AZ-900',
-            ].map((cert) => (
-              <span
-                key={cert}
-                className="px-3 py-1 rounded-full text-xs font-semibold bg-primary-foreground/10 border border-primary-foreground/20 text-primary-foreground/70 backdrop-blur-sm"
-              >
-                {cert}
-              </span>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -186,6 +176,32 @@ const Index = () => {
                   </div>
                   <h3 className="font-semibold text-sm md:text-lg mb-1 md:mb-2 break-keep">{f.title}</h3>
                   <p className="text-xs md:text-sm text-muted-foreground leading-relaxed break-keep">{f.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 학습 대상 */}
+      <section className="py-16 md:py-20 px-4 section-alt">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-10 md:mb-14">
+            <h2 className="text-2xl md:text-4xl font-bold mb-3 break-keep">{t('index.audience.title')}</h2>
+            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto break-keep">
+              {t('index.audience.subtitle')}
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-5 md:gap-8">
+            {audienceItems.map((item, i) => {
+              const IconComponent = iconMap[item.icon];
+              return (
+                <div key={i} className="bg-card rounded-2xl p-6 md:p-8 border card-hover text-center">
+                  <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
+                    {IconComponent && <IconComponent className="h-7 w-7 text-accent" />}
+                  </div>
+                  <h3 className="font-bold text-lg md:text-xl mb-3 break-keep">{item.title}</h3>
+                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed break-keep">{item.desc}</p>
                 </div>
               );
             })}
