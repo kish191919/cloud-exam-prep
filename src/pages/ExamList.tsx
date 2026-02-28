@@ -14,12 +14,38 @@ import {
 import type { ExamConfig, ExamSet, ExamMode } from '@/types/exam';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
+import { PROVIDERS } from '@/data/certifications';
 
 const certColors: Record<string, string> = {
   AWS: 'bg-accent text-accent-foreground',
   GCP: 'bg-primary text-primary-foreground',
   Azure: 'bg-primary text-primary-foreground',
 };
+
+const EXAM_BADGE_MAP: Record<string, string> = {
+  'aws-aif-c01': '/badges/aws-aif-c01.png',
+  'aws-clf-c02': '/badges/aws-clf-c02.png',
+  'aws-dea-c01': '/badges/aws-dea-c01.png',
+  'aws-saa-c03': '/badges/aws-saa-c03.png',
+};
+
+// certifications.ts의 description(한국어) / descriptionEn(영어) 데이터를 examId 기준으로 매핑
+const EXAM_DESC_MAP: Record<string, { ko: string; en: string }> = {
+  'aws-dea-c01': {
+    ko: 'AWS 데이터 서비스를 활용한 데이터 파이프라인 구축과 데이터 저장소 설계 역량을 검증합니다.',
+    en: 'Validates skills in implementing data pipelines and designing data stores using AWS data services.',
+  },
+};
+for (const provider of PROVIDERS) {
+  for (const cert of provider.certifications) {
+    if (cert.examId && !EXAM_DESC_MAP[cert.examId]) {
+      EXAM_DESC_MAP[cert.examId] = {
+        ko: cert.description,
+        en: cert.descriptionEn,
+      };
+    }
+  }
+}
 
 type ModeOption = {
   id: ExamMode;
@@ -227,29 +253,45 @@ const ExamList = () => {
                   <CardContent className="p-6">
                     {/* Exam header row */}
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${certColors[exam.certification]}`}>
-                            {exam.certification}
-                          </span>
-                          <span className="text-xs text-muted-foreground">{exam.code}</span>
-                          <span className="text-xs text-muted-foreground">v{exam.version}</span>
-                        </div>
-                        <h3 className="font-semibold text-lg mb-1">{exam.title}</h3>
-                        <p className="text-sm text-muted-foreground mb-3">{exam.description}</p>
-                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <HelpCircle className="h-3.5 w-3.5" />
-                            {exam.questionCount} {t('examList.questions')}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3.5 w-3.5" />
-                            {exam.timeLimitMinutes} {t('examList.minutes')}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Target className="h-3.5 w-3.5" />
-                            {exam.passingScore}% {t('examList.toPass')}
-                          </span>
+                      {/* Left: badge image + exam info */}
+                      <div className="flex items-start gap-3 md:gap-4 flex-1 min-w-0">
+                        {EXAM_BADGE_MAP[exam.id] && (
+                          <img
+                            src={EXAM_BADGE_MAP[exam.id]}
+                            alt={`${exam.title} badge`}
+                            className="w-14 h-14 md:w-16 md:h-16 shrink-0 object-contain rounded-lg"
+                            onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                          />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-3 mb-2">
+                            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${certColors[exam.certification]}`}>
+                              {exam.certification}
+                            </span>
+                            <span className="text-xs text-muted-foreground">{exam.code}</span>
+                            <span className="text-xs text-muted-foreground">v{exam.version}</span>
+                          </div>
+                          <h3 className="font-semibold text-lg mb-1">{exam.title}</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            {isKo
+                              ? (EXAM_DESC_MAP[exam.id]?.ko ?? exam.description)
+                              : (EXAM_DESC_MAP[exam.id]?.en ?? exam.description)
+                            }
+                          </p>
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <HelpCircle className="h-3.5 w-3.5" />
+                              {exam.questionCount} {t('examList.questions')}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3.5 w-3.5" />
+                              {exam.timeLimitMinutes} {t('examList.minutes')}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Target className="h-3.5 w-3.5" />
+                              {exam.passingScore}% {t('examList.toPass')}
+                            </span>
+                          </div>
                         </div>
                       </div>
 
