@@ -8,12 +8,12 @@ const Footer = () => {
 
   return (
     <footer className="bg-card border-t py-8 px-4 mt-auto">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="container mx-auto flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-left">
         <div className="flex items-center gap-2 font-bold">
           <Cloud className="h-5 w-5 text-accent" />
           {t('common:brand')}
         </div>
-        <div className="flex items-center gap-6 text-sm text-muted-foreground">
+        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-sm text-muted-foreground">
           <Link to="/privacy" className="hover:text-foreground transition-colors">
             {t('pages:index.footer.privacy')}
           </Link>

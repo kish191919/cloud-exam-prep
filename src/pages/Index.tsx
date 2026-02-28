@@ -38,26 +38,29 @@ const Index = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative hero-gradient text-primary-foreground pt-24 md:pt-32 pb-24 md:pb-32 px-4 overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-accent rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
+      <section className="relative hero-gradient text-primary-foreground pt-24 md:pt-32 pb-20 md:pb-28 px-4 overflow-hidden">
+        {/* Dot pattern overlay */}
+        <div className="absolute inset-0 hero-dots pointer-events-none" />
+
+        {/* Background blur decorations */}
+        <div className="absolute inset-0 opacity-15 pointer-events-none overflow-hidden">
+          <div className="absolute top-20 left-0 w-64 h-64 bg-accent rounded-full blur-3xl -translate-x-1/2" />
+          <div className="absolute bottom-10 right-0 w-80 h-80 bg-primary rounded-full blur-3xl translate-x-1/3" />
         </div>
 
         <div className="container mx-auto text-center max-w-5xl relative z-10">
           {/* Beta Open Banner */}
-          <div className="w-full max-w-2xl mx-auto mb-10">
-            <div className="flex items-start sm:items-center gap-4 bg-accent/15 backdrop-blur-md border border-accent/30 rounded-2xl px-6 py-4 shadow-lg">
-              <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-0">
-                <Gift className="h-5 w-5 text-accent" />
+          <div className="w-full max-w-xl mx-auto mb-8 md:mb-10">
+            <div className="flex items-start gap-3 bg-accent/15 backdrop-blur-md border border-accent/30 rounded-2xl px-4 py-3 sm:px-6 sm:py-4 shadow-lg text-left">
+              <div className="w-9 h-9 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Gift className="h-4 w-4 text-accent" />
               </div>
-              <div className="text-left">
+              <div>
                 <div className="flex flex-wrap items-center gap-2 mb-1">
                   <span className="text-xs font-black uppercase tracking-widest text-accent">베타 오픈 기간</span>
                   <span className="text-xs bg-accent text-accent-foreground font-bold px-2 py-0.5 rounded-full">BETA</span>
                 </div>
-                <p className="text-sm text-primary-foreground/90 font-medium leading-relaxed" style={{ wordBreak: 'keep-all' }}>
+                <p className="text-xs sm:text-sm text-primary-foreground/90 font-medium leading-relaxed break-keep">
                   지금은 <strong className="text-accent font-bold">AWS · GCP · Azure 전체 문제</strong>를 완전 무료로 이용하실 수 있어요.
                   프리미엄 구독 없이도 모든 문제에 자유롭게 접근하세요.
                 </p>
@@ -66,13 +69,13 @@ const Index = () => {
           </div>
 
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-accent/30 text-sm mb-8 bg-accent/10 backdrop-blur-sm shadow-lg">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-accent/30 text-sm mb-6 bg-accent/10 backdrop-blur-sm shadow-lg">
             <Zap className="h-4 w-4 text-accent animate-pulse" />
             <span className="font-semibold">{t('index.hero.badge')}</span>
           </div>
 
           {/* Main Title */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.15] mt-4 mb-10 tracking-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-[1.15] mt-4 mb-6 md:mb-10 tracking-tight break-keep">
             {t('index.hero.title')}
             <br />
             <span className="bg-gradient-to-r from-accent via-accent/80 to-accent bg-clip-text text-transparent">
@@ -81,59 +84,74 @@ const Index = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-primary-foreground/80 max-w-2xl mx-auto mb-14 leading-relaxed font-medium" style={{ wordBreak: 'keep-all' }}>
+          <p className="text-base sm:text-xl md:text-2xl text-primary-foreground/80 max-w-2xl mx-auto mb-10 md:mb-14 leading-relaxed font-medium break-keep">
             {t('index.hero.subtitle')}
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-20">
-            <Link to="/exams">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 mb-14 md:mb-20">
+            <Link to="/exams" className="w-full sm:w-auto">
               <Button
                 size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 text-lg font-bold px-10 py-7 rounded-xl shadow-2xl hover:shadow-accent/50 transition-all duration-300 hover:scale-105 accent-glow w-full sm:w-auto"
+                className="bg-accent text-accent-foreground hover:bg-accent/90 text-base sm:text-lg font-bold px-8 sm:px-10 py-5 sm:py-7 rounded-xl shadow-2xl hover:shadow-accent/50 transition-all duration-300 hover:scale-105 accent-glow w-full"
               >
-                {t('index.hero.ctaPrimary')} <ArrowRight className="ml-2 h-6 w-6" />
+                {t('index.hero.ctaPrimary')} <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <a href="#routine">
+            <a href="#routine" className="w-full sm:w-auto">
               <Button
                 size="lg"
                 variant="ghost"
-                className="border-2 border-primary-foreground/50 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground text-lg font-semibold px-10 py-7 rounded-xl backdrop-blur-sm transition-all duration-300 hover:scale-105 w-full sm:w-auto"
+                className="border-2 border-primary-foreground/50 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground text-base sm:text-lg font-semibold px-8 sm:px-10 py-5 sm:py-7 rounded-xl backdrop-blur-sm transition-all duration-300 hover:scale-105 w-full"
               >
                 {t('index.hero.ctaSecondary')}
               </Button>
             </a>
           </div>
 
-          {/* Stats Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-8 border border-primary-foreground/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
-              <div className="text-5xl md:text-6xl font-black text-accent mb-2 tracking-tight">{t('index.hero.stats.questions.value')}</div>
-              <div className="text-base text-primary-foreground/70 font-semibold uppercase tracking-wide">{t('index.hero.stats.questions.label')}</div>
+          {/* Stats Section — always 3 columns */}
+          <div className="grid grid-cols-3 gap-3 sm:gap-6 md:gap-8 max-w-4xl mx-auto">
+            <div className="bg-primary-foreground/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary-foreground/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+              <div className="text-2xl sm:text-4xl md:text-6xl font-black text-accent mb-1 sm:mb-2 tracking-tight">{t('index.hero.stats.questions.value')}</div>
+              <div className="text-xs sm:text-sm md:text-base text-primary-foreground/70 font-semibold uppercase tracking-wide leading-tight break-keep">{t('index.hero.stats.questions.label')}</div>
             </div>
-            <div className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-8 border border-primary-foreground/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
-              <div className="text-5xl md:text-6xl font-black text-accent mb-2 tracking-tight">{t('index.hero.stats.passRate.value')}</div>
-              <div className="text-base text-primary-foreground/70 font-semibold uppercase tracking-wide">{t('index.hero.stats.passRate.label')}</div>
+            <div className="bg-primary-foreground/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary-foreground/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+              <div className="text-2xl sm:text-4xl md:text-6xl font-black text-accent mb-1 sm:mb-2 tracking-tight">{t('index.hero.stats.passRate.value')}</div>
+              <div className="text-xs sm:text-sm md:text-base text-primary-foreground/70 font-semibold uppercase tracking-wide leading-tight break-keep">{t('index.hero.stats.passRate.label')}</div>
             </div>
-            <div className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-8 border border-primary-foreground/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
-              <div className="text-5xl md:text-6xl font-black text-accent mb-2 tracking-tight">{t('index.hero.stats.providers.value')}</div>
-              <div className="text-base text-primary-foreground/70 font-semibold uppercase tracking-wide">{t('index.hero.stats.providers.label')}</div>
+            <div className="bg-primary-foreground/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary-foreground/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+              <div className="text-2xl sm:text-4xl md:text-6xl font-black text-accent mb-1 sm:mb-2 tracking-tight">{t('index.hero.stats.providers.value')}</div>
+              <div className="text-xs sm:text-sm md:text-base text-primary-foreground/70 font-semibold uppercase tracking-wide leading-tight break-keep">{t('index.hero.stats.providers.label')}</div>
             </div>
+          </div>
+
+          {/* Cert badges strip */}
+          <div className="mt-10 md:mt-12 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+            {[
+              'AWS SAA-C03', 'AWS AIF-C01', 'AWS CLF-C02', 'AWS DEA-C01',
+              'GCP ACE', 'Azure AZ-900',
+            ].map((cert) => (
+              <span
+                key={cert}
+                className="px-3 py-1 rounded-full text-xs font-semibold bg-primary-foreground/10 border border-primary-foreground/20 text-primary-foreground/70 backdrop-blur-sm"
+              >
+                {cert}
+              </span>
+            ))}
           </div>
         </div>
       </section>
 
       {/* 자격증 로드맵 CTA */}
-      <section className="py-12 px-4 bg-accent/5 border-y border-accent/10">
+      <section className="py-10 md:py-12 px-4 bg-accent/5 border-y border-accent/10">
         <div className="container mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold text-accent uppercase tracking-wider mb-3">
+          <p className="text-sm font-semibold text-accent uppercase tracking-wider mb-2">
             {t('certifications.roadmapCta.eyebrow')}
           </p>
-          <h2 className="text-2xl md:text-3xl font-bold mb-3">
+          <h2 className="text-xl md:text-3xl font-bold mb-2 break-keep">
             {t('certifications.roadmapCta.title')}
           </h2>
-          <p className="text-muted-foreground mb-6" style={{ wordBreak: 'keep-all' }}>
+          <p className="text-muted-foreground mb-5 text-sm md:text-base break-keep">
             {t('certifications.roadmapCta.subtitle')}
           </p>
           <Link to="/certifications">
@@ -150,24 +168,24 @@ const Index = () => {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-20 px-4">
+      <section id="features" className="py-16 md:py-20 px-4">
         <div className="container mx-auto max-w-5xl">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('index.featuresSection.title')}</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <div className="text-center mb-10 md:mb-14">
+            <h2 className="text-2xl md:text-4xl font-bold mb-3 break-keep">{t('index.featuresSection.title')}</h2>
+            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto break-keep">
               {t('index.featuresSection.subtitle')}
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {features.map((f, i) => {
               const IconComponent = iconMap[f.icon];
               return (
-                <div key={i} className="bg-card rounded-xl p-6 border card-hover" style={{ animationDelay: `${i * 100}ms` }}>
-                  <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
-                    {IconComponent && <IconComponent className="h-6 w-6 text-accent" />}
+                <div key={i} className="bg-card rounded-xl p-4 md:p-6 border card-hover" style={{ animationDelay: `${i * 100}ms` }}>
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-3 md:mb-4">
+                    {IconComponent && <IconComponent className="h-5 w-5 md:h-6 md:w-6 text-accent" />}
                   </div>
-                  <h3 className="font-semibold text-lg mb-2">{f.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
+                  <h3 className="font-semibold text-sm md:text-lg mb-1 md:mb-2 break-keep">{f.title}</h3>
+                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed break-keep">{f.desc}</p>
                 </div>
               );
             })}
@@ -176,58 +194,60 @@ const Index = () => {
       </section>
 
       {/* 30분 루틴 */}
-      <section id="routine" className="py-20 px-4 bg-card">
+      <section id="routine" className="py-16 md:py-20 px-4 bg-card">
         <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-semibold mb-6">
+          <div className="text-center mb-10 md:mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-semibold mb-5">
               <CheckCircle2 className="h-4 w-4" />
               {t('index.routine.badge')}
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('index.routine.title')}</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto" style={{ wordBreak: 'keep-all' }}>
+            <h2 className="text-2xl md:text-4xl font-bold mb-3 break-keep">{t('index.routine.title')}</h2>
+            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto break-keep">
               {t('index.routine.subtitle')}
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-3 gap-5 md:gap-8">
             {routineSteps.map((step, i) => {
               const IconComponent = iconMap[step.icon];
               return (
-                <div key={i} className="relative bg-background rounded-2xl p-6 border card-hover">
+                <div key={i} className="relative bg-background rounded-2xl p-5 md:p-6 border card-hover">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-bold mb-4">
                     <Clock className="h-3 w-3" />
                     {step.time}
                   </div>
-                  <div className="absolute top-4 right-4 w-14 h-14 rounded-full bg-accent flex items-center justify-center text-accent-foreground text-xs font-black text-center leading-tight">
+                  <div className="absolute top-4 right-4 w-12 h-12 md:w-14 md:h-14 rounded-full bg-accent flex items-center justify-center text-accent-foreground text-xs font-black text-center leading-tight">
                     {step.duration}
                   </div>
-                  <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-3">
-                    {IconComponent && <IconComponent className="h-5 w-5 text-accent" />}
+                  <div className="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-3">
+                    {IconComponent && <IconComponent className="h-4 w-4 md:h-5 md:w-5 text-accent" />}
                   </div>
-                  <h3 className="font-bold text-lg mb-2">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
+                  <h3 className="font-bold text-base md:text-lg mb-2 break-keep">{step.title}</h3>
+                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed break-keep">{step.desc}</p>
                 </div>
               );
             })}
           </div>
-          <div className="mt-12 text-center">
-            <div className="inline-flex items-center gap-3 bg-accent/10 border border-accent/20 rounded-2xl px-8 py-4">
-              <span className="text-3xl font-black text-accent">{t('index.routine.totalTime')}</span>
-              <span className="text-muted-foreground font-medium">{t('index.routine.totalTimeDesc')}</span>
+          <div className="mt-10 md:mt-12 text-center">
+            <div className="inline-flex items-center gap-3 bg-accent/10 border border-accent/20 rounded-2xl px-6 md:px-8 py-3 md:py-4">
+              <span className="text-2xl md:text-3xl font-black text-accent">{t('index.routine.totalTime')}</span>
+              <span className="text-muted-foreground font-medium text-sm md:text-base break-keep">{t('index.routine.totalTimeDesc')}</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* How it works */}
-      <section className="py-20 px-4">
+      <section className="py-16 md:py-20 px-4">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-14">{t('index.howItWorks.title')}</h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <h2 className="text-2xl md:text-4xl font-bold text-center mb-10 md:mb-14 break-keep">{t('index.howItWorks.title')}</h2>
+          <div className="grid sm:grid-cols-3 gap-8 md:gap-8">
             {steps.map((s, i) => (
               <div key={i} className="text-center">
-                <div className="text-5xl font-extrabold text-accent/20 mb-3">{s.num}</div>
-                <h3 className="font-semibold text-lg mb-2">{s.title}</h3>
-                <p className="text-sm text-muted-foreground">{s.desc}</p>
+                <div className="w-14 h-14 rounded-full bg-accent/10 border-2 border-accent/20 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-extrabold text-accent">{s.num}</span>
+                </div>
+                <h3 className="font-semibold text-base md:text-lg mb-2 break-keep">{s.title}</h3>
+                <p className="text-sm text-muted-foreground break-keep">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -243,7 +263,7 @@ const Index = () => {
               {t('index.testimonials.badge')}
             </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('index.testimonials.title')}</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto" style={{ wordBreak: 'keep-all' }}>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto break-keep">
               {t('index.testimonials.subtitle')}
             </p>
           </div>
@@ -255,7 +275,7 @@ const Index = () => {
                     <Star key={si} className="h-4 w-4 fill-accent text-accent" />
                   ))}
                 </div>
-                <blockquote className="text-sm leading-relaxed mb-5 flex-1" style={{ wordBreak: 'keep-all' }}>
+                <blockquote className="text-sm leading-relaxed mb-5 flex-1 break-keep">
                   "{item.quote}"
                 </blockquote>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-success/10 text-success text-xs font-bold mb-4 self-start">
@@ -277,17 +297,15 @@ const Index = () => {
         </div>
       </section>}
 
-      {/* Pricing — hidden during beta */}
-
       {/* FAQ */}
-      <section id="faq" className="py-20 px-4">
+      <section id="faq" className="py-16 md:py-20 px-4 bg-card">
         <div className="container mx-auto max-w-3xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-14">{t('index.faq.title')}</h2>
+          <h2 className="text-2xl md:text-4xl font-bold text-center mb-10 md:mb-14 break-keep">{t('index.faq.title')}</h2>
           <Accordion type="single" collapsible className="space-y-3">
             {faqs.map((faq, i) => (
               <AccordionItem key={i} value={`faq-${i}`} className="bg-background rounded-lg border px-4">
-                <AccordionTrigger className="text-sm font-medium hover:no-underline">{faq.q}</AccordionTrigger>
-                <AccordionContent className="text-sm text-muted-foreground">{faq.a}</AccordionContent>
+                <AccordionTrigger className="text-sm font-medium hover:no-underline text-left break-keep">{faq.q}</AccordionTrigger>
+                <AccordionContent className="text-sm text-muted-foreground break-keep">{faq.a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
@@ -295,15 +313,16 @@ const Index = () => {
       </section>
 
       {/* CTA */}
-      <section className="hero-gradient text-primary-foreground py-20 px-4">
-        <div className="container mx-auto text-center max-w-2xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('index.cta.title')}</h2>
-          <p className="text-primary-foreground/70 mb-8 text-lg" style={{ wordBreak: 'keep-all' }}>
+      <section className="hero-gradient text-primary-foreground py-16 md:py-20 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 hero-dots pointer-events-none" />
+        <div className="container mx-auto text-center max-w-2xl relative z-10">
+          <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4 break-keep">{t('index.cta.title')}</h2>
+          <p className="text-primary-foreground/70 mb-7 md:mb-8 text-base md:text-lg break-keep">
             {t('index.cta.subtitle')}
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/exams">
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-6 accent-glow">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+            <Link to="/exams" className="w-full sm:w-auto">
+              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-6 accent-glow w-full">
                 {t('index.cta.button')} <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
@@ -312,7 +331,7 @@ const Index = () => {
                 size="lg"
                 variant="ghost"
                 onClick={install}
-                className="border-2 border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground text-base px-8 py-6 backdrop-blur-sm"
+                className="border-2 border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground text-base px-8 py-6 backdrop-blur-sm w-full sm:w-auto"
               >
                 <Smartphone className="mr-2 h-5 w-5" />
                 앱으로 설치

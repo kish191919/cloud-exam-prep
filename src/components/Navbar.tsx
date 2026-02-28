@@ -172,8 +172,8 @@ const Navbar = () => {
 
           <div className="h-px bg-border my-1" />
 
-          <Link to="/exams" onClick={() => setOpen(false)} className="block px-1">
-            <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+          <Link to="/exams" onClick={() => setOpen(false)} className="block px-1 pb-1">
+            <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 py-6 text-base font-bold rounded-xl">
               {t('navigation.startFree')}
             </Button>
           </Link>
