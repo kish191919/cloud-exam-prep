@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/accordion';
 import {
   Shield, BarChart3, Clock, BookOpen, ArrowRight,
-  Cloud, Zap, Target, Users, Smartphone, CheckCircle2, Star, Map,
+  Cloud, Zap, Target, Users, Smartphone, CheckCircle2, Star, Map, Gift,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
@@ -46,6 +46,25 @@ const Index = () => {
         </div>
 
         <div className="container mx-auto text-center max-w-5xl relative z-10">
+          {/* Beta Open Banner */}
+          <div className="w-full max-w-2xl mx-auto mb-10">
+            <div className="flex items-start sm:items-center gap-4 bg-accent/15 backdrop-blur-md border border-accent/30 rounded-2xl px-6 py-4 shadow-lg">
+              <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-0">
+                <Gift className="h-5 w-5 text-accent" />
+              </div>
+              <div className="text-left">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <span className="text-xs font-black uppercase tracking-widest text-accent">베타 오픈 기간</span>
+                  <span className="text-xs bg-accent text-accent-foreground font-bold px-2 py-0.5 rounded-full">BETA</span>
+                </div>
+                <p className="text-sm text-primary-foreground/90 font-medium leading-relaxed" style={{ wordBreak: 'keep-all' }}>
+                  지금은 <strong className="text-accent font-bold">AWS · GCP · Azure 전체 문제</strong>를 완전 무료로 이용하실 수 있어요.
+                  프리미엄 구독 없이도 모든 문제에 자유롭게 접근하세요.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-accent/30 text-sm mb-8 bg-accent/10 backdrop-blur-sm shadow-lg">
             <Zap className="h-4 w-4 text-accent animate-pulse" />
