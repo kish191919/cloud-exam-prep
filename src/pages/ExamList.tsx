@@ -7,8 +7,8 @@ import { getAllExams } from '@/services/examService';
 import { getSetsForExam, getQuestionsForSet } from '@/services/questionService';
 import { createSession, getAllSessions } from '@/hooks/useExamSession';
 import {
-  Clock, HelpCircle, Target, Play, Loader2,
-  ChevronDown, ChevronUp, BookOpen, FlaskConical, CheckCircle2,
+  Play, Loader2,
+  BookOpen, FlaskConical, CheckCircle2,
   Pencil, Eye, Timer, Shuffle, X,
 } from 'lucide-react';
 import type { ExamConfig, ExamSet, ExamMode } from '@/types/exam';
@@ -54,7 +54,7 @@ type ModeOption = {
   descKo: string;
   descEn: string;
   Icon: React.ElementType;
-  color: string;
+  activeClass: string;
 };
 
 const MODE_OPTIONS: ModeOption[] = [
@@ -62,28 +62,28 @@ const MODE_OPTIONS: ModeOption[] = [
     id: 'practice',
     labelKo: '연습모드',
     labelEn: 'Practice',
-    descKo: '보기 선택 즉시 정답/오답 확인. 해설 표시.',
-    descEn: 'Instant feedback on each answer. Explanation shown.',
+    descKo: '보기 선택 즉시 정답/오답 확인.',
+    descEn: 'Instant feedback on each answer.',
     Icon: Pencil,
-    color: 'text-green-600 bg-green-50 border-green-200',
+    activeClass: 'text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-950/40 border-green-400 dark:border-green-500',
   },
   {
     id: 'study',
     labelKo: '해설모드',
     labelEn: 'Study',
-    descKo: '정답과 해설이 처음부터 표시. 개념 학습에 최적.',
-    descEn: 'Answer and explanation shown immediately. Best for learning.',
+    descKo: '정답과 해설이 처음부터 표시.',
+    descEn: 'Answer & explanation shown upfront.',
     Icon: Eye,
-    color: 'text-blue-600 bg-blue-50 border-blue-200',
+    activeClass: 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 border-blue-400 dark:border-blue-500',
   },
   {
     id: 'exam',
     labelKo: '실전모드',
     labelEn: 'Exam',
-    descKo: '시간제한, 제출 후 결과 확인. 실전처럼 연습.',
-    descEn: 'Timed, submit at end for results. Just like the real exam.',
+    descKo: '시간제한, 제출 후 결과 확인.',
+    descEn: 'Timed. Results shown after submit.',
     Icon: Timer,
-    color: 'text-orange-600 bg-orange-50 border-orange-200',
+    activeClass: 'text-orange-700 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/40 border-orange-400 dark:border-orange-500',
   },
 ];
 
@@ -118,18 +118,28 @@ const ExamList = () => {
     loadExams();
   }, []);
 
-  const handleExamClick = async (examId: string) => {
-    if (expandedId === examId) {
+  const handleModeSelect = async (examId: string, mode: ExamMode, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const exam = exams.find(ex => ex.id === examId);
+    if (!exam?.questionCount) return;
+
+    // 같은 모드 재클릭 → 접기 (토글)
+    if (expandedId === examId && selectedMode === mode) {
       setExpandedId(null);
-      setSelectedSetId(null);
       setSelectedMode(null);
+      setSelectedSetId(null);
       setRandomizeOptions(false);
       return;
     }
+
+    // 다른 exam으로 전환 → set selection 초기화
+    if (expandedId !== examId) {
+      setSelectedSetId(null);
+      setRandomizeOptions(false);
+    }
+
     setExpandedId(examId);
-    setSelectedSetId(null);
-    setSelectedMode(null);
-    setRandomizeOptions(false);
+    setSelectedMode(mode);
 
     if (!setsMap[examId]) {
       setLoadingSets(prev => ({ ...prev, [examId]: true }));
@@ -139,6 +149,14 @@ const ExamList = () => {
     }
   };
 
+  const handleCollapse = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setExpandedId(null);
+    setSelectedMode(null);
+    setSelectedSetId(null);
+    setRandomizeOptions(false);
+  };
+
   const handleStart = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!selectedSetId || !selectedMode || !expandedId || starting) return;
@@ -146,7 +164,6 @@ const ExamList = () => {
     const config = exams.find(ex => ex.id === expandedId);
     if (!config) return;
 
-    // Find the selected set to include its name in session title
     const sets = setsMap[expandedId] ?? [];
     const selectedSet = sets.find(s => s.id === selectedSetId);
     const setName = selectedSet?.name || '';
@@ -156,8 +173,6 @@ const ExamList = () => {
       const questions = await getQuestionsForSet(selectedSetId);
       if (questions.length === 0) return;
 
-      // Load previous bookmarks for this exam using latest-state logic
-      // (same as ReviewPage) so that un-bookmarks in review sessions are respected.
       const allSessions = await getAllSessions(user?.id);
 
       const questionLastUpdated: Record<string, number> = {};
@@ -167,16 +182,12 @@ const ExamList = () => {
         .filter(s => s.examId === expandedId)
         .forEach(s => {
           const timestamp = s.startedAt;
-
-          // Track explicitly bookmarked questions
           s.bookmarks.forEach(qid => {
             if (!questionLastUpdated[qid] || timestamp > questionLastUpdated[qid]) {
               questionLastUpdated[qid] = timestamp;
               latestBookmarkStatus[qid] = true;
             }
           });
-
-          // Read stored question IDs from localStorage to detect un-bookmarked questions
           try {
             const storedIds = localStorage.getItem(`cloudmaster_questionids_${s.id}`);
             if (storedIds) {
@@ -193,11 +204,9 @@ const ExamList = () => {
           }
         });
 
-      // Only pre-select bookmarks that are still active in the latest session
       const questionIds = new Set(questions.map(q => q.id));
       const initialBookmarks = Array.from(questionIds).filter(qid => latestBookmarkStatus[qid] === true);
 
-      // Include set name in session title for better organization in review page
       const sessionTitle = setName ? `${config.title} - ${setName}` : config.title;
 
       const sessionId = await createSession(
@@ -207,10 +216,10 @@ const ExamList = () => {
         config.timeLimitMinutes,
         selectedMode,
         randomizeOptions,
-        user?.id || null, // userId - associate with logged-in user
+        user?.id || null,
         initialBookmarks,
-        selectedSet?.type ?? 'full',  // setType: sample or full
-        selectedSet?.id               // setId: for analytics
+        selectedSet?.type ?? 'full',
+        selectedSet?.id
       );
       navigate(`/session/${sessionId}`);
     } catch (error) {
@@ -244,208 +253,203 @@ const ExamList = () => {
                 <Card
                   key={exam.id}
                   className={`transition-all duration-200 ${
-                    !available
-                      ? 'opacity-60'
-                      : 'cursor-pointer hover:shadow-md hover:border-accent/50'
+                    !available ? 'opacity-60' : 'hover:shadow-md hover:border-accent/50'
                   } ${isExpanded ? 'border-accent/60 shadow-md' : ''}`}
-                  onClick={() => available && handleExamClick(exam.id)}
                 >
-                  <CardContent className="p-6">
-                    {/* Exam header row */}
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      {/* Left: badge image + exam info */}
-                      <div className="flex items-start gap-3 md:gap-4 flex-1 min-w-0">
-                        {EXAM_BADGE_MAP[exam.id] && (
-                          <img
-                            src={EXAM_BADGE_MAP[exam.id]}
-                            alt={`${exam.title} badge`}
-                            className="w-14 h-14 md:w-16 md:h-16 shrink-0 object-contain rounded-lg"
-                            onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-                          />
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-3 mb-2">
-                            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${certColors[exam.certification]}`}>
-                              {exam.certification}
+                  <CardContent className="p-5 md:p-6">
+
+                    {/* ── 헤더 행: 뱃지 + 정보 + 모드버튼(데스크탑) ── */}
+                    <div className="flex items-start gap-4 md:gap-5">
+
+                      {/* 뱃지 이미지 */}
+                      {EXAM_BADGE_MAP[exam.id] && (
+                        <img
+                          src={EXAM_BADGE_MAP[exam.id]}
+                          alt={`${exam.title} badge`}
+                          className="w-14 h-14 md:w-20 md:h-20 shrink-0 object-contain rounded-lg"
+                          onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                        />
+                      )}
+
+                      {/* 제목 + 설명 */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center flex-wrap gap-2 mb-1.5">
+                          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${certColors[exam.certification]}`}>
+                            {exam.certification}
+                          </span>
+                          <span className="text-xs text-muted-foreground">{exam.code}</span>
+                          <span className="text-xs text-muted-foreground">v{exam.version}</span>
+                          {!available && (
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">
+                              {t('examList.comingSoon')}
                             </span>
-                            <span className="text-xs text-muted-foreground">{exam.code}</span>
-                            <span className="text-xs text-muted-foreground">v{exam.version}</span>
-                          </div>
-                          <h3 className="font-semibold text-lg mb-1">{exam.title}</h3>
-                          <p className="text-sm text-muted-foreground mb-3">
-                            {isKo
-                              ? (EXAM_DESC_MAP[exam.id]?.ko ?? exam.description)
-                              : (EXAM_DESC_MAP[exam.id]?.en ?? exam.description)
-                            }
-                          </p>
-                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <HelpCircle className="h-3.5 w-3.5" />
-                              {exam.questionCount} {t('examList.questions')}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-3.5 w-3.5" />
-                              {exam.timeLimitMinutes} {t('examList.minutes')}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Target className="h-3.5 w-3.5" />
-                              {exam.passingScore}% {t('examList.toPass')}
-                            </span>
-                          </div>
+                          )}
                         </div>
+                        <h3 className="font-semibold text-lg leading-snug">{exam.title}</h3>
+                        {/* 설명: 데스크탑에서만 표시 */}
+                        <p className="hidden md:block text-sm text-muted-foreground mt-1 line-clamp-2">
+                          {isKo
+                            ? (EXAM_DESC_MAP[exam.id]?.ko ?? exam.description)
+                            : (EXAM_DESC_MAP[exam.id]?.en ?? exam.description)
+                          }
+                        </p>
                       </div>
 
-                      <div className="flex items-center gap-2 shrink-0">
-                        {available ? (
-                          isExpanded
-                            ? <ChevronUp className="h-5 w-5 text-muted-foreground" />
-                            : <ChevronDown className="h-5 w-5 text-muted-foreground" />
-                        ) : (
-                          <span className="text-xs px-3 py-1.5 rounded-full bg-muted text-muted-foreground font-medium">
-                            {t('examList.comingSoon')}
-                          </span>
-                        )}
+                      {/* 모드 버튼 3개: 데스크탑에서만 오른쪽 세로 표시 */}
+                      <div className="hidden md:flex flex-col gap-2 shrink-0 w-40">
+                        {MODE_OPTIONS.map(m => {
+                          const isActive = isExpanded && selectedMode === m.id;
+                          return (
+                            <button
+                              key={m.id}
+                              onClick={(e) => handleModeSelect(exam.id, m.id, e)}
+                              disabled={!available}
+                              className={`flex flex-col items-start gap-1 p-3 rounded-xl border-2 transition-all text-left
+                                ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+                                ${isActive
+                                  ? m.activeClass
+                                  : 'border-border hover:border-muted-foreground/40 bg-card'
+                                }`}
+                            >
+                              <div className="flex items-center gap-1.5">
+                                <m.Icon className="h-3.5 w-3.5 shrink-0" />
+                                <span className="font-semibold text-sm">{isKo ? m.labelKo : m.labelEn}</span>
+                              </div>
+                              <p className="text-xs text-muted-foreground leading-relaxed">
+                                {isKo ? m.descKo : m.descEn}
+                              </p>
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
 
-                    {/* Expanded: mode + randomize + set selection */}
-                    {isExpanded && (
+                    {/* ── 모드 버튼 3개: 모바일에서만 하단 가로 3열 ── */}
+                    <div className="md:hidden grid grid-cols-3 gap-2 mt-3">
+                      {MODE_OPTIONS.map(m => {
+                        const isActive = isExpanded && selectedMode === m.id;
+                        return (
+                          <button
+                            key={m.id}
+                            onClick={(e) => handleModeSelect(exam.id, m.id, e)}
+                            disabled={!available}
+                            className={`flex flex-col items-center gap-1 py-2.5 px-2 rounded-xl border-2 transition-all
+                              ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+                              ${isActive
+                                ? m.activeClass
+                                : 'border-border hover:border-muted-foreground/40 bg-card'
+                              }`}
+                          >
+                            <m.Icon className="h-4 w-4" />
+                            <span className="font-semibold text-xs">{isKo ? m.labelKo : m.labelEn}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* ── 확장 영역: 세트 선택 ── */}
+                    {isExpanded && selectedMode && (
                       <div
-                        className="mt-5 pt-5 border-t border-border"
+                        className="mt-4 pt-4 border-t border-border animate-in fade-in duration-200"
                         onClick={e => e.stopPropagation()}
                       >
-                        {/* Mode selection OR Set selection: same vertical position */}
-                        {!selectedMode ? (
-                          <>
-                            <p className="text-sm font-semibold mb-3">{t('examList.selectMode')}</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                              {MODE_OPTIONS.map(m => (
-                                <button
-                                  key={m.id}
-                                  onClick={() => setSelectedMode(m.id)}
-                                  className={`flex flex-col items-start gap-2 p-4 rounded-xl border-2 transition-all text-left border-border hover:border-muted-foreground/40 bg-card`}
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <m.Icon className="h-4 w-4" />
-                                    <span className="font-semibold text-sm">
-                                      {isKo ? m.labelKo : m.labelEn}
-                                    </span>
-                                  </div>
-                                  <p className="text-xs text-muted-foreground leading-relaxed">
-                                    {isKo ? m.descKo : m.descEn}
-                                  </p>
-                                </button>
-                              ))}
-                            </div>
-                          </>
+                        {/* 헤더: 세트 선택 + 닫기 */}
+                        <div className="flex items-center justify-between mb-3">
+                          <p className="text-sm font-semibold">{t('examList.selectSet')}</p>
+                          <button
+                            onClick={handleCollapse}
+                            className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+
+                        {/* 세트 목록 */}
+                        {isLoadingSet ? (
+                          <div className="flex items-center gap-2 py-4 text-muted-foreground text-sm">
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            {t('examList.loadingSets')}
+                          </div>
+                        ) : sets.length === 0 ? (
+                          <p className="text-sm text-muted-foreground py-2">{t('examList.noSets')}</p>
                         ) : (
-                          <div className="animate-in fade-in duration-200">
-                            {/* Header: set selection label + selected mode badge */}
-                            {(() => {
-                              const modeOption = MODE_OPTIONS.find(m => m.id === selectedMode)!;
-                              const ModeIcon = modeOption.Icon;
+                          <div className="grid grid-cols-2 gap-2">
+                            {sets.map(set => {
+                              const isSelected = selectedSetId === set.id;
                               return (
-                                <div className="flex items-center justify-between mb-3">
-                                  <p className="text-sm font-semibold">{t('examList.selectSet')}</p>
-                                  <button
-                                    onClick={() => { setSelectedMode(null); setSelectedSetId(null); }}
-                                    className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full border hover:bg-muted/50 transition-colors ${modeOption.color}`}
-                                  >
-                                    <ModeIcon className="h-3 w-3" />
-                                    <span>{isKo ? modeOption.labelKo : modeOption.labelEn}</span>
-                                    <X className="h-3 w-3 ml-0.5 opacity-60" />
-                                  </button>
+                                <div
+                                  key={set.id}
+                                  className={`flex flex-col gap-1.5 p-3 rounded-xl border cursor-pointer transition-all duration-150 ${
+                                    isSelected
+                                      ? 'border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-400'
+                                      : 'border-border hover:border-green-400 hover:bg-muted/40'
+                                  }`}
+                                  onClick={() => setSelectedSetId(set.id)}
+                                >
+                                  <div className="flex items-center gap-1.5 min-w-0">
+                                    <div className={`p-1 rounded-md shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
+                                      {set.type === 'sample'
+                                        ? <FlaskConical className="h-3 w-3 text-primary" />
+                                        : <BookOpen className="h-3 w-3 text-accent" />
+                                      }
+                                    </div>
+                                    <span className="font-medium text-sm truncate">{set.name}</span>
+                                    {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0 ml-auto" />}
+                                  </div>
+                                  <div className="flex items-center gap-1.5">
+                                    <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${
+                                      set.type === 'sample'
+                                        ? 'bg-primary/10 text-primary'
+                                        : 'bg-accent/10 text-accent'
+                                    }`}>
+                                      {set.type === 'sample' ? t('examList.sampleBadge') : t('examList.fullBadge')}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground">· {set.questionCount}{t('examList.questions')}</span>
+                                  </div>
                                 </div>
                               );
-                            })()}
-
-                            {/* Set list */}
-                            {isLoadingSet ? (
-                              <div className="flex items-center gap-2 py-4 text-muted-foreground text-sm">
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                                {t('examList.loadingSets')}
-                              </div>
-                            ) : sets.length === 0 ? (
-                              <p className="text-sm text-muted-foreground py-2">{t('examList.noSets')}</p>
-                            ) : (
-                              <div className="grid grid-cols-2 gap-2">
-                                {sets.map(set => {
-                                  const isSelected = selectedSetId === set.id;
-                                  return (
-                                    <div
-                                      key={set.id}
-                                      className={`flex flex-col gap-1.5 p-3 rounded-xl border cursor-pointer transition-all duration-150 ${
-                                        isSelected
-                                          ? 'border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-400'
-                                          : 'border-border hover:border-green-400 hover:bg-muted/40'
-                                      }`}
-                                      onClick={() => setSelectedSetId(set.id)}
-                                    >
-                                      <div className="flex items-center gap-1.5 min-w-0">
-                                        <div className={`p-1 rounded-md shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
-                                          {set.type === 'sample'
-                                            ? <FlaskConical className="h-3 w-3 text-primary" />
-                                            : <BookOpen className="h-3 w-3 text-accent" />
-                                          }
-                                        </div>
-                                        <span className="font-medium text-sm truncate">{set.name}</span>
-                                        {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0 ml-auto" />}
-                                      </div>
-                                      <div className="flex items-center gap-1.5">
-                                        <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${
-                                          set.type === 'sample'
-                                            ? 'bg-primary/10 text-primary'
-                                            : 'bg-accent/10 text-accent'
-                                        }`}>
-                                          {set.type === 'sample' ? t('examList.sampleBadge') : t('examList.fullBadge')}
-                                        </span>
-                                        <span className="text-xs text-muted-foreground">· {set.questionCount}{t('examList.questions')}</span>
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            )}
-
-                            {/* Bottom row: randomize + start button inline */}
-                            <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
-                              <label className="flex items-center gap-2 cursor-pointer select-none">
-                                <input
-                                  type="checkbox"
-                                  checked={randomizeOptions}
-                                  onChange={e => setRandomizeOptions(e.target.checked)}
-                                  className="h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent"
-                                />
-                                <Shuffle className="h-4 w-4 text-muted-foreground" />
-                                <span className="text-sm">{isKo ? '보기 순서 랜덤화' : 'Randomize Options'}</span>
-                              </label>
-                              <Button
-                                size="lg"
-                                disabled={!selectedSetId || starting}
-                                onClick={handleStart}
-                                className={`font-semibold transition-all ${
-                                  selectedSetId
-                                    ? 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-md'
-                                    : ''
-                                }`}
-                              >
-                                {starting ? (
-                                  <>
-                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                                    {t('examList.starting')}
-                                  </>
-                                ) : (
-                                  <>
-                                    <Play className="h-4 w-4 mr-2" />
-                                    {t('examList.startExam')}
-                                  </>
-                                )}
-                              </Button>
-                            </div>
+                            })}
                           </div>
                         )}
+
+                        {/* 랜덤화 + 시작 버튼 */}
+                        <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+                          <label className="flex items-center gap-2 cursor-pointer select-none">
+                            <input
+                              type="checkbox"
+                              checked={randomizeOptions}
+                              onChange={e => setRandomizeOptions(e.target.checked)}
+                              className="h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent"
+                            />
+                            <Shuffle className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm">{isKo ? '보기 순서 랜덤화' : 'Randomize Options'}</span>
+                          </label>
+                          <Button
+                            size="lg"
+                            disabled={!selectedSetId || starting}
+                            onClick={handleStart}
+                            className={`font-semibold transition-all ${
+                              selectedSetId
+                                ? 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-md'
+                                : ''
+                            }`}
+                          >
+                            {starting ? (
+                              <>
+                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                {t('examList.starting')}
+                              </>
+                            ) : (
+                              <>
+                                <Play className="h-4 w-4 mr-2" />
+                                {t('examList.startExam')}
+                              </>
+                            )}
+                          </Button>
+                        </div>
                       </div>
                     )}
+
                   </CardContent>
                 </Card>
               );

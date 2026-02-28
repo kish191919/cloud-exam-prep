@@ -284,13 +284,13 @@ const Index = () => {
             {audienceItems.map((item, i) => {
               const IconComponent = iconMap[item.icon];
               return (
-                <div key={i} className="bg-card rounded-2xl p-6 md:p-8 border card-hover text-center">
+                <a key={i} href="https://cloudmasterit.com/exams" className="block bg-card rounded-2xl p-6 md:p-8 border card-hover text-center">
                   <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
                     {IconComponent && <IconComponent className="h-7 w-7 text-accent" />}
                   </div>
                   <h3 className="font-bold text-lg md:text-xl mb-3 break-keep">{item.title}</h3>
                   <p className="text-sm md:text-base text-muted-foreground leading-relaxed break-keep">{item.desc}</p>
-                </div>
+                </a>
               );
             })}
           </div>
@@ -314,7 +314,7 @@ const Index = () => {
             {routineSteps.map((step, i) => {
               const IconComponent = iconMap[step.icon];
               return (
-                <div key={i} className="relative bg-background rounded-2xl p-5 md:p-6 border card-hover">
+                <a key={i} href="https://cloudmasterit.com/exams" className="block relative bg-background rounded-2xl p-5 md:p-6 border card-hover">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-bold mb-4">
                     <Clock className="h-3 w-3" />
                     {step.time}
@@ -327,7 +327,7 @@ const Index = () => {
                   </div>
                   <h3 className="font-bold text-base md:text-lg mb-2 break-keep">{step.title}</h3>
                   <p className="text-xs md:text-sm text-muted-foreground leading-relaxed break-keep">{step.desc}</p>
-                </div>
+                </a>
               );
             })}
           </div>
