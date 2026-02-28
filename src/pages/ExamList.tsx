@@ -221,80 +221,177 @@ const ExamList = () => {
     }
   };
 
-  // 세트 선택 패널 (데스크탑/모바일 공용)
+  // 세트 선택 패널 (데스크탑/모바일 분리)
   const renderSetPanel = (exam: ExamConfig, isMobile: boolean) => {
     const sets = setsMap[exam.id] ?? [];
     const isLoadingSet = loadingSets[exam.id];
     const modeOption = MODE_OPTIONS.find(m => m.id === selectedMode)!;
 
+    // ── 모바일: 기존 세로 레이아웃 유지 ──
+    if (isMobile) {
+      return (
+        <div
+          className="animate-in fade-in duration-200 flex flex-col gap-3 w-full"
+          onClick={e => e.stopPropagation()}
+        >
+          {/* 선택된 모드 표시 + 닫기 */}
+          <button
+            onClick={handleCollapse}
+            className={`flex items-center gap-2 w-full px-3 py-2 rounded-xl border-2 text-sm font-semibold transition-all ${modeOption.activeClass}`}
+          >
+            <modeOption.Icon className="h-3.5 w-3.5 shrink-0" />
+            <span>{isKo ? modeOption.labelKo : modeOption.labelEn}</span>
+            <X className="h-3.5 w-3.5 ml-auto shrink-0" />
+          </button>
+
+          {/* 세트 목록 */}
+          {isLoadingSet ? (
+            <div className="flex items-center gap-2 py-3 text-muted-foreground text-sm">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              {t('examList.loadingSets')}
+            </div>
+          ) : sets.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-2">{t('examList.noSets')}</p>
+          ) : (
+            <div className="grid grid-cols-2 gap-2">
+              {sets.map(set => {
+                const isSelected = selectedSetId === set.id;
+                return (
+                  <div
+                    key={set.id}
+                    className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-all duration-150 ${
+                      isSelected
+                        ? 'border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-400'
+                        : 'border-border hover:border-green-400 hover:bg-muted/40'
+                    }`}
+                    onClick={() => setSelectedSetId(set.id)}
+                  >
+                    <div className={`p-1 rounded-md shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
+                      {set.type === 'sample'
+                        ? <FlaskConical className="h-3 w-3 text-primary" />
+                        : <BookOpen className="h-3 w-3 text-accent" />
+                      }
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm truncate">{set.name}</p>
+                      <p className="text-xs text-muted-foreground">{set.questionCount}{t('examList.questions')}</p>
+                    </div>
+                    {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* 랜덤화 + 시작 버튼 */}
+          <div className="flex flex-col gap-2 pt-2 border-t border-border">
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={randomizeOptions}
+                onChange={e => setRandomizeOptions(e.target.checked)}
+                className="h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent"
+              />
+              <Shuffle className="h-3.5 w-3.5 text-muted-foreground" />
+              <span className="text-sm">{isKo ? '보기 순서 랜덤화' : 'Randomize Options'}</span>
+            </label>
+            <Button
+              size="default"
+              disabled={!selectedSetId || starting}
+              onClick={handleStart}
+              className={`w-full font-semibold transition-all ${
+                selectedSetId
+                  ? 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-md'
+                  : ''
+              }`}
+            >
+              {starting ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  {t('examList.starting')}
+                </>
+              ) : (
+                <>
+                  <Play className="h-4 w-4 mr-2" />
+                  {t('examList.startExam')}
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    // ── 데스크탑: 가로 레이아웃 (카드 높이 고정) ──
     return (
       <div
-        className={`animate-in fade-in duration-200 flex flex-col gap-3 ${isMobile ? 'w-full' : 'w-56'}`}
+        className="animate-in fade-in duration-200 flex items-center gap-2"
         onClick={e => e.stopPropagation()}
       >
-        {/* 선택된 모드 표시 + 닫기 */}
+        {/* 모드 닫기 버튼 (compact 세로) */}
         <button
           onClick={handleCollapse}
-          className={`flex items-center gap-2 w-full px-3 py-2 rounded-xl border-2 text-sm font-semibold transition-all ${modeOption.activeClass}`}
+          className={`flex flex-col items-center justify-center gap-1 px-2.5 py-2 rounded-xl border-2 text-xs font-semibold transition-all shrink-0 self-stretch ${modeOption.activeClass}`}
+          style={{ minWidth: '52px' }}
         >
           <modeOption.Icon className="h-3.5 w-3.5 shrink-0" />
-          <span>{isKo ? modeOption.labelKo : modeOption.labelEn}</span>
-          <X className="h-3.5 w-3.5 ml-auto shrink-0" />
+          <span className="text-center leading-tight text-[11px]">{isKo ? modeOption.labelKo : modeOption.labelEn}</span>
+          <X className="h-3 w-3 shrink-0" />
         </button>
 
-        {/* 세트 목록 */}
+        {/* 세트 목록 (2열 grid, compact) */}
         {isLoadingSet ? (
-          <div className="flex items-center gap-2 py-3 text-muted-foreground text-sm">
+          <div className="flex items-center gap-2 px-3 text-muted-foreground text-sm">
             <Loader2 className="h-4 w-4 animate-spin" />
             {t('examList.loadingSets')}
           </div>
         ) : sets.length === 0 ? (
-          <p className="text-sm text-muted-foreground py-2">{t('examList.noSets')}</p>
+          <p className="text-sm text-muted-foreground px-2">{t('examList.noSets')}</p>
         ) : (
-          <div className={`grid gap-2 ${isMobile ? 'grid-cols-2' : 'grid-cols-1'}`}>
+          <div className="grid grid-cols-2 gap-1.5">
             {sets.map(set => {
               const isSelected = selectedSetId === set.id;
               return (
                 <div
                   key={set.id}
-                  className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-all duration-150 ${
+                  className={`flex items-center gap-1.5 px-2.5 py-2 rounded-lg border cursor-pointer transition-all duration-150 ${
                     isSelected
                       ? 'border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-400'
                       : 'border-border hover:border-green-400 hover:bg-muted/40'
                   }`}
                   onClick={() => setSelectedSetId(set.id)}
                 >
-                  <div className={`p-1 rounded-md shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
+                  <div className={`p-0.5 rounded-md shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
                     {set.type === 'sample'
                       ? <FlaskConical className="h-3 w-3 text-primary" />
                       : <BookOpen className="h-3 w-3 text-accent" />
                     }
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">{set.name}</p>
-                    <p className="text-xs text-muted-foreground">{set.questionCount}{t('examList.questions')}</p>
+                    <p className="font-medium text-xs truncate max-w-[88px]">{set.name}</p>
+                    <p className="text-[10px] text-muted-foreground">{set.questionCount}{t('examList.questions')}</p>
                   </div>
-                  {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />}
+                  {isSelected && <CheckCircle2 className="h-3 w-3 text-green-500 shrink-0" />}
                 </div>
               );
             })}
           </div>
         )}
 
-        {/* 랜덤화 + 시작 버튼 */}
-        <div className="flex flex-col gap-2 pt-2 border-t border-border">
-          <label className="flex items-center gap-2 cursor-pointer select-none">
+        {/* 랜덤화 + 시작 버튼 (우측 고정) */}
+        <div className="flex flex-col gap-2 shrink-0 pl-2 border-l border-border" style={{ minWidth: '116px' }}>
+          <label className="flex items-center gap-1.5 cursor-pointer select-none">
             <input
               type="checkbox"
               checked={randomizeOptions}
               onChange={e => setRandomizeOptions(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent"
+              className="h-3.5 w-3.5 rounded border-gray-300 text-accent focus:ring-accent"
             />
-            <Shuffle className="h-3.5 w-3.5 text-muted-foreground" />
-            <span className="text-sm">{isKo ? '보기 순서 랜덤화' : 'Randomize Options'}</span>
+            <Shuffle className="h-3 w-3 text-muted-foreground shrink-0" />
+            <span className="text-xs leading-tight">{isKo ? '보기 순서 랜덤화' : 'Randomize'}</span>
           </label>
           <Button
-            size="default"
+            size="sm"
             disabled={!selectedSetId || starting}
             onClick={handleStart}
             className={`w-full font-semibold transition-all ${
@@ -305,12 +402,12 @@ const ExamList = () => {
           >
             {starting ? (
               <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" />
                 {t('examList.starting')}
               </>
             ) : (
               <>
-                <Play className="h-4 w-4 mr-2" />
+                <Play className="h-3.5 w-3.5 mr-1" />
                 {t('examList.startExam')}
               </>
             )}
@@ -348,16 +445,28 @@ const ExamList = () => {
                   <CardContent className="p-5 md:p-6">
 
                     {/* ── 헤더 행: 뱃지 + 정보 + 우측 패널(데스크탑) ── */}
-                    <div className="flex items-start gap-4 md:gap-5">
+                    <div className="flex items-stretch gap-4 md:gap-5">
 
                       {/* 뱃지 이미지 */}
                       {EXAM_BADGE_MAP[exam.id] && (
-                        <img
-                          src={EXAM_BADGE_MAP[exam.id]}
-                          alt={`${exam.title} badge`}
-                          className="w-20 h-20 md:w-28 md:h-28 shrink-0 object-contain rounded-lg"
-                          onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-                        />
+                        <>
+                          {/* 데스크탑: 카드 높이 전체 채우기 */}
+                          <div className="hidden md:flex shrink-0 self-stretch items-center">
+                            <img
+                              src={EXAM_BADGE_MAP[exam.id]}
+                              alt={`${exam.title} badge`}
+                              className="h-full w-24 object-contain rounded-lg"
+                              onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                            />
+                          </div>
+                          {/* 모바일: 고정 크기 */}
+                          <img
+                            src={EXAM_BADGE_MAP[exam.id]}
+                            alt={`${exam.title} badge`}
+                            className="md:hidden w-20 h-20 shrink-0 object-contain rounded-lg"
+                            onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                          />
+                        </>
                       )}
 
                       {/* 제목 + 설명 */}
@@ -375,8 +484,8 @@ const ExamList = () => {
                           )}
                         </div>
                         <h3 className="font-semibold text-lg leading-snug">{exam.title}</h3>
-                        {/* 설명: 데스크탑에서만 표시 */}
-                        <p className="hidden md:block text-sm text-muted-foreground mt-1 line-clamp-2">
+                        {/* 설명: 데스크탑에서만 표시, 확장 시 숨김 */}
+                        <p className={`text-sm text-muted-foreground mt-1 line-clamp-2 ${isExpanded ? 'hidden' : 'hidden md:block'}`}>
                           {isKo
                             ? (EXAM_DESC_MAP[exam.id]?.ko ?? exam.description)
                             : (EXAM_DESC_MAP[exam.id]?.en ?? exam.description)
