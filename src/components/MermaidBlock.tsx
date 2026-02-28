@@ -8,7 +8,7 @@ export function MermaidBlock({ code }: { code: string }) {
 
   useEffect(() => {
     if (!initialized) {
-      mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+      mermaid.initialize({ startOnLoad: false, theme: 'neutral', suppressErrors: true });
       initialized = true;
     }
     if (!ref.current) return;
