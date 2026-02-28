@@ -38,6 +38,27 @@ const Index = () => {
     Briefcase, GraduationCap, Rocket, Brain, Database, TrendingUp,
   };
 
+  // 자격증 배지 마퀴 데이터
+  const certBadges = [
+    { provider: 'AWS', code: 'CLF-C02', style: 'bg-amber-500/15 border-amber-400/40 text-amber-300' },
+    { provider: 'AWS', code: 'SAA-C03', style: 'bg-amber-500/15 border-amber-400/40 text-amber-300' },
+    { provider: 'AWS', code: 'AIF-C01', style: 'bg-amber-500/15 border-amber-400/40 text-amber-300' },
+    { provider: 'AWS', code: 'DEA-C01', style: 'bg-amber-500/15 border-amber-400/40 text-amber-300' },
+    { provider: 'AWS', code: 'DVA-C02', style: 'bg-amber-500/15 border-amber-400/40 text-amber-300' },
+    { provider: 'AWS', code: 'SOA-C02', style: 'bg-amber-500/15 border-amber-400/40 text-amber-300' },
+    { provider: 'GCP', code: 'ACE',     style: 'bg-blue-500/15  border-blue-400/40  text-blue-300'  },
+    { provider: 'GCP', code: 'PCA',     style: 'bg-blue-500/15  border-blue-400/40  text-blue-300'  },
+    { provider: 'GCP', code: 'PDE',     style: 'bg-blue-500/15  border-blue-400/40  text-blue-300'  },
+    { provider: 'Azure', code: 'AZ-900', style: 'bg-sky-500/15  border-sky-400/40   text-sky-300'   },
+    { provider: 'Azure', code: 'AZ-104', style: 'bg-sky-500/15  border-sky-400/40   text-sky-300'   },
+    { provider: 'Azure', code: 'AZ-204', style: 'bg-sky-500/15  border-sky-400/40   text-sky-300'   },
+    { provider: 'Azure', code: 'AI-900', style: 'bg-sky-500/15  border-sky-400/40   text-sky-300'   },
+  ];
+
+  // 기업 스크롤 데이터 (텍스트 전용 — 상표권 안전)
+  const companiesRow1 = ['Netflix', '삼성전자', 'Kakao', 'Naver', '현대자동차', 'LG전자', '쿠팡', 'SK텔레콤', 'LINE', 'Airbnb', 'Spotify', 'Toyota', 'BMW'];
+  const companiesRow2 = ['NASA', 'Slack', 'Zoom', 'Adobe', 'Dropbox', 'Reddit', 'Pinterest', 'Twitch', 'McDonald\'s', 'GE', 'Pfizer', '배달의민족', 'Hyundai'];
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -51,6 +72,25 @@ const Index = () => {
         <div className="absolute inset-0 opacity-15 pointer-events-none overflow-hidden">
           <div className="absolute top-20 left-0 w-64 h-64 bg-accent rounded-full blur-3xl -translate-x-1/2" />
           <div className="absolute bottom-10 right-0 w-80 h-80 bg-primary rounded-full blur-3xl translate-x-1/3" />
+          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+        </div>
+
+        {/* Floating data particles */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {[...Array(14)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full bg-accent/60"
+              style={{
+                width: `${2 + (i % 3)}px`,
+                height: `${2 + (i % 3)}px`,
+                left: `${5 + i * 7}%`,
+                top: `${30 + (i % 6) * 12}%`,
+                animation: `float-up ${3.5 + (i % 5) * 0.8}s ease-out infinite`,
+                animationDelay: `${i * 0.35}s`,
+              }}
+            />
+          ))}
         </div>
 
         <div className="container mx-auto text-center max-w-5xl relative z-10">
@@ -130,6 +170,22 @@ const Index = () => {
             </div>
           </div>
 
+          {/* Animated cert badge strip */}
+          <div className="mt-10 md:mt-14 overflow-hidden marquee-wrapper -mx-4">
+            <div className="flex gap-3 animate-marquee" style={{ width: 'max-content' }}>
+              {[...certBadges, ...certBadges].map((b, i) => (
+                <span
+                  key={i}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold flex-shrink-0 backdrop-blur-sm ${b.style}`}
+                >
+                  <span className="font-black text-[10px] tracking-wider">{b.provider}</span>
+                  <span className="w-px h-3 bg-current opacity-30" />
+                  <span className="opacity-80">{b.code}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -148,8 +204,12 @@ const Index = () => {
               const IconComponent = iconMap[item.icon];
               return (
                 <div key={i} className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-primary-foreground/20 hover:bg-primary-foreground/15 transition-all duration-300 hover:scale-105">
-                  <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4">
-                    {IconComponent && <IconComponent className="h-6 w-6 text-accent" />}
+                  <div className="relative w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4">
+                    <div
+                      className="absolute inset-0 rounded-xl bg-accent/30"
+                      style={{ animation: `ping-slow 2.5s ease-out infinite`, animationDelay: `${i * 0.6}s` }}
+                    />
+                    {IconComponent && <IconComponent className="h-6 w-6 text-accent relative z-10" />}
                   </div>
                   <h3 className="font-bold text-lg md:text-xl mb-3 break-keep">{item.title}</h3>
                   <p className="text-sm md:text-base text-primary-foreground/70 leading-relaxed break-keep">{item.desc}</p>
@@ -158,6 +218,46 @@ const Index = () => {
             })}
           </div>
         </div>
+      </section>
+
+      {/* 기업 신뢰 스크롤 */}
+      <section className="py-14 md:py-16 px-4 bg-card border-y border-border overflow-hidden">
+        <div className="container mx-auto max-w-4xl text-center mb-8 md:mb-10">
+          <h2 className="text-xl md:text-3xl font-bold mb-2 break-keep">{t('index.trustedBy.title')}</h2>
+          <p className="text-muted-foreground text-sm md:text-base break-keep">{t('index.trustedBy.subtitle')}</p>
+        </div>
+
+        {/* Row 1 — left to right */}
+        <div className="marquee-wrapper overflow-hidden mb-3">
+          <div className="flex gap-3 animate-marquee" style={{ width: 'max-content' }}>
+            {[...companiesRow1, ...companiesRow1].map((name, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center px-5 py-2.5 rounded-full bg-background border border-border text-sm font-semibold text-muted-foreground hover:text-foreground hover:border-accent/50 transition-colors flex-shrink-0 cursor-default"
+              >
+                {name}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Row 2 — right to left */}
+        <div className="marquee-wrapper overflow-hidden">
+          <div className="flex gap-3 animate-marquee-reverse" style={{ width: 'max-content' }}>
+            {[...companiesRow2, ...companiesRow2].map((name, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center px-5 py-2.5 rounded-full bg-background border border-border text-sm font-semibold text-muted-foreground hover:text-foreground hover:border-accent/50 transition-colors flex-shrink-0 cursor-default"
+              >
+                {name}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <p className="text-center text-xs text-muted-foreground/50 mt-6 break-keep">
+          * {t('index.trustedBy.disclaimer')}
+        </p>
       </section>
 
       {/* 자격증 로드맵 CTA */}

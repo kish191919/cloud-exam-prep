@@ -139,6 +139,11 @@
         }
       ]
     },
+    "trustedBy": {
+      "title": "전 세계 수만 개의 기업이 선택한 클라우드 플랫폼",
+      "subtitle": "AWS · GCP · Azure는 글로벌 IT 인프라의 표준입니다",
+      "disclaimer": "공개된 AWS · GCP · Azure 레퍼런스 기준"
+    },
     "whyCloud": {
       "title": "왜 클라우드 자격증인가?",
       "subtitle": "AI 시대를 살아가는 모든 사람에게 클라우드는 선택이 아닌 필수입니다",

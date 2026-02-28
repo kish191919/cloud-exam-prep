@@ -139,6 +139,11 @@
         }
       ]
     },
+    "trustedBy": {
+      "title": "Trusted by Tens of Thousands of Companies Worldwide",
+      "subtitle": "AWS · GCP · Azure are the global standard for IT infrastructure",
+      "disclaimer": "Based on publicly available AWS · GCP · Azure reference customers"
+    },
     "whyCloud": {
       "title": "Why Cloud Certifications?",
       "subtitle": "In the AI era, cloud is no longer optional — it's the foundation of everything",
