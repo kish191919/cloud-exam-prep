@@ -240,3 +240,17 @@ export async function deleteBlogPost(id: string): Promise<void> {
     .eq('id', id);
   if (error) throw error;
 }
+
+/** 특정 provider의 게시된 포스트에 사용된 exam_id 목록 (중복 제거, 정렬) */
+export async function getExamIdsForProvider(provider: string): Promise<string[]> {
+  const { data, error } = await supabase
+    .from('blog_posts')
+    .select('exam_id')
+    .eq('is_published', true)
+    .eq('provider', provider)
+    .not('exam_id', 'is', null);
+
+  if (error) return [];
+  const unique = [...new Set((data ?? []).map(r => (r as { exam_id: string }).exam_id))];
+  return unique.sort();
+}

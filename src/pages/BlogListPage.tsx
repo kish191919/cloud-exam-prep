@@ -6,10 +6,32 @@ import { BookOpen, Pin, Clock, Calendar, ArrowRight, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { getBlogPosts } from '@/services/blogService';
+import { getBlogPosts, getExamIdsForProvider } from '@/services/blogService';
 import type { BlogPost, BlogProvider } from '@/services/blogService';
 
 const PAGE_SIZE = 12;
+
+const EXAM_NAMES: Record<string, string> = {
+  'aws-aif-c01': 'AI Practitioner',
+  'aws-clf-c02': 'Cloud Practitioner',
+  'aws-clf-c01': 'Cloud Practitioner',
+  'aws-saa-c03': 'Solutions Architect Associate',
+  'aws-saa-c02': 'Solutions Architect Associate',
+  'aws-sap-c02': 'Solutions Architect Professional',
+  'aws-dva-c02': 'Developer Associate',
+  'aws-dea-c01': 'Data Engineer Associate',
+  'aws-soa-c02': 'SysOps Administrator',
+  'aws-mls-c01': 'Machine Learning Specialty',
+  'gcp-ace':     'Associate Cloud Engineer',
+  'gcp-pde':     'Professional Data Engineer',
+  'az-900':      'Azure Fundamentals',
+  'az-104':      'Azure Administrator',
+  'az-204':      'Azure Developer',
+};
+
+function getExamLabel(examId: string): string {
+  return EXAM_NAMES[examId] ?? examId.toUpperCase();
+}
 
 const PROVIDER_CONFIG: Record<BlogProvider | 'all', {
   label: string; color: string; bg: string; border: string;
@@ -127,23 +149,34 @@ const BlogListPage = () => {
   const isKo = i18n.language === 'ko';
   const [searchParams, setSearchParams] = useSearchParams();
   const provider = (searchParams.get('provider') ?? 'all') as BlogProvider | 'all';
+  const examId = searchParams.get('exam_id') ?? '';
   const page = parseInt(searchParams.get('page') ?? '1', 10);
 
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [availableExams, setAvailableExams] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (provider === 'all') {
+      setAvailableExams([]);
+      return;
+    }
+    getExamIdsForProvider(provider).then(setAvailableExams).catch(() => setAvailableExams([]));
+  }, [provider]);
 
   useEffect(() => {
     setLoading(true);
     getBlogPosts({
       provider: provider !== 'all' ? provider : undefined,
+      examId:   examId || undefined,
       limit: PAGE_SIZE,
       offset: (page - 1) * PAGE_SIZE,
     })
       .then(({ data, count }) => { setPosts(data); setTotal(count); })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [provider, page]);
+  }, [provider, examId, page]);
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
   const pinned = posts.filter(p => p.isPinned);
@@ -152,6 +185,18 @@ const BlogListPage = () => {
   const setProvider = (prov: string) => {
     const next = new URLSearchParams();
     if (prov !== 'all') next.set('provider', prov);
+    // exam_id는 provider 변경 시 초기화
+    setSearchParams(next);
+  };
+
+  const setExamId = (eid: string) => {
+    const next = new URLSearchParams(searchParams);
+    if (eid) {
+      next.set('exam_id', eid);
+    } else {
+      next.delete('exam_id');
+    }
+    next.delete('page');
     setSearchParams(next);
   };
 
@@ -217,6 +262,35 @@ const BlogListPage = () => {
               );
             })}
           </div>
+
+          {/* Certification sub-tabs */}
+          {provider !== 'all' && availableExams.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-5 pl-1">
+              <button
+                onClick={() => setExamId('')}
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border transition-all ${
+                  !examId
+                    ? 'border-accent bg-accent text-accent-foreground shadow-sm'
+                    : 'border-border text-muted-foreground hover:border-accent/40 hover:text-foreground bg-card'
+                }`}
+              >
+                {isKo ? `전체 ${provider.toUpperCase()}` : `All ${provider.toUpperCase()}`}
+              </button>
+              {availableExams.map(eid => (
+                <button
+                  key={eid}
+                  onClick={() => setExamId(eid)}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border transition-all ${
+                    examId === eid
+                      ? 'border-accent bg-accent text-accent-foreground shadow-sm'
+                      : 'border-border text-muted-foreground hover:border-accent/40 hover:text-foreground bg-card'
+                  }`}
+                >
+                  {getExamLabel(eid)}
+                </button>
+              ))}
+            </div>
+          )}
 
           {loading ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
