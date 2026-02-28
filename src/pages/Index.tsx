@@ -47,7 +47,7 @@ const Index = () => {
       <Navbar />
 
       {/* Beta Announcement Bar */}
-      <div className="w-full bg-gradient-to-r from-accent/12 via-accent/8 to-accent/12 border-b border-accent/20">
+      <div className="pt-14 w-full bg-gradient-to-r from-accent/12 via-accent/8 to-accent/12 border-b border-accent/20">
         <div className="flex items-center justify-center gap-2 sm:gap-3 px-4 py-3 sm:py-4 flex-wrap text-center">
           <Gift className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0" />
           <span className="text-sm sm:text-base font-black uppercase tracking-widest text-accent">베타 오픈 기간</span>
@@ -59,7 +59,7 @@ const Index = () => {
       </div>
 
       {/* Hero */}
-      <section className="relative hero-gradient text-primary-foreground pt-24 md:pt-32 pb-20 md:pb-28 px-4 overflow-hidden">
+      <section className="relative hero-gradient text-primary-foreground pt-12 md:pt-20 pb-20 md:pb-28 px-4 overflow-hidden">
         {/* Dot pattern overlay */}
         <div className="absolute inset-0 hero-dots pointer-events-none" />
 
