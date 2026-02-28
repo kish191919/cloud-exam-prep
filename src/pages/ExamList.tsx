@@ -51,8 +51,6 @@ type ModeOption = {
   id: ExamMode;
   labelKo: string;
   labelEn: string;
-  descKo: string;
-  descEn: string;
   Icon: React.ElementType;
   activeClass: string;
 };
@@ -62,8 +60,6 @@ const MODE_OPTIONS: ModeOption[] = [
     id: 'practice',
     labelKo: '연습모드',
     labelEn: 'Practice',
-    descKo: '보기 선택 즉시 정답/오답 확인.',
-    descEn: 'Instant feedback on each answer.',
     Icon: Pencil,
     activeClass: 'text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-950/40 border-green-400 dark:border-green-500',
   },
@@ -71,8 +67,6 @@ const MODE_OPTIONS: ModeOption[] = [
     id: 'study',
     labelKo: '해설모드',
     labelEn: 'Study',
-    descKo: '정답과 해설이 처음부터 표시.',
-    descEn: 'Answer & explanation shown upfront.',
     Icon: Eye,
     activeClass: 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 border-blue-400 dark:border-blue-500',
   },
@@ -80,8 +74,6 @@ const MODE_OPTIONS: ModeOption[] = [
     id: 'exam',
     labelKo: '실전모드',
     labelEn: 'Exam',
-    descKo: '시간제한, 제출 후 결과 확인.',
-    descEn: 'Timed. Results shown after submit.',
     Icon: Timer,
     activeClass: 'text-orange-700 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/40 border-orange-400 dark:border-orange-500',
   },
@@ -229,6 +221,105 @@ const ExamList = () => {
     }
   };
 
+  // 세트 선택 패널 (데스크탑/모바일 공용)
+  const renderSetPanel = (exam: ExamConfig, isMobile: boolean) => {
+    const sets = setsMap[exam.id] ?? [];
+    const isLoadingSet = loadingSets[exam.id];
+    const modeOption = MODE_OPTIONS.find(m => m.id === selectedMode)!;
+
+    return (
+      <div
+        className={`animate-in fade-in duration-200 flex flex-col gap-3 ${isMobile ? 'w-full' : 'w-56'}`}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* 선택된 모드 표시 + 닫기 */}
+        <button
+          onClick={handleCollapse}
+          className={`flex items-center gap-2 w-full px-3 py-2 rounded-xl border-2 text-sm font-semibold transition-all ${modeOption.activeClass}`}
+        >
+          <modeOption.Icon className="h-3.5 w-3.5 shrink-0" />
+          <span>{isKo ? modeOption.labelKo : modeOption.labelEn}</span>
+          <X className="h-3.5 w-3.5 ml-auto shrink-0" />
+        </button>
+
+        {/* 세트 목록 */}
+        {isLoadingSet ? (
+          <div className="flex items-center gap-2 py-3 text-muted-foreground text-sm">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            {t('examList.loadingSets')}
+          </div>
+        ) : sets.length === 0 ? (
+          <p className="text-sm text-muted-foreground py-2">{t('examList.noSets')}</p>
+        ) : (
+          <div className={`grid gap-2 ${isMobile ? 'grid-cols-2' : 'grid-cols-1'}`}>
+            {sets.map(set => {
+              const isSelected = selectedSetId === set.id;
+              return (
+                <div
+                  key={set.id}
+                  className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-all duration-150 ${
+                    isSelected
+                      ? 'border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-400'
+                      : 'border-border hover:border-green-400 hover:bg-muted/40'
+                  }`}
+                  onClick={() => setSelectedSetId(set.id)}
+                >
+                  <div className={`p-1 rounded-md shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
+                    {set.type === 'sample'
+                      ? <FlaskConical className="h-3 w-3 text-primary" />
+                      : <BookOpen className="h-3 w-3 text-accent" />
+                    }
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-sm truncate">{set.name}</p>
+                    <p className="text-xs text-muted-foreground">{set.questionCount}{t('examList.questions')}</p>
+                  </div>
+                  {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* 랜덤화 + 시작 버튼 */}
+        <div className="flex flex-col gap-2 pt-2 border-t border-border">
+          <label className="flex items-center gap-2 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={randomizeOptions}
+              onChange={e => setRandomizeOptions(e.target.checked)}
+              className="h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent"
+            />
+            <Shuffle className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="text-sm">{isKo ? '보기 순서 랜덤화' : 'Randomize Options'}</span>
+          </label>
+          <Button
+            size="default"
+            disabled={!selectedSetId || starting}
+            onClick={handleStart}
+            className={`w-full font-semibold transition-all ${
+              selectedSetId
+                ? 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-md'
+                : ''
+            }`}
+          >
+            {starting ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                {t('examList.starting')}
+              </>
+            ) : (
+              <>
+                <Play className="h-4 w-4 mr-2" />
+                {t('examList.startExam')}
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <AppLayout>
       <div className="max-w-4xl mx-auto">
@@ -246,8 +337,6 @@ const ExamList = () => {
             {exams.map(exam => {
               const available = exam.questionCount > 0;
               const isExpanded = expandedId === exam.id;
-              const sets = setsMap[exam.id] ?? [];
-              const isLoadingSet = loadingSets[exam.id];
 
               return (
                 <Card
@@ -258,7 +347,7 @@ const ExamList = () => {
                 >
                   <CardContent className="p-5 md:p-6">
 
-                    {/* ── 헤더 행: 뱃지 + 정보 + 모드버튼(데스크탑) ── */}
+                    {/* ── 헤더 행: 뱃지 + 정보 + 우측 패널(데스크탑) ── */}
                     <div className="flex items-start gap-4 md:gap-5">
 
                       {/* 뱃지 이미지 */}
@@ -266,7 +355,7 @@ const ExamList = () => {
                         <img
                           src={EXAM_BADGE_MAP[exam.id]}
                           alt={`${exam.title} badge`}
-                          className="w-14 h-14 md:w-20 md:h-20 shrink-0 object-contain rounded-lg"
+                          className="w-20 h-20 md:w-28 md:h-28 shrink-0 object-contain rounded-lg"
                           onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                         />
                       )}
@@ -295,160 +384,54 @@ const ExamList = () => {
                         </p>
                       </div>
 
-                      {/* 모드 버튼 3개: 데스크탑에서만 오른쪽 세로 표시 */}
-                      <div className="hidden md:flex flex-col gap-2 shrink-0 w-40">
-                        {MODE_OPTIONS.map(m => {
-                          const isActive = isExpanded && selectedMode === m.id;
-                          return (
-                            <button
-                              key={m.id}
-                              onClick={(e) => handleModeSelect(exam.id, m.id, e)}
-                              disabled={!available}
-                              className={`flex flex-col items-start gap-1 p-3 rounded-xl border-2 transition-all text-left
-                                ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
-                                ${isActive
-                                  ? m.activeClass
-                                  : 'border-border hover:border-muted-foreground/40 bg-card'
-                                }`}
-                            >
-                              <div className="flex items-center gap-1.5">
-                                <m.Icon className="h-3.5 w-3.5 shrink-0" />
-                                <span className="font-semibold text-sm">{isKo ? m.labelKo : m.labelEn}</span>
-                              </div>
-                              <p className="text-xs text-muted-foreground leading-relaxed">
-                                {isKo ? m.descKo : m.descEn}
-                              </p>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* ── 모드 버튼 3개: 모바일에서만 하단 가로 3열 ── */}
-                    <div className="md:hidden grid grid-cols-3 gap-2 mt-3">
-                      {MODE_OPTIONS.map(m => {
-                        const isActive = isExpanded && selectedMode === m.id;
-                        return (
-                          <button
-                            key={m.id}
-                            onClick={(e) => handleModeSelect(exam.id, m.id, e)}
-                            disabled={!available}
-                            className={`flex flex-col items-center gap-1 py-2.5 px-2 rounded-xl border-2 transition-all
-                              ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
-                              ${isActive
-                                ? m.activeClass
-                                : 'border-border hover:border-muted-foreground/40 bg-card'
-                              }`}
-                          >
-                            <m.Icon className="h-4 w-4" />
-                            <span className="font-semibold text-xs">{isKo ? m.labelKo : m.labelEn}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    {/* ── 확장 영역: 세트 선택 ── */}
-                    {isExpanded && selectedMode && (
-                      <div
-                        className="mt-4 pt-4 border-t border-border animate-in fade-in duration-200"
-                        onClick={e => e.stopPropagation()}
-                      >
-                        {/* 헤더: 세트 선택 + 닫기 */}
-                        <div className="flex items-center justify-between mb-3">
-                          <p className="text-sm font-semibold">{t('examList.selectSet')}</p>
-                          <button
-                            onClick={handleCollapse}
-                            className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-                          >
-                            <X className="h-4 w-4" />
-                          </button>
-                        </div>
-
-                        {/* 세트 목록 */}
-                        {isLoadingSet ? (
-                          <div className="flex items-center gap-2 py-4 text-muted-foreground text-sm">
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            {t('examList.loadingSets')}
-                          </div>
-                        ) : sets.length === 0 ? (
-                          <p className="text-sm text-muted-foreground py-2">{t('examList.noSets')}</p>
+                      {/* 데스크탑 우측 패널: 모드 버튼 OR 세트 선택 패널 */}
+                      <div className="hidden md:block shrink-0">
+                        {isExpanded && selectedMode ? (
+                          renderSetPanel(exam, false)
                         ) : (
-                          <div className="grid grid-cols-2 gap-2">
-                            {sets.map(set => {
-                              const isSelected = selectedSetId === set.id;
+                          <div className="flex flex-col gap-2 w-36">
+                            {MODE_OPTIONS.map(m => {
                               return (
-                                <div
-                                  key={set.id}
-                                  className={`flex flex-col gap-1.5 p-3 rounded-xl border cursor-pointer transition-all duration-150 ${
-                                    isSelected
-                                      ? 'border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-400'
-                                      : 'border-border hover:border-green-400 hover:bg-muted/40'
-                                  }`}
-                                  onClick={() => setSelectedSetId(set.id)}
+                                <button
+                                  key={m.id}
+                                  onClick={(e) => handleModeSelect(exam.id, m.id, e)}
+                                  disabled={!available}
+                                  className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 transition-all text-left
+                                    ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+                                    border-border hover:border-muted-foreground/40 bg-card hover:bg-muted/30`}
                                 >
-                                  <div className="flex items-center gap-1.5 min-w-0">
-                                    <div className={`p-1 rounded-md shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
-                                      {set.type === 'sample'
-                                        ? <FlaskConical className="h-3 w-3 text-primary" />
-                                        : <BookOpen className="h-3 w-3 text-accent" />
-                                      }
-                                    </div>
-                                    <span className="font-medium text-sm truncate">{set.name}</span>
-                                    {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0 ml-auto" />}
-                                  </div>
-                                  <div className="flex items-center gap-1.5">
-                                    <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${
-                                      set.type === 'sample'
-                                        ? 'bg-primary/10 text-primary'
-                                        : 'bg-accent/10 text-accent'
-                                    }`}>
-                                      {set.type === 'sample' ? t('examList.sampleBadge') : t('examList.fullBadge')}
-                                    </span>
-                                    <span className="text-xs text-muted-foreground">· {set.questionCount}{t('examList.questions')}</span>
-                                  </div>
-                                </div>
+                                  <m.Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+                                  <span className="font-semibold text-sm">{isKo ? m.labelKo : m.labelEn}</span>
+                                </button>
                               );
                             })}
                           </div>
                         )}
-
-                        {/* 랜덤화 + 시작 버튼 */}
-                        <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
-                          <label className="flex items-center gap-2 cursor-pointer select-none">
-                            <input
-                              type="checkbox"
-                              checked={randomizeOptions}
-                              onChange={e => setRandomizeOptions(e.target.checked)}
-                              className="h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent"
-                            />
-                            <Shuffle className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-sm">{isKo ? '보기 순서 랜덤화' : 'Randomize Options'}</span>
-                          </label>
-                          <Button
-                            size="lg"
-                            disabled={!selectedSetId || starting}
-                            onClick={handleStart}
-                            className={`font-semibold transition-all ${
-                              selectedSetId
-                                ? 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-md'
-                                : ''
-                            }`}
-                          >
-                            {starting ? (
-                              <>
-                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                                {t('examList.starting')}
-                              </>
-                            ) : (
-                              <>
-                                <Play className="h-4 w-4 mr-2" />
-                                {t('examList.startExam')}
-                              </>
-                            )}
-                          </Button>
-                        </div>
                       </div>
-                    )}
+                    </div>
+
+                    {/* ── 모바일 하단: 모드 버튼 OR 세트 선택 패널 ── */}
+                    <div className="md:hidden mt-3">
+                      {isExpanded && selectedMode ? (
+                        renderSetPanel(exam, true)
+                      ) : (
+                        <div className="grid grid-cols-3 gap-2">
+                          {MODE_OPTIONS.map(m => (
+                            <button
+                              key={m.id}
+                              onClick={(e) => handleModeSelect(exam.id, m.id, e)}
+                              disabled={!available}
+                              className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border-2 transition-all
+                                ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+                                border-border hover:border-muted-foreground/40 bg-card hover:bg-muted/30`}
+                            >
+                              <m.Icon className="h-4 w-4 text-muted-foreground" />
+                              <span className="font-semibold text-xs">{isKo ? m.labelKo : m.labelEn}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
 
                   </CardContent>
                 </Card>
