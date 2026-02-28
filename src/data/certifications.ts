@@ -115,6 +115,7 @@ const awsCertifications: Certification[] = [
     careerPaths: ['developer'],
     description: 'AWS 기반 애플리케이션 개발, 배포, 디버깅 역량을 검증. CI/CD와 서버리스 아키텍처 포함.',
     descriptionEn: 'Validates proficiency in developing, deploying, and debugging AWS-based applications. Covers CI/CD and serverless architectures.',
+    examId: 'aws-dea-c01',
   },
   {
     id: 'aws-soa-c02',
