@@ -633,7 +633,7 @@ WHERE title = 'Microsoft Azure 자격증이 대기업·공공기관에서 주목
 
 -- [5] 연봉 비교 — 커버 이미지 + ref_links + {{chart:salary}} 마커 삽입
 UPDATE announcements SET
-  cover_image_url = 'https://images.unsplash.com/photo-1579621970590-9d152b94e55c?w=1200&q=80&auto=format&fit=crop',
+  cover_image_url = 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1200&q=80&auto=format&fit=crop',
   ref_links = '[{"name":"Glassdoor Cloud Engineer Salaries","url":"https://www.glassdoor.com/Salaries/cloud-engineer-salary-SRCH_KO0,14.htm"},{"name":"LinkedIn Salary Insights","url":"https://www.linkedin.com/salary/"},{"name":"Levels.fyi Cloud Roles","url":"https://www.levels.fyi/t/software-engineer/focus/cloud"}]',
   content = replace(
     content,

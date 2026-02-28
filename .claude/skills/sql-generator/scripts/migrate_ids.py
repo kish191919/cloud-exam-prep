@@ -216,9 +216,10 @@ def migrate_one(old_id: str, new_id: str, supabase_url: str, supabase_key: str) 
 
 
 def main():
-    parser = argparse.ArgumentParser(description='비패딩 question ID → 3자리 zero-padding 마이그레이션')
+    parser = argparse.ArgumentParser(description='question ID 마이그레이션 (zero-padding 또는 접두사 수정)')
     parser.add_argument('--exam-id', required=True, help='exam_id (예: aws-dea-c01)')
     parser.add_argument('--dry-run', action='store_true', help='변경 내용만 출력, 실제 변경 없음')
+    parser.add_argument('--fix-prefix', action='store_true', help='접두사 불일치 ID를 올바른 접두사로 수정')
     args = parser.parse_args()
 
     # .env 읽기
@@ -245,6 +246,53 @@ def main():
         sys.exit(1)
 
     all_ids = [d['id'] for d in data]
+
+    if args.fix_prefix:
+        # ── 접두사 수정 모드 ───────────────────────────────────────────────────
+        correct_prefix = args.exam_id.replace('-', '')
+        migrations = []
+        for qid in all_ids:
+            if '-q' not in qid:
+                continue
+            prefix = qid.split('-q')[0]
+            if prefix != correct_prefix:
+                suffix = qid.split('-q')[1]
+                new_id = f"{correct_prefix}-q{suffix}"
+                migrations.append((qid, new_id))
+
+        if not migrations:
+            print(f'[완료] 접두사 불일치 ID 없음 — 올바른 접두사: {correct_prefix}')
+            return
+
+        # 숫자 순 정렬
+        migrations.sort(key=lambda x: int(x[0].split('-q')[1]))
+
+        if args.dry_run:
+            print(f'[DRY-RUN] {args.exam_id} 접두사 불일치 ID {len(migrations)}개 (올바른 접두사: {correct_prefix}):')
+            for old_id, new_id in migrations:
+                print(f'  {old_id} → {new_id}')
+            print(f'\n총 {len(migrations)}개 ID 변경 예정')
+            print('처리 순서: questions 복사 → 자식 테이블 복사 → 구 자식 삭제 → 구 questions 삭제')
+            return
+
+        success, failed = [], []
+        for old_id, new_id in migrations:
+            errors = migrate_one(old_id, new_id, supabase_url, supabase_key)
+            if errors:
+                for err in errors:
+                    print(f'[FAIL] {old_id} → {new_id}: {err}')
+                failed.append(old_id)
+            else:
+                print(f'[OK] {old_id} → {new_id}')
+                success.append(old_id)
+
+        print(f'\n[완료] 성공: {len(success)}개 | 실패: {len(failed)}개')
+        if failed:
+            print(f'실패 목록: {failed}')
+            sys.exit(1)
+        return
+
+    # ── 비패딩 ID 수정 모드 (기본) ────────────────────────────────────────────
 
     # 비패딩 ID 필터링: 숫자 접미사 길이 < 3
     migrations = []
