@@ -326,50 +326,39 @@ const ExamList = () => {
                             ) : sets.length === 0 ? (
                               <p className="text-sm text-muted-foreground py-2">{t('examList.noSets')}</p>
                             ) : (
-                              <div className="space-y-2">
+                              <div className="grid grid-cols-2 gap-2">
                                 {sets.map(set => {
                                   const isSelected = selectedSetId === set.id;
                                   return (
                                     <div
                                       key={set.id}
-                                      className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all duration-150 ${
+                                      className={`flex flex-col gap-1.5 p-3 rounded-xl border cursor-pointer transition-all duration-150 ${
                                         isSelected
                                           ? 'border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-400'
                                           : 'border-border hover:border-green-400 hover:bg-muted/40'
                                       }`}
                                       onClick={() => setSelectedSetId(set.id)}
                                     >
-                                      <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
-                                        isSelected ? 'border-green-500' : 'border-muted-foreground/40'
-                                      }`}>
-                                        {isSelected && <div className="h-2.5 w-2.5 rounded-full bg-green-500" />}
-                                      </div>
-                                      <div className={`p-2 rounded-lg shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
-                                        {set.type === 'sample'
-                                          ? <FlaskConical className="h-4 w-4 text-primary" />
-                                          : <BookOpen className="h-4 w-4 text-accent" />
-                                        }
-                                      </div>
-                                      <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-2 flex-wrap">
-                                          <span className="font-medium text-sm">{set.name}</span>
-                                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                                            set.type === 'sample'
-                                              ? 'bg-primary/10 text-primary'
-                                              : 'bg-accent/10 text-accent'
-                                          }`}>
-                                            {set.type === 'sample' ? t('examList.sampleBadge') : t('examList.fullBadge')}
-                                          </span>
+                                      <div className="flex items-center gap-1.5 min-w-0">
+                                        <div className={`p-1 rounded-md shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
+                                          {set.type === 'sample'
+                                            ? <FlaskConical className="h-3 w-3 text-primary" />
+                                            : <BookOpen className="h-3 w-3 text-accent" />
+                                          }
                                         </div>
-                                        {set.description && (
-                                          <p className="text-xs text-muted-foreground mt-0.5 truncate">{set.description}</p>
-                                        )}
+                                        <span className="font-medium text-sm truncate">{set.name}</span>
+                                        {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0 ml-auto" />}
                                       </div>
-                                      <div className="text-right shrink-0">
-                                        <span className="text-sm font-semibold">{set.questionCount}</span>
-                                        <span className="text-xs text-muted-foreground ml-1">{t('examList.questions')}</span>
+                                      <div className="flex items-center gap-1.5">
+                                        <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${
+                                          set.type === 'sample'
+                                            ? 'bg-primary/10 text-primary'
+                                            : 'bg-accent/10 text-accent'
+                                        }`}>
+                                          {set.type === 'sample' ? t('examList.sampleBadge') : t('examList.fullBadge')}
+                                        </span>
+                                        <span className="text-xs text-muted-foreground">· {set.questionCount}{t('examList.questions')}</span>
                                       </div>
-                                      {isSelected && <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />}
                                     </div>
                                   );
                                 })}
