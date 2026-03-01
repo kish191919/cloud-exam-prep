@@ -1,5 +1,14 @@
 {
+  "functions": {
+    "api/blog/[slug].ts": {
+      "includeFiles": "dist/index.html"
+    }
+  },
   "rewrites": [
+    {
+      "source": "/blog/:slug",
+      "destination": "/api/blog/[slug]"
+    },
     {
       "source": "/((?!sitemap\\.xml|robots\\.txt|favicon\\.svg|favicon\\.ico|manifest\\.json|naver.*\\.html|api\\/).*)",
       "destination": "/index.html"

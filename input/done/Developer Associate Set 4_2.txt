@@ -1,0 +1,57 @@
+16. You are working with a t2.small instance bastion host that has the AWS CLI installed to help manage all the AWS services installed on it. You would like to know the security group and the instance id of the current instance. Which of the following will help you fetch the needed information?
+
+
+
+17. You are working for a small organization that does not have a database administrator and the organization needs to install a database on the cloud quickly to support an accounting application used by thousands of users. The application will act as a backend and will perform (CRUD) operations such as create, read, update and delete as well as inner joins. Which database is best suited for this scenario?
+
+
+
+18. Your company is new to cloud computing and would like to host a static HTML5 website on the cloud and be able to access it via domain www.mycompany.com. You have created a bucket in Amazon Simple Storage Service (S3), enabled website hosting, and set the index.html as the default page. Finally, you create an Alias record in Amazon Route 53 that points to the S3 website endpoint of your S3 bucket. When you test the domain, you get the 403 error. What can you do to resolve this error?
+
+
+
+19. You are looking to invoke an AWS Lambda function every hour (similar to a cron job) in a serverless way. Which event source should you use for your AWS Lambda function?
+
+
+
+20. A company's e-commerce application becomes slow when traffic spikes. The application has a three-tier architecture (web, application and database tier) that uses synchronous transactions. The development team at the company has identified certain bottlenecks in the application tier but it does not want to change the underlying application architecture. As a developer associate, which of the following solutions would you suggest to meet the required application response times while accounting for any traffic spikes?
+
+
+
+21. A popular mobile app retrieves data from an AWS DynamoDB table that was provisioned with read-capacity units (RCU’s) that are evenly shared across four partitions. One of those partitions is receiving more traffic than the other partitions, causing hot partition issues. What technology will allow you to reduce the read traffic on your AWS DynamoDB table with minimal effort?
+
+
+
+22. You are a cloud security engineer working for a popular cyber-forensics company that offers vulnerability scanning solutions to government contractors. The scanning solutions are integrated with AWS resources to monitor EC2 and S3 API calls which then display results to users on an analytical dashboard. Which of the following AWS services makes this possible?
+
+
+
+23. You are deploying Lambda functions that operate on your S3 buckets to read files and extract key metadata. The Lambda functions are managed using SAM. Which Policy should you insert in your serverless model template to give buckets read access?
+
+
+
+24. You would like to have a one-stop dashboard for all the CI/CD needs of one of your projects. You don't need heavy control of the individual configuration of each component in your CI/CD, but need to be able to get a holistic view of your projects. Which service do you recommend?
+
+
+
+25. You are implementing a banking application in which you need to update the Exchanges DynamoDB table and the AccountBalance DynamoDB table at the same time or not at all. Which DynamoDB feature should you use?
+
+
+
+26. You would like to paginate the results of an S3 List to show 50 results per page to your users and minimize the number of API calls that you will use. Which CLI options should you use?
+
+
+
+27. Your Lambda function must use the Node.js drivers to connect to your RDS PostgreSQL database in your VPC. How do you bundle your Lambda function to add the dependencies?
+
+
+
+28. As part of your video processing application, you are looking to perform a set of repetitive and scheduled tasks asynchronously. Your application is deployed on Elastic Beanstalk. Which Elastic Beanstalk environment should you set up for performing the repetitive tasks?
+
+
+
+29. You have been collecting AWS X-Ray traces across multiple applications and you would now like to index your XRay traces to search and filter through them efficiently. What should you use in your instrumentation?
+
+
+
+30. You are running a public DNS service on an EC2 instance where the DNS name is pointing to the IP address of the instance. You wish to upgrade your DNS service but would like to do it without any downtime. Which of the following options will help you accomplish this?
