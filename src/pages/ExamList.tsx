@@ -3,6 +3,13 @@ import { useEffect, useState } from 'react';
 import AppLayout from '@/components/AppLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { getAllExams } from '@/services/examService';
 import { getSetsForExam, getQuestionsForSet } from '@/services/questionService';
 import { createSession, getAllSessions } from '@/hooks/useExamSession';
@@ -15,6 +22,8 @@ import type { ExamConfig, ExamSet, ExamMode } from '@/types/exam';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { PROVIDERS } from '@/data/certifications';
+
+const MODES_INTRO_KEY = 'cloudmaster_exam_modes_seen';
 
 const certColors: Record<string, string> = {
   AWS: 'bg-accent text-accent-foreground',
@@ -94,6 +103,7 @@ const ExamList = () => {
 
   const [exams, setExams] = useState<ExamConfig[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showModesIntro, setShowModesIntro] = useState(false);
 
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [setsMap, setSetsMap] = useState<Record<string, ExamSet[]>>({});
@@ -119,6 +129,18 @@ const ExamList = () => {
     }
     loadExams();
   }, []);
+
+  useEffect(() => {
+    if (!localStorage.getItem(MODES_INTRO_KEY)) {
+      const timer = setTimeout(() => setShowModesIntro(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const dismissModesIntro = () => {
+    localStorage.setItem(MODES_INTRO_KEY, '1');
+    setShowModesIntro(false);
+  };
 
   const handleModeSelect = async (examId: string, mode: ExamMode, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -460,6 +482,76 @@ const ExamList = () => {
 
   return (
     <AppLayout>
+      {/* 일회성 모드 소개 다이얼로그 */}
+      <Dialog open={showModesIntro} onOpenChange={(open) => { if (!open) dismissModesIntro(); }}>
+        <DialogContent className="max-w-sm sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{isKo ? '시험 모드 안내' : 'Exam Modes Guide'}</DialogTitle>
+            <DialogDescription>
+              {isKo ? '원하는 학습 방식에 맞는 모드를 선택하세요.' : 'Choose the mode that fits your learning style.'}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3 mt-1">
+            <div className="flex gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-950/40">
+              <Pencil className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 shrink-0" />
+              <div>
+                <p className="font-semibold text-green-700 dark:text-green-400 text-sm">
+                  {isKo ? '연습모드' : 'Practice Mode'}
+                </p>
+                <p className="text-sm text-muted-foreground mt-0.5">
+                  {isKo
+                    ? '문제를 풀면 즉시 정답과 해설을 확인할 수 있습니다.'
+                    : 'Get immediate feedback with answers and explanations after each question.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-950/40">
+              <Eye className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
+              <div>
+                <p className="font-semibold text-blue-700 dark:text-blue-400 text-sm">
+                  {isKo ? '해설모드' : 'Study Mode'}
+                </p>
+                <p className="text-sm text-muted-foreground mt-0.5">
+                  {isKo
+                    ? '정답과 해설을 처음부터 함께 보며 학습합니다.'
+                    : 'Study with answers and explanations shown from the start.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 p-3 rounded-lg bg-orange-50 dark:bg-orange-950/40">
+              <Timer className="h-5 w-5 text-orange-600 dark:text-orange-400 mt-0.5 shrink-0" />
+              <div>
+                <p className="font-semibold text-orange-700 dark:text-orange-400 text-sm">
+                  {isKo ? '실전모드' : 'Exam Mode'}
+                </p>
+                <p className="text-sm text-muted-foreground mt-0.5">
+                  {isKo
+                    ? '시간 제한 내에 모든 문제를 풀고 제출하는 실전 시험 환경입니다.'
+                    : 'A timed exam environment where you submit all answers at once.'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t pt-3 mt-1">
+            <p className="text-xs text-muted-foreground font-medium mb-1.5">
+              {isKo ? '화면 상단 버튼 안내' : 'Header Button Guide'}
+            </p>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+              <span>{isKo ? '🌙 / ☀️ — 다크/라이트 모드 전환' : '🌙 / ☀️ — Toggle dark/light mode'}</span>
+              <span>{isKo ? '🇰🇷 / 🇺🇸 — 한국어/English 전환' : '🇰🇷 / 🇺🇸 — Switch Korean/English'}</span>
+            </div>
+          </div>
+
+          <Button onClick={dismissModesIntro} className="w-full mt-2">
+            {isKo ? '알겠습니다' : 'Got it'}
+          </Button>
+        </DialogContent>
+      </Dialog>
+
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-2">{t('examList.title')}</h1>
