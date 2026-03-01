@@ -1,0 +1,58 @@
+1. As a Developer Associate, you are responsible for the data management of the AWS Kinesis streams at your company. The security team has mandated stricter security requirements by leveraging mechanisms available with the Kinesis Data Streams service that won't require code changes on your end. Which of the following features meet the given requirements?
+
+
+
+2. You manage a group of developers that are experienced with the AWS SDK for Java. You have given them a requirement to build a state machine workflow where each state executes an AWS Lambda function written in Java. Data payloads of 1KB in size will be passed between states and should allow for two retry attempts if the state fails. Which of the following options will assist your developers with this requirement?
+
+
+
+3. A development team has noticed that one of the EC2 instances has been wrongly configured with the 'DeleteOnTermination' attribute set to True for its root EBS volume. As a developer associate, can you suggest a way to disable this flag while the instance is still running?
+
+
+
+4. A video streaming application uses Amazon CloudFront for its data distribution. The development team has decided to use CloudFront with origin failover for high availability. Which of the following options are correct while configuring CloudFront with Origin Groups? 
+
+
+
+5. An investment firm wants to continuously generate time-series analytics of the stocks being purchased by its customers. The firm wants to build a live leaderboard with real-time analytics for these in-demand stocks. Which of the following represents a fully managed solution to address this use-case?
+
+
+
+6. A developer is creating a RESTful API service using an Amazon API Gateway with AWS Lambda integration. The service must support different API versions for testing purposes. As a Developer Associate, which of the following would you suggest as the best way to accomplish this?
+
+
+
+7. You're a developer maintaining a web application written in .NET. The application makes references to public objects in a public S3 accessible bucket using a public URL. While doing a code review your colleague advises that the approach is not a best practice because some of the objects contain private data. After the administrator makes the S3 bucket private you can no longer access the S3 objects but you would like to create an application that will enable people to access some objects as needed with a time policy constraint. Which of the following options will give access to the objects?
+
+
+
+8. A developer in your company has configured a build using AWS CodeBuild. The build fails and the developer needs to quickly troubleshoot the issue to see which commands or settings located in the BuildSpec file are causing an issue. Which approach will help them accomplish this?
+
+
+
+9. As an AWS Certified Developer Associate, you are writing a CloudFormation template in YAML. The template consists of an EC2 instance creation and one RDS resource. Once your resources are created you would like to output the connection endpoint for the RDS database. Which intrinsic function returns the value needed?
+
+
+
+10. Your e-commerce company needs to improve its software delivery process and is moving away from the waterfall methodology. You decided that every application should be built using the best CI/CD practices and every application should be packaged and deployed as a Docker container. The Docker images should be stored in ECR and pushed with AWS CodePipeline and AWS CodeBuild. When you attempt to do this, the last step fails with an authorization issue. What is the most likely issue?
+
+
+
+11. Your company has a load balancer in a VPC configured to be internet facing. The public DNS name assigned to the load balancer is xxxx.com. When your client applications first load they capture the load balancer DNS name and then resolve the IP address for the load balancer so that they can directly reference the underlying IP. It is observed that the client applications work well but unexpectedly stop working after a while. What is the reason for this?
+
+
+
+12. A cyber forensics application, running behind an ALB, wants to analyze patterns for the client IPs. Which of the following headers can be used for this requirement?
+
+
+
+13. An e-commerce company uses Amazon SQS queues to decouple their application architecture. The development team has observed message processing failures for an edge case scenario when a user places an order for a particular product ID, but the product ID is deleted, thereby causing the application code to fail. As a Developer Associate, which of the following solutions would you recommend to address such message failures?
+
+
+
+14. A retail company manages its IT infrastructure on AWS Cloud via Elastic Beanstalk. The development team at the company is planning to deploy the next version with MINIMUM application downtime and the ability to rollback quickly in case deployment goes wrong. As a Developer Associate, which of the following options would you recommend to the development team?
+
+
+
+15. An analytics company is using Kinesis Data Streams (KDS) to process automobile health-status data from the taxis managed by a taxi ride-hailing service. Multiple consumer applications are using the incoming data streams and the engineers have noticed a performance lag for the data delivery speed between producers and consumers of the data streams. As a Developer Associate, which of the following options would you suggest for improving the performance for the given use-case?
+

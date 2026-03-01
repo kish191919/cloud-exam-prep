@@ -408,36 +408,38 @@ const ExamList = () => {
         ) : sets.length === 0 ? (
           <p className="text-sm text-muted-foreground px-2">{t('examList.noSets')}</p>
         ) : (
-          <div
-            className="grid gap-1.5"
-            style={{ gridTemplateColumns: `repeat(${sets.length <= 1 ? 1 : Math.max(2, Math.ceil(sets.length / 2))}, 110px)` }}
-          >
-            {sets.map(set => {
-              const isSelected = selectedSetId === set.id;
-              return (
-                <div
-                  key={set.id}
-                  className={`flex items-center gap-1.5 px-2.5 py-2 rounded-lg border cursor-pointer transition-all duration-150 ${
-                    isSelected
-                      ? 'border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-400'
-                      : 'border-border hover:border-green-400 hover:bg-muted/40'
-                  }`}
-                  onClick={() => setSelectedSetId(set.id)}
-                >
-                  <div className={`p-0.5 rounded-md shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
-                    {set.type === 'sample'
-                      ? <FlaskConical className="h-3 w-3 text-primary" />
-                      : <BookOpen className="h-3 w-3 text-accent" />
-                    }
+          <div className="overflow-y-auto max-h-[5.5rem] pr-0.5">
+            <div
+              className="grid gap-1.5"
+              style={{ gridTemplateColumns: `repeat(${Math.min(3, sets.length || 1)}, 110px)` }}
+            >
+              {sets.map(set => {
+                const isSelected = selectedSetId === set.id;
+                return (
+                  <div
+                    key={set.id}
+                    className={`flex items-center gap-1.5 px-2.5 py-2 rounded-lg border cursor-pointer transition-all duration-150 ${
+                      isSelected
+                        ? 'border-green-500 bg-green-50 dark:bg-green-950/30 ring-1 ring-green-400'
+                        : 'border-border hover:border-green-400 hover:bg-muted/40'
+                    }`}
+                    onClick={() => setSelectedSetId(set.id)}
+                  >
+                    <div className={`p-0.5 rounded-md shrink-0 ${set.type === 'sample' ? 'bg-primary/10' : 'bg-accent/10'}`}>
+                      {set.type === 'sample'
+                        ? <FlaskConical className="h-3 w-3 text-primary" />
+                        : <BookOpen className="h-3 w-3 text-accent" />
+                      }
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-xs truncate">{set.name}</p>
+                      <p className="text-[10px] text-muted-foreground">{set.questionCount}{t('examList.questions')}</p>
+                    </div>
+                    {isSelected && <CheckCircle2 className="h-3 w-3 text-green-500 shrink-0" />}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-xs truncate">{set.name}</p>
-                    <p className="text-[10px] text-muted-foreground">{set.questionCount}{t('examList.questions')}</p>
-                  </div>
-                  {isSelected && <CheckCircle2 className="h-3 w-3 text-green-500 shrink-0" />}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         )}
 
