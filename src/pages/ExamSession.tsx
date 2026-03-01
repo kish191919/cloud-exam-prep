@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from '@/components/ui/dialog';
-import { ChevronLeft, ChevronRight, Menu, Send, Cloud, AlertTriangle, Loader2, CheckCircle2, XCircle } from 'lucide-react';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { ChevronLeft, ChevronRight, Menu, Send, Cloud, AlertTriangle, Loader2, CheckCircle2, XCircle, ChevronsUpDown, MoveHorizontal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { seededShuffle } from '@/utils/shuffle';
@@ -39,6 +40,21 @@ const ExamSession = () => {
   };
   const [showPanel, setShowPanel] = useState(true);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
+
+  const GESTURE_HINTS_KEY = 'cloudmaster_gesture_hints_seen';
+  const [showGestureHints, setShowGestureHints] = useState(false);
+
+  useEffect(() => {
+    if (window.innerWidth < 768 && !localStorage.getItem(GESTURE_HINTS_KEY)) {
+      const timer = setTimeout(() => setShowGestureHints(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const dismissGestureHints = () => {
+    localStorage.setItem(GESTURE_HINTS_KEY, '1');
+    setShowGestureHints(false);
+  };
   const [navDirection, setNavDirection] = useState<'next' | 'prev'>('next');
   const touchStartX = useRef<number | null>(null);
   const currentNavBtnRef = useRef<HTMLButtonElement>(null);
@@ -428,6 +444,51 @@ const ExamSession = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* 모바일 제스처 가이드 (최초 1회) */}
+      <Sheet open={showGestureHints} onOpenChange={(open) => { if (!open) dismissGestureHints(); }}>
+        <SheetContent side="bottom" className="pb-8 rounded-t-2xl">
+          <SheetHeader className="mb-4">
+            <SheetTitle className="text-center text-base">
+              {isKo ? '이용 안내' : 'How to Use'}
+            </SheetTitle>
+          </SheetHeader>
+
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/50">
+              <div className="w-10 h-10 rounded-full bg-accent/15 flex items-center justify-center flex-shrink-0">
+                <ChevronsUpDown className="h-5 w-5 text-accent animate-bounce" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">{isKo ? '질문 스크롤' : 'Scroll Question'}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {isKo
+                    ? '상단 질문 영역을 위아래로 스크롤하여 긴 질문 전체를 읽을 수 있습니다.'
+                    : 'Scroll up and down in the question area to read the full question.'}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/50">
+              <div className="w-10 h-10 rounded-full bg-accent/15 flex items-center justify-center flex-shrink-0">
+                <MoveHorizontal className="h-5 w-5 text-accent" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">{isKo ? '스와이프로 문제 이동' : 'Swipe to Navigate'}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {isKo
+                    ? '화면을 좌우로 밀어 다음/이전 문제로 이동할 수 있습니다.'
+                    : 'Swipe left or right to go to the next or previous question.'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <Button onClick={dismissGestureHints} className="w-full mt-5">
+            {isKo ? '확인했습니다' : 'Got it!'}
+          </Button>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
