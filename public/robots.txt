@@ -2,6 +2,10 @@ User-agent: *
 Allow: /
 Disallow: /session/
 Disallow: /results/
-Disallow: /admin
+Disallow: /admin/
+
+# Naver 크롤러 (Yeti) 명시적 허용
+User-agent: Yeti
+Allow: /
 
 Sitemap: https://cloudmasterit.com/sitemap.xml

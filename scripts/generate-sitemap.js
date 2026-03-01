@@ -33,12 +33,12 @@ function loadEnv() {
 }
 
 const env = loadEnv();
-const SUPABASE_URL = env.SUPABASE_URL;
-const SUPABASE_KEY = env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_URL = env.SUPABASE_URL || env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = env.SUPABASE_SERVICE_ROLE_KEY || env.VITE_SUPABASE_ANON_KEY;
 const SITE_URL = 'https://cloudmasterit.com';
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.error('SUPABASE_URL 또는 SUPABASE_SERVICE_ROLE_KEY가 없습니다.');
+  console.error('SUPABASE_URL(또는 VITE_SUPABASE_URL) 또는 SUPABASE_SERVICE_ROLE_KEY가 없습니다.');
   process.exit(1);
 }
 
