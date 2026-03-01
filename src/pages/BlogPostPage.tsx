@@ -302,6 +302,33 @@ const BlogPostPage = () => {
                   <Clock className="h-3.5 w-3.5" />
                   {isKo ? `${readMin}분 읽기` : `${readMin} min read`}
                 </span>
+
+                {/* 한/영 토글 — 영어 버전이 있는 포스트에만 표시 */}
+                {(post.titleEn || post.contentEn) && (
+                  <div className="flex items-center gap-0.5 rounded-full border border-border overflow-hidden text-[10px] font-semibold">
+                    <button
+                      onClick={() => i18n.changeLanguage('ko')}
+                      className={`px-2.5 py-1 transition-colors ${
+                        isKo
+                          ? 'bg-accent text-accent-foreground'
+                          : 'text-muted-foreground hover:bg-muted'
+                      }`}
+                    >
+                      KO
+                    </button>
+                    <button
+                      onClick={() => i18n.changeLanguage('en')}
+                      className={`px-2.5 py-1 transition-colors ${
+                        !isKo
+                          ? 'bg-accent text-accent-foreground'
+                          : 'text-muted-foreground hover:bg-muted'
+                      }`}
+                    >
+                      EN
+                    </button>
+                  </div>
+                )}
+
                 <button
                   onClick={handleShare}
                   className="ml-auto flex items-center gap-1 hover:text-accent transition-colors"

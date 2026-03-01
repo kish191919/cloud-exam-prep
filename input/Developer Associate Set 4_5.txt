@@ -1,0 +1,41 @@
+56. Applications running on EC2 instances process messages from an SQS queue but sometimes they experience errors due to messages not being processed. To isolate the messages, which option will help with further debugging?
+
+
+
+57. When your company first created an AWS account, you began with a single sign-in principal called a root user account that had complete access to all AWS services and resources. What should you do to adhere to best practices for using the root user account?
+
+
+
+58. Your company has developers worldwide with access to the company's Amazon Simple Storage Service (S3) buckets. The objects in the buckets are encrypted at the server-side but need more flexibility with access control, auditing, rotation, and deletion of keys. You would also like to limit who can use the key. Which encryption mechanism best fits your needs?
+
+
+
+59. A company ingests real-time data into its on-premises data center and subsequently a daily data feed is compressed into a single file and uploaded on Amazon S3 for backup. The typical compressed file size is around 0.8 GB. Which of the following is the fastest way to upload the daily compressed file into S3?
+
+
+
+60. You would like to retrieve a subset of your dataset stored in S3 with the CSV format. You would like to retrieve a month of data. You need to minimize compute and network costs for this, what should you use?
+
+
+
+61. You are storing bids information on your betting application and you would like to automatically expire DynamoDB table data after one week. What should you use?
+
+
+
+62. You would like your Elastic Beanstalk environment to expose an HTTPS endpoint instead of an HTTP endpoint to get in-flight encryption between your clients and your web servers. What must be done to set up HTTPS on Beanstalk?
+
+
+
+63. You are using AWS SQS FIFO queues to get the ordering of messages. On top of this, you would like to make sure that duplicate messages should not be sent to SQS as this would cause application failure. As a developer, which message parameter should you set for deduplicating messages?
+
+
+
+64. A financial services company has developed a REST API which is deployed in an Auto Scaling Group behind an Application Load Balancer. The API stores the data payload in DynamoDB and the static content is served through S3. Upon analyzing the usage pattern, it's found that 80% of the read requests are shared across all users. As a Developer Associate, how can you improve the application performance while optimizing the cost with the least development effort?
+
+
+
+65. You were assigned to a project that requires the use of the AWS CLI to build a project with AWS CodeBuild. Your project's root directory includes the buildspec.yml file to run build commands and would like your build artifacts to be automatically encrypted at the end. How should you configure CodeBuild to accomplish this?
+
+
+
+
