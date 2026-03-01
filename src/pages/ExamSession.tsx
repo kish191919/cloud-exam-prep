@@ -187,6 +187,8 @@ const ExamSession = () => {
   };
 
   const modeInfo = MODE_LABEL[mode] ?? MODE_LABEL.exam;
+  const isCurrentAnswered = !!session.answers[currentQuestion.id];
+  const showFeedbackLayout = mode === 'study' || (mode === 'practice' && isCurrentAnswered);
 
   return (
     <div className="h-[100dvh] flex flex-col bg-background overflow-hidden">
@@ -262,13 +264,13 @@ const ExamSession = () => {
           />
         )}
         <div
-          className="flex-1 overflow-hidden"
+          className={`flex-1 ${showFeedbackLayout ? 'overflow-auto' : 'overflow-hidden md:overflow-auto'}`}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
           <div
             key={session.currentIndex}
-            className={`h-full ${navDirection === 'next' ? 'animate-slide-from-right' : 'animate-slide-from-left'}`}
+            className={`${showFeedbackLayout ? '' : 'h-full md:h-auto'} ${navDirection === 'next' ? 'animate-slide-from-right' : 'animate-slide-from-left'}`}
           >
             <QuestionDisplay
               question={currentQuestion}

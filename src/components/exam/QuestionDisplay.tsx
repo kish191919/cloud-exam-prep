@@ -127,9 +127,9 @@ const QuestionDisplay = ({
   );
 
   return (
-    <div className="w-full max-w-3xl mx-auto animate-fade-in h-full flex flex-col min-h-0">
+    <div className={`w-full max-w-3xl mx-auto animate-fade-in ${!showFeedback ? 'h-full flex flex-col min-h-0 md:block' : ''}`}>
       {/* 질문 영역: 스크롤 가능한 상단 */}
-      <div className="flex-1 overflow-y-auto min-h-0 px-3 pt-3 sm:px-5 sm:pt-5 md:px-8 md:pt-6 pb-2">
+      <div className={`${!showFeedback ? 'flex-1 overflow-y-auto min-h-0' : ''} px-3 pt-3 sm:px-5 sm:pt-5 md:px-8 md:pt-6 pb-2 md:pb-0`}>
         {/* Header row: question number + tags + bookmark */}
         <div className="flex items-start justify-between mb-3 sm:mb-4 gap-2">
           <div className="flex items-center flex-wrap gap-1.5 min-w-0">
@@ -154,11 +154,11 @@ const QuestionDisplay = ({
           </Button>
         </div>
 
-        <h2 className="text-base md:text-lg font-semibold leading-relaxed whitespace-pre-line">{questionText}</h2>
+        <h2 className="text-base md:text-lg font-semibold leading-relaxed whitespace-pre-line md:mb-5">{questionText}</h2>
       </div>
 
       {/* 보기 영역: 하단 고정 (border로 구분) */}
-      <div className="shrink-0 overflow-y-auto px-3 pb-3 sm:px-5 sm:pb-4 md:px-8 md:pb-6 pt-2.5 sm:pt-3 border-t">
+      <div className={`${!showFeedback ? 'shrink-0 overflow-y-auto' : ''} px-3 pb-3 sm:px-5 sm:pb-4 md:px-8 md:pb-6 pt-2.5 sm:pt-3 border-t md:border-t-0 md:pt-0`}>
       <div className="space-y-2.5 sm:space-y-3">
         {displayOptions.map((option, index) => {
           const isSelected = selectedOptionId === option.id;
