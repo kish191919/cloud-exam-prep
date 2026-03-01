@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { useFontSize } from '@/contexts/FontSizeContext';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const LABEL: Record<string, string> = {
   sm: 'A−',
@@ -17,16 +18,23 @@ const FontSizeToggle = () => {
   const { fontSize, cycleFontSize } = useFontSize();
 
   return (
-    <Button
-      size="sm"
-      variant="ghost"
-      onClick={cycleFontSize}
-      className="text-xs sm:text-sm px-2 sm:px-2.5 h-8 text-muted-foreground hover:text-foreground font-semibold"
-      title={TITLE[fontSize]}
-      aria-label={TITLE[fontSize]}
-    >
-      {LABEL[fontSize]}
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={cycleFontSize}
+          className="text-xs sm:text-sm px-2 sm:px-2.5 h-8 text-muted-foreground hover:text-foreground font-semibold"
+          aria-label={TITLE[fontSize]}
+        >
+          {LABEL[fontSize]}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p className="font-medium">글씨 크기 / Font Size</p>
+        <p className="text-xs text-muted-foreground">{TITLE[fontSize]}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 };
 

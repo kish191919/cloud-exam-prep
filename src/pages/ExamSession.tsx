@@ -16,6 +16,7 @@ import { seededShuffle } from '@/utils/shuffle';
 import { useAuth } from '@/contexts/AuthContext';
 import ThemeToggle from '@/components/ThemeToggle';
 import FontSizeToggle from '@/components/FontSizeToggle';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const MODE_LABEL: Record<string, { ko: string; en: string; color: string }> = {
   practice: { ko: '연습모드', en: 'Practice', color: 'bg-green-100 text-green-700' },
@@ -239,15 +240,21 @@ const ExamSession = () => {
           <FontSizeToggle />
 
           {/* Language toggle */}
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() => i18n.changeLanguage(isKo ? 'en' : 'ko')}
-            className="text-xs sm:text-sm px-2 sm:px-2.5 h-8 text-muted-foreground hover:text-foreground"
-            title={isKo ? 'Switch to English' : '한국어로 전환'}
-          >
-            {isKo ? '🇺🇸 EN' : '🇰🇷 KO'}
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => i18n.changeLanguage(isKo ? 'en' : 'ko')}
+                className="text-xs sm:text-sm px-2 sm:px-2.5 h-8 text-muted-foreground hover:text-foreground"
+              >
+                {isKo ? '🇺🇸 EN' : '🇰🇷 KO'}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{isKo ? '영어로 전환 / Switch to English' : '한국어로 전환 / Switch to Korean'}</p>
+            </TooltipContent>
+          </Tooltip>
 
           {/* Submit: only in exam mode */}
           {isExamMode && (
@@ -372,10 +379,11 @@ const ExamSession = () => {
           size="sm"
           disabled={session.currentIndex === 0}
           onClick={() => navigateTo(session.currentIndex - 1)}
-          className="text-xs sm:text-sm px-2 sm:px-4"
+          className="text-xs sm:text-sm px-2 sm:px-3 gap-1"
         >
-          <ChevronLeft className="h-4 w-4 sm:mr-1" />
+          <ChevronLeft className="h-4 w-4 flex-shrink-0" />
           <span className="hidden sm:inline">{t('examSession.prev')}</span>
+          <kbd className="hidden md:inline-flex items-center px-1 py-0.5 text-[10px] font-mono border rounded bg-muted text-muted-foreground leading-none">←</kbd>
         </Button>
 
         <span className="text-xs sm:text-sm text-muted-foreground font-medium">
@@ -387,10 +395,11 @@ const ExamSession = () => {
             variant="outline"
             size="sm"
             onClick={() => navigateTo(session.currentIndex + 1)}
-            className="text-xs sm:text-sm px-2 sm:px-4"
+            className="text-xs sm:text-sm px-2 sm:px-3 gap-1"
           >
+            <kbd className="hidden md:inline-flex items-center px-1 py-0.5 text-[10px] font-mono border rounded bg-muted text-muted-foreground leading-none">→</kbd>
             <span className="hidden sm:inline">{t('examSession.next')}</span>
-            <ChevronRight className="h-4 w-4 sm:ml-1" />
+            <ChevronRight className="h-4 w-4 flex-shrink-0" />
           </Button>
         ) : (
           isExamMode ? (
