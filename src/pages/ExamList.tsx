@@ -55,6 +55,13 @@ type ModeOption = {
   activeClass: string;
 };
 
+const FILTER_PROVIDERS = [
+  { value: 'all', label: '전체' },
+  { value: 'AWS', label: 'AWS' },
+  { value: 'GCP', label: 'GCP' },
+  { value: 'Azure', label: 'Azure' },
+];
+
 const MODE_OPTIONS: ModeOption[] = [
   {
     id: 'practice',
@@ -95,6 +102,8 @@ const ExamList = () => {
   const [selectedMode, setSelectedMode] = useState<ExamMode | null>(null);
   const [randomizeOptions, setRandomizeOptions] = useState(false);
   const [starting, setStarting] = useState(false);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [filterProvider, setFilterProvider] = useState<string>('all');
 
   useEffect(() => {
     async function loadExams() {
@@ -160,6 +169,17 @@ const ExamList = () => {
     setSelectedSetId(null);
     setRandomizeOptions(false);
   };
+
+  const handleFilterChange = (provider: string) => {
+    setFilterProvider(provider);
+    setExpandedId(null);
+    setSelectedMode(null);
+    setSelectedSetId(null);
+  };
+
+  const filteredExams = filterProvider === 'all'
+    ? exams
+    : exams.filter(ex => ex.certification.toLowerCase() === filterProvider.toLowerCase());
 
   const handleStart = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -438,6 +458,21 @@ const ExamList = () => {
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-2">{t('examList.title')}</h1>
           <p className="text-muted-foreground">{t('examList.subtitle')}</p>
+          <div className="flex items-center gap-2 mt-4 flex-wrap">
+            {FILTER_PROVIDERS.map(p => (
+              <button
+                key={p.value}
+                onClick={() => handleFilterChange(p.value)}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 border ${
+                  filterProvider === p.value
+                    ? 'bg-accent text-accent-foreground border-accent shadow-sm'
+                    : 'bg-transparent text-muted-foreground border-border hover:border-muted-foreground/50 hover:text-foreground'
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {loading ? (
@@ -446,13 +481,20 @@ const ExamList = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {exams.map(exam => {
+            {filteredExams.length === 0 && !loading && (
+              <div className="text-center py-12 text-muted-foreground">
+                {filterProvider} {isKo ? '자격증이 아직 준비 중입니다.' : 'certifications are coming soon.'}
+              </div>
+            )}
+            {filteredExams.map(exam => {
               const available = exam.questionCount > 0;
               const isExpanded = expandedId === exam.id;
 
               return (
                 <Card
                   key={exam.id}
+                  onMouseEnter={() => available && setHoveredId(exam.id)}
+                  onMouseLeave={() => setHoveredId(null)}
                   className={`transition-all duration-200 ${
                     !available ? 'opacity-60' : 'hover:shadow-md hover:border-accent/50'
                   } ${isExpanded ? 'border-accent/60 shadow-md' : ''}`}
@@ -517,26 +559,38 @@ const ExamList = () => {
                     </div>
 
                     {/* ── 하단: 모드 버튼 (가로) OR 세트 선택 패널 (모바일) ── */}
-                    <div className="mt-3 md:mt-4">
-                      {isExpanded && selectedMode ? (
-                        <div className="md:hidden">
+                    <div>
+                      {/* 모바일: 확장 시 세트 선택 패널 */}
+                      {isExpanded && selectedMode && (
+                        <div className="md:hidden mt-3">
                           {renderSetPanel(exam, true)}
                         </div>
-                      ) : (
-                        <div className="grid grid-cols-3 gap-2 md:gap-3">
-                          {MODE_OPTIONS.map(m => (
-                            <button
-                              key={m.id}
-                              onClick={(e) => handleModeSelect(exam.id, m.id, e)}
-                              disabled={!available}
-                              className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border-2 transition-all
-                                ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
-                                border-border hover:border-muted-foreground/40 bg-card hover:bg-muted/30`}
-                            >
-                              <m.Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
-                              <span className="font-semibold text-sm">{isKo ? m.labelKo : m.labelEn}</span>
-                            </button>
-                          ))}
+                      )}
+
+                      {/* 모드 버튼: 모바일 항상 표시 / 데스크탑 hover·확장 시 표시 */}
+                      {!isExpanded && (
+                        <div className={`overflow-hidden transition-all duration-300 ease-in-out
+                          max-h-16 opacity-100 mt-3
+                          ${hoveredId === exam.id
+                            ? 'md:max-h-16 md:opacity-100 md:mt-4'
+                            : 'md:max-h-0 md:opacity-0 md:mt-0 md:pointer-events-none'
+                          }
+                        `}>
+                          <div className="grid grid-cols-3 gap-2 md:gap-3">
+                            {MODE_OPTIONS.map(m => (
+                              <button
+                                key={m.id}
+                                onClick={(e) => handleModeSelect(exam.id, m.id, e)}
+                                disabled={!available}
+                                className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border-2 transition-all
+                                  ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+                                  border-border hover:border-muted-foreground/40 bg-card hover:bg-muted/30`}
+                              >
+                                <m.Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+                                <span className="font-semibold text-sm">{isKo ? m.labelKo : m.labelEn}</span>
+                              </button>
+                            ))}
+                          </div>
                         </div>
                       )}
                     </div>
