@@ -596,16 +596,19 @@ const ExamList = () => {
                                 key={m.id}
                                 onClick={(e) => handleModeSelect(exam.id, m.id, e)}
                                 disabled={!available}
-                                className={`flex flex-col items-center justify-center gap-1 py-2.5 px-3 rounded-xl border-2 transition-all
+                                className={`flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 py-2.5 px-3 rounded-xl border-2 transition-all
                                   ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                                   border-border hover:border-muted-foreground/40 bg-card hover:bg-muted/30`}
                               >
                                 <m.Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
                                 {isKo ? (
-                                  <span className="font-semibold text-xs text-center leading-tight">
-                                    <span className="block">{m.labelKo.slice(0, 2)}</span>
-                                    <span className="block">{m.labelKo.slice(2)}</span>
-                                  </span>
+                                  <>
+                                    <span className="font-semibold text-xs text-center leading-tight md:hidden">
+                                      <span className="block">{m.labelKo.slice(0, 2)}</span>
+                                      <span className="block">{m.labelKo.slice(2)}</span>
+                                    </span>
+                                    <span className="hidden md:inline font-semibold text-xs">{m.labelKo}</span>
+                                  </>
                                 ) : (
                                   <span className="font-semibold text-xs text-center">{m.labelEn}</span>
                                 )}
