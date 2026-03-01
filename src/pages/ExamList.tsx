@@ -103,6 +103,7 @@ const ExamList = () => {
   const [randomizeOptions, setRandomizeOptions] = useState(false);
   const [starting, setStarting] = useState(false);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [tappedId, setTappedId] = useState<string | null>(null);
   const [filterProvider, setFilterProvider] = useState<string>('all');
 
   useEffect(() => {
@@ -130,6 +131,7 @@ const ExamList = () => {
       setSelectedMode(null);
       setSelectedSetId(null);
       setRandomizeOptions(false);
+      setTappedId(null);
       return;
     }
 
@@ -143,6 +145,7 @@ const ExamList = () => {
 
     setExpandedId(examId);
     setSelectedMode(mode);
+    setTappedId(null); // 모드 선택 시 tappedId 초기화 (세트 패널로 전환)
 
     // 샘플 세트 자동 선택 (없으면 첫 번째 세트)
     const autoSelectSample = (sets: ExamSet[]) => {
@@ -164,10 +167,12 @@ const ExamList = () => {
 
   const handleCollapse = (e: React.MouseEvent) => {
     e.stopPropagation();
+    const collapsingId = expandedId; // X 닫기 시 해당 카드 모드 버튼 다시 노출
     setExpandedId(null);
     setSelectedMode(null);
     setSelectedSetId(null);
     setRandomizeOptions(false);
+    setTappedId(collapsingId);
   };
 
   const handleFilterChange = (provider: string) => {
@@ -175,6 +180,7 @@ const ExamList = () => {
     setExpandedId(null);
     setSelectedMode(null);
     setSelectedSetId(null);
+    setTappedId(null);
   };
 
   const filteredExams = filterProvider === 'all'
@@ -489,15 +495,20 @@ const ExamList = () => {
             {filteredExams.map(exam => {
               const available = exam.questionCount > 0;
               const isExpanded = expandedId === exam.id;
+              const isTapped = tappedId === exam.id;
 
               return (
                 <Card
                   key={exam.id}
                   onMouseEnter={() => available && setHoveredId(exam.id)}
                   onMouseLeave={() => setHoveredId(null)}
+                  onClick={() => {
+                    if (!available || isExpanded) return;
+                    setTappedId(prev => prev === exam.id ? null : exam.id);
+                  }}
                   className={`transition-all duration-200 ${
-                    !available ? 'opacity-60' : 'hover:shadow-md hover:border-accent/50'
-                  } ${isExpanded ? 'border-accent/60 shadow-md' : ''}`}
+                    !available ? 'opacity-60 cursor-default' : 'hover:shadow-md hover:border-accent/50 cursor-pointer md:cursor-default'
+                  } ${(isExpanded || isTapped) ? 'border-accent/60 shadow-md' : ''}`}
                 >
                   <CardContent className="p-5 md:p-6">
 
@@ -567,12 +578,15 @@ const ExamList = () => {
                         </div>
                       )}
 
-                      {/* 모드 버튼: 모바일 항상 표시 / 데스크탑 hover·확장 시 표시 */}
+                      {/* 모드 버튼: 모바일 탭 시에만 표시 / 데스크탑 hover 시 표시 */}
                       {!isExpanded && (
                         <div className={`overflow-hidden transition-all duration-300 ease-in-out
-                          max-h-16 opacity-100 mt-3
+                          ${isTapped
+                            ? 'max-h-24 opacity-100 mt-3'
+                            : 'max-h-0 opacity-0 mt-0 pointer-events-none'
+                          }
                           ${hoveredId === exam.id
-                            ? 'md:max-h-16 md:opacity-100 md:mt-4'
+                            ? 'md:max-h-24 md:opacity-100 md:mt-4 md:pointer-events-auto'
                             : 'md:max-h-0 md:opacity-0 md:mt-0 md:pointer-events-none'
                           }
                         `}>
@@ -582,12 +596,19 @@ const ExamList = () => {
                                 key={m.id}
                                 onClick={(e) => handleModeSelect(exam.id, m.id, e)}
                                 disabled={!available}
-                                className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border-2 transition-all
+                                className={`flex flex-col items-center justify-center gap-1 py-2.5 px-3 rounded-xl border-2 transition-all
                                   ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                                   border-border hover:border-muted-foreground/40 bg-card hover:bg-muted/30`}
                               >
                                 <m.Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
-                                <span className="font-semibold text-sm">{isKo ? m.labelKo : m.labelEn}</span>
+                                {isKo ? (
+                                  <span className="font-semibold text-xs text-center leading-tight">
+                                    <span className="block">{m.labelKo.slice(0, 2)}</span>
+                                    <span className="block">{m.labelKo.slice(2)}</span>
+                                  </span>
+                                ) : (
+                                  <span className="font-semibold text-xs text-center">{m.labelEn}</span>
+                                )}
                               </button>
                             ))}
                           </div>

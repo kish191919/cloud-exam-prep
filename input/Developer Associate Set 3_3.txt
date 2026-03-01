@@ -1,0 +1,58 @@
+31. After reviewing your monthly AWS bill you notice that the cost of using Amazon SQS has gone up substantially after creating new queues; however, you know that your queue clients do not have a lot of traffic and are receiving empty responses. Which of the following actions should you take?
+
+
+
+32. You are working on a project that has over 100 dependencies. Every time your AWS CodeBuild runs a build step it has to resolve Java dependencies from external Ivy repositories which take a long time. Your manager wants to speed this process up in AWS CodeBuild. Which of the following will help you do this with minimal effort?
+
+
+
+33. Your organization is looking into making a change to all virtual machines in the cloud. They would like to take advantage of running a bootstrap script for their Server Base AMI virtual machines when they first boot. Which of the following options will allow the organization to achieve this?
+
+
+
+34. You have a Java-based application running on EC2 instances loaded with AWS CodeDeploy agents. You are considering different options for deployment, one is the flexibility that allows for incremental deployment of your new application versions and replaces existing versions in the EC2 instances. The other option is a strategy in which an Auto Scaling group is used to perform a deployment. Which of the following options will allow you to deploy in this manner?
+
+
+
+35. A development team had enabled and configured CloudTrail for all the Amazon S3 buckets used in a project. The project manager owns all the S3 buckets used in the project. However, the manager noticed that he did not receive any object-level API access logs when the data was read by another AWS account. What could be the reason for this behavior/error?
+
+
+
+36. A user has an IAM policy as well as an Amazon SQS policy that apply to his account. The IAM policy grants his account permission for the ReceiveMessage action on test_queue, whereas the Amazon SQS policy gives his account permission for the SendMessage action on the same queue. Considering the permissions above, which of the following options are correct?
+
+
+
+37. A website serves static content from an Amazon Simple Storage Service (Amazon S3) bucket and dynamic content from an application load balancer. The user base is spread across the world and latency should be minimized for a better user experience. Which technology/service can help access the static and dynamic content while keeping the data latency low?
+
+
+
+38. A developer is configuring an Application Load Balancer (ALB) to direct traffic to the application's EC2 instances and Lambda functions. Which of the following characteristics of the ALB can be identified as correct? 
+
+
+
+39. Your mobile application needs to perform API calls to DynamoDB. You do not want to store AWS secret and access keys onto the mobile devices and need all the calls to DynamoDB made with a different identity per mobile device. Which of the following services allows you to achieve this?
+
+
+
+40. You’re testing a Node.js AWS Lambda function and added extra debug logs to troubleshoot intermittent errors. You want these Lambda logs to be automatically stored in an Amazon S3 bucket for later analysis. What should you configure to achieve this?
+
+
+
+41. A tech company’s new engineers run AWS CLI commands and receive an encoded authorization failure message. They need to decode that message to identify which IAM policy caused the denial. Which action will help them decode the message?
+
+
+
+42. An IT company is using AWS CloudFormation to manage its IT infrastructure. It has created a template to provision a stack with a VPC and a subnet. The output value of this subnet has to be used in another stack. As a Developer Associate, which of the following options would you suggest to provide this information to another stack?
+
+
+
+43. A cybersecurity company is publishing critical log data to a log group in Amazon CloudWatch Logs. The company must encrypt the log data using an AWS KMS customer master key (CMK), so any future data can be encrypted to meet the company’s security guidelines. How can the company address this use-case?
+
+
+
+
+44. Your company stores confidential data on an Amazon Simple Storage Service (S3) bucket. New security compliance guidelines require that files be stored with server-side encryption. The encryption used must be Advanced Encryption Standard (AES-256) and the company does not want to manage S3 encryption keys. Which of the following options should you use?
+
+
+
+45. The development team at a company wants to insert vendor records into an Amazon DynamoDB table as soon as the vendor uploads a new file into an Amazon S3 bucket. As a Developer Associate, which set of steps would you recommend to achieve this?
