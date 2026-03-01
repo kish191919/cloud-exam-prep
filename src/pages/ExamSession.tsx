@@ -262,13 +262,13 @@ const ExamSession = () => {
           />
         )}
         <div
-          className="flex-1 overflow-auto p-3 sm:p-5 md:p-8"
+          className="flex-1 overflow-hidden"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
           <div
             key={session.currentIndex}
-            className={navDirection === 'next' ? 'animate-slide-from-right' : 'animate-slide-from-left'}
+            className={`h-full ${navDirection === 'next' ? 'animate-slide-from-right' : 'animate-slide-from-left'}`}
           >
             <QuestionDisplay
               question={currentQuestion}

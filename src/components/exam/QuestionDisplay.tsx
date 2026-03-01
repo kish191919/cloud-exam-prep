@@ -127,33 +127,38 @@ const QuestionDisplay = ({
   );
 
   return (
-    <div className="w-full max-w-3xl mx-auto animate-fade-in">
-      {/* Header row: question number + tags + bookmark */}
-      <div className="flex items-start justify-between mb-4 gap-2">
-        <div className="flex items-center flex-wrap gap-1.5 min-w-0">
-          <span className="text-xs sm:text-sm font-medium text-muted-foreground shrink-0">
-            Question {questionNumber} of {totalQuestions}
-          </span>
-          {/* Tags */}
-          {question.tags.map(tag => (
-            <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
-              {translateTag(tag, isEn)}
+    <div className="w-full max-w-3xl mx-auto animate-fade-in h-full flex flex-col min-h-0">
+      {/* 질문 영역: 스크롤 가능한 상단 */}
+      <div className="flex-1 overflow-y-auto min-h-0 px-3 pt-3 sm:px-5 sm:pt-5 md:px-8 md:pt-6 pb-2">
+        {/* Header row: question number + tags + bookmark */}
+        <div className="flex items-start justify-between mb-3 sm:mb-4 gap-2">
+          <div className="flex items-center flex-wrap gap-1.5 min-w-0">
+            <span className="text-xs sm:text-sm font-medium text-muted-foreground shrink-0">
+              Question {questionNumber} of {totalQuestions}
             </span>
-          ))}
+            {/* Tags */}
+            {question.tags.map(tag => (
+              <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
+                {translateTag(tag, isEn)}
+              </span>
+            ))}
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onToggleBookmark}
+            className={`shrink-0 px-2 sm:px-3 ${isBookmarked ? 'text-accent' : 'text-muted-foreground'}`}
+          >
+            {isBookmarked ? <BookmarkCheck className="h-4 w-4 sm:mr-1" /> : <Bookmark className="h-4 w-4 sm:mr-1" />}
+            <span className="hidden sm:inline">{isBookmarked ? 'Bookmarked' : 'Bookmark'}</span>
+          </Button>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onToggleBookmark}
-          className={`shrink-0 px-2 sm:px-3 ${isBookmarked ? 'text-accent' : 'text-muted-foreground'}`}
-        >
-          {isBookmarked ? <BookmarkCheck className="h-4 w-4 sm:mr-1" /> : <Bookmark className="h-4 w-4 sm:mr-1" />}
-          <span className="hidden sm:inline">{isBookmarked ? 'Bookmarked' : 'Bookmark'}</span>
-        </Button>
+
+        <h2 className="text-base md:text-lg font-semibold leading-relaxed whitespace-pre-line">{questionText}</h2>
       </div>
 
-      <h2 className="text-base md:text-lg font-semibold leading-relaxed mb-5 whitespace-pre-line">{questionText}</h2>
-
+      {/* 보기 영역: 하단 고정 (border로 구분) */}
+      <div className="shrink-0 overflow-y-auto px-3 pb-3 sm:px-5 sm:pb-4 md:px-8 md:pb-6 pt-2.5 sm:pt-3 border-t">
       <div className="space-y-2.5 sm:space-y-3">
         {displayOptions.map((option, index) => {
           const isSelected = selectedOptionId === option.id;
@@ -271,6 +276,7 @@ const QuestionDisplay = ({
         </div>
       )}
 
+      </div>
     </div>
   );
 };
