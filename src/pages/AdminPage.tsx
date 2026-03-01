@@ -49,6 +49,7 @@ import {
   calcReadTime,
 } from '@/services/blogService';
 import type { BlogPost, BlogPostInput, BlogProvider } from '@/services/blogService';
+import MarkdownEditor from '@/components/MarkdownEditor';
 import { getAllExams } from '@/services/examService';
 import { getSetsForExam, getQuestionsForSet } from '@/services/questionService';
 import {
@@ -2076,7 +2077,6 @@ const BlogFormDialog = ({ exams, editItem, open, onClose, onSaved }: BlogFormDia
   const [isPinned, setIsPinned] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
   const [refLinkPairs, setRefLinkPairs] = useState<{ name: string; url: string }[]>([{ name: '', url: '' }]);
-  const [showPreview, setShowPreview] = useState(false);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -2116,7 +2116,6 @@ const BlogFormDialog = ({ exams, editItem, open, onClose, onSaved }: BlogFormDia
       setIsPublished(false);
       setRefLinkPairs([{ name: '', url: '' }]);
     }
-    setShowPreview(false);
   }, [editItem, open]);
 
   const handleSave = async () => {
@@ -2258,43 +2257,22 @@ const BlogFormDialog = ({ exams, editItem, open, onClose, onSaved }: BlogFormDia
           </div>
 
           {/* Content */}
-          <div>
-            <div className="flex items-center justify-between mb-1">
-              <label className="text-sm font-medium">내용 (한국어, 마크다운) *</label>
-              <button
-                type="button"
-                onClick={() => setShowPreview(!showPreview)}
-                className="flex items-center gap-1 text-xs text-muted-foreground hover:text-accent transition-colors"
-              >
-                {showPreview ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-                {showPreview ? '편집' : '미리보기'}
-              </button>
-            </div>
-            {showPreview ? (
-              <div className="min-h-[160px] max-h-[300px] overflow-y-auto p-3 rounded-md border border-input text-sm prose-sm">
-                <pre className="whitespace-pre-wrap text-xs text-muted-foreground">{content || '(내용 없음)'}</pre>
-              </div>
-            ) : (
-              <Textarea
-                placeholder="## 제목&#10;&#10;본문 내용을 마크다운으로 작성하세요..."
-                value={content}
-                onChange={e => setContent(e.target.value)}
-                rows={8}
-                className="font-mono text-sm"
-              />
-            )}
-          </div>
+          <MarkdownEditor
+            label="내용 (한국어, 마크다운)"
+            required
+            value={content}
+            onChange={setContent}
+            placeholder="## 제목&#10;&#10;본문 내용을 마크다운으로 작성하세요..."
+            rows={8}
+          />
 
-          <div>
-            <label className="text-sm font-medium mb-1 block">내용 (English, 선택)</label>
-            <Textarea
-              placeholder="## Title&#10;&#10;Content in English..."
-              value={contentEn}
-              onChange={e => setContentEn(e.target.value)}
-              rows={4}
-              className="font-mono text-sm"
-            />
-          </div>
+          <MarkdownEditor
+            label="내용 (English, 선택)"
+            value={contentEn}
+            onChange={setContentEn}
+            placeholder="## Title&#10;&#10;Content in English..."
+            rows={4}
+          />
 
           {/* Cover image */}
           <div>
