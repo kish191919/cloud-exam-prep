@@ -352,10 +352,10 @@ const Index = () => {
             })}
           </div>
           <div className="mt-10 md:mt-12 text-center">
-            <div className="inline-flex items-center gap-3 bg-accent/10 border border-accent/20 rounded-2xl px-6 md:px-8 py-3 md:py-4">
+            <a href="https://cloudmasterit.com/exams" className="inline-flex items-center gap-3 bg-accent/10 border border-accent/20 rounded-2xl px-6 md:px-8 py-3 md:py-4 cursor-pointer hover:bg-accent/20 transition-colors">
               <span className="text-2xl md:text-3xl font-black text-accent">{t('index.routine.totalTime')}</span>
               <span className="text-muted-foreground font-medium text-sm md:text-base break-keep">{t('index.routine.totalTimeDesc')}</span>
-            </div>
+            </a>
           </div>
         </div>
       </section>
