@@ -18,15 +18,4 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: (id) => {
-          if (id.includes("node_modules/mermaid"))   return "vendor-mermaid";
-          if (id.includes("node_modules/recharts"))  return "vendor-charts";
-          if (id.includes("node_modules/@supabase")) return "vendor-supabase";
-        },
-      },
-    },
-  },
 }));
