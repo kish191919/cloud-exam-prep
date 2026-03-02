@@ -92,7 +92,7 @@ const Index = () => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-accent/30 text-sm mb-6 bg-accent/10 backdrop-blur-sm shadow-lg">
             <Zap className="h-4 w-4 text-accent animate-pulse" />
-            <span className="font-semibold">{t('index.hero.badge')}</span>
+            <span className="font-semibold whitespace-nowrap">{t('index.hero.badge')}</span>
           </div>
 
           {/* Main Title */}
@@ -314,16 +314,19 @@ const Index = () => {
             {routineSteps.map((step, i) => {
               const IconComponent = iconMap[step.icon];
               return (
-                <a key={i} href="https://cloudmasterit.com/exams" className="block relative bg-background rounded-2xl p-5 md:p-6 border card-hover">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-bold mb-4">
-                    <Clock className="h-3 w-3" />
-                    {step.time}
-                  </div>
-                  <div className="absolute top-4 right-4 w-12 h-12 md:w-14 md:h-14 rounded-full bg-accent flex items-center justify-center text-accent-foreground text-xs font-black text-center leading-tight">
-                    {step.duration}
-                  </div>
-                  <div className="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-3">
-                    {IconComponent && <IconComponent className="h-4 w-4 md:h-5 md:w-5 text-accent" />}
+                <a key={i} href="https://cloudmasterit.com/exams" className="block bg-background rounded-2xl p-5 md:p-6 border card-hover">
+                  {/* 헤더: 아이콘 + 시간 배지 + 소요시간 — 한 줄 */}
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      {IconComponent && <IconComponent className="h-4 w-4 md:h-5 md:w-5 text-accent" />}
+                    </div>
+                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-bold flex-1 min-w-0">
+                      <Clock className="h-3 w-3 flex-shrink-0" />
+                      <span className="truncate">{step.time}</span>
+                    </div>
+                    <div className="w-11 h-11 rounded-full bg-accent flex items-center justify-center text-accent-foreground text-xs font-black text-center leading-tight flex-shrink-0">
+                      {step.duration}
+                    </div>
                   </div>
                   <h3 className="font-bold text-base md:text-lg mb-2 break-keep">{step.title}</h3>
                   <p className="text-xs md:text-sm text-muted-foreground leading-relaxed break-keep">{step.desc}</p>

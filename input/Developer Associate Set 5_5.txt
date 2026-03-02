@@ -1,0 +1,39 @@
+56. As a site reliability engineer, you are responsible for improving the company’s deployment by scaling and automating applications. As new application versions are ready for production you ensure that the application gets deployed to different sets of EC2 instances at different times allowing for a smooth transition. Using AWS CodeDeploy, which of the following options will allow you to do this?
+
+
+
+57. A development team is configuring Kinesis Data Streams for ingesting real-time data from various appliances. The team has declared a shard capacity of one to test the configuration. What happens if the capacity limits of an Amazon Kinesis data stream are exceeded while the data producer adds data to the data stream?
+
+
+
+
+58. A startup manages its Cloud resources with Elastic Beanstalk. The environment consists of few Amazon EC2 instances, an Auto Scaling Group (ASG), and an Elastic Load Balancer. Even after the Load Balancer marked an EC2 instance as unhealthy, the ASG has not replaced it with a healthy instance. As a Developer, suggest the necessary configurations to automate the replacement of unhealthy instance.
+
+
+
+59. A development team has configured an Elastic Load Balancer for host-based routing. The idea is to support multiple subdomains and different top-level domains. The rule *.sample.com matches which of the following?
+
+
+
+
+60. An e-commerce application writes log files into Amazon S3. The application also reads these log files in parallel on a near real-time basis. The development team wants to address any data discrepancies that might arise when the application overwrites an existing log file and then tries to read that specific log file. Which of the following options BEST describes the capabilities of Amazon S3 relevant to this scenario?
+
+
+
+61. You are a system administrator whose company recently moved its production application to AWS and migrated data from MySQL to AWS DynamoDB. You are adding new tables to AWS DynamoDB and need to allow your application to query your data by the primary key and an alternate key. This option must be added when first creating tables otherwise changes cannot be made afterward. Which of the following actions should you take?
+
+
+
+62. A company wants to automate the creation of ECS clusters using CloudFormation. The process has worked for a while, but after creating task definitions and assigning roles, the development team discovers that the tasks for containers are not using the permissions assigned to them. Which ECS config must be set to allow ECS tasks to use IAM roles?
+
+
+
+63. A company wants to implement authentication for its new RESTful API service that uses Amazon API Gateway. To authenticate the calls, each request must include HTTP headers with a client ID and user ID. These credentials must be compared to the authentication data in a DynamoDB table. As an AWS Certified Developer Associate, which of the following would you recommend for implementing this authentication in API Gateway?
+
+
+
+64. A developer is configuring the redirect actions for an Application Load Balancer. The developer stumbled upon the following snippet of code. Which of the following is an example of a query string condition that the developer can use on AWS CLI?
+
+
+
+65. Your web application front end consists of 5 EC2 instances behind an Application Load Balancer. You have configured your web application to capture the IP address of the client making requests. When viewing the data captured you notice that every IP address being captured is the same, which also happens to be the IP address of the Application Load Balancer. What should you do to identify the true IP address of the client?
