@@ -1,0 +1,57 @@
+31. A Company uses a large set of EBS volumes for their fleet of Amazon EC2 instances. As an AWS Certified Developer Associate, your help has been requested to understand the security features of the EBS volumes. The company does not want to build or maintain their own encryption key management infrastructure. Can you help them understand what works for Amazon EBS encryption? 
+
+
+
+32. A new recruit is trying to understand the nuances of EC2 Auto Scaling. As an AWS Certified Developer Associate, you have been asked to mentor the new recruit. Can you identify and explain the correct statements about Auto Scaling to the new recruit?
+
+
+
+33. The development team at an e-commerce company wants to run a serverless data store service on two docker containers using shared memory. Which of the following ECS configurations can be used to facilitate this use-case?
+
+
+
+34. You are a software engineer working for an IT company and are asked to contribute to a growing internal application that includes dashboards for data visualization. You are provisioning your AWS DynamoDB table and need to perform 10 strongly consistent reads per second of 4 KB in size each. How many Read Capacity Units (RCUs) are needed?
+
+
+
+35. A multi-national company runs its technology operations on AWS Cloud. As part of their storage solution, they use a large number of EBS volumes, with AWS Config and CloudTrail activated. A manager has tried to find the user name that created an EBS volume by searching CloudTrail events logs but wasn't successful. As a Developer Associate, which of the following would you recommend as the correct solution?
+
+
+
+36. A company is looking at storing their less frequently accessed files on AWS that can be concurrently accessed by hundreds of EC2 instances. The company needs the most cost-effective file storage service that provides immediate access to data whenever needed. Which of the following options represents the best solution for the given requirements?
+
+
+
+37. A company has configured an Auto Scaling group with health checks. The configuration is set to the desired capacity value of 3 and maximum capacity value of 3. The EC2 instances of your Auto Scaling group are configured to scale when CPU utilization is at 60 percent and is now running at 80 percent utilization. Which of the following will take place?
+
+
+
+38. A developer has just completed configuring the Application Load Balancer for the EC2 instances. Just as he started testing his configuration, he realized that he has missed assigning target groups to his ALB. Which error code should he expect in his debug logs?
+
+
+
+39. The development team at a health-care company is planning to migrate to AWS Cloud from the on-premises data center. The team is evaluating Amazon RDS as the database tier for its flagship application. Which of the following would you identify as correct for RDS Multi-AZ?
+
+
+
+40. Your organization has developers that merge code changes regularly to an AWS CodeCommit repository. Your pipeline has AWS CodeCommit as the source and you would like to configure a rule that reacts to changes in CodeCommit. Which of the following options do you choose for this type of integration?
+
+
+
+41. As an AWS Certified Developer Associate, you have been hired to consult with a company that uses the NoSQL database for mobile applications. The developers are using DynamoDB to perform operations.  but are limited in knowledge. They would like to be more efficient with retrieving some attributes rather than all. Which of the following recommendations would you provide?
+
+
+
+42. Your team has just signed up an year-long contract with a client maintaining a three-tier web application, that needs to be moved to AWS Cloud. The application has steady traffic throughout the day and needs to be on a reliable system with no down-time or access issues. The solution needs to be cost-optimal for this startup. Which of the following options should you choose?
+
+
+
+43. You're a developer for 'Movie Gallery', a company that just migrated to the cloud. A database must be created using NoSQL technology to hold movies that are listed for public viewing. You are taking an important step in designing the database with DynamoDB and need to choose the appropriate partition key. Which of the following unique attributes satisfies this requirement?
+
+
+
+44. A development team has been using Amazon S3 service as an object store. With Amazon S3 turning strongly consistent, the team wants to understand the impact of this change on its data storage practices. As a developer associate, can you identify the key characteristics of the strongly consistent data model followed by S3?
+
+
+
+45. A video encoding application running on an EC2 instance takes about 20 seconds on average to process each raw footage file. The application picks the new job messages from an SQS queue. The development team needs to account for the use-case when the video encoding process takes longer than usual so that the same raw footage is not processed by multiple consumers. As a Developer Associate, which of the following solutions would you recommend to address this use-case?

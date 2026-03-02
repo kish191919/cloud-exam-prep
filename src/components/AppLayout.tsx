@@ -52,7 +52,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to="/exams" className="flex items-center gap-2 cursor-pointer">
+              <Link to="/dashboard" className="flex items-center gap-2 cursor-pointer">
                 <User className="h-4 w-4" />
                 {tAuth('myPage')}
               </Link>
