@@ -61,7 +61,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .from('profiles')
       .select('subscription_tier')
       .eq('id', userId)
-      .single();
+      .maybeSingle();
+    if (!data) {
+      // profiles 행이 없으면 생성 (트리거가 실패한 경우 복구)
+      await supabase.from('profiles').upsert({ id: userId }, { onConflict: 'id' });
+    }
     setSubscriptionTier((data?.subscription_tier as SubscriptionTier) ?? 'free');
   };
 
