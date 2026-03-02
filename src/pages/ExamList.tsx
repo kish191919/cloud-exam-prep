@@ -411,7 +411,7 @@ const ExamList = () => {
           <div className="overflow-y-auto max-h-[5.5rem] pr-0.5">
             <div
               className="grid gap-1.5"
-              style={{ gridTemplateColumns: `repeat(${Math.min(3, sets.length || 1)}, 110px)` }}
+              style={{ gridTemplateColumns: `repeat(${Math.min(2, sets.length || 1)}, 110px)` }}
             >
               {sets.map(set => {
                 const isSelected = selectedSetId === set.id;
