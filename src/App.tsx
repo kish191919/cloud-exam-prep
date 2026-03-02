@@ -24,6 +24,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { FontSizeProvider } from "./contexts/FontSizeContext";
 import AuthModal from "./components/AuthModal";
+import PWAInstallBanner from "./components/PWAInstallBanner";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <AuthModal />
+          <PWAInstallBanner />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<ProfilePage />} />

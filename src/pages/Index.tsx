@@ -16,6 +16,18 @@ import {
 import { useTranslation } from 'react-i18next';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
 
+// iOS Safari 감지 (Chrome iOS, Firefox iOS 제외)
+const isIOSSafari =
+  typeof navigator !== 'undefined' &&
+  /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+  /Safari/.test(navigator.userAgent) &&
+  !/CriOS|FxiOS/.test(navigator.userAgent);
+
+const isStandalone =
+  typeof window !== 'undefined' &&
+  (window.matchMedia('(display-mode: standalone)').matches ||
+    (window.navigator as any).standalone === true);
+
 const Index = () => {
   const { t } = useTranslation(['pages', 'common']);
   const { canInstall, install } = usePWAInstall();
@@ -433,15 +445,18 @@ const Index = () => {
                 {t('index.cta.button')} <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            {canInstall && (
+            {!isStandalone && (canInstall || isIOSSafari) && (
               <Button
                 size="lg"
                 variant="ghost"
-                onClick={install}
+                onClick={canInstall ? install : undefined}
                 className="border-2 border-primary-foreground/40 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground text-base px-8 py-6 backdrop-blur-sm w-full sm:w-auto"
               >
                 <Smartphone className="mr-2 h-5 w-5" />
                 앱으로 설치
+                {isIOSSafari && !canInstall && (
+                  <span className="ml-2 text-xs opacity-70">(↑ 공유 → 홈 화면에 추가)</span>
+                )}
               </Button>
             )}
           </div>
