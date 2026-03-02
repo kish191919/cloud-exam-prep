@@ -7,6 +7,13 @@
   "rewrites": [
     {
       "source": "/blog/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "Googlebot|Yeti|Baiduspider|bingbot|DuckDuckBot|facebookexternalhit|Twitterbot|LinkedInBot|Slack|Discord|WhatsApp|KakaoTalk|Kakaostory|Line|Telegram|Pinterest|redditbot"
+        }
+      ],
       "destination": "/api/blog/[slug]"
     },
     {
