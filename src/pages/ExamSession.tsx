@@ -264,8 +264,8 @@ const ExamSession = () => {
             <ExamTimer startedAt={session.startedAt} timeLimitSec={session.timeLimitSec} onTimeUp={handleTimeUp} />
           )}
 
-          {/* 전체화면 버튼 (모바일 전용) */}
-          {(isFullscreenSupported || isIOS || isChrome) && (
+          {/* 전체화면 버튼 (모바일 전용, PWA standalone 모드에서는 숨김) */}
+          {!isStandalone && (isFullscreenSupported || isIOS || isChrome) && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
