@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 import AppLayout from '@/components/AppLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -1304,6 +1305,7 @@ const STATUS_COLOR: Record<ReportStatus, string> = {
 const ReportManager = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [reports, setReports] = useState<QuestionReport[]>([]);
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [statusFilter, setStatusFilter] = useState<ReportStatus | 'all'>('all');
@@ -1354,10 +1356,13 @@ const ReportManager = () => {
         adminNote: adminNote.trim() || undefined,
         resolvedBy: user?.id,
       });
+      toast({ title: '상태가 업데이트되었습니다.' });
       setSelectedReport(null);
       loadReports();
     } catch (e: any) {
-      setSaveError(e.message ?? '저장 중 오류가 발생했습니다.');
+      const msg = (e as Error).message ?? '저장 중 오류가 발생했습니다.';
+      setSaveError(msg);
+      toast({ title: '오류', description: msg, variant: 'destructive' });
     } finally {
       setSaving(false);
     }
