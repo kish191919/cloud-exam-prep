@@ -1,0 +1,61 @@
+1. A company is looking at a service/tool to automate and minimize the time spent on keeping the server images up-to-date. These server images are used by Amazon Elastic Compute Cloud (Amazon EC2) instances as well as the on-premises systems. Which AWS service will help achieve the company's need?
+
+
+
+2. As part of log analysis, you have realized that one or more AWS-owned IP addresses are being used for port scanning your on-premises server. Which service/team should you connect to resolve this issue?
+
+
+
+3. Which of the following represents the correct scenario where an Auto Scaling group's (ASG) predictive scaling can be effectively used to maintain the required number of AWS resources?
+
+
+
+4. Which of the following services/tools offers a user-friendly graphical user interface to manage AWS Snowball devices without a need for command-line interface or REST APIs?
+
+
+
+5. A weather-tracking application is built using Amazon DynamoDB. The performance of the application has been consistently good. But lately, the team has realized that during holidays and travel seasons, the load on the application is high and the read requests consume most of the database resources, thereby drastically increasing the overall application latency. Which feature/service will help resolve this issue?
+
+
+
+6. Which of the following AWS services can be used to continuously monitor both malicious activities as well as unauthorized behavior to protect your AWS accounts and workloads?
+
+
+
+7. A company is looking for ways to make its desktop applications available to the employees from browsers on their devices/laptops. Which AWS service will help achieve this requirement without having to procure servers or maintain infrastructure?
+
+
+
+8. As an AWS Cloud Practitioner, you have been tasked to find examples of AWS Cloud solution designs. Which service/feature would you recommend?
+
+
+
+9. Historically, IT departments had to over-provision for peak demand. IT professionals may bring this legacy mindset to the table when they build their cloud infrastructure leading to over-provisioned resources and unnecessary costs. Right-sizing of resources is necessary to reduce infrastructure costs while still using cloud functionality optimally. Which feature of the AWS Cloud refers to right-sizing the resources?
+
+
+
+10. By default, which of the following events are logged by AWS CloudTrail?
+
+
+
+11. A financial services company needs to retain its data for 10 years to meet compliance norms. Which Amazon Simple Storage Service (Amazon S3) storage class is the best fit for this use case considering that the data has to be stored at a minimal cost?
+
+
+
+12. Which of the following will help you control the incoming traffic to an Amazon EC2 instance?
+
+
+
+13. Which of the following data sources are used by Amazon Detective to analyze events and identify potential security issues?
+
+
+
+14. Which of the following use-cases can be solved using the Amazon Forecast service?
+
+
+
+15. An e-learning company wants to build a knowledge graph by leveraging a fully managed database. Which of the following is the best fit for this requirement?
+
+
+
+

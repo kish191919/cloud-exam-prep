@@ -31,7 +31,10 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-card/80 backdrop-blur-md">
+    <header
+      className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-card/80 backdrop-blur-md"
+      style={{ paddingTop: 'env(safe-area-inset-top)' }}
+    >
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
         <Link to="/" className="flex items-center gap-2 font-bold text-xl">
           <Cloud className="h-7 w-7 text-accent" />
