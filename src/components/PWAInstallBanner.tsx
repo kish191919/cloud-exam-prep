@@ -10,8 +10,7 @@ const DISMISS_DAYS = 7;
 function detectIOSSafari() {
   const ua = navigator.userAgent;
   const isIOS = /iPad|iPhone|iPod/.test(ua);
-  const isIOSSafari = isIOS && /Safari/.test(ua) && !/CriOS|FxiOS/.test(ua);
-  return isIOSSafari;
+  return isIOS && /Safari/.test(ua) && !/CriOS|FxiOS/.test(ua);
 }
 
 // 이미 홈 화면에서 실행 중인지 감지
@@ -24,16 +23,21 @@ function isRunningStandalone() {
 
 export default function PWAInstallBanner() {
   const { canInstall, install, isInstalled } = usePWAInstall();
-  const [dismissed, setDismissed] = useState(false);
-  const [isIOSSafari, setIsIOSSafari] = useState(false);
-  const [standalone, setStandalone] = useState(false);
 
+  // 모든 상태를 동기적으로 초기화 → 첫 렌더부터 올바른 값
+  const [dismissed, setDismissed] = useState(() => {
+    const until = localStorage.getItem(DISMISSED_UNTIL_KEY);
+    return until ? Date.now() < parseInt(until) : false;
+  });
+  const [isIOSSafari] = useState(() => detectIOSSafari());
+  const [standalone] = useState(() => isRunningStandalone());
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+
+  // 창 크기 변경 시 모바일 여부 재감지
   useEffect(() => {
-    const dismissedUntil = localStorage.getItem(DISMISSED_UNTIL_KEY);
-    const isDismissed = dismissedUntil ? Date.now() < parseInt(dismissedUntil) : false;
-    setDismissed(isDismissed);
-    setIsIOSSafari(detectIOSSafari());
-    setStandalone(isRunningStandalone());
+    const check = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
   }, []);
 
   const handleDismiss = () => {
@@ -42,13 +46,22 @@ export default function PWAInstallBanner() {
     setDismissed(true);
   };
 
+  // 인라인 스타일: 모바일에서는 탭바(3.5rem) 위, 데스크톱은 bottom-0
+  const bannerStyle: React.CSSProperties = {
+    bottom: isMobile ? 'calc(3.5rem + env(safe-area-inset-bottom, 0px))' : 0,
+    paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+  };
+
   // 이미 설치됐거나, 닫혔거나, standalone 실행 중이면 숨김
   if (dismissed || isInstalled || standalone) return null;
 
   // iOS Safari: 수동 설치 안내 배너
   if (isIOSSafari) {
     return (
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border shadow-xl safe-area-bottom pwa-banner-mobile-offset">
+      <div
+        className="fixed left-0 right-0 z-[9999] bg-card border-t border-border shadow-xl"
+        style={bannerStyle}
+      >
         <div className="flex items-start gap-3 px-4 py-3 max-w-lg mx-auto">
           <Smartphone className="h-5 w-5 text-primary mt-0.5 shrink-0" />
           <div className="flex-1 min-w-0">
@@ -80,7 +93,10 @@ export default function PWAInstallBanner() {
   // Chrome/Edge/Samsung Internet: 설치 버튼 배너
   if (canInstall) {
     return (
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border shadow-xl pwa-banner-mobile-offset">
+      <div
+        className="fixed left-0 right-0 z-[9999] bg-card border-t border-border shadow-xl"
+        style={bannerStyle}
+      >
         <div className="flex items-center gap-3 px-4 py-3 max-w-lg mx-auto">
           <Smartphone className="h-5 w-5 text-primary shrink-0" />
           <div className="flex-1 min-w-0">
