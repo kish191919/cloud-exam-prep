@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
 
 type SubscriptionTier = 'free' | 'premium';
 
@@ -67,6 +68,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     let profileChannel: ReturnType<typeof supabase.channel> | null = null;
     let reportChannel: ReturnType<typeof supabase.channel> | null = null;
+
+    // OAuth redirect error 감지
+    const params = new URLSearchParams(window.location.search);
+    const oauthError = params.get('error');
+    const oauthErrorDesc = params.get('error_description');
+    if (oauthError) {
+      console.error('[Auth] OAuth error:', oauthError, oauthErrorDesc);
+      toast.error(oauthErrorDesc || '소셜 로그인에 실패했습니다.');
+      window.history.replaceState({}, '', window.location.pathname);
+    }
 
     // 앱 시작 시 무료 이벤트 설정 조회 및 realtime 구독
     fetchFreeEvent();
@@ -146,12 +157,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
         fetchProfile(session.user.id);
         subscribeToUserChannels(session.user.id);
+        if (event === 'SIGNED_IN') {
+          setAuthModalOpen(false);
+        }
       } else {
         setSubscriptionTier('free');
         setUnreadReportCount(0);
