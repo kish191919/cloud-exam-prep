@@ -1,0 +1,37 @@
+46. What is prompt engineering in the context of generative AI?
+
+
+
+47. Which of the following is a potential disadvantage of generative AI solutions?
+
+
+
+48. What is the difference between zero-shot, one-shot, and few-shot learning in generative AI?
+
+
+
+49. Which AWS services can be used for document analysis and information extraction? 
+
+
+
+50. What is the purpose of Amazon SageMaker Model Monitor?
+
+
+
+51. A design company is using a foundation model (FM) on Amazon Bedrock to generate images for various projects. The company wants to have control over how detailed or abstract each generated image appears Which model parameter should the company modify?
+
+
+
+52. A financial company has offices in different countries worldwide. The company requires that all API calls between generative AI applications and foundation models (FM) must not travel across the public internet. Which AWS service should the company use?
+
+
+
+53. An ecommerce company is deploying a chatbot. The chatbot will give users the ability to ask questions about the company’s products and receive details on users’ orders. The company must implement safeguards for the chatbot to filter harmful content from the input prompts and chatbot responses. Which AWS feature or resource meets these requirements?
+
+
+
+54. A company wants to learn about generative AI applications in an experimental environment. Which solution will meet this requirement MOST cost-effectively?
+
+
+
+55. A company needs to collect a large dataset to train an AI assistant in a specific content area. Which dataset will meet this requirement?
