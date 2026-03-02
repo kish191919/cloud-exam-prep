@@ -59,7 +59,10 @@ const Index = () => {
       <Navbar />
 
       {/* Beta Announcement Bar */}
-      <div className="pt-14 w-full bg-gradient-to-r from-accent/12 via-accent/8 to-accent/12 border-b border-accent/20">
+      <div
+        className="w-full bg-gradient-to-r from-accent/12 via-accent/8 to-accent/12 border-b border-accent/20"
+        style={{ paddingTop: 'calc(3.5rem + env(safe-area-inset-top))' }}
+      >
         <div className="flex items-center justify-center gap-2 sm:gap-3 px-4 py-3 sm:py-4 flex-wrap text-center">
           <Gift className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0" />
           <span className="text-sm sm:text-base font-black uppercase tracking-widest text-accent">베타 오픈 기간</span>

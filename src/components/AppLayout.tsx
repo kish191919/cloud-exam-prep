@@ -84,7 +84,10 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b bg-card px-4 py-3">
+      <header
+        className="border-b bg-card px-4 py-3"
+        style={{ paddingTop: 'calc(0.75rem + env(safe-area-inset-top))' }}
+      >
         <div className="container mx-auto flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 font-bold text-lg">
             <Cloud className="h-6 w-6 text-accent" />

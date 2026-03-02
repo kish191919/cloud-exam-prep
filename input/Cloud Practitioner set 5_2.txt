@@ -1,0 +1,57 @@
+16. A gaming company needs compute and storage services close to edge locations in order to ensure ultra-low latency for end-users and devices that connect through mobile networks. Which AWS service is the best fit for this requirement?
+
+
+
+17. Per the AWS Shared Responsibility Model, management of which of the following AWS services is the responsibility of the customer?
+
+
+
+18. A supply chain company is looking for a database that provides a centrally verifiable history of all changes made to data residing in it. This functionality is critical for the product and needs to be available off the shelf without the need for any customizations. Which of the following databases is the right choice for this use case?
+
+
+
+19. Which of the following statements are correct regarding the health monitoring and reporting capabilities supported by AWS Elastic Beanstalk?
+
+
+
+20. A Cloud Practitioner wants to use CIDR block notation when providing an IP address range. Which of the following AWS network services/utilities allow this feature?
+
+
+
+21. Which of the following are the security best practices suggested by AWS for Identity and Access Management (IAM)?
+
+
+
+22. Which of the following AWS services are offered free of cost?
+
+
+
+23. A team lead is reviewing the AWS services that can be used in the development workflow for his company. Which of the following statements are correct regarding the capabilities of these AWS services?
+
+
+
+24. An e-commerce company needs to generate custom reports and graphs every week for analyzing the product sales data. The company is looking at a tool/service that will help them analyze this data using interactive dashboards with minimal effort. The dashboards also need to be accessible from any device. Which AWS tool/service will you recommend for this use-case?
+
+
+
+25. A company is moving its on-premises application to AWS Cloud. The application uses in-memory caches for running custom workloads. Which Amazon Elastic Compute Cloud (Amazon EC2) instance type is the right choice for the given requirement?
+
+
+
+26. A company has defined a baseline that mentions the number of AWS resources to be used for different stages of application testing. However, the company realized that employees are not adhering to the guidelines and provisioning additional resources via API calls, resulting in higher testing costs. Which AWS service will help the company raise alarms whenever the baseline resource numbers are crossed?
+
+
+
+27. Which of the following is a repository service that helps in maintaining application dependencies via integration with commonly used package managers and build tools like Maven, Gradle, npm, etc?
+
+
+
+28. An e-commerce company has its on-premises data storage on an NFS file system that is accessed in parallel by multiple applications. The company is looking at moving the applications and data stores to AWS Cloud. Which storage service should the company use to move their files to AWS Cloud seamlessly if the application is hosted on Amazon Elastic Compute Cloud (Amazon EC2) instances?
+
+
+
+29. A team manager needs data about the changes that have taken place for AWS resources in his account during the past two weeks. Which AWS service can help get this data?
+
+
+
+30. Which of the following statements are true about AWS Elastic Beanstalk?
