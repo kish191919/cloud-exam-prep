@@ -200,3 +200,15 @@
     box-shadow: 0 8px 30px hsl(220 40% 10% / 0.1);
   }
 }
+
+/* PWA 배너: 아이폰 safe-area 패딩 */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* PWA 배너: 모바일에서 하단 탭바(3.5rem) 위에 표시 */
+@media (max-width: 767px) {
+  .pwa-banner-mobile-offset {
+    bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px));
+  }
+}

@@ -3,7 +3,8 @@ import { X, Smartphone } from 'lucide-react';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
 import { Button } from '@/components/ui/button';
 
-const DISMISSED_KEY = 'pwa-banner-dismissed';
+const DISMISSED_UNTIL_KEY = 'pwa-banner-dismissed-until';
+const DISMISS_DAYS = 7;
 
 // iOS Safari에서만 true (Chrome iOS, Firefox iOS 제외)
 function detectIOSSafari() {
@@ -28,13 +29,16 @@ export default function PWAInstallBanner() {
   const [standalone, setStandalone] = useState(false);
 
   useEffect(() => {
-    setDismissed(localStorage.getItem(DISMISSED_KEY) === '1');
+    const dismissedUntil = localStorage.getItem(DISMISSED_UNTIL_KEY);
+    const isDismissed = dismissedUntil ? Date.now() < parseInt(dismissedUntil) : false;
+    setDismissed(isDismissed);
     setIsIOSSafari(detectIOSSafari());
     setStandalone(isRunningStandalone());
   }, []);
 
   const handleDismiss = () => {
-    localStorage.setItem(DISMISSED_KEY, '1');
+    const expiry = Date.now() + DISMISS_DAYS * 24 * 60 * 60 * 1000;
+    localStorage.setItem(DISMISSED_UNTIL_KEY, String(expiry));
     setDismissed(true);
   };
 
@@ -44,7 +48,7 @@ export default function PWAInstallBanner() {
   // iOS Safari: 수동 설치 안내 배너
   if (isIOSSafari) {
     return (
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border shadow-xl safe-area-bottom">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border shadow-xl safe-area-bottom pwa-banner-mobile-offset">
         <div className="flex items-start gap-3 px-4 py-3 max-w-lg mx-auto">
           <Smartphone className="h-5 w-5 text-primary mt-0.5 shrink-0" />
           <div className="flex-1 min-w-0">
@@ -76,7 +80,7 @@ export default function PWAInstallBanner() {
   // Chrome/Edge/Samsung Internet: 설치 버튼 배너
   if (canInstall) {
     return (
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border shadow-xl">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border shadow-xl pwa-banner-mobile-offset">
         <div className="flex items-center gap-3 px-4 py-3 max-w-lg mx-auto">
           <Smartphone className="h-5 w-5 text-primary shrink-0" />
           <div className="flex-1 min-w-0">
