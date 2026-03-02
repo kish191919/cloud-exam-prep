@@ -1,11 +1,22 @@
 import { Question, ExamMode } from '@/types/exam';
-import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb, Lock } from 'lucide-react';
+import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb, Lock, Flag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { seededShuffle } from '@/utils/shuffle';
 import { translateTag } from '@/utils/tagTranslation';
 import PremiumGate from '@/components/PremiumGate';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+import { submitReport, hasReported, REASON_LABELS, type ReportReason } from '@/services/reportService';
 
 interface QuestionDisplayProps {
   question: Question;
@@ -37,6 +48,43 @@ const QuestionDisplay = ({
 }: QuestionDisplayProps) => {
   const { i18n } = useTranslation();
   const isEn = i18n.language === 'en';
+  const { user } = useAuth();
+  const { toast } = useToast();
+
+  // 신고 다이얼로그 상태
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportReason, setReportReason] = useState<ReportReason>('wrong_answer');
+  const [reportComment, setReportComment] = useState('');
+  const [reportSubmitting, setReportSubmitting] = useState(false);
+  const [alreadyReported, setAlreadyReported] = useState(false);
+
+  // 문제가 바뀌면 신고 여부 재확인
+  useEffect(() => {
+    setAlreadyReported(false);
+    if (!user) return;
+    hasReported(question.id, user.id).then(setAlreadyReported);
+  }, [question.id, user]);
+
+  const handleReportSubmit = async () => {
+    setReportSubmitting(true);
+    try {
+      await submitReport({
+        questionId: question.id,
+        userId: user?.id,
+        userEmail: user?.email,
+        reason: reportReason,
+        comment: reportComment.trim() || undefined,
+      });
+      setAlreadyReported(true);
+      setReportOpen(false);
+      setReportComment('');
+      toast({ description: '신고가 접수되었습니다. 검토 후 결과를 알려드리겠습니다.' });
+    } catch {
+      toast({ description: '신고 제출 중 오류가 발생했습니다.', variant: 'destructive' });
+    } finally {
+      setReportSubmitting(false);
+    }
+  };
 
   // Select language-appropriate content, falling back to Korean if English not available
   const questionText = (isEn && question.textEn) ? question.textEn : question.text;
@@ -143,15 +191,26 @@ const QuestionDisplay = ({
               </span>
             ))}
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onToggleBookmark}
-            className={`shrink-0 px-2 sm:px-3 ${isBookmarked ? 'text-accent' : 'text-muted-foreground'}`}
-          >
-            {isBookmarked ? <BookmarkCheck className="h-4 w-4 sm:mr-1" /> : <Bookmark className="h-4 w-4 sm:mr-1" />}
-            <span className="hidden sm:inline">{isBookmarked ? 'Bookmarked' : 'Bookmark'}</span>
-          </Button>
+          <div className="flex items-center gap-1 shrink-0">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onToggleBookmark}
+              className={`px-2 sm:px-3 ${isBookmarked ? 'text-accent' : 'text-muted-foreground'}`}
+            >
+              {isBookmarked ? <BookmarkCheck className="h-4 w-4 sm:mr-1" /> : <Bookmark className="h-4 w-4 sm:mr-1" />}
+              <span className="hidden sm:inline">{isBookmarked ? 'Bookmarked' : 'Bookmark'}</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setReportOpen(true)}
+              title={alreadyReported ? '신고한 문제' : '문제 신고'}
+              className={`px-2 ${alreadyReported ? 'text-orange-500' : 'text-muted-foreground'}`}
+            >
+              <Flag className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         <h2 className="text-base md:text-lg font-semibold leading-relaxed whitespace-pre-line md:mb-5">{questionText}</h2>
@@ -277,6 +336,69 @@ const QuestionDisplay = ({
       )}
 
       </div>
+
+      {/* 문제 신고 다이얼로그 */}
+      <Dialog open={reportOpen} onOpenChange={setReportOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Flag className="h-4 w-4 text-orange-500" />
+              문제 신고
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4 py-2">
+            <p className="text-sm text-muted-foreground">어떤 문제가 있나요?</p>
+            <div className="space-y-2">
+              {(Object.keys(REASON_LABELS) as ReportReason[]).map(reason => (
+                <label
+                  key={reason}
+                  className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                    reportReason === reason
+                      ? 'border-accent bg-accent/5'
+                      : 'border-border hover:border-muted-foreground/30'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="report-reason"
+                    value={reason}
+                    checked={reportReason === reason}
+                    onChange={() => setReportReason(reason)}
+                    className="accent-accent"
+                  />
+                  <span className="text-sm">{REASON_LABELS[reason]}</span>
+                </label>
+              ))}
+            </div>
+
+            <div>
+              <p className="text-sm font-medium mb-1.5">상세 설명 (선택)</p>
+              <Textarea
+                placeholder="구체적인 내용을 입력해주세요..."
+                value={reportComment}
+                onChange={e => setReportComment(e.target.value)}
+                rows={3}
+                className="text-sm resize-none"
+              />
+            </div>
+          </div>
+
+          <DialogFooter className="gap-2">
+            <Button variant="outline" size="sm" onClick={() => setReportOpen(false)}>
+              취소
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleReportSubmit}
+              disabled={reportSubmitting}
+              className="bg-accent text-accent-foreground hover:bg-accent/90"
+            >
+              {reportSubmitting ? '제출 중...' : '신고 제출'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

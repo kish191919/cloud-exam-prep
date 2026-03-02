@@ -32,6 +32,7 @@ import {
   ChevronLeft, ChevronRight,
   BarChart3, TrendingUp, Clock, Activity, CalendarDays,
   RefreshCw, Megaphone, Pin, CheckSquare, NotebookPen, Eye, EyeOff, Gift,
+  Flag, ExternalLink,
 } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -40,6 +41,15 @@ import {
   updateAnnouncement,
   deleteAnnouncement,
 } from '@/services/boardService';
+import {
+  getAllReports,
+  updateReport,
+  getReportCounts,
+  REASON_LABELS,
+  STATUS_LABELS,
+  type QuestionReport,
+  type ReportStatus,
+} from '@/services/reportService';
 import type { Announcement, AnnouncementInput, AnnouncementCategory } from '@/types/announcement';
 import {
   getAllBlogPostsAdmin,
@@ -1277,6 +1287,251 @@ const SubscriptionManager = () => {
           )}
         </CardContent>
       </Card>
+    </div>
+  );
+};
+
+// ─── Report Manager Component ─────────────────────────────────────────────────
+const STATUS_COLOR: Record<ReportStatus, string> = {
+  pending:   'bg-orange-100 text-orange-700 dark:bg-orange-950/40 dark:text-orange-400',
+  reviewing: 'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400',
+  resolved:  'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400',
+  dismissed: 'bg-muted text-muted-foreground',
+};
+
+const ReportManager = () => {
+  const { user } = useAuth();
+  const [reports, setReports] = useState<QuestionReport[]>([]);
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [statusFilter, setStatusFilter] = useState<ReportStatus | 'all'>('all');
+  const [loading, setLoading] = useState(true);
+  const [selectedReport, setSelectedReport] = useState<QuestionReport | null>(null);
+  const [adminNote, setAdminNote] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  const loadReports = async () => {
+    setLoading(true);
+    try {
+      const [data, cnt] = await Promise.all([
+        getAllReports(statusFilter),
+        getReportCounts(),
+      ]);
+      setReports(data);
+      setCounts(cnt);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { loadReports(); }, [statusFilter]);
+
+  const openDetail = (report: QuestionReport) => {
+    setSelectedReport(report);
+    setAdminNote(report.admin_note ?? '');
+    setSaveError(null);
+  };
+
+  const handleUpdateStatus = async (newStatus: ReportStatus) => {
+    if (!selectedReport) return;
+    if (newStatus === 'resolved' && !adminNote.trim()) {
+      setSaveError('처리 완료 시 관리자 답변을 입력해주세요.');
+      return;
+    }
+    setSaving(true);
+    setSaveError(null);
+    try {
+      await updateReport(selectedReport.id, {
+        status: newStatus,
+        adminNote: adminNote.trim() || undefined,
+        resolvedBy: user?.id,
+      });
+      setSelectedReport(null);
+      loadReports();
+    } catch (e: any) {
+      setSaveError(e.message ?? '저장 중 오류가 발생했습니다.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const filterButtons: { label: string; value: ReportStatus | 'all' }[] = [
+    { label: `전체 (${counts.total ?? 0})`, value: 'all' },
+    { label: `대기 (${counts.pending ?? 0})`, value: 'pending' },
+    { label: `검토 중 (${counts.reviewing ?? 0})`, value: 'reviewing' },
+    { label: `완료 (${counts.resolved ?? 0})`, value: 'resolved' },
+    { label: `기각 (${counts.dismissed ?? 0})`, value: 'dismissed' },
+  ];
+
+  return (
+    <div className="space-y-4">
+      {/* 필터 + 새로고침 */}
+      <div className="flex flex-wrap items-center gap-2">
+        {filterButtons.map(btn => (
+          <Button
+            key={btn.value}
+            variant={statusFilter === btn.value ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setStatusFilter(btn.value)}
+          >
+            {btn.label}
+          </Button>
+        ))}
+        <Button variant="ghost" size="icon" className="h-8 w-8 ml-auto" onClick={loadReports}>
+          <RefreshCw className="h-4 w-4" />
+        </Button>
+      </div>
+
+      <Card>
+        <CardContent className="p-0">
+          {loading ? (
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            </div>
+          ) : reports.length === 0 ? (
+            <div className="text-center py-16 text-muted-foreground">
+              <Flag className="h-10 w-10 mx-auto mb-3 opacity-30" />
+              <p className="text-sm">신고 내역이 없습니다.</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-border">
+              {reports.map(report => (
+                <div
+                  key={report.id}
+                  className="flex items-start gap-3 px-4 py-3 hover:bg-muted/30 transition-colors"
+                >
+                  <div className="flex-1 min-w-0 space-y-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-mono text-xs text-muted-foreground">{report.question_id}</span>
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
+                        {REASON_LABELS[report.reason]}
+                      </span>
+                      <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${STATUS_COLOR[report.status]}`}>
+                        {STATUS_LABELS[report.status]}
+                      </span>
+                    </div>
+                    {report.comment && (
+                      <p className="text-xs text-muted-foreground line-clamp-1">{report.comment}</p>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                      {report.user_email ?? '비회원'} · {new Date(report.created_at).toLocaleDateString('ko-KR')}
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="shrink-0"
+                    onClick={() => openDetail(report)}
+                  >
+                    상세
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* 신고 상세 다이얼로그 */}
+      <Dialog open={!!selectedReport} onOpenChange={v => !v && setSelectedReport(null)}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Flag className="h-4 w-4 text-orange-500" />
+              신고 상세
+            </DialogTitle>
+          </DialogHeader>
+
+          {selectedReport && (
+            <div className="space-y-4 py-1">
+              {/* 문제 정보 */}
+              <div className="rounded-lg border border-border bg-muted/30 p-3 space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-muted-foreground">문제 ID</span>
+                  <span className="font-mono text-sm">{selectedReport.question_id}</span>
+                  <a
+                    href={`/admin/questions?q=${selectedReport.question_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-auto text-xs text-accent hover:underline flex items-center gap-1"
+                  >
+                    문제 수정
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-muted-foreground">신고 유형</span>
+                  <span className="text-sm">{REASON_LABELS[selectedReport.reason]}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-muted-foreground">신고자</span>
+                  <span className="text-sm">{selectedReport.user_email ?? '비회원'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-muted-foreground">상태</span>
+                  <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${STATUS_COLOR[selectedReport.status]}`}>
+                    {STATUS_LABELS[selectedReport.status]}
+                  </span>
+                </div>
+              </div>
+
+              {/* 학생 의견 */}
+              {selectedReport.comment && (
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground mb-1">학생 의견</p>
+                  <p className="text-sm leading-relaxed p-3 rounded-lg bg-muted/30 border border-border">
+                    {selectedReport.comment}
+                  </p>
+                </div>
+              )}
+
+              {/* 관리자 답변 */}
+              <div>
+                <p className="text-xs font-medium mb-1.5">
+                  관리자 답변 <span className="text-muted-foreground">(학생에게 공개)</span>
+                </p>
+                <Textarea
+                  placeholder="검토 결과를 입력해주세요. 처리 완료 시 필수입니다."
+                  value={adminNote}
+                  onChange={e => setAdminNote(e.target.value)}
+                  rows={3}
+                  className="text-sm resize-none"
+                />
+              </div>
+
+              {saveError && <p className="text-sm text-destructive">{saveError}</p>}
+            </div>
+          )}
+
+          <DialogFooter className="flex-wrap gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={saving || selectedReport?.status === 'reviewing'}
+              onClick={() => handleUpdateStatus('reviewing')}
+            >
+              검토 중으로
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={saving || selectedReport?.status === 'dismissed'}
+              onClick={() => handleUpdateStatus('dismissed')}
+            >
+              기각
+            </Button>
+            <Button
+              size="sm"
+              disabled={saving || selectedReport?.status === 'resolved'}
+              onClick={() => handleUpdateStatus('resolved')}
+              className="bg-accent text-accent-foreground hover:bg-accent/90"
+            >
+              {saving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
+              처리 완료
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
@@ -2540,7 +2795,7 @@ const AdminPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions' | 'stats' | 'board' | 'blog' | 'event'>('sets');
+  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions' | 'stats' | 'board' | 'blog' | 'event' | 'reports'>('sets');
   const [eventExpiresAt, setEventExpiresAt] = useState<string | null>(null);
   const [eventInput, setEventInput] = useState('');
   const [eventLoading, setEventLoading] = useState(false);
@@ -2673,6 +2928,10 @@ const AdminPage = () => {
             <TabsTrigger value="event" className="gap-2">
               <Gift className="h-4 w-4" />
               이벤트
+            </TabsTrigger>
+            <TabsTrigger value="reports" className="gap-2">
+              <Flag className="h-4 w-4" />
+              신고 관리
             </TabsTrigger>
           </TabsList>
 
@@ -2818,6 +3077,11 @@ const AdminPage = () => {
           {/* ── 블로그 관리 탭 ── */}
           <TabsContent value="blog">
             <BlogManager exams={exams} />
+          </TabsContent>
+
+          {/* ── 신고 관리 탭 ── */}
+          <TabsContent value="reports">
+            <ReportManager />
           </TabsContent>
 
           {/* ── 이벤트 관리 탭 ── */}

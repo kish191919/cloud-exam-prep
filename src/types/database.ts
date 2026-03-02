@@ -313,6 +313,50 @@ export interface Database {
           updated_at?: string
         }
       }
+      question_reports: {
+        Row: {
+          id: string
+          question_id: string
+          user_id: string | null
+          user_email: string | null
+          reason: 'wrong_answer' | 'unclear' | 'typo' | 'other'
+          comment: string | null
+          status: 'pending' | 'reviewing' | 'resolved' | 'dismissed'
+          admin_note: string | null
+          resolved_by: string | null
+          resolved_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          question_id: string
+          user_id?: string | null
+          user_email?: string | null
+          reason: 'wrong_answer' | 'unclear' | 'typo' | 'other'
+          comment?: string | null
+          status?: 'pending' | 'reviewing' | 'resolved' | 'dismissed'
+          admin_note?: string | null
+          resolved_by?: string | null
+          resolved_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          question_id?: string
+          user_id?: string | null
+          user_email?: string | null
+          reason?: 'wrong_answer' | 'unclear' | 'typo' | 'other'
+          comment?: string | null
+          status?: 'pending' | 'reviewing' | 'resolved' | 'dismissed'
+          admin_note?: string | null
+          resolved_by?: string | null
+          resolved_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
       exam_sessions: {
         Row: {
           id: string

@@ -10,9 +10,10 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { getAllSessions } from '@/hooks/useExamSession';
 import type { ExamSession } from '@/types/exam';
-import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Mail, Star, Sun, Moon, Globe, Leaf } from 'lucide-react';
+import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Star, Sun, Moon, Globe, Leaf, Flag } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import { getMyReports, REASON_LABELS, STATUS_LABELS, type QuestionReport } from '@/services/reportService';
 
 const PROVIDER_LABEL: Record<string, string> = {
   google: 'Google',
@@ -42,12 +43,13 @@ export default function ProfilePage() {
   const [freeEventExpiry, setFreeEventExpiry] = useState<string | null>(null);
   const [sessions, setSessions] = useState<ExamSession[]>([]);
   const [loading, setLoading] = useState(true);
+  const [myReports, setMyReports] = useState<QuestionReport[]>([]);
 
   useEffect(() => {
     if (!user) return;
 
     const loadData = async () => {
-      const [profileResult, settingsResult, sessionData] = await Promise.all([
+      const [profileResult, settingsResult, sessionData, reportsData] = await Promise.all([
         supabase
           .from('profiles')
           .select('subscription_expires_at, created_at')
@@ -59,11 +61,13 @@ export default function ProfilePage() {
           .eq('key', 'free_access_event')
           .single(),
         getAllSessions(user.id),
+        getMyReports(user.id).catch(() => [] as QuestionReport[]),
       ]);
 
       if (profileResult.data) setProfile(profileResult.data);
       setFreeEventExpiry(settingsResult.data?.value?.expires_at ?? null);
       setSessions(sessionData);
+      setMyReports(reportsData);
       setLoading(false);
     };
 
@@ -308,6 +312,60 @@ export default function ProfilePage() {
               )}
             </CardContent>
           </Card>
+
+          {/* 내 신고 내역 */}
+          {myReports.length > 0 && (
+            <Card className="md:col-span-2">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <Flag className="h-4 w-4 text-orange-500" />
+                  내 신고 내역
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {myReports.map(report => (
+                    <div
+                      key={report.id}
+                      className="flex flex-col sm:flex-row sm:items-start gap-2 p-3 rounded-lg border border-border text-sm"
+                    >
+                      <div className="flex-1 min-w-0 space-y-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-mono text-xs text-muted-foreground">{report.question_id}</span>
+                          <span className="text-xs px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
+                            {REASON_LABELS[report.reason]}
+                          </span>
+                          <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${
+                            report.status === 'resolved'
+                              ? 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400'
+                              : report.status === 'dismissed'
+                              ? 'bg-muted text-muted-foreground'
+                              : report.status === 'reviewing'
+                              ? 'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400'
+                              : 'bg-orange-100 text-orange-700 dark:bg-orange-950/40 dark:text-orange-400'
+                          }`}>
+                            {STATUS_LABELS[report.status]}
+                          </span>
+                        </div>
+                        {report.comment && (
+                          <p className="text-xs text-muted-foreground line-clamp-1">{report.comment}</p>
+                        )}
+                        {report.admin_note && (
+                          <div className="mt-1 p-2 rounded bg-accent/5 border border-accent/20">
+                            <p className="text-xs font-medium text-accent mb-0.5">관리자 답변</p>
+                            <p className="text-xs text-foreground">{report.admin_note}</p>
+                          </div>
+                        )}
+                      </div>
+                      <span className="text-xs text-muted-foreground shrink-0">
+                        {new Date(report.created_at).toLocaleDateString('ko-KR')}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </main>
 

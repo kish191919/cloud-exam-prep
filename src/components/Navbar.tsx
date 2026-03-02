@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { Cloud, Menu, X, LogOut, User, Map, BookOpen, MessageSquare, LogIn } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Cloud, Menu, X, LogOut, User, Map, BookOpen, MessageSquare, LogIn, Flag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,8 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation('common');
   const { t: tAuth } = useTranslation('auth');
-  const { user, signOut, openAuthModal } = useAuth();
+  const { user, signOut, openAuthModal, unreadReportCount, markReportsRead } = useAuth();
+  const navigate = useNavigate();
 
   const userInitial = user?.user_metadata?.full_name?.[0]?.toUpperCase()
     || user?.email?.[0]?.toUpperCase()
@@ -66,12 +67,17 @@ const Navbar = () => {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full h-9 w-9">
+                <Button variant="ghost" size="icon" className="rounded-full h-9 w-9 relative">
                   <Avatar className="h-8 w-8">
                     <AvatarFallback className="bg-accent text-accent-foreground text-sm font-bold">
                       {userInitial}
                     </AvatarFallback>
                   </Avatar>
+                  {unreadReportCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center leading-none">
+                      {unreadReportCount > 9 ? '9+' : unreadReportCount}
+                    </span>
+                  )}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
@@ -86,6 +92,15 @@ const Navbar = () => {
                     {tAuth('myPage')}
                   </Link>
                 </DropdownMenuItem>
+                {unreadReportCount > 0 && (
+                  <DropdownMenuItem
+                    onClick={() => { markReportsRead(); navigate('/dashboard'); }}
+                    className="flex items-center gap-2 cursor-pointer text-orange-600 dark:text-orange-400"
+                  >
+                    <Flag className="h-4 w-4" />
+                    신고 처리 결과 {unreadReportCount}건
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut} className="flex items-center gap-2 text-destructive focus:text-destructive cursor-pointer">
                   <LogOut className="h-4 w-4" />
