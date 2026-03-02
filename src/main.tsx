@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import App from "./App.tsx";
+import "@fontsource-variable/outfit"; // 자체 호스팅 폰트 (Google Fonts CDN 대체)
 import "./index.css";
 import "./i18n/config"; // Initialize i18n
 
