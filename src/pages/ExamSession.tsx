@@ -9,7 +9,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { ChevronLeft, ChevronRight, Menu, Send, Cloud, AlertTriangle, Loader2, CheckCircle2, XCircle, ChevronsUpDown, MoveHorizontal } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Menu, Send, Cloud, AlertTriangle, Loader2, CheckCircle2, XCircle, ChevronsUpDown, MoveHorizontal, Maximize2, Minimize2, Share } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { seededShuffle } from '@/utils/shuffle';
@@ -17,6 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import ThemeToggle from '@/components/ThemeToggle';
 import FontSizeToggle from '@/components/FontSizeToggle';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useFullscreen } from '@/hooks/useFullscreen';
 
 const MODE_LABEL: Record<string, { ko: string; en: string; color: string }> = {
   practice: { ko: '연습모드', en: 'Practice', color: 'bg-green-100 text-green-700' },
@@ -42,15 +43,29 @@ const ExamSession = () => {
   const [showPanel, setShowPanel] = useState(true);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
 
+  const { isFullscreen, isFullscreenSupported, isIOS, toggleFullscreen } = useFullscreen();
+
   const GESTURE_HINTS_KEY = 'cloudmaster_gesture_hints_seen';
+  const IOS_HINT_KEY = 'cloudmaster_ios_hint_seen';
   const [showGestureHints, setShowGestureHints] = useState(false);
+  const [showIOSHint, setShowIOSHint] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth < 768 && !localStorage.getItem(GESTURE_HINTS_KEY)) {
       const timer = setTimeout(() => setShowGestureHints(true), 800);
       return () => clearTimeout(timer);
     }
-  }, []);
+    // iOS PWA 힌트: 제스처 힌트가 없고, iOS이고, 아직 안 본 경우
+    if (window.innerWidth < 768 && isIOS && !(window.navigator as Navigator & { standalone?: boolean }).standalone && !localStorage.getItem(IOS_HINT_KEY) && localStorage.getItem(GESTURE_HINTS_KEY)) {
+      const timer = setTimeout(() => setShowIOSHint(true), 1200);
+      return () => clearTimeout(timer);
+    }
+  }, [isIOS]);
+
+  const dismissIOSHint = () => {
+    localStorage.setItem(IOS_HINT_KEY, '1');
+    setShowIOSHint(false);
+  };
 
   const dismissGestureHints = () => {
     localStorage.setItem(GESTURE_HINTS_KEY, '1');
@@ -231,6 +246,35 @@ const ExamSession = () => {
           {/* Timer: only in exam mode */}
           {isExamMode && (
             <ExamTimer startedAt={session.startedAt} timeLimitSec={session.timeLimitSec} onTimeUp={handleTimeUp} />
+          )}
+
+          {/* 전체화면 버튼 (모바일 전용) */}
+          {(isFullscreenSupported || isIOS) && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="md:hidden h-8 w-8"
+                  onClick={isIOS ? () => setShowIOSHint(true) : toggleFullscreen}
+                >
+                  {isFullscreen
+                    ? <Minimize2 className="h-4 w-4" />
+                    : <Maximize2 className="h-4 w-4" />
+                  }
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {isIOS
+                    ? (isKo ? '전체화면 안내' : 'Fullscreen guide')
+                    : isFullscreen
+                      ? (isKo ? '전체화면 종료' : 'Exit fullscreen')
+                      : (isKo ? '전체화면으로 보기' : 'Enter fullscreen')
+                  }
+                </p>
+              </TooltipContent>
+            </Tooltip>
           )}
 
           {/* Dark mode toggle */}
@@ -494,6 +538,37 @@ const ExamSession = () => {
           </div>
 
           <Button onClick={dismissGestureHints} className="w-full mt-5">
+            {isKo ? '확인했습니다' : 'Got it!'}
+          </Button>
+        </SheetContent>
+      </Sheet>
+
+      {/* iOS 홈화면 추가 안내 (최초 1회) */}
+      <Sheet open={showIOSHint} onOpenChange={(open) => { if (!open) dismissIOSHint(); }}>
+        <SheetContent side="bottom" className="pb-8 rounded-t-2xl">
+          <SheetHeader className="mb-4">
+            <SheetTitle className="text-center text-base">
+              {isKo ? '전체화면으로 사용하기' : 'Use Fullscreen'}
+            </SheetTitle>
+          </SheetHeader>
+
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/50">
+              <div className="w-10 h-10 rounded-full bg-accent/15 flex items-center justify-center flex-shrink-0">
+                <Share className="h-5 w-5 text-accent" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">{isKo ? 'Safari → 홈 화면에 추가' : 'Safari → Add to Home Screen'}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {isKo
+                    ? 'Safari 하단의 공유 버튼을 탭한 후 "홈 화면에 추가"를 선택하면 주소창·하단 탭바 없이 전체화면으로 사용할 수 있어요.'
+                    : 'Tap the share button in Safari, then select "Add to Home Screen" to use the app fullscreen without the address bar.'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <Button onClick={dismissIOSHint} className="w-full mt-5">
             {isKo ? '확인했습니다' : 'Got it!'}
           </Button>
         </SheetContent>
