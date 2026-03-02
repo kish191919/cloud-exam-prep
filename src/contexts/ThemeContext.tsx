@@ -1,39 +1,43 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark';
+type Theme = 'light' | 'dark' | 'sepia' | 'forest';
 
 interface ThemeContextValue {
   theme: Theme;
+  setTheme: (t: Theme) => void;
   toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
   theme: 'light',
+  setTheme: () => {},
   toggleTheme: () => {},
 });
 
+const ALL_THEME_CLASSES = ['dark', 'sepia', 'forest'] as const;
+const CYCLE: Theme[] = ['light', 'sepia', 'forest', 'dark'];
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
+  const [theme, setThemeState] = useState<Theme>(() => {
     const saved = localStorage.getItem('cloudmaster_theme') as Theme | null;
-    if (saved === 'dark' || saved === 'light') return saved;
+    if (saved && CYCLE.includes(saved)) return saved;
     // Default to light mode on first visit
     return 'light';
   });
 
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
+    root.classList.remove(...ALL_THEME_CLASSES);
+    if (theme !== 'light') root.classList.add(theme);
     localStorage.setItem('cloudmaster_theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+  const setTheme = (t: Theme) => setThemeState(t);
+  const toggleTheme = () =>
+    setThemeState(prev => CYCLE[(CYCLE.indexOf(prev) + 1) % CYCLE.length]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

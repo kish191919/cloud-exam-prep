@@ -10,7 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { getAllSessions } from '@/hooks/useExamSession';
 import type { ExamSession } from '@/types/exam';
-import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Mail, Star, Sun, Moon, Globe } from 'lucide-react';
+import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Mail, Star, Sun, Moon, Globe, Leaf } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 
@@ -32,7 +32,7 @@ function formatDate(dateStr: string | null | undefined): string {
 
 export default function ProfilePage() {
   const { user, subscriptionTier, isPremium, hasFullAccess, openAuthModal } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const { i18n } = useTranslation();
 
   const [profile, setProfile] = useState<{
@@ -210,25 +210,24 @@ export default function ProfilePage() {
             <CardContent className="space-y-5">
               <div>
                 <p className="text-sm font-medium mb-2">화면 모드</p>
-                <div className="flex gap-2">
-                  <Button
-                    variant={theme === 'light' ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => theme !== 'light' && toggleTheme()}
-                    className="flex items-center gap-2"
-                  >
-                    <Sun className="h-4 w-4" />
-                    라이트
-                  </Button>
-                  <Button
-                    variant={theme === 'dark' ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => theme !== 'dark' && toggleTheme()}
-                    className="flex items-center gap-2"
-                  >
-                    <Moon className="h-4 w-4" />
-                    다크
-                  </Button>
+                <div className="flex flex-wrap gap-2">
+                  {([
+                    { key: 'light',  Icon: Sun,      label: '라이트' },
+                    { key: 'sepia',  Icon: BookOpen, label: '세피아' },
+                    { key: 'forest', Icon: Leaf,     label: '포레스트' },
+                    { key: 'dark',   Icon: Moon,     label: '다크' },
+                  ] as const).map(({ key, Icon, label }) => (
+                    <Button
+                      key={key}
+                      variant={theme === key ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setTheme(key)}
+                      className="flex items-center gap-2"
+                    >
+                      <Icon className="h-4 w-4" />
+                      {label}
+                    </Button>
+                  ))}
                 </div>
               </div>
 

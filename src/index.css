@@ -36,6 +36,70 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  .sepia {
+    --background: 38 60% 96%;
+    --foreground: 25 30% 18%;
+    --card: 38 50% 98%;
+    --card-foreground: 25 30% 18%;
+    --popover: 38 50% 98%;
+    --popover-foreground: 25 30% 18%;
+    --primary: 25 40% 25%;
+    --primary-foreground: 38 60% 96%;
+    --secondary: 38 30% 91%;
+    --secondary-foreground: 25 30% 22%;
+    --muted: 38 25% 93%;
+    --muted-foreground: 25 15% 48%;
+    --accent: 25 80% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 35 20% 86%;
+    --input: 35 20% 86%;
+    --ring: 25 80% 50%;
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --sidebar-background: 38 55% 94%;
+    --sidebar-foreground: 25 30% 18%;
+    --sidebar-primary: 25 40% 25%;
+    --sidebar-primary-foreground: 38 60% 96%;
+    --sidebar-accent: 38 30% 91%;
+    --sidebar-accent-foreground: 25 30% 22%;
+    --sidebar-border: 35 20% 86%;
+    --sidebar-ring: 25 80% 50%;
+  }
+
+  .forest {
+    --background: 150 30% 6%;
+    --foreground: 150 10% 92%;
+    --card: 150 25% 10%;
+    --card-foreground: 150 10% 92%;
+    --popover: 150 25% 10%;
+    --popover-foreground: 150 10% 92%;
+    --primary: 142 60% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 150 20% 15%;
+    --secondary-foreground: 150 10% 88%;
+    --muted: 150 15% 14%;
+    --muted-foreground: 150 8% 55%;
+    --accent: 142 70% 45%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 150 15% 18%;
+    --input: 150 15% 18%;
+    --ring: 142 70% 45%;
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --sidebar-background: 150 30% 8%;
+    --sidebar-foreground: 150 10% 88%;
+    --sidebar-primary: 142 60% 42%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 150 20% 15%;
+    --sidebar-accent-foreground: 150 10% 88%;
+    --sidebar-border: 150 15% 18%;
+    --sidebar-ring: 142 70% 45%;
+  }
+
   .dark {
     --background: 220 30% 6%;
     --foreground: 220 10% 95%;
