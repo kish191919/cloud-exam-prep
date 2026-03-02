@@ -1,0 +1,57 @@
+31. Which of the following is the least effort way to encrypt data for AWS services only in your AWS account using AWS Key Management Service (KMS)?
+
+
+
+32. AWS Web Application Firewall (AWS WAF) can be deployed on which of the following services?
+
+
+
+33. Which tool/service will help you get a forecast of your spending for the next 3 months?
+
+
+
+34. A healthcare company wants to implement a continuous replication based disaster recovery mechanism and provide fast, reliable recovery of physical, virtual, and cloud-based servers into AWS Cloud. Which of the following represents the best-fit solution for this use case?
+
+
+
+35. Which feature/functionality will help you organize your AWS resources, manage and automate tasks on large numbers of resources at a time?
+
+
+
+36. Which member of the AWS Snow Family is used by the Edge computing applications for IoT use cases for facilitating the collection and processing of data to gain immediate insights and then transfer the data to AWS?
+
+
+
+37. Due to regulatory guidelines, a company needs to encrypt data as it passes through the different layers of its AWS architecture. The company is reviewing the capabilities of the various AWS services and their encryption options. Which of the below services are encrypted by default and need no user intervention to enable encryption?
+
+
+
+38. Which of the following statements are true about AWS Regions and Availability Zones (AZ)?
+
+
+
+39. A company stores all its media files in Amazon Simple Storage Service (Amazon S3) which is accessed by an application hosted on Amazon EC2 instances. The company wants to convert these media files into formats that users can playback on mobile devices. Which AWS service/tool helps you achieve this requirement?
+
+
+
+40. Which AWS service is used to store and commit code privately and also offer features for version control?
+
+
+
+41. Which of the following statements are correct regarding Amazon API Gateway? 
+
+
+
+42. A manufacturing company is looking at a service that can offer AWS infrastructure, AWS services, APIs, and tools to its on-premises data center for running low latency applications. Which of the following service/tool is the best fit for the given requirement?
+
+
+
+43. Which pillar of AWS Well-Architected Framework focuses on using IT and computing resources efficiently, while considering the right resource types and sizes based on workload requirements?
+
+
+
+44. A university provides access to AWS services for its students to submit their research data for analysis. The university is looking at the most cost-effective approach for recovering from disasters and it can tolerate data loss of a few hours. Which disaster recovery strategy is well-suited for this use case?
+
+
+
+45. A company provides you with a completed product that is run and managed by the company itself. As a customer, you only use the product without worrying about maintaining or managing the product. Which cloud computing model does this kind of product belong to?

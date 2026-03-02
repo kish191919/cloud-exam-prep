@@ -1,0 +1,37 @@
+46. A company wants to establish a private, dedicated connection between AWS and its on-premises data center. Which AWS service is the right choice for this requirement?
+
+
+
+47. Which of the following statements are correct regarding the AWS Support Plans? 
+
+
+
+48. Which of the following points have to be considered when choosing an AWS Region for a service?
+
+
+
+49. A blogging company is looking at an easy to use solution to host WordPress blogs. The company needs a cost-effective, readily available solution without the need to manage the configurations for servers or the databases. Which AWS service will help you achieve this functionality?
+
+
+
+50. A financial consulting company is looking for automated reference deployments, that will speed up the process of deploying its financial solutions on AWS Cloud. The reference deployment should be able to deploy most of the well-known functions of financial services and leave space for customizations, if necessary. Which AWS service will help achieve this requirement?
+
+
+
+51. Which AWS service allows you to connect any number of IoT devices to the cloud without requiring you to provision or manage servers?
+
+
+
+52. Which of the following AWS services will help provision a logically isolated network for your AWS resources?
+
+
+
+53. As part of a flexible pricing model, AWS offers two types of Savings Plans. Which of the following are the Savings Plans from AWS?
+
+
+
+54. Which of the following AWS services is delivered globally rather than regionally?
+
+
+
+55. AWS Support offers five support plans for its customers. Which of the following features are covered as part of the AWS Basic Support Plan?
