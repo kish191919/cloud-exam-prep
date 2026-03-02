@@ -9,7 +9,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { ChevronLeft, ChevronRight, Menu, Send, Cloud, AlertTriangle, Loader2, CheckCircle2, XCircle, ChevronsUpDown, MoveHorizontal, Maximize2, Minimize2, Share } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Menu, Send, Cloud, AlertTriangle, Loader2, CheckCircle2, XCircle, ChevronsUpDown, MoveHorizontal, Maximize2, Minimize2, Share, MoreVertical } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { seededShuffle } from '@/utils/shuffle';
@@ -43,28 +43,44 @@ const ExamSession = () => {
   const [showPanel, setShowPanel] = useState(true);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
 
-  const { isFullscreen, isFullscreenSupported, isIOS, toggleFullscreen } = useFullscreen();
+  const { isFullscreen, isFullscreenSupported, isIOS, isChrome, isAndroid, toggleFullscreen } = useFullscreen();
 
   const GESTURE_HINTS_KEY = 'cloudmaster_gesture_hints_seen';
   const IOS_HINT_KEY = 'cloudmaster_ios_hint_seen';
+  const CHROME_HINT_KEY = 'cloudmaster_chrome_hint_seen';
   const [showGestureHints, setShowGestureHints] = useState(false);
   const [showIOSHint, setShowIOSHint] = useState(false);
+  const [showChromeHint, setShowChromeHint] = useState(false);
+
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+    || (window.navigator as Navigator & { standalone?: boolean }).standalone;
 
   useEffect(() => {
-    if (window.innerWidth < 768 && !localStorage.getItem(GESTURE_HINTS_KEY)) {
+    if (window.innerWidth >= 768 || isStandalone) return;
+    if (!localStorage.getItem(GESTURE_HINTS_KEY)) {
       const timer = setTimeout(() => setShowGestureHints(true), 800);
       return () => clearTimeout(timer);
     }
-    // iOS PWA 힌트: 제스처 힌트가 없고, iOS이고, 아직 안 본 경우
-    if (window.innerWidth < 768 && isIOS && !(window.navigator as Navigator & { standalone?: boolean }).standalone && !localStorage.getItem(IOS_HINT_KEY) && localStorage.getItem(GESTURE_HINTS_KEY)) {
+    // Chrome 힌트 (Android Chrome / Chrome iOS)
+    if (isChrome && !localStorage.getItem(CHROME_HINT_KEY)) {
+      const timer = setTimeout(() => setShowChromeHint(true), 1200);
+      return () => clearTimeout(timer);
+    }
+    // iOS Safari 힌트 (Chrome 제외)
+    if (isIOS && !isChrome && !localStorage.getItem(IOS_HINT_KEY)) {
       const timer = setTimeout(() => setShowIOSHint(true), 1200);
       return () => clearTimeout(timer);
     }
-  }, [isIOS]);
+  }, [isIOS, isChrome, isStandalone]);
 
   const dismissIOSHint = () => {
     localStorage.setItem(IOS_HINT_KEY, '1');
     setShowIOSHint(false);
+  };
+
+  const dismissChromeHint = () => {
+    localStorage.setItem(CHROME_HINT_KEY, '1');
+    setShowChromeHint(false);
   };
 
   const dismissGestureHints = () => {
@@ -249,14 +265,20 @@ const ExamSession = () => {
           )}
 
           {/* 전체화면 버튼 (모바일 전용) */}
-          {(isFullscreenSupported || isIOS) && (
+          {(isFullscreenSupported || isIOS || isChrome) && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   size="icon"
                   variant="ghost"
                   className="md:hidden h-8 w-8"
-                  onClick={isIOS ? () => setShowIOSHint(true) : toggleFullscreen}
+                  onClick={
+                    isIOS && !isChrome
+                      ? () => setShowIOSHint(true)
+                      : isIOS && isChrome
+                        ? () => setShowChromeHint(true)
+                        : toggleFullscreen
+                  }
                 >
                   {isFullscreen
                     ? <Minimize2 className="h-4 w-4" />
@@ -266,8 +288,8 @@ const ExamSession = () => {
               </TooltipTrigger>
               <TooltipContent>
                 <p>
-                  {isIOS
-                    ? (isKo ? '전체화면 안내' : 'Fullscreen guide')
+                  {(isIOS && !isChrome) || (isIOS && isChrome)
+                    ? (isKo ? '앱으로 설치하기' : 'Install as app')
                     : isFullscreen
                       ? (isKo ? '전체화면 종료' : 'Exit fullscreen')
                       : (isKo ? '전체화면으로 보기' : 'Enter fullscreen')
@@ -569,6 +591,53 @@ const ExamSession = () => {
           </div>
 
           <Button onClick={dismissIOSHint} className="w-full mt-5">
+            {isKo ? '확인했습니다' : 'Got it!'}
+          </Button>
+        </SheetContent>
+      </Sheet>
+
+      {/* Chrome 홈 화면 추가 안내 (최초 1회) */}
+      <Sheet open={showChromeHint} onOpenChange={(open) => { if (!open) dismissChromeHint(); }}>
+        <SheetContent side="bottom" className="pb-8 rounded-t-2xl">
+          <SheetHeader className="mb-4">
+            <SheetTitle className="text-center text-base">
+              {isKo ? '앱으로 설치하면 더 넓게 볼 수 있어요' : 'Install as App for More Space'}
+            </SheetTitle>
+          </SheetHeader>
+
+          <div className="space-y-3">
+            {isAndroid ? (
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/50">
+                <div className="w-10 h-10 rounded-full bg-accent/15 flex items-center justify-center flex-shrink-0">
+                  <MoreVertical className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold">{isKo ? 'Chrome 메뉴(⋮) → 홈 화면에 추가' : 'Chrome menu (⋮) → Add to Home Screen'}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {isKo
+                      ? 'Chrome 오른쪽 상단 ⋮ 버튼을 탭한 후 "홈 화면에 추가"를 선택하면 주소창 없이 앱처럼 설치되어 더 넓은 화면으로 사용할 수 있어요.'
+                      : 'Tap the Chrome menu (⋮) at the top right, then select "Add to Home Screen" to install and use it like an app without the address bar.'}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/50">
+                <div className="w-10 h-10 rounded-full bg-accent/15 flex items-center justify-center flex-shrink-0">
+                  <Share className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold">{isKo ? 'Chrome 공유 → 홈 화면에 추가' : 'Chrome share → Add to Home Screen'}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {isKo
+                      ? 'Chrome 하단 공유 버튼을 탭한 후 "홈 화면에 추가"를 선택하면 주소창 없이 앱처럼 설치되어 더 넓은 화면으로 사용할 수 있어요.'
+                      : 'Tap the share button in Chrome, then select "Add to Home Screen" to install and use it like an app without the address bar.'}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <Button onClick={dismissChromeHint} className="w-full mt-5">
             {isKo ? '확인했습니다' : 'Got it!'}
           </Button>
         </SheetContent>

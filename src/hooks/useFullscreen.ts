@@ -10,7 +10,10 @@ interface FullscreenElement extends HTMLElement {
   webkitRequestFullscreen?: () => Promise<void>;
 }
 
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as Window & { MSStream?: unknown }).MSStream;
+const ua = navigator.userAgent;
+const isIOS = /iPad|iPhone|iPod/.test(ua) && !(window as Window & { MSStream?: unknown }).MSStream;
+const isChrome = /Chrome|CriOS/.test(ua);
+const isAndroid = /Android/.test(ua);
 
 const isSupported = (() => {
   const doc = document as FullscreenDocument;
@@ -56,6 +59,8 @@ export function useFullscreen() {
     isFullscreen,
     isFullscreenSupported: isSupported,
     isIOS,
+    isChrome,
+    isAndroid,
     toggleFullscreen,
   };
 }
