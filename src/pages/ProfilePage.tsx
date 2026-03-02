@@ -10,7 +10,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { getAllSessions } from '@/hooks/useExamSession';
 import type { ExamSession } from '@/types/exam';
-import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Mail, Star } from 'lucide-react';
+import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Mail, Star, Sun, Moon, Globe } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const PROVIDER_LABEL: Record<string, string> = {
   google: 'Google',
@@ -30,6 +32,8 @@ function formatDate(dateStr: string | null | undefined): string {
 
 export default function ProfilePage() {
   const { user, subscriptionTier, isPremium, hasFullAccess, openAuthModal } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const { i18n } = useTranslation();
 
   const [profile, setProfile] = useState<{
     subscription_expires_at: string | null;
@@ -192,6 +196,61 @@ export default function ProfilePage() {
                   </Link>
                 </div>
               )}
+            </CardContent>
+          </Card>
+
+          {/* 환경 설정 */}
+          <Card className="md:col-span-2">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Globe className="h-4 w-4 text-accent" />
+                환경 설정
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              <div>
+                <p className="text-sm font-medium mb-2">화면 모드</p>
+                <div className="flex gap-2">
+                  <Button
+                    variant={theme === 'light' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => theme !== 'light' && toggleTheme()}
+                    className="flex items-center gap-2"
+                  >
+                    <Sun className="h-4 w-4" />
+                    라이트
+                  </Button>
+                  <Button
+                    variant={theme === 'dark' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => theme !== 'dark' && toggleTheme()}
+                    className="flex items-center gap-2"
+                  >
+                    <Moon className="h-4 w-4" />
+                    다크
+                  </Button>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm font-medium mb-2">언어</p>
+                <div className="flex gap-2">
+                  <Button
+                    variant={i18n.language === 'ko' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => i18n.changeLanguage('ko')}
+                  >
+                    🇰🇷 한국어
+                  </Button>
+                  <Button
+                    variant={i18n.language === 'en' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => i18n.changeLanguage('en')}
+                  >
+                    🇺🇸 English
+                  </Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
