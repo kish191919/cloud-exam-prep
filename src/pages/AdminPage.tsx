@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AppLayout from '@/components/AppLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -45,9 +45,11 @@ import {
   getAllReports,
   updateReport,
   getReportCounts,
+  getQuestionSetInfo,
   REASON_LABELS,
   STATUS_LABELS,
   type QuestionReport,
+  type QuestionSetInfo,
   type ReportStatus,
 } from '@/services/reportService';
 import type { Announcement, AnnouncementInput, AnnouncementCategory } from '@/types/announcement';
@@ -1301,6 +1303,7 @@ const STATUS_COLOR: Record<ReportStatus, string> = {
 
 const ReportManager = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [reports, setReports] = useState<QuestionReport[]>([]);
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [statusFilter, setStatusFilter] = useState<ReportStatus | 'all'>('all');
@@ -1309,6 +1312,7 @@ const ReportManager = () => {
   const [adminNote, setAdminNote] = useState('');
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [reportSetInfo, setReportSetInfo] = useState<Record<string, QuestionSetInfo>>({});
 
   const loadReports = async () => {
     setLoading(true);
@@ -1319,6 +1323,10 @@ const ReportManager = () => {
       ]);
       setReports(data);
       setCounts(cnt);
+      if (data.length > 0) {
+        const ids = data.map(r => r.question_id);
+        getQuestionSetInfo(ids).then(setReportSetInfo).catch(() => {});
+      }
     } finally {
       setLoading(false);
     }
@@ -1402,7 +1410,14 @@ const ReportManager = () => {
                 >
                   <div className="flex-1 min-w-0 space-y-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-mono text-xs text-muted-foreground">{report.question_id}</span>
+                      {reportSetInfo[report.question_id] ? (
+                        <span className="text-xs font-medium">
+                          {reportSetInfo[report.question_id].setName}
+                          <span className="text-muted-foreground"> · {reportSetInfo[report.question_id].sortOrder}번</span>
+                        </span>
+                      ) : (
+                        <span className="font-mono text-xs text-muted-foreground">{report.question_id}</span>
+                      )}
                       <span className="text-xs px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
                         {REASON_LABELS[report.reason]}
                       </span>
@@ -1447,17 +1462,25 @@ const ReportManager = () => {
               {/* 문제 정보 */}
               <div className="rounded-lg border border-border bg-muted/30 p-3 space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-medium text-muted-foreground">문제 ID</span>
-                  <span className="font-mono text-sm">{selectedReport.question_id}</span>
-                  <a
-                    href={`/admin/questions?q=${selectedReport.question_id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ml-auto text-xs text-accent hover:underline flex items-center gap-1"
+                  <span className="text-xs font-medium text-muted-foreground">문제</span>
+                  {reportSetInfo[selectedReport.question_id] ? (
+                    <span className="text-sm font-medium">
+                      {reportSetInfo[selectedReport.question_id].setName}
+                      <span className="text-muted-foreground ml-1">· {reportSetInfo[selectedReport.question_id].sortOrder}번</span>
+                      <span className="font-mono text-xs text-muted-foreground ml-1">({selectedReport.question_id})</span>
+                    </span>
+                  ) : (
+                    <span className="font-mono text-sm">{selectedReport.question_id}</span>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="ml-auto text-xs text-accent h-auto p-0 hover:underline"
+                    onClick={() => navigate(`/admin/questions?q=${selectedReport.question_id}`)}
                   >
                     문제 수정
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </Button>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-medium text-muted-foreground">신고 유형</span>
