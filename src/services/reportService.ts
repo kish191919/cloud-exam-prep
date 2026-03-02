@@ -102,6 +102,38 @@ export async function getReportCounts(): Promise<Record<ReportStatus | 'total', 
   return counts as Record<ReportStatus | 'total', number>;
 }
 
+/** 학생: 문제 ID 배열 → 세트 이름 + 세트 내 순서 매핑 조회 */
+export interface QuestionSetInfo {
+  setName: string;
+  sortOrder: number;  // 1-indexed 순서
+}
+
+export async function getQuestionSetInfo(
+  questionIds: string[]
+): Promise<Record<string, QuestionSetInfo>> {
+  if (questionIds.length === 0) return {};
+
+  const { data, error } = await supabase
+    .from('exam_set_questions')
+    .select('question_id, sort_order, exam_sets(name)')
+    .in('question_id', questionIds);
+
+  if (error || !data) return {};
+
+  const map: Record<string, QuestionSetInfo> = {};
+  for (const row of data) {
+    const setName = (row.exam_sets as { name: string } | null)?.name ?? '';
+    // 동일 문제가 여러 세트에 있으면 첫 번째만 사용
+    if (!map[row.question_id]) {
+      map[row.question_id] = {
+        setName,
+        sortOrder: row.sort_order,
+      };
+    }
+  }
+  return map;
+}
+
 export const REASON_LABELS: Record<ReportReason, string> = {
   wrong_answer: '정답 오류',
   unclear: '문제 불명확',

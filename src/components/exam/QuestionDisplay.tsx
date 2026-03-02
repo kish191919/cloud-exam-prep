@@ -1,5 +1,5 @@
 import { Question, ExamMode } from '@/types/exam';
-import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb, Lock, Flag } from 'lucide-react';
+import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb, Lock, Megaphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -199,16 +199,17 @@ const QuestionDisplay = ({
               className={`px-2 sm:px-3 ${isBookmarked ? 'text-accent' : 'text-muted-foreground'}`}
             >
               {isBookmarked ? <BookmarkCheck className="h-4 w-4 sm:mr-1" /> : <Bookmark className="h-4 w-4 sm:mr-1" />}
-              <span className="hidden sm:inline">{isBookmarked ? 'Bookmarked' : 'Bookmark'}</span>
+              <span className="hidden sm:inline">{isBookmarked ? '북마크' : '북마크'}</span>
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setReportOpen(true)}
               title={alreadyReported ? '신고한 문제' : '문제 신고'}
-              className={`px-2 ${alreadyReported ? 'text-orange-500' : 'text-muted-foreground'}`}
+              className={`px-2 sm:px-3 ${alreadyReported ? 'text-orange-500' : 'text-muted-foreground'}`}
             >
-              <Flag className="h-4 w-4" />
+              <Megaphone className="h-4 w-4 sm:mr-1" />
+              <span className="hidden sm:inline">문제 신고</span>
             </Button>
           </div>
         </div>
@@ -342,7 +343,7 @@ const QuestionDisplay = ({
         <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Flag className="h-4 w-4 text-orange-500" />
+              <Megaphone className="h-4 w-4 text-orange-500" />
               문제 신고
             </DialogTitle>
           </DialogHeader>

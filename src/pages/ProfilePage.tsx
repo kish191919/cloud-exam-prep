@@ -13,7 +13,7 @@ import type { ExamSession } from '@/types/exam';
 import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Star, Sun, Moon, Globe, Leaf, Flag } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
-import { getMyReports, REASON_LABELS, STATUS_LABELS, type QuestionReport } from '@/services/reportService';
+import { getMyReports, getQuestionSetInfo, REASON_LABELS, STATUS_LABELS, type QuestionReport, type QuestionSetInfo } from '@/services/reportService';
 
 const PROVIDER_LABEL: Record<string, string> = {
   google: 'Google',
@@ -44,6 +44,7 @@ export default function ProfilePage() {
   const [sessions, setSessions] = useState<ExamSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [myReports, setMyReports] = useState<QuestionReport[]>([]);
+  const [reportSetInfo, setReportSetInfo] = useState<Record<string, QuestionSetInfo>>({});
 
   useEffect(() => {
     if (!user) return;
@@ -68,6 +69,13 @@ export default function ProfilePage() {
       setFreeEventExpiry(settingsResult.data?.value?.expires_at ?? null);
       setSessions(sessionData);
       setMyReports(reportsData);
+
+      // 신고한 문제의 세트 정보 로드
+      if (reportsData.length > 0) {
+        const ids = reportsData.map(r => r.question_id);
+        getQuestionSetInfo(ids).then(setReportSetInfo).catch(() => {});
+      }
+
       setLoading(false);
     };
 
@@ -331,7 +339,14 @@ export default function ProfilePage() {
                     >
                       <div className="flex-1 min-w-0 space-y-1">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-mono text-xs text-muted-foreground">{report.question_id}</span>
+                          {reportSetInfo[report.question_id] ? (
+                            <span className="text-xs font-medium">
+                              {reportSetInfo[report.question_id].setName}
+                              <span className="text-muted-foreground"> · {reportSetInfo[report.question_id].sortOrder}번</span>
+                            </span>
+                          ) : (
+                            <span className="font-mono text-xs text-muted-foreground">{report.question_id}</span>
+                          )}
                           <span className="text-xs px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
                             {REASON_LABELS[report.reason]}
                           </span>
