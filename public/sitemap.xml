@@ -37,6 +37,30 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://cloudmasterit.com/blog/athena</loc>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cloudmasterit.com/blog/emr</loc>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cloudmasterit.com/blog/redshift-data-warehouse</loc>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cloudmasterit.com/blog/data-ingestion</loc>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://cloudmasterit.com/blog/aws-containers-serverless</loc>
     <lastmod>2026-03-02</lastmod>
     <changefreq>monthly</changefreq>

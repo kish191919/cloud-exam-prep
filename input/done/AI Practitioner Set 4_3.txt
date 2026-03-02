@@ -1,0 +1,57 @@
+31. Which AWS service is best suited for converting text to speech?
+
+
+
+32. What is the primary purpose of feature engineering in the ML development lifecycle?
+
+
+
+33. Which of the following is an example of unsupervised learning?
+
+
+
+34. What is the main difference between batch inferencing and real-time inferencing?
+
+
+
+35. Which AWS service is best suited for managing the entire machine learning lifecycle?
+
+
+
+36. What is the primary purpose of model monitoring in production?
+
+
+
+37. Which of the following is NOT a typical use case for AI/ML?
+
+
+
+38. What is a token in the context of generative AI?
+
+
+
+39. Which of the following is NOT a typical use case for generative AI models?
+
+
+
+40. What is the primary advantage of generative AI’s adaptability?
+
+
+
+41. What is a hallucination in the context of generative AI?
+
+
+
+42. Which AWS service is designed specifically for developing generative AI applications?
+
+
+
+43. What is a foundation model in generative AI?
+
+
+
+44. Which of the following is NOT a stage in the foundation model lifecycle?
+
+
+
+45. What is the primary advantage of using AWS generative AI services for building applications?
