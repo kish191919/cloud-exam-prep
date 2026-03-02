@@ -63,11 +63,13 @@ const Index = () => {
         className="w-full bg-gradient-to-r from-accent/12 via-accent/8 to-accent/12 border-b border-accent/20"
         style={{ paddingTop: 'calc(3.5rem + env(safe-area-inset-top))' }}
       >
-        <div className="flex items-center justify-center gap-2 sm:gap-3 px-4 py-3 sm:py-4 flex-wrap text-center">
-          <Gift className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0" />
-          <span className="text-sm sm:text-base font-black uppercase tracking-widest text-accent">베타 오픈 기간</span>
-          <span className="text-xs sm:text-sm bg-accent text-accent-foreground font-bold px-2.5 py-0.5 rounded-full">FREE</span>
-          <p className="text-sm sm:text-base text-foreground/80 font-medium leading-relaxed break-keep">
+        <div className="flex flex-col items-center gap-1.5 px-4 py-3 sm:py-4 text-center">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Gift className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0" />
+            <span className="text-sm sm:text-base font-black uppercase tracking-widest text-accent">베타 오픈 기간</span>
+            <span className="text-xs sm:text-sm bg-accent text-accent-foreground font-bold px-2.5 py-0.5 rounded-full">FREE</span>
+          </div>
+          <p className="text-sm sm:text-base text-foreground/80 font-medium leading-relaxed break-keep max-w-xs">
             지금은 <strong className="text-accent font-bold">AWS · GCP · Azure 전체 문제</strong>를 완전 무료로 이용하실 수 있어요.
           </p>
         </div>
