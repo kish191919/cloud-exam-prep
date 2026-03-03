@@ -18,6 +18,8 @@ Main 오케스트레이터로서:
 | Parser & SQL | `.claude/agents/parser-sql/AGENT.md` | STEP 1 파싱 + STEP 6 Supabase 직접 삽입 | Sonnet |
 | Redesigner | `.claude/agents/redesigner/AGENT.md` | 문제 5개(배치) 한국어 재설계 | **Haiku** |
 | Blog Writer | `.claude/agents/blog-writer/AGENT.md` | txt 기반 SEO 블로그 포스트 배치 생성 | **Haiku** |
+| Generator | `.claude/agents/generator/AGENT.md` | 개념 기반 신규 문제 5개(배치) 자동 창작 | **Haiku** |
+| Validator | `.claude/agents/validator/AGENT.md` | 생성 문제와 기존 시나리오 중복 검증 | **Haiku** |
 
 **규칙:** 서브에이전트 간 직접 호출 금지 — 반드시 Main(이 파일)을 통해 조율한다.
 
@@ -793,7 +795,7 @@ exam_id:
 
 총 2개 파일을 순차적으로 처리합니다.
 ```
-파일이 없으면 즉시 종료.
+파일이 없으면 → **자동 생성 모드 진입** (아래 `### 자동 생성 모드` 섹션 참조).
 
 **[B-2] 파일별 언어 감지 + Parser & SQL Agent 호출 (STEP 1)**
 
@@ -912,6 +914,159 @@ Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 
 ---
 
+### 자동 생성 모드 (input/ 파일 없음 시)
+
+`[B-1]`에서 `.txt` 파일이 없음이 감지되면 아래 흐름을 실행한다.
+파일 이동(B-8) 단계는 생략한다. Generator가 domain_tags 지식 기반으로 자율 창작하므로
+Supabase 기존 문제 조회나 별도 개념 목록 생성·검토 단계는 없다.
+
+**[G-1] 마지막 세트 자동 선택**
+
+exam_sets를 sort_order 내림차순으로 조회하여 첫 번째(가장 높은 sort_order) 세트를 자동 선택:
+
+```bash
+curl "$SUPABASE_URL/rest/v1/exam_sets?exam_id=eq.{exam_id}&select=id,name,sort_order&order=sort_order.desc&limit=1" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY"
+```
+
+안내 출력:
+```
+input/ 폴더에 .txt 파일이 없습니다.
+자동 생성 모드를 시작합니다.
+
+대상 세트: '{set_name}' (sort_order: {N}, UUID: {set_id})
+이 세트에 15개 문제를 새로 생성하여 추가합니다.
+
+[A] 계속합니다
+[B] 취소합니다
+```
+
+세트가 하나도 없으면: 사용자에게 먼저 세트를 생성해달라고 안내 후 종료.
+
+**[G-2] Supabase MAX(id) 조회 → start_id 계산**
+
+기존 `/generate` Step 4와 동일한 방식:
+- 모든 ID 조회 → 숫자 접미사 추출 → `max() + 1` = `start_id`
+
+**[G-3] 개념 로그 읽기**
+
+`output/generated_concepts_log.json` 파일이 있으면 해당 exam_id의 항목을 읽는다:
+
+```json
+{
+  "aws-aif-c01": [
+    "Amazon Bedrock Knowledge Bases를 사용한 RAG Q&A",
+    "Amazon SageMaker Clarify를 사용한 편향 탐지",
+    ...
+  ]
+}
+```
+
+파일이 없거나 exam_id 키가 없으면 `previous_concepts_log = []`.
+
+**[G-4] 참조 파일 선로드 + Generator Agent 3배치 동시 실행 (5개씩)**
+
+```python
+domain_tags_content       = # .claude/skills/question-redesigner/references/domain_tags/{exam_id}.md
+translation_guide_content = # .claude/skills/question-redesigner/references/translation_guide/{exam_id}.md (없으면 null)
+
+# 모든 Task를 단일 메시지에 묶어 동시 실행
+for idx in range(3):
+    Task(
+        subagent_type="general-purpose",
+        model="haiku",
+        prompt={
+            "task": "generate_batch",
+            "batch_index": idx,                    # 0, 1, 2 — 도메인 영역 자율 분배용
+            "total_batches": 3,
+            "questions_per_batch": 5,
+            "exam_id": exam_id,
+            "start_id_num": start_id + idx * 5,   # 배치별 ID 시작 번호
+            "domain_tags": domain_tags_content,
+            "translation_guide": translation_guide_content,
+            "previous_concepts_log": previous_concepts_log,  # 이전 실행 생성 개념 목록
+        }
+    )
+```
+
+Generator는 `batch_index`를 기준으로 domain_tags의 도메인 영역을 자율 분배하고,
+`previous_concepts_log`에 없는 AWS 서비스/기능/사용 사례 5개를 선택하여 창작한다.
+
+**[G-5] Validator Agent 호출 (1회, 배치 내 intra-batch 중복 검사)**
+
+3개 배치 결과 취합 후:
+
+```python
+Task(
+    subagent_type="general-purpose",
+    model="haiku",
+    prompt={
+        "task": "validate_generated",
+        "generated_questions": all_generated_questions,  # 최대 15개
+    }
+)
+```
+
+Validator는 15개 문제 내에서 동일 AWS 서비스를 같은 사용 사례로 테스트하는 중복 쌍을 탐지한다.
+
+**[G-6] 중복 감지 처리 (에스컬레이션)**
+
+Validator 결과에서 `is_valid: false` 항목을 순서대로 처리:
+
+```
+❌ '{question_id}' 개념 중복 감지
+  - 중복 대상: '{duplicate_question_id}'
+  - 사유: {similarity_reason}
+
+[A] 이 문제를 재생성합니다 (Generator 단독 재호출)
+[B] 이 문제를 스킵합니다
+```
+
+[A] 선택 시: Generator를 단독(`batch_index: null`, `escalation_context` 포함) 재호출.
+
+**[G-7] 결과 취합 → output/redesigned_question_generate.json 저장**
+
+`question_id` 기준 정렬 후 저장.
+
+**[G-8] Supabase 삽입**
+
+세트 내 현재 MAX(sort_order) 조회 후 + 1부터 삽입:
+
+```bash
+python3 .claude/skills/sql-generator/scripts/insert_supabase.py \
+  --input-file output/redesigned_question_generate.json \
+  --set-id {set_id} \
+  --sort-order-start {sort_order}
+```
+
+**[G-9] 개념 로그 업데이트**
+
+삽입 성공한 문제들의 핵심 개념(`key_points` 첫 줄 제목)을 추출하여
+`output/generated_concepts_log.json`의 해당 exam_id 배열에 append한다:
+
+```python
+# log[exam_id]에 없는 항목만 추가 (중복 방지)
+for q in inserted_questions:
+    concept = q["key_points"].split("\n")[0]   # key_points 첫 줄 (제목)
+    if concept not in log[exam_id]:
+        log[exam_id].append(concept)
+```
+
+**[G-10] 완료 요약 출력**
+
+```
+✅ 자동 생성 완료
+━━━━━━━━━━━━━━━━━━━━━━━━
+생성 성공:         {success}개
+Validator 중복:    {dup}개 → 재생성 {regen}개, 스킵 {skip}개
+에스컬레이션 스킵: {escalated}개
+━━━━━━━━━━━━━━━━━━━━━━━━
+Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
+대상 세트: '{set_name}' | 할당된 ID 범위: {first_id} ~ {last_id}
+```
+
+---
+
 ## 주요 파일 경로
 
 | 파일 | 역할 |
@@ -925,6 +1080,7 @@ Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 | `output/needs_content.json` | 보기 해설·참고자료 누락 목록 (`/patch-content` 생성) |
 | `output/generated_content.json` | 생성 완료 결과 (`/patch-content` 생성) |
 | `output/draft_blog_posts.json` | 블로그 포스트 초안 (`/blog-write` 생성) |
+| `output/generated_concepts_log.json` | 자동 생성 모드에서 생성된 개념 누적 로그 (exam_id별, cross-run 반복 방지) |
 | `.env` | Supabase 접속 정보 (git에 포함되지 않음) |
 | `.claude/skills/question-parser/scripts/parse_text.py` | 파싱 스크립트 |
 | `.claude/skills/sql-generator/scripts/insert_supabase.py` | Supabase REST API 직접 삽입 스크립트 |

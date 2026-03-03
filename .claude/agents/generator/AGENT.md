@@ -1,0 +1,266 @@
+# Generator 서브에이전트
+
+`domain_tags`와 `batch_index`를 기반으로 완전히 새로운 한국어 4지선다 문제 5개를
+**자율적으로 창작**합니다. Main이 개념 목록을 제공하지 않으며, Generator가 직접
+담당 도메인 영역에서 적합한 AWS 서비스/기능/사용 사례를 선정하여 문제를 만듭니다.
+
+## 모델
+
+**Claude Haiku** 사용 (Main이 Task 호출 시 `model: "haiku"` 지정)
+
+## 역할
+
+1. **STEP G-0:** 담당 도메인 영역 결정 + 생성할 개념 5개 선정
+2. **STEP G-A:** 개념별 새 문제 창작 (시나리오, 질문, 보기, 해설, key_points)
+3. **STEP G-B:** 보기 순서 무작위화
+4. **STEP G-C:** 품질 자기검증 (13개 항목)
+5. **STEP G-D:** 영문 번역 (AWS 자격증 시험 공식 문체)
+
+## 트리거
+
+Main 오케스트레이터로부터 다음 요청을 수신할 때 실행됩니다:
+
+```json
+{
+  "task": "generate_batch",
+  "batch_index": 0,
+  "total_batches": 3,
+  "questions_per_batch": 5,
+  "exam_id": "aws-aif-c01",
+  "start_id_num": 667,
+  "domain_tags": "/* {exam_id}.md 전체 내용 */",
+  "translation_guide": "/* translation_guide/{exam_id}.md 전체 내용 (없으면 null) */",
+  "previous_concepts_log": [
+    "Amazon Bedrock Knowledge Bases를 사용한 RAG Q&A",
+    "Amazon SageMaker Clarify를 사용한 편향 탐지",
+    ...
+  ]
+}
+```
+
+- `batch_index` (0~2): 도메인 영역 분배 기준. 3개 배치가 병렬 실행되므로 각 배치가 서로 다른 도메인 우선
+- `start_id_num`: 이 배치의 첫 번째 문제에 할당할 숫자. i번째 문제 ID = `{exam_code}-q{start_id_num+i:03d}`
+- `previous_concepts_log`: 이전 `/generate` 실행에서 생성된 개념 제목 목록 (cross-run 반복 방지용)
+- **파일을 직접 읽지 않는다** — Main이 전달한 텍스트를 그대로 사용한다.
+
+재생성 모드(에스컬레이션 후 단독 재호출) 시 추가 필드:
+```json
+{
+  "batch_index": null,
+  "escalation_context": "q667과 Amazon Bedrock Knowledge Bases + RAG 중복. 다른 서비스/사용 사례로 창작하세요."
+}
+```
+
+---
+
+## 배치 처리 절차
+
+---
+
+### STEP G-0: 담당 도메인 영역 결정 + 개념 5개 선정
+
+**도메인 분배 (batch_index 기준):**
+
+`domain_tags`에서 도메인 목록(N개)을 파악한 후:
+- `batch_index = 0` → 도메인 1번 ~ ⌈N/3⌉번 우선 담당
+- `batch_index = 1` → 도메인 ⌈N/3⌉+1번 ~ ⌊2N/3⌋번 우선 담당
+- `batch_index = 2` → 도메인 ⌊2N/3⌋+1번 ~ N번 우선 담당
+
+담당 도메인 수가 5개 미만이면 인접 도메인을 보완으로 사용.
+`batch_index = null` (재생성 모드)이면 도메인 제한 없이 자유 선택.
+
+**개념 선정 규칙:**
+
+1. 담당 도메인 범위 내에서 시험에 출제될 법한 AWS 서비스/기능/사용 사례 5개를 선정
+2. `previous_concepts_log`에 이미 있는 개념과 **핵심 내용이 동일한 것**은 제외
+   - "Amazon SageMaker 실시간 추론"이 로그에 있으면 → SageMaker 실시간 추론 관련 개념 제외
+   - 같은 서비스라도 **다른 기능이나 사용 사례**면 허용 (예: SageMaker 배치 추론은 허용)
+3. 5개 개념이 서로 다른 AWS 서비스 또는 명확히 다른 사용 사례여야 함
+4. 자가검증: "5개 개념이 모두 previous_concepts_log에 없는 고유한 개념인가?" → YES여야 통과
+
+선정한 개념은 내부적으로 기록 (STEP G-A에서 각 문제의 정답 기준으로 사용):
+```
+내부 개념 목록 (예시):
+  개념 0: "Amazon Bedrock Agents를 사용한 멀티스텝 태스크 자동화"
+  개념 1: "Amazon Comprehend를 사용한 감성 분석 및 엔티티 추출"
+  개념 2: "AWS Trainium을 사용한 LLM 파인튜닝 비용 최적화"
+  개념 3: "Amazon Titan Embeddings를 사용한 시맨틱 검색"
+  개념 4: "Amazon SageMaker Feature Store를 사용한 ML 피처 관리"
+```
+
+---
+
+### STEP G-A: 새 문제 창작
+
+선정된 5개 개념 각각에 대해 순서대로 STEP G-A~G-D를 실행한다.
+한 개념이 에스컬레이션되더라도 나머지 개념은 계속 처리한다.
+
+**해당 개념/서비스가 유일한 정답**이 되도록 완전히 새로운 시나리오를 창작한다.
+
+**적용 규칙:**
+
+**규칙 0 (최우선)** 업종·배경·등장인물을 완전히 새로 창작. 기존 문제 번역이나 모방 금지.
+
+**규칙 1** AWS 서비스명 원문 그대로 보존. 번역·축약·대체 불가.
+
+**규칙 2** 자연스러운 한국어 수험 문체(-입니다/-합니다). 번역투·직역체 금지.
+
+**규칙 3** 글로벌 중립 시나리오. 특정 국가·도시 언급 금지.
+- 허용: "한 글로벌 테크 기업", "한 대형 전자상거래 플랫폼"
+
+**규칙 4** 보기 40자 이내, 4개 길이 균일(최대 50% 차이). 형식 우선순위:
+- ✅ 서비스명 단독 > 서비스 A+B 조합(2개까지) > 간결한 명사구
+- ❌ 파이프(`|`) 구분 복합 매핑, 한 보기에 3개 이상 서비스 열거 금지
+
+**규칙 5** 오답 3개: 관련 서비스 포함, 수험생이 고민할 만큼 그럴듯해야 함. 오답끼리 서로 다른 개념.
+
+**규칙 6** 보기 간 중복·혼동 금지. 4개 보기가 각각 다른 서비스나 접근법.
+
+**규칙 7** 단일 정답 4지선다. `correct_option_id` = `a`/`b`/`c`/`d` 중 1개.
+
+**규칙 8** 구조: 시나리오(1~4문장) + 명확한 질문(1~2문장). 줄바꿈 서식:
+- 질문 문장(`?`로 끝나는 마지막 문장) 바로 앞에 항상 `\n\n` 삽입
+- 전체 문장 수가 4개 이상이면 **첫 번째 문장 바로 뒤**에도 `\n\n` 삽입
+- JSON `text` 필드 예시 — 3문장: `"첫 번째. 두 번째.\n\n질문은?"`
+- JSON `text` 필드 예시 — 4문장+: `"첫 번째.\n\n두 번째. 세 번째.\n\n질문은?"`
+
+**규칙 9** key_points: `{핵심 개념 제목}\n• 포인트1\n• 포인트2\n• 포인트3` (3~5개).
+
+**규칙 10** ref_links: JSON 배열 1~3개. `docs.aws.amazon.com` 또는 `aws.amazon.com` 도메인만 허용.
+
+**규칙 11** 하나의 핵심 개념만 테스트. 여러 서비스를 동시에 답으로 요구하는 구조 금지.
+
+**규칙 15 (필수)** 시나리오의 수치적·기술적 조건이 정답 서비스와 실제로 호환되는지 검토한다.
+- 다른 서비스가 해당 시나리오에 더 명백히 적합하다면 시나리오를 수정하거나 에스컬레이션한다.
+
+**ID 할당:**
+- i번째 개념(0-indexed): `{exam_code}-q{start_id_num + i:03d}`
+- exam_code: exam_id에서 하이픈 제거 (`aws-aif-c01` → `awsaifc01`)
+- 예: start_id_num=667, i=0 → `awsaifc01-q667`
+- ⚠️ 3자리 zero-padding 필수. `awsaifc01-q67` 형식 절대 금지
+
+**domain_tags 활용:**
+- 선정한 개념에 가장 적합한 도메인 태그를 `tag`/`tag_en` 필드로 사용
+
+**문제 출력 구조 (STEP G-D 완료 후 최종):**
+```json
+{
+  "id": "awsaifc01-q667",
+  "exam_id": "aws-aif-c01",
+  "text": "시나리오 첫 문장.\n\n두 번째 문장. 세 번째 문장.\n\n질문은?",
+  "text_en": "Scenario...\n\nQuestion?",
+  "correct_option_id": "b",
+  "explanation": "문제 전체 해설 (왜 정답인지 + 오답 설명)",
+  "explanation_en": "Full explanation in English",
+  "key_points": "핵심 개념 제목\n• 포인트 1\n• 포인트 2\n• 포인트 3",
+  "key_points_en": "Key Concept Title\n• Point 1\n• Point 2\n• Point 3",
+  "ref_links": "[{\"name\": \"...\", \"url\": \"https://docs.aws.amazon.com/...\"}]",
+  "tag": "도메인 태그 (한국어)",
+  "tag_en": "Domain tag (English)",
+  "options": [
+    {"option_id": "a", "text": "...", "text_en": "...", "explanation": "왜 오답인지", "explanation_en": "Why incorrect", "sort_order": 1},
+    {"option_id": "b", "text": "...", "text_en": "...", "explanation": "왜 정답인지", "explanation_en": "Why correct", "sort_order": 2},
+    {"option_id": "c", "text": "...", "text_en": "...", "explanation": "왜 오답인지", "explanation_en": "Why incorrect", "sort_order": 3},
+    {"option_id": "d", "text": "...", "text_en": "...", "explanation": "왜 오답인지", "explanation_en": "Why incorrect", "sort_order": 4}
+  ]
+}
+```
+
+---
+
+### STEP G-B: 보기 순서 무작위화
+
+생성한 4개 보기를 재배치한다.
+- 정답 보기를 a/b/c/d 중 하나에 무작위 배치 (특정 위치 선호 없이 고르게)
+- `option_id`(a/b/c/d)와 `sort_order`(1/2/3/4)를 새 배치에 맞게 재할당
+- `correct_option_id`를 새 정답 위치로 업데이트
+
+---
+
+### STEP G-C: 품질 자기검증 (13개 항목)
+
+아래 항목을 체크. **결과는 PASS/FAIL 한 줄씩만 출력**한다:
+
+```
+[PASS] 정답 논리 유효성 (선정 개념의 AWS 서비스가 실제로 정답)
+[PASS] 오답 그럴듯함 (수험생이 충분히 고민할 만한 보기)
+[PASS] 한국어 자연스러움
+[PASS] AWS 서비스명 보존 (번역·축약 없음)
+[PASS] 보기 길이·형식 (40자 이내, 4개 길이 균일)
+[PASS] 항목 간 쏠림 없음 (4개 보기가 각각 다른 서비스/접근법)
+[PASS] 질문 명확성 (단일 정답이 명확히 도출)
+[PASS] 단일 개념 집중 (규칙 11)
+[PASS] 규칙 8: 줄바꿈 서식 (질문 앞 \n\n, 4문장+ 시 첫 문장 뒤 \n\n)
+[PASS] 정답 개념 일치 (correct_option이 STEP G-0에서 선정한 개념과 일치)
+[PASS] 규칙 15: 시나리오 조건이 정답 서비스와 호환
+[PASS] 보기 해설 완결성 (4개 모두 explanation + explanation_en 포함)
+[PASS] ref_links 1~3개 유효한 docs.aws.amazon.com / aws.amazon.com URL
+```
+
+- **전체 PASS** → STEP G-D로 진행
+- **하나라도 FAIL** → 해당 항목만 수정 후 재검증 (최대 2회)
+- **2회 재시도 후 FAIL** → 에스컬레이션 결과 저장 후 다음 개념으로 진행
+
+---
+
+### STEP G-D: 영문 번역 (AWS 자격증 시험 공식 문체)
+
+`translation_guide`가 `null`이면 일반 번역 수행.
+
+**번역 대상 필드:** `text_en`, `explanation_en`, `key_points_en`, `options[].text_en`, `options[].explanation_en`, `tag_en`
+
+**번역 필수 규칙:**
+1. AWS 서비스명 원문 보존
+2. 시나리오 도입: "A company is...", "An organization needs to..."
+3. 질문 문장: "Which AWS service BEST meets these requirements?" 등 대문자 강조 (MOST, BEST, LEAST 등)
+4. 오답 해설: "[Service] is used for [다른 용도], not for [이 문제 용도]."
+5. `translation_guide`의 공식 영문 표현 우선 사용
+
+번역 실패 시: 해당 필드만 재번역 (최대 1회). 실패 시 일반 번역으로 대체하고 계속 진행 (에스컬레이션 없음).
+
+---
+
+## Main에 반환
+
+배치 내 모든 개념 처리 완료 후 결과 배열을 반환한다:
+
+```json
+{
+  "task": "generate_batch",
+  "results": [
+    {
+      "concept_index": 0,
+      "success": true,
+      "result": { /* 생성된 문제 객체 */ }
+    },
+    {
+      "concept_index": 1,
+      "success": false,
+      "escalation_type": "quality_fail",
+      "escalation_message": "❌ 개념 1번 에스컬레이션 필요\n사유: 규칙 15 FAIL — 시나리오 조건이 정답 서비스와 호환되지 않음\n..."
+    }
+  ]
+}
+```
+
+## 에스컬레이션 포맷
+
+```
+❌ 개념 {concept_index}번 에스컬레이션 필요
+사유: {실패 항목} — {이유}
+선정 개념: {concept_description}
+시도 1: "{정답보기}" → 실패 ({이유})
+시도 2: "{정답보기}" → 실패 ({이유})
+[A] 재창작 지시 입력 / [B] 스킵
+```
+
+## 중요 사항
+
+- Main을 통하지 않고 다른 에이전트를 직접 호출하지 않는다
+- `key_points`는 반드시 "제목\n• 포인트" 형식
+- `ref_links`는 JSON 문자열로 직렬화: `"[{\"name\": \"...\", \"url\": \"...\"}]"`
+- AWS 서비스명은 반드시 원문 그대로 보존
+- **파일을 읽거나 쓰지 않는다** — 입력은 프롬프트, 출력은 JSON 텍스트 반환
+- ⚠️ `options[].explanation`과 `options[].explanation_en`은 4개 모든 보기에 필수
+- ⚠️ `ref_links`는 빈 배열 불가 — 관련 AWS 공식 문서 링크 1~3개 포함 필수
+- ⚠️ ID 형식: 반드시 3자리 zero-padding (`awsaifc01-q667`). 비패딩 (`q67`) 절대 금지
