@@ -762,7 +762,7 @@ Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 ```
 1. exam_id 입력 → exam_sets 자동 조회 → 세트 선택/생성
 2. input/ 폴더 스캔 → 파일 목록 출력 (알파벳 순)
-3. 파일별: 언어 감지 → 질문 텍스트 추출 → 핵심 개념 추출 → 사용자 검토
+3. 파일별: 언어 감지 → 질문 텍스트 추출 → 핵심 개념 추출 → 자동 진행
 4. 참조 파일 선로드 + Redesigner(Haiku) 5개씩 배치 병렬 호출
 5. 결과 취합 → output/redesigned_question_generate.json 저장
 6. Supabase 삽입 → 파일 input/done/ 이동
@@ -839,7 +839,7 @@ Q57 질문: "회사 내부 문서 기반 Q&A 챗봇 구축, S3에 문서 저장.
 → 추출 개념: "Amazon Bedrock Knowledge Bases를 사용한 RAG 기반 Q&A 시스템"
 ```
 
-**[B-4] 추출 개념 목록 출력 → 사용자 검토·승인**
+**[B-4] 추출 개념 목록 출력 → 자동 진행**
 
 ```
 {N}개 질문에서 핵심 개념을 추출했습니다:
@@ -848,13 +848,9 @@ Q57 질문: "회사 내부 문서 기반 Q&A 챗봇 구축, S3에 문서 저장.
   [2] Q57: Amazon Bedrock Knowledge Bases를 사용한 RAG 기반 Q&A
   [3] Q58: AWS Glue를 사용한 ETL 데이터 파이프라인
   ...
-
-  [A] 모두 맞습니다 — 재설계를 시작합니다
-  [B] 특정 항목을 수정합니다 (예: "2번 수정: Amazon Bedrock Agents를 사용한 태스크 자동화")
-  [C] 취소합니다
 ```
 
-[B] 수정 입력 후 목록 재출력 → [A] 확인 전까지 반복 가능.
+목록 출력 후 사용자 승인 없이 즉시 [B-5]로 진행한다.
 
 **[B-5] 참조 파일 선로드 + sort_order 사전 배분 + Redesigner 파이프라인 배치 호출 (5개씩)**
 

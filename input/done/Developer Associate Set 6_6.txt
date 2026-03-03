@@ -1,0 +1,57 @@
+61. An organization wants to enforce column-level encryption on sensitive fields in Amazon Redshift. Which feature should be used?
+
+
+
+62. A data engineer is designing a pipeline where data must be processed exactly once, even if failures occur. Which Kinesis consumer type supports exactly-once processing semantics?
+
+
+
+63. A company wants to automate the discovery and classification of sensitive data stored in Amazon S3. Which AWS service provides this capability?
+
+
+
+64. A data engineer must optimize an Amazon Athena query that scans a large, unpartitioned table. What is the BEST strategy to reduce costs and improve performance?
+
+
+
+65. An AWS Glue crawler fails to classify a custom file format stored in S3. What should the data engineer do?
+
+
+
+66. A company needs to store time-series IoT data with millisecond precision and run fast aggregation queries. Which AWS service is MOST appropriate?
+
+
+
+67. A data engineer wants to incrementally load only new or changed records from Amazon S3 into a target table using AWS Glue. Which feature enables this?
+
+
+
+68. A company is migrating a large on-premises data warehouse to Amazon Redshift. The dataset is 50 TB. Which method provides the FASTEST data transfer?
+
+
+
+69. A data pipeline must retry failed steps automatically and send notifications on failure. Which AWS service provides this orchestration with built-in retry and error handling?
+
+
+
+70. A data engineer needs to join a large fact table with a small dimension table in Amazon Redshift. Which distribution style should be applied to the dimension table for best performance?
+
+
+
+71. An Amazon EMR cluster is processing a large Hive job. The job is spending most of its time on shuffle operations. What should be done to optimize this?
+
+
+
+72. A company wants to enforce a schema on data being written to Amazon S3 to prevent incompatible schema changes. Which AWS service or feature can enforce schema evolution rules?
+
+
+
+73. A data engineer needs to query the last 7 days of data in Amazon Athena efficiently. The table is partitioned by day. What should be done to avoid full table scans?
+
+
+
+74. A streaming application needs to replay data from the last 48 hours due to a downstream failure. Which Kinesis feature supports this?
+
+
+
+75. A company wants to use machine learning to detect anomalies in their Amazon Redshift data without building custom models. Which AWS service integrates with Redshift for this purpose?

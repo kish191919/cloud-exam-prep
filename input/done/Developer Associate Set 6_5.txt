@@ -1,0 +1,57 @@
+46. A company needs to convert CSV files stored in Amazon S3 into Parquet format to reduce storage costs and improve query performance. Which AWS service can perform this transformation with minimal code?
+
+
+
+47. A data engineer wants to catalog all data assets across Amazon S3, Amazon RDS, and Amazon Redshift automatically. Which AWS service provides a unified metadata catalog?
+
+
+
+48. An ETL job in AWS Glue is failing because it runs out of memory when processing a large dataset. What is the MOST effective solution?
+
+
+
+49. A company wants to monitor data quality metrics over time and set alerts when data quality scores drop below a threshold. Which AWS service supports this natively?
+
+
+
+50. A data engineer needs to load data from Amazon S3 into Amazon Redshift as efficiently as possible. Which command should be used?
+
+
+
+51. A streaming pipeline must deliver data to Amazon S3, Amazon Redshift, and Amazon OpenSearch simultaneously. Which AWS service supports fan-out delivery to multiple destinations?
+
+
+
+52. An organization needs to run Apache Spark jobs on large datasets stored in Amazon S3 without managing clusters. Which AWS service is BEST suited?
+
+
+
+53. A company wants to query data across Amazon S3, Amazon RDS, and Amazon DynamoDB using a single SQL interface. Which AWS service enables federated queries?
+
+
+
+54. A data lake needs fine-grained access control so that different teams can only access specific databases, tables, and columns. Which AWS service provides this level of governance?
+
+
+
+55. A Kinesis Data Stream has 10 shards. Each shard is receiving data at 2 MB/s, exceeding the limit. What should the engineer do?
+
+
+
+56. A company is running an Amazon EMR cluster for batch processing. The jobs run only during business hours. What is the MOST cost-effective configuration?
+
+
+
+57. A data engineer needs to capture every change made to an Amazon DynamoDB table and send it to Amazon Kinesis Data Streams for real-time processing. Which feature should be enabled?
+
+
+
+58. An AWS Glue job needs to read from a JDBC source inside a VPC. What must be configured to allow this connection?
+
+
+
+59. A company wants to build a real-time dashboard showing aggregated metrics from a Kinesis Data Stream. Which AWS service can perform windowed aggregations on the stream?
+
+
+
+60. A data engineer needs to ensure that data written to Amazon S3 is deduplicated before being stored. Which AWS Glue feature helps with deduplication?

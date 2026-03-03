@@ -1,0 +1,57 @@
+76. A data engineer is building a data lakehouse. Which open table format supports row-level deletes and ACID transactions on Amazon S3 and is supported by AWS Glue?
+
+
+
+77. A company needs to ingest 100,000 records per second from web clickstream data into AWS. Which service is designed to handle this scale of real-time ingestion?
+
+
+
+78. An AWS Glue ETL job processes data from S3 but repeatedly reads the same partitions. Which optimization reduces redundant reads?
+
+
+
+79. A data engineer must ensure that an Amazon Redshift cluster automatically scales compute capacity based on query demand. Which Redshift feature provides this?
+
+
+
+80. A company wants to move petabytes of data from on-premises storage to Amazon S3 within 2 weeks. Internet bandwidth is limited. Which AWS service should be used?
+
+
+
+81. An organization needs to run SQL-based transformations directly inside Amazon Redshift using Python. Which Redshift feature supports this?
+
+
+
+82. A data pipeline writes data to Amazon S3 in small files, causing slow Athena queries. What is the BEST solution to improve performance?
+
+
+
+83. A company wants to stream database changes from Amazon Aurora MySQL to Amazon S3 for analytics. Which AWS service enables change data capture from Aurora?
+
+
+
+84. A data engineer needs to share processed data from Amazon S3 with multiple AWS accounts in a governed way. Which AWS service manages cross-account data sharing?
+
+
+
+85. A Kinesis Data Firehose delivery stream is experiencing data delivery delays to Amazon S3. What should be checked FIRST?
+
+
+
+86. A company stores log data in Amazon S3 and needs to run complex SQL analytics including window functions. Which AWS service is MOST appropriate?
+
+
+
+87. A data engineer needs to run a one-time migration of a 10 GB MySQL database to Amazon Aurora. Which AWS service handles this with minimal configuration?
+
+
+
+88. A company wants to visualize data stored in Amazon Redshift and Amazon Athena using a managed BI tool. Which AWS service should be used?
+
+
+
+89. An AWS Glue job is writing too many small Parquet files to S3. Which Glue configuration should be used to consolidate output files?
+
+
+
+90. A data engineer needs to orchestrate an ETL pipeline that waits for files to arrive in S3 before triggering a Glue job. Which AWS service handles event-driven triggers?
