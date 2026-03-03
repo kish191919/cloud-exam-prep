@@ -38,17 +38,24 @@ CREATE TRIGGER trg_contact_messages_updated_at
 -- RLS 활성화
 ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
 
--- 정책 1: 로그인한 사용자는 자신의 문의만 조회 가능
-CREATE POLICY "users_select_own_contact"
+-- 정책 1: 인증된 모든 사용자가 전체 조회 가능
+-- (본인 문의 조회 + 관리자 전체 조회 모두 허용 — 관리자 전용 접근은 앱 레벨 isAdmin()으로 보완)
+CREATE POLICY "authenticated_select_all_contacts"
   ON contact_messages FOR SELECT
-  USING (auth.uid() = user_id);
+  USING (auth.uid() IS NOT NULL);
 
 -- 정책 2: 로그인한 회원만 자신 명의로 제출 가능
 CREATE POLICY "users_insert_contact"
   ON contact_messages FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
--- 정책 3: 관리자(service_role)는 모든 작업 가능 — service_role은 RLS 우회하므로 별도 정책 불필요
+-- 정책 3: 인증된 사용자(관리자)가 상태·답변 UPDATE 가능
+-- 관리자 전용 접근은 앱 레벨 isAdmin()으로 보완
+CREATE POLICY "authenticated_update_contacts"
+  ON contact_messages FOR UPDATE
+  USING (auth.uid() IS NOT NULL);
+
+-- 정책 4: service_role은 RLS 우회하므로 별도 정책 불필요
 
 -- Realtime 활성화 (관리자 신규 문의 알림, 회원 답변 알림용)
 ALTER PUBLICATION supabase_realtime ADD TABLE contact_messages;

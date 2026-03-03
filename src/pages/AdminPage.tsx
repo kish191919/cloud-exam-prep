@@ -33,7 +33,7 @@ import {
   ChevronLeft, ChevronRight,
   BarChart3, TrendingUp, Clock, Activity, CalendarDays,
   RefreshCw, Megaphone, Pin, CheckSquare, NotebookPen, Eye, EyeOff, Gift,
-  Flag, ExternalLink,
+  Flag, ExternalLink, MessageSquare, Send,
 } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -53,6 +53,17 @@ import {
   type QuestionSetInfo,
   type ReportStatus,
 } from '@/services/reportService';
+import {
+  getAllContacts,
+  updateContact,
+  getContactCounts,
+} from '@/services/contactService';
+import {
+  CATEGORY_LABELS as CONTACT_CATEGORY_LABELS,
+  STATUS_LABELS as CONTACT_STATUS_LABELS,
+  type ContactMessage,
+  type ContactStatus,
+} from '@/types/contact';
 import type { Announcement, AnnouncementInput, AnnouncementCategory } from '@/types/announcement';
 import {
   getAllBlogPostsAdmin,
@@ -2818,12 +2829,253 @@ const BlogManager = ({ exams }: BlogManagerProps) => {
   );
 };
 
+// ─── Contact Manager Component ────────────────────────────────────────────────
+const CONTACT_STATUS_COLOR: Record<ContactStatus, string> = {
+  unread:    'bg-orange-100 text-orange-700 dark:bg-orange-950/40 dark:text-orange-400',
+  read:      'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400',
+  responded: 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400',
+  closed:    'bg-muted text-muted-foreground',
+};
+
+const ContactManager = () => {
+  const { user, markContactsRead } = useAuth();
+  const { toast } = useToast();
+  const [contacts, setContacts] = useState<ContactMessage[]>([]);
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [statusFilter, setStatusFilter] = useState<ContactStatus | 'all'>('all');
+  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<ContactMessage | null>(null);
+  const [adminResponse, setAdminResponse] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  const loadContacts = async () => {
+    setLoading(true);
+    try {
+      const [data, cnt] = await Promise.all([
+        getAllContacts(statusFilter),
+        getContactCounts(),
+      ]);
+      setContacts(data);
+      setCounts(cnt);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { loadContacts(); }, [statusFilter]);
+
+  const openDetail = async (contact: ContactMessage) => {
+    setSelected(contact);
+    setAdminResponse(contact.adminResponse ?? '');
+    setSaveError(null);
+    // 미읽음이면 읽음으로 표시
+    if (contact.status === 'unread') {
+      try {
+        await updateContact(contact.id, { status: 'read' });
+        markContactsRead();
+        loadContacts();
+      } catch {}
+    }
+  };
+
+  const handleSaveResponse = async (newStatus: ContactStatus) => {
+    if (!selected) return;
+    if (newStatus === 'responded' && !adminResponse.trim()) {
+      setSaveError('답변 내용을 입력해주세요.');
+      return;
+    }
+    setSaving(true);
+    setSaveError(null);
+    try {
+      await updateContact(selected.id, {
+        status: newStatus,
+        adminResponse: adminResponse.trim() || undefined,
+        respondedBy: user?.id,
+      });
+      toast({ title: '저장되었습니다.' });
+      setSelected(null);
+      loadContacts();
+    } catch (e: any) {
+      const msg = (e as Error).message ?? '저장 중 오류가 발생했습니다.';
+      setSaveError(msg);
+      toast({ title: '오류', description: msg, variant: 'destructive' });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const filterButtons: { label: string; value: ContactStatus | 'all' }[] = [
+    { label: `전체 (${counts.total ?? 0})`, value: 'all' },
+    { label: `미확인 (${counts.unread ?? 0})`, value: 'unread' },
+    { label: `확인됨 (${counts.read ?? 0})`, value: 'read' },
+    { label: `답변완료 (${counts.responded ?? 0})`, value: 'responded' },
+    { label: `종료 (${counts.closed ?? 0})`, value: 'closed' },
+  ];
+
+  return (
+    <div className="space-y-4">
+      {/* 필터 + 새로고침 */}
+      <div className="flex flex-wrap items-center gap-2">
+        {filterButtons.map(btn => (
+          <Button
+            key={btn.value}
+            variant={statusFilter === btn.value ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setStatusFilter(btn.value)}
+          >
+            {btn.label}
+          </Button>
+        ))}
+        <Button variant="ghost" size="icon" className="h-8 w-8 ml-auto" onClick={loadContacts}>
+          <RefreshCw className="h-4 w-4" />
+        </Button>
+      </div>
+
+      <Card>
+        <CardContent className="p-0">
+          {loading ? (
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            </div>
+          ) : contacts.length === 0 ? (
+            <div className="text-center py-16 text-muted-foreground">
+              <MessageSquare className="h-10 w-10 mx-auto mb-3 opacity-30" />
+              <p className="text-sm">문의 내역이 없습니다.</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-border">
+              {contacts.map(contact => (
+                <div
+                  key={contact.id}
+                  className="flex items-start gap-3 px-4 py-3 hover:bg-muted/30 transition-colors"
+                >
+                  <div className="flex-1 min-w-0 space-y-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
+                        {CONTACT_CATEGORY_LABELS[contact.category]}
+                      </span>
+                      <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${CONTACT_STATUS_COLOR[contact.status]}`}>
+                        {CONTACT_STATUS_LABELS[contact.status]}
+                      </span>
+                      <span className="text-sm font-medium truncate">{contact.subject}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      {contact.userName ?? ''} {contact.userEmail} · {new Date(contact.createdAt).toLocaleDateString('ko-KR')}
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="shrink-0"
+                    onClick={() => openDetail(contact)}
+                  >
+                    상세
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* 문의 상세 다이얼로그 */}
+      <Dialog open={!!selected} onOpenChange={v => !v && setSelected(null)}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <MessageSquare className="h-4 w-4 text-accent" />
+              문의 상세
+            </DialogTitle>
+          </DialogHeader>
+
+          {selected && (
+            <div className="space-y-4 py-1">
+              {/* 문의 정보 */}
+              <div className="rounded-lg border border-border bg-muted/30 p-3 space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-muted-foreground w-14">유형</span>
+                  <span className="text-sm">{CONTACT_CATEGORY_LABELS[selected.category]}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-muted-foreground w-14">제목</span>
+                  <span className="text-sm font-medium">{selected.subject}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-muted-foreground w-14">작성자</span>
+                  <span className="text-sm">{selected.userName ?? ''} ({selected.userEmail})</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-muted-foreground w-14">상태</span>
+                  <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${CONTACT_STATUS_COLOR[selected.status]}`}>
+                    {CONTACT_STATUS_LABELS[selected.status]}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-muted-foreground w-14">날짜</span>
+                  <span className="text-sm text-muted-foreground">
+                    {new Date(selected.createdAt).toLocaleString('ko-KR')}
+                  </span>
+                </div>
+              </div>
+
+              {/* 문의 내용 */}
+              <div className="space-y-1.5">
+                <p className="text-xs font-medium text-muted-foreground">문의 내용</p>
+                <div className="rounded-lg border border-border bg-background p-3">
+                  <p className="text-sm whitespace-pre-wrap">{selected.message}</p>
+                </div>
+              </div>
+
+              {/* 관리자 답변 */}
+              <div className="space-y-1.5">
+                <p className="text-xs font-medium text-muted-foreground">관리자 답변</p>
+                <Textarea
+                  placeholder="답변 내용을 입력해주세요. 답변 저장 시 회원의 마이페이지에 표시됩니다."
+                  value={adminResponse}
+                  onChange={e => setAdminResponse(e.target.value)}
+                  rows={4}
+                  className="resize-none text-sm"
+                />
+              </div>
+
+              {saveError && <p className="text-sm text-destructive">{saveError}</p>}
+            </div>
+          )}
+
+          <DialogFooter className="flex-wrap gap-2">
+            <Button variant="outline" size="sm" onClick={() => setSelected(null)}>
+              닫기
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={saving}
+              onClick={() => handleSaveResponse('closed')}
+            >
+              종료 처리
+            </Button>
+            <Button
+              size="sm"
+              disabled={saving}
+              onClick={() => handleSaveResponse('responded')}
+            >
+              {saving ? <Loader2 className="h-4 w-4 mr-1 animate-spin" /> : <Send className="h-4 w-4 mr-1" />}
+              답변 저장
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
 // ─── Main Admin Page ──────────────────────────────────────────────────────────
 const AdminPage = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, unreadContactCount } = useAuth();
 
-  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions' | 'stats' | 'board' | 'blog' | 'event' | 'reports'>('sets');
+  const [adminTab, setAdminTab] = useState<'sets' | 'subscriptions' | 'stats' | 'board' | 'blog' | 'event' | 'reports' | 'contacts'>('sets');
   const [eventExpiresAt, setEventExpiresAt] = useState<string | null>(null);
   const [eventInput, setEventInput] = useState('');
   const [eventLoading, setEventLoading] = useState(false);
@@ -2960,6 +3212,15 @@ const AdminPage = () => {
             <TabsTrigger value="reports" className="gap-2">
               <Flag className="h-4 w-4" />
               신고 관리
+            </TabsTrigger>
+            <TabsTrigger value="contacts" className="gap-2 relative">
+              <MessageSquare className="h-4 w-4" />
+              문의 관리
+              {unreadContactCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-orange-500 text-[10px] text-white font-bold">
+                  {unreadContactCount > 9 ? '9+' : unreadContactCount}
+                </span>
+              )}
             </TabsTrigger>
           </TabsList>
 
@@ -3110,6 +3371,11 @@ const AdminPage = () => {
           {/* ── 신고 관리 탭 ── */}
           <TabsContent value="reports">
             <ReportManager />
+          </TabsContent>
+
+          {/* ── 문의 관리 탭 ── */}
+          <TabsContent value="contacts">
+            <ContactManager />
           </TabsContent>
 
           {/* ── 이벤트 관리 탭 ── */}

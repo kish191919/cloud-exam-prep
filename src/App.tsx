@@ -11,6 +11,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { FontSizeProvider } from "./contexts/FontSizeContext";
 import AuthModal from "./components/AuthModal";
 import PWAInstallBanner from "./components/PWAInstallBanner";
+import ContactFloatingButton from "./components/ContactFloatingButton";
 
 // 전역 에러 경계 — React 렌더링 오류를 잡아 빈 화면 대신 메시지 표시
 class ErrorBoundary extends React.Component<
@@ -84,6 +85,7 @@ const App = () => (
           <AuthProvider>
             <AuthModal />
             <PWAInstallBanner />
+            <ContactFloatingButton />
             <Suspense fallback={<PageLoader />}>
               <Routes>
                 <Route path="/" element={<Index />} />

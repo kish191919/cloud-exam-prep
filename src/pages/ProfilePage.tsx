@@ -10,10 +10,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { getAllSessions } from '@/hooks/useExamSession';
 import type { ExamSession } from '@/types/exam';
-import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Star, Sun, Moon, Globe, Leaf, Flag } from 'lucide-react';
+import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Star, Sun, Moon, Globe, Leaf, Flag, MessageSquare, ChevronDown } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { getMyReports, getQuestionSetInfo, REASON_LABELS, STATUS_LABELS, type QuestionReport, type QuestionSetInfo } from '@/services/reportService';
+import { getMyContacts } from '@/services/contactService';
+import { CATEGORY_LABELS as CONTACT_CATEGORY_LABELS, STATUS_LABELS as CONTACT_STATUS_LABELS, type ContactMessage, type ContactStatus } from '@/types/contact';
 
 const PROVIDER_LABEL: Record<string, string> = {
   google: 'Google',
@@ -45,12 +47,14 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [myReports, setMyReports] = useState<QuestionReport[]>([]);
   const [reportSetInfo, setReportSetInfo] = useState<Record<string, QuestionSetInfo>>({});
+  const [myContacts, setMyContacts] = useState<ContactMessage[]>([]);
+  const [expandedContact, setExpandedContact] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) return;
 
     const loadData = async () => {
-      const [profileResult, settingsResult, sessionData, reportsData] = await Promise.all([
+      const [profileResult, settingsResult, sessionData, reportsData, contactsData] = await Promise.all([
         supabase
           .from('profiles')
           .select('subscription_expires_at, created_at')
@@ -63,12 +67,14 @@ export default function ProfilePage() {
           .single(),
         getAllSessions(user.id),
         getMyReports(user.id).catch(() => [] as QuestionReport[]),
+        getMyContacts(user.id).catch(() => [] as ContactMessage[]),
       ]);
 
       if (profileResult.data) setProfile(profileResult.data);
       setFreeEventExpiry(settingsResult.data?.value?.expires_at ?? null);
       setSessions(sessionData);
       setMyReports(reportsData);
+      setMyContacts(contactsData);
 
       // 신고한 문제의 세트 정보 로드
       if (reportsData.length > 0) {
@@ -322,6 +328,81 @@ export default function ProfilePage() {
           </Card>
 
           {/* 내 신고 내역 */}
+          {/* 내 문의내역 */}
+          {myContacts.length > 0 && (
+            <Card className="md:col-span-2">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <MessageSquare className="h-4 w-4 text-accent" />
+                  내 문의내역
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {myContacts.map(contact => {
+                    const isExpanded = expandedContact === contact.id;
+                    const statusColor: Record<ContactStatus, string> = {
+                      unread: 'bg-orange-100 text-orange-700 dark:bg-orange-950/40 dark:text-orange-400',
+                      read: 'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400',
+                      responded: 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-400',
+                      closed: 'bg-muted text-muted-foreground',
+                    };
+                    return (
+                      <div
+                        key={contact.id}
+                        className="rounded-lg border border-border text-sm"
+                      >
+                        <button
+                          className="w-full flex items-start gap-2 p-3 text-left hover:bg-muted/30 transition-colors rounded-lg"
+                          onClick={() => setExpandedContact(isExpanded ? null : contact.id)}
+                        >
+                          <div className="flex-1 min-w-0 space-y-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="text-xs px-1.5 py-0.5 rounded bg-secondary text-secondary-foreground">
+                                {CONTACT_CATEGORY_LABELS[contact.category]}
+                              </span>
+                              <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${statusColor[contact.status]}`}>
+                                {CONTACT_STATUS_LABELS[contact.status]}
+                              </span>
+                              <span className="font-medium truncate">{contact.subject}</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              {new Date(contact.createdAt).toLocaleDateString('ko-KR')}
+                            </p>
+                          </div>
+                          <ChevronDown className={`h-4 w-4 text-muted-foreground shrink-0 mt-0.5 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        {isExpanded && (
+                          <div className="px-3 pb-3 space-y-2 border-t border-border pt-3">
+                            <div className="rounded-lg bg-muted/40 p-3">
+                              <p className="text-xs font-medium text-muted-foreground mb-1">문의 내용</p>
+                              <p className="text-sm whitespace-pre-wrap">{contact.message}</p>
+                            </div>
+                            {contact.adminResponse && (
+                              <div className="rounded-lg p-3 bg-accent/5 border border-accent/20">
+                                <p className="text-xs font-medium text-accent mb-1">관리자 답변</p>
+                                <p className="text-sm whitespace-pre-wrap">{contact.adminResponse}</p>
+                                {contact.respondedAt && (
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    {new Date(contact.respondedAt).toLocaleDateString('ko-KR')}
+                                  </p>
+                                )}
+                              </div>
+                            )}
+                            {!contact.adminResponse && contact.status !== 'closed' && (
+                              <p className="text-xs text-muted-foreground italic">아직 답변이 등록되지 않았습니다.</p>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {myReports.length > 0 && (
             <Card className="md:col-span-2">
               <CardHeader className="pb-3">

@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
+import { isAdmin } from '@/lib/admin';
+import { getUnreadContactCount } from '@/services/contactService';
 
 type SubscriptionTier = 'free' | 'premium';
 
@@ -14,6 +16,8 @@ interface AuthContextType {
   subscriptionTier: SubscriptionTier;
   unreadReportCount: number;
   markReportsRead: () => void;
+  unreadContactCount: number;
+  markContactsRead: () => void;
   signInWithEmail: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUpWithEmail: (email: string, password: string, name: string) => Promise<{ data: any; error: Error | null }>;
   signInWithGoogle: () => Promise<{ error: Error | null }>;
@@ -44,6 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'signup'>('login');
   const [unreadReportCount, setUnreadReportCount] = useState(0);
+  const [unreadContactCount, setUnreadContactCount] = useState(0);
 
   // 무료 이벤트 설정 조회
   const fetchFreeEvent = async () => {
@@ -72,6 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     let profileChannel: ReturnType<typeof supabase.channel> | null = null;
     let reportChannel: ReturnType<typeof supabase.channel> | null = null;
+    let contactChannel: ReturnType<typeof supabase.channel> | null = null;
 
     // OAuth redirect error 감지
     const params = new URLSearchParams(window.location.search);
@@ -118,7 +124,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       )
       .subscribe();
 
-    const subscribeToUserChannels = (userId: string) => {
+    const subscribeToUserChannels = (userId: string, email?: string) => {
       // 구독 등급 변경 감지
       if (profileChannel) {
         supabase.removeChannel(profileChannel);
@@ -159,6 +165,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           },
         )
         .subscribe();
+
+      // 관리자: 신규 문의 INSERT 감지 → 미읽음 카운트 증가
+      if (isAdmin(email)) {
+        if (contactChannel) {
+          supabase.removeChannel(contactChannel);
+          contactChannel = null;
+        }
+        // 초기 미읽음 카운트 로드
+        getUnreadContactCount().then(setUnreadContactCount).catch(() => {});
+        contactChannel = supabase
+          .channel('admin-contact-messages')
+          .on(
+            'postgres_changes',
+            { event: 'INSERT', schema: 'public', table: 'contact_messages' },
+            () => {
+              setUnreadContactCount(c => c + 1);
+            },
+          )
+          .subscribe();
+      }
     };
 
     const unsubscribeFromUserChannels = () => {
@@ -170,6 +196,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         supabase.removeChannel(reportChannel);
         reportChannel = null;
       }
+      if (contactChannel) {
+        supabase.removeChannel(contactChannel);
+        contactChannel = null;
+      }
     };
 
     supabase.auth.getSession().then(({ data }) => {
@@ -177,7 +207,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(data.session?.user ?? null);
       if (data.session?.user) {
         fetchProfile(data.session.user.id);
-        subscribeToUserChannels(data.session.user.id);
+        subscribeToUserChannels(data.session.user.id, data.session.user.email);
       }
       setLoading(false);
     });
@@ -187,13 +217,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(session?.user ?? null);
       if (session?.user) {
         fetchProfile(session.user.id);
-        subscribeToUserChannels(session.user.id);
+        subscribeToUserChannels(session.user.id, session.user.email);
         if (event === 'SIGNED_IN') {
           setAuthModalOpen(false);
         }
       } else {
         setSubscriptionTier('free');
         setUnreadReportCount(0);
+        setUnreadContactCount(0);
         unsubscribeFromUserChannels();
       }
       setLoading(false);
@@ -248,6 +279,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const markReportsRead = () => setUnreadReportCount(0);
+  const markContactsRead = () => setUnreadContactCount(0);
 
   const openAuthModal = (tab: 'login' | 'signup' = 'login') => {
     setAuthModalTab(tab);
@@ -269,6 +301,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       subscriptionTier,
       unreadReportCount,
       markReportsRead,
+      unreadContactCount,
+      markContactsRead,
       signInWithEmail, signUpWithEmail, signInWithGoogle, signInWithKakao, signInWithNaver, signOut, resetPasswordForEmail,
       openAuthModal, closeAuthModal, authModalOpen, authModalTab,
     }}>
