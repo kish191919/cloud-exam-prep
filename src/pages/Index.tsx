@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -12,9 +13,12 @@ import {
   Shield, BarChart3, Clock, BookOpen, ArrowRight,
   Cloud, Zap, Target, Users, Smartphone, CheckCircle2, Star, Map, Gift,
   Briefcase, GraduationCap, Rocket, Brain, Database, TrendingUp,
+  MessageSquare,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
+import { useAuth } from '@/contexts/AuthContext';
+import ContactModal from '@/components/ContactModal';
 
 // iOS Safari 감지 (Chrome iOS, Firefox iOS 제외)
 const isIOSSafari =
@@ -31,6 +35,8 @@ const isStandalone =
 const Index = () => {
   const { t } = useTranslation(['pages', 'common']);
   const { canInstall, install } = usePWAInstall();
+  const { user, openAuthModal } = useAuth();
+  const [contactOpen, setContactOpen] = useState(false);
 
   const features = t('index.features', { returnObjects: true }) as Array<{ title: string; desc: string; icon: string }>;
   const steps = t('index.steps', { returnObjects: true }) as Array<{ num: string; title: string; desc: string }>;
