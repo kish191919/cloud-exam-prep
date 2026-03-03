@@ -10,7 +10,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { getAllSessions } from '@/hooks/useExamSession';
 import type { ExamSession } from '@/types/exam';
-import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Star, Sun, Moon, Globe, Leaf, Flag, MessageSquare, ChevronDown } from 'lucide-react';
+import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Star, Sun, Moon, Globe, Leaf, Flag, MessageSquare, ChevronDown, Pencil, X, Check } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { getMyReports, getQuestionSetInfo, REASON_LABELS, STATUS_LABELS, type QuestionReport, type QuestionSetInfo } from '@/services/reportService';
@@ -49,6 +50,9 @@ export default function ProfilePage() {
   const [reportSetInfo, setReportSetInfo] = useState<Record<string, QuestionSetInfo>>({});
   const [myContacts, setMyContacts] = useState<ContactMessage[]>([]);
   const [expandedContact, setExpandedContact] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState(false);
+  const [nameInput, setNameInput] = useState('');
+  const [nameSaving, setNameSaving] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -98,6 +102,29 @@ export default function ProfilePage() {
   const provider = (user.identities?.[0]?.provider ?? 'email') as string;
   const providerLabel = PROVIDER_LABEL[provider] ?? '이메일';
 
+  const handleEditName = () => {
+    setNameInput(userName);
+    setEditingName(true);
+  };
+
+  const handleSaveName = async () => {
+    const trimmed = nameInput.trim();
+    if (!trimmed || trimmed === userName) {
+      setEditingName(false);
+      return;
+    }
+    setNameSaving(true);
+    await supabase.auth.updateUser({ data: { full_name: trimmed } });
+    setNameSaving(false);
+    setEditingName(false);
+    window.location.reload();
+  };
+
+  const handleCancelName = () => {
+    setEditingName(false);
+    setNameInput('');
+  };
+
   const submitted = sessions.filter((s) => s.status === 'submitted');
   const inProgress = sessions.filter((s) => s.status === 'in_progress');
   const avgScore =
@@ -124,8 +151,48 @@ export default function ProfilePage() {
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <h1 className="text-2xl font-bold truncate">{userName}</h1>
-            <p className="text-muted-foreground text-sm truncate">{user.email}</p>
+            {editingName ? (
+              <div className="flex items-center gap-2">
+                <Input
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleSaveName();
+                    if (e.key === 'Escape') handleCancelName();
+                  }}
+                  className="h-8 text-lg font-bold w-48"
+                  autoFocus
+                  disabled={nameSaving}
+                />
+                <button
+                  onClick={handleSaveName}
+                  disabled={nameSaving}
+                  className="text-accent hover:text-accent/80 disabled:opacity-50"
+                  title="저장"
+                >
+                  <Check className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={handleCancelName}
+                  disabled={nameSaving}
+                  className="text-muted-foreground hover:text-foreground"
+                  title="취소"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold truncate">{userName}</h1>
+                <button
+                  onClick={handleEditName}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  title="이름 변경"
+                >
+                  <Pencil className="h-4 w-4" />
+                </button>
+              </div>
+            )}
             <Badge variant="outline" className="mt-1 text-xs">
               {providerLabel} 로그인
             </Badge>
