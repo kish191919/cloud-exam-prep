@@ -7,8 +7,9 @@ export type ReportStatus = 'pending' | 'reviewing' | 'resolved' | 'dismissed';
 
 export interface SubmitReportInput {
   questionId: string;
-  userId?: string;
+  userId: string;
   userEmail?: string;
+  userName?: string;
   reason: ReportReason;
   comment?: string;
 }
@@ -17,8 +18,9 @@ export interface SubmitReportInput {
 export async function submitReport(input: SubmitReportInput): Promise<void> {
   const { error } = await supabase.from('question_reports').insert({
     question_id: input.questionId,
-    user_id: input.userId ?? null,
+    user_id: input.userId,
     user_email: input.userEmail ?? null,
+    user_name: input.userName ?? null,
     reason: input.reason,
     comment: input.comment ?? null,
   });

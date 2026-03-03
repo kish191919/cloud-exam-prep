@@ -48,7 +48,7 @@ const QuestionDisplay = ({
 }: QuestionDisplayProps) => {
   const { i18n } = useTranslation();
   const isEn = i18n.language === 'en';
-  const { user } = useAuth();
+  const { user, openAuthModal } = useAuth();
   const { toast } = useToast();
 
   // 신고 다이얼로그 상태
@@ -65,13 +65,20 @@ const QuestionDisplay = ({
     hasReported(question.id, user.id).then(setAlreadyReported);
   }, [question.id, user]);
 
+  const handleReportClick = () => {
+    if (!user) { openAuthModal('login'); return; }
+    setReportOpen(true);
+  };
+
   const handleReportSubmit = async () => {
+    if (!user) return;
     setReportSubmitting(true);
     try {
       await submitReport({
         questionId: question.id,
-        userId: user?.id,
-        userEmail: user?.email,
+        userId: user.id,
+        userEmail: user.email,
+        userName: user.user_metadata?.full_name,
         reason: reportReason,
         comment: reportComment.trim() || undefined,
       });
@@ -204,7 +211,7 @@ const QuestionDisplay = ({
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setReportOpen(true)}
+              onClick={handleReportClick}
               title={alreadyReported ? '신고한 문제' : '문제 신고'}
               className={`px-2 sm:px-3 ${alreadyReported ? 'text-orange-500' : 'text-muted-foreground'}`}
             >

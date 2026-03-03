@@ -1445,7 +1445,7 @@ const ReportManager = () => {
                       <p className="text-xs text-muted-foreground line-clamp-1">{report.comment}</p>
                     )}
                     <p className="text-xs text-muted-foreground">
-                      {report.user_email ?? '비회원'} · {new Date(report.created_at).toLocaleDateString('ko-KR')}
+                      {report.user_name ? `${report.user_name} · ` : ''}{report.user_email ?? '비회원'} · {new Date(report.created_at).toLocaleDateString('ko-KR')}
                     </p>
                   </div>
                   <Button
@@ -1504,7 +1504,11 @@ const ReportManager = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-medium text-muted-foreground">신고자</span>
-                  <span className="text-sm">{selectedReport.user_email ?? '비회원'}</span>
+                  <span className="text-sm">
+                    {selectedReport.user_name
+                      ? `${selectedReport.user_name} (${selectedReport.user_email ?? '비회원'})`
+                      : (selectedReport.user_email ?? '비회원')}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-medium text-muted-foreground">상태</span>

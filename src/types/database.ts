@@ -319,6 +319,7 @@ export interface Database {
           question_id: string
           user_id: string | null
           user_email: string | null
+          user_name: string | null
           reason: 'wrong_answer' | 'unclear' | 'typo' | 'other'
           comment: string | null
           status: 'pending' | 'reviewing' | 'resolved' | 'dismissed'
@@ -333,6 +334,7 @@ export interface Database {
           question_id: string
           user_id?: string | null
           user_email?: string | null
+          user_name?: string | null
           reason: 'wrong_answer' | 'unclear' | 'typo' | 'other'
           comment?: string | null
           status?: 'pending' | 'reviewing' | 'resolved' | 'dismissed'
@@ -347,6 +349,7 @@ export interface Database {
           question_id?: string
           user_id?: string | null
           user_email?: string | null
+          user_name?: string | null
           reason?: 'wrong_answer' | 'unclear' | 'typo' | 'other'
           comment?: string | null
           status?: 'pending' | 'reviewing' | 'resolved' | 'dismissed'

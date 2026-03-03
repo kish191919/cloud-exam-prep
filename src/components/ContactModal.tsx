@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useAuth } from '@/contexts/AuthContext';
+import { LogIn } from 'lucide-react';
 import { submitContact } from '@/services/contactService';
 import { CATEGORY_LABELS, type ContactCategory } from '@/types/contact';
 import { MessageSquare, Loader2, CheckCircle2 } from 'lucide-react';
@@ -31,7 +32,7 @@ interface ContactModalProps {
 const CATEGORIES: ContactCategory[] = ['complaint', 'suggestion', 'inquiry', 'other'];
 
 export default function ContactModal({ open, onClose }: ContactModalProps) {
-  const { user } = useAuth();
+  const { user, openAuthModal } = useAuth();
 
   const [category, setCategory] = useState<ContactCategory>('inquiry');
   const [subject, setSubject] = useState('');
@@ -85,7 +86,20 @@ export default function ContactModal({ open, onClose }: ContactModalProps) {
           </DialogTitle>
         </DialogHeader>
 
-        {submitted ? (
+        {!user ? (
+          <div className="py-10 flex flex-col items-center gap-4 text-center">
+            <LogIn className="h-10 w-10 text-muted-foreground opacity-50" />
+            <p className="text-muted-foreground text-sm">문의하려면 로그인이 필요합니다.</p>
+            <Button
+              onClick={() => {
+                handleClose();
+                openAuthModal('login');
+              }}
+            >
+              로그인하기
+            </Button>
+          </div>
+        ) : submitted ? (
           <div className="py-8 flex flex-col items-center gap-3 text-center">
             <CheckCircle2 className="h-12 w-12 text-green-500" />
             <p className="font-semibold text-lg">문의가 접수되었습니다!</p>
