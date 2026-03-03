@@ -794,10 +794,11 @@ exam_id:
 ### Step 2~8: B-mode 파일 처리 흐름
 
 exam_id 입력 및 세트 자동 선택 후 아래 흐름을 실행한다.
+**`exam_id`와 `set_id`는 루프 전체에서 고정** — 파일마다 재입력하거나 재선택하지 않는다.
 
-**[B-1] input/ 폴더 스캔**
+**[B-1] input/ 폴더 스캔 + 루프 전 커서 초기화**
 
-`/convert` Step 3과 동일하게 `input/` 폴더 스캔 후 파일 목록 출력 (알파벳 순):
+`/convert` Step 3과 동일하게 `input/` 폴더 스캔 후 **전체** 파일 목록을 한 번에 출력 (알파벳 순):
 ```
 처리할 파일 목록 (input/):
   [1] batch1.txt   (12 KB)
@@ -807,14 +808,29 @@ exam_id 입력 및 세트 자동 선택 후 아래 흐름을 실행한다.
 ```
 파일이 없으면 → **자동 생성 모드 진입** (아래 `### 자동 생성 모드` 섹션 참조).
 
-**[B-2] 파일별 언어 감지 + Parser & SQL Agent 호출 (STEP 1)**
+파일이 있으면 다음 커서를 **루프 진입 전 1회만** 초기화한다:
 
-각 파일에 대해 `/convert`의 파일별 처리 루프와 동일하게:
+```python
+# ① 현재 MAX(question id) 조회 → current_max_id 초기화
+all_ids = GET /rest/v1/questions?select=id&exam_id=eq.{exam_id}
+nums = [int(qid.split('-q')[1]) for qid in all_ids if qid.split('-q')[1].isdigit()]
+current_max_id = max(nums) if nums else 0   # 파일 처리마다 누적 증가
+
+# ② 세트 내 MAX(sort_order) 조회 → sort_order_cursor 초기화
+max_sort = GET /rest/v1/exam_set_questions?set_id=eq.{set_id}&select=sort_order&order=sort_order.desc&limit=1
+sort_order_cursor = (max_sort + 1) if max_sort else 1   # 파일 처리마다 누적 증가
+```
+
+이후 **[B-2]~[B-7]을 파일 수만큼 반복**한다. 각 반복에서 `current_max_id`와 `sort_order_cursor`는 이전 파일 처리 결과를 반영한 누적값을 사용한다.
+
+**[B-2] 언어 감지 + 파싱 (현재 파일)**
+
+현재 파일에 대해:
 - 파일 첫 500자로 `source_language` 감지 (`"ko"` / `"en"`)
 - Parser & SQL Agent에 `file_path` 전달 → `parse_text.py` 실행 → `output/parsed_questions.json` 생성
 
 > **ID 할당 규칙 (인라인 파싱 시):** `parse_text.py`를 사용할 수 없을 때 (options/answers 없는 파일 등)
-> Main이 직접 ID를 할당해야 하는 경우, 반드시 **3자리 zero-padding**을 사용한다.
+> Main이 직접 ID를 할당해야 하는 경우, 반드시 **3자리 zero-padding**을 사용하며 `current_max_id + 1`부터 순서대로 부여한다.
 > 형식: `{exam_code}-q{N:03d}` (예: `awsdeac01-q087`, `awsdeac01-q088`, ...)
 > **절대 비패딩 형식 (`q87`, `q88`) 사용 금지** — 알파벳 정렬과 숫자 정렬이 달라져 MAX(id) 오계산 원인이 됨.
 
@@ -854,13 +870,8 @@ Q57 질문: "회사 내부 문서 기반 Q&A 챗봇 구축, S3에 문서 저장.
 
 **[B-5] 참조 파일 선로드 + sort_order 사전 배분 + Redesigner 파이프라인 배치 호출 (5개씩)**
 
-`domain_tags`, `translation_guide` 선로드와 동시에 세트 내 MAX(sort_order)를 조회하여 sort_order_start를 사전 계산한다:
-
-```bash
-curl "$SUPABASE_URL/rest/v1/exam_set_questions?set_id=eq.{set_id}&select=sort_order&order=sort_order.desc&limit=1" \
-  -H "apikey: $KEY" -H "Authorization: Bearer $KEY"
-# sort_order_start = max_sort_order + 1 (비어있으면 1)
-```
+`domain_tags`, `translation_guide`를 선로드한다 (첫 파일 처리 시 1회 로드 후 이후 파일에 재사용).
+**sort_order_start는 루프 외부에서 초기화한 `sort_order_cursor`를 그대로 사용한다 — 파일마다 Supabase를 재조회하지 않는다.**
 
 ```python
 batch_size = 5
@@ -882,9 +893,9 @@ for idx, batch in enumerate(batches):
             },
             "domain_tags": domain_tags_content,
             "translation_guide": translation_guide_content,
-            # 삽입 정보 (배치별 sort_order 사전 배분)
+            # 삽입 정보 — sort_order_cursor 기반 배치별 사전 배분
             "set_id": set_id,
-            "sort_order_start": sort_order_start + idx * 5,
+            "sort_order_start": sort_order_cursor + idx * 5,
             "insert_script_path": ".claude/skills/sql-generator/scripts/insert_supabase.py",
         }
     )
@@ -899,13 +910,19 @@ for idx, batch in enumerate(batches):
 
 각 배치 결과의 `inserted_ids`, `failures`, `skipped`를 수집·합산한다.
 
-**[B-7] 파일 이동**
+**[B-7] 파일 이동 + 커서 업데이트**
 
 ```bash
 mv input/{filename} input/done/{filename}
 ```
 
-다음 파일 처리로 진행 ([B-1]~[B-7] 반복).
+이 파일에서 처리된 문제 수(`n_questions`)를 기반으로 커서를 누적 업데이트한다:
+```python
+sort_order_cursor += n_questions   # 다음 파일의 sort_order 시작점
+current_max_id    += n_questions   # 다음 파일의 ID 시작점
+```
+
+다음 파일 처리로 진행 ([B-2]~[B-7] 반복, exam_id·set_id·참조 파일은 재사용).
 
 **[B-8] 완료 요약 출력**
 

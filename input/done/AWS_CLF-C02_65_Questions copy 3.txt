@@ -1,0 +1,58 @@
+46. Which AWS networking service allows you to create a logically isolated virtual network within AWS?
+
+
+
+47. A company wants to monitor the performance and health of its AWS resources and set alarms for specific thresholds. Which AWS service should they use?
+
+
+
+48. Which AWS service provides a global network of edge locations to cache content closer to end users?
+
+
+
+49. A company needs to connect multiple VPCs and on-premises networks through a central hub. Which AWS service enables this?
+
+
+
+50. Which AWS service allows customers to create and manage DNS records and route internet traffic to AWS resources?
+
+
+
+
+51. Which AWS tool allows customers to estimate the cost of their AWS services before deploying them?
+
+
+
+52. A company wants to set a budget and receive alerts when their AWS spending exceeds a defined threshold. Which AWS service provides this capability?
+
+
+
+53. Which AWS pricing model offers the largest discount compared to On-Demand pricing in exchange for a commitment to use a specific instance type in a specific region?
+
+
+
+54. What is the purpose of AWS Cost Explorer?
+
+
+
+55. A company has multiple AWS accounts and wants to receive a single consolidated bill. Which AWS feature enables this?
+
+
+
+56. Which AWS support plan is included at no additional charge for all AWS customers?
+
+
+
+57. A company wants to optimize costs by identifying idle and underutilized AWS resources. Which AWS service provides these recommendations?
+
+
+
+58. Which of the following is a benefit of using AWS Reserved Instances?
+
+
+
+59. What is an AWS Savings Plan?
+
+
+
+60. A startup is looking for a low-cost EC2 option and can tolerate interruptions in their workloads. Which EC2 purchasing option should they choose?
