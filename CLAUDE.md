@@ -778,12 +778,22 @@ AWS 시험 문제 생성을 시작합니다.
 exam_id:
 ```
 
-- exam_id 입력 직후 → `/convert`와 동일하게 exam_sets 자동 조회·출력
-- 번호 선택 또는 새 이름 입력으로 세트 확정
+- exam_id 입력 직후 → sort_order 내림차순으로 마지막 세트 **자동 선택** (목록 표시·번호 선택 없음)
+- 자동 선택 쿼리:
+  ```bash
+  curl "$SUPABASE_URL/rest/v1/exam_sets?exam_id=eq.{exam_id}&select=id,name,sort_order&order=sort_order.desc&limit=1" \
+    -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY"
+  ```
+- 세트가 하나도 없으면: 사용자에게 먼저 세트를 생성해달라고 안내 후 종료
+- 세트 확정 후 출력 예시:
+  ```
+  대상 세트: '세트 7' (sort_order: 8, UUID: xxxx-xxxx)
+  input/ 폴더를 스캔합니다...
+  ```
 
 ### Step 2~8: B-mode 파일 처리 흐름
 
-세트 확정 후 아래 흐름을 실행한다.
+exam_id 입력 및 세트 자동 선택 후 아래 흐름을 실행한다.
 
 **[B-1] input/ 폴더 스캔**
 
@@ -849,6 +859,7 @@ Q57 질문: "회사 내부 문서 기반 Q&A 챗봇 구축, S3에 문서 저장.
 **[B-5] 참조 파일 선로드 + Redesigner 배치 호출 (5개씩)**
 
 `/convert`의 STEP 2~5.5와 동일하게 `domain_tags`, `translation_guide` 선로드 후:
+(동시에 `output/redesigned_question_generate.json`을 Read한다. 파일이 없으면 무시. [B-6] Write 오류 방지용)
 
 ```python
 batch_size = 5
@@ -920,25 +931,16 @@ Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 파일 이동(B-8) 단계는 생략한다. Generator가 domain_tags 지식 기반으로 자율 창작하므로
 Supabase 기존 문제 조회나 별도 개념 목록 생성·검토 단계는 없다.
 
-**[G-1] 마지막 세트 자동 선택**
+**[G-1] 마지막 세트 확인 + 즉시 시작**
 
-exam_sets를 sort_order 내림차순으로 조회하여 첫 번째(가장 높은 sort_order) 세트를 자동 선택:
+Step 1에서 이미 마지막 세트가 자동 선택되어 있으므로, 해당 세트 정보를 출력하고 **확인 없이 즉시** [G-2]로 진행한다:
 
-```bash
-curl "$SUPABASE_URL/rest/v1/exam_sets?exam_id=eq.{exam_id}&select=id,name,sort_order&order=sort_order.desc&limit=1" \
-  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY"
-```
-
-안내 출력:
 ```
 input/ 폴더에 .txt 파일이 없습니다.
 자동 생성 모드를 시작합니다.
 
 대상 세트: '{set_name}' (sort_order: {N}, UUID: {set_id})
 이 세트에 15개 문제를 새로 생성하여 추가합니다.
-
-[A] 계속합니다
-[B] 취소합니다
 ```
 
 세트가 하나도 없으면: 사용자에게 먼저 세트를 생성해달라고 안내 후 종료.
@@ -964,11 +966,14 @@ input/ 폴더에 .txt 파일이 없습니다.
 
 파일이 없거나 exam_id 키가 없으면 `previous_concepts_log = []`.
 
-**[G-4] 참조 파일 선로드 + Generator Agent 3배치 동시 실행 (5개씩)**
+**⚡ 선제 Read**: 동시에 `output/redesigned_question_generate.json`을 Read한다.
+파일이 없으면 무시한다. 이후 [G-6]에서 Write 시 "File has not been read" 오류를 방지한다.
+
+**[G-4] domain_tags 선로드 + Generator Agent 3배치 동시 실행 (5개씩, Korean-only)**
 
 ```python
-domain_tags_content       = # .claude/skills/question-redesigner/references/domain_tags/{exam_id}.md
-translation_guide_content = # .claude/skills/question-redesigner/references/translation_guide/{exam_id}.md (없으면 null)
+domain_tags_content = # .claude/skills/question-redesigner/references/domain_tags/{exam_id}.md
+# translation_guide는 [G-5.5] 번역 배치에서만 사용 — Generator에는 전달하지 않는다
 
 # 모든 Task를 단일 메시지에 묶어 동시 실행
 for idx in range(3):
@@ -983,40 +988,34 @@ for idx in range(3):
             "exam_id": exam_id,
             "start_id_num": start_id + idx * 5,   # 배치별 ID 시작 번호
             "domain_tags": domain_tags_content,
-            "translation_guide": translation_guide_content,
             "previous_concepts_log": previous_concepts_log,  # 이전 실행 생성 개념 목록
         }
     )
 ```
 
 Generator는 `batch_index`를 기준으로 domain_tags의 도메인 영역을 자율 분배하고,
-`previous_concepts_log`에 없는 AWS 서비스/기능/사용 사례 5개를 선택하여 창작한다.
+`previous_concepts_log`에 없는 AWS 서비스/기능/사용 사례 5개를 선택하여 **한국어 문제**를 창작한다.
 
-**[G-5] Validator Agent 호출 (1회, 배치 내 intra-batch 중복 검사)**
+**[G-5] Main 인라인 중복 검사 (Validator Agent 호출 없음)**
 
-3개 배치 결과 취합 후:
+3개 배치 결과 취합 후, Main이 직접 `key_points` 첫 줄(개념 제목) 기준으로 중복을 탐지한다:
 
 ```python
-Task(
-    subagent_type="general-purpose",
-    model="haiku",
-    prompt={
-        "task": "validate_generated",
-        "generated_questions": all_generated_questions,  # 최대 15개
-    }
-)
+concepts = {}
+duplicates = []
+for q in all_generated_questions:
+    concept = q["key_points"].split("\n")[0]  # 첫 줄(개념 제목)
+    if concept in concepts:
+        duplicates.append({"id": q["id"], "duplicate_of": concepts[concept]})
+    else:
+        concepts[concept] = q["id"]
 ```
 
-Validator는 15개 문제 내에서 동일 AWS 서비스를 같은 사용 사례로 테스트하는 중복 쌍을 탐지한다.
-
-**[G-6] 중복 감지 처리 (에스컬레이션)**
-
-Validator 결과에서 `is_valid: false` 항목을 순서대로 처리:
+중복 발견 시 사용자에게 순서대로 처리:
 
 ```
 ❌ '{question_id}' 개념 중복 감지
   - 중복 대상: '{duplicate_question_id}'
-  - 사유: {similarity_reason}
 
 [A] 이 문제를 재생성합니다 (Generator 단독 재호출)
 [B] 이 문제를 스킵합니다
@@ -1024,11 +1023,65 @@ Validator 결과에서 `is_valid: false` 항목을 순서대로 처리:
 
 [A] 선택 시: Generator를 단독(`batch_index: null`, `escalation_context` 포함) 재호출.
 
-**[G-7] 결과 취합 → output/redesigned_question_generate.json 저장**
+**[G-5.5] 번역 배치 (한국어 → 영문, 5개씩 병렬)**
+
+중복 검사 통과한 문제들을 5개씩 묶어 번역 배치를 단일 메시지에서 동시 실행한다:
+
+```python
+translation_guide_content = # .claude/skills/question-redesigner/references/translation_guide/{exam_id}.md (없으면 null)
+
+validated_questions = [q for q in all_generated_questions if q["id"] not in skipped_ids]
+batches = [validated_questions[i:i+5] for i in range(0, len(validated_questions), 5)]
+
+# 모든 Task를 단일 메시지에 묶어 동시 실행
+for batch in batches:
+    Task(
+        subagent_type="general-purpose",
+        model="haiku",
+        prompt={
+            "task": "translate_to_en",
+            "questions": batch,           # 한국어 문제 5개
+            "translation_guide": translation_guide_content,
+        }
+    )
+```
+
+번역 Agent 출력 형식:
+```json
+{
+  "results": [
+    {
+      "id": "awsaifc01-q667",
+      "text_en": "...",
+      "explanation_en": "...",
+      "key_points_en": "...",
+      "options": [
+        {"option_id": "a", "text_en": "...", "explanation_en": "..."},
+        {"option_id": "b", "text_en": "...", "explanation_en": "..."},
+        {"option_id": "c", "text_en": "...", "explanation_en": "..."},
+        {"option_id": "d", "text_en": "...", "explanation_en": "..."}
+      ]
+    }
+  ]
+}
+```
+
+번역 결과를 한국어 문제 객체에 merge하여 최종 한/영 양방향 문제 완성.
+
+번역 Agent 지시사항 (프롬프트에 포함):
+```
+각 질문을 AWS 자격증 시험 공식 문체의 영문으로 번역하라.
+- AWS 서비스명 원문 보존 (Amazon Bedrock, SageMaker 등)
+- 시나리오 도입: "A company is...", "An organization needs to..."
+- 질문 문장: "Which AWS service BEST meets these requirements?" 등 대문자 강조
+- translation_guide의 공식 영문 표현 우선 사용
+```
+
+**[G-6] 결과 취합 → output/redesigned_question_generate.json 저장**
 
 `question_id` 기준 정렬 후 저장.
 
-**[G-8] Supabase 삽입**
+**[G-7] Supabase 삽입**
 
 세트 내 현재 MAX(sort_order) 조회 후 + 1부터 삽입:
 
@@ -1039,7 +1092,7 @@ python3 .claude/skills/sql-generator/scripts/insert_supabase.py \
   --sort-order-start {sort_order}
 ```
 
-**[G-9] 개념 로그 업데이트**
+**[G-8] 개념 로그 업데이트**
 
 삽입 성공한 문제들의 핵심 개념(`key_points` 첫 줄 제목)을 추출하여
 `output/generated_concepts_log.json`의 해당 exam_id 배열에 append한다:
@@ -1052,13 +1105,13 @@ for q in inserted_questions:
         log[exam_id].append(concept)
 ```
 
-**[G-10] 완료 요약 출력**
+**[G-9] 완료 요약 출력**
 
 ```
 ✅ 자동 생성 완료
 ━━━━━━━━━━━━━━━━━━━━━━━━
 생성 성공:         {success}개
-Validator 중복:    {dup}개 → 재생성 {regen}개, 스킵 {skip}개
+중복 감지:         {dup}개 → 재생성 {regen}개, 스킵 {skip}개
 에스컬레이션 스킵: {escalated}개
 ━━━━━━━━━━━━━━━━━━━━━━━━
 Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
