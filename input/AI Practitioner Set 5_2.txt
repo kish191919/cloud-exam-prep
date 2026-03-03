@@ -1,0 +1,57 @@
+16. A company uses Amazon Bedrock to implement a generative AI assistant on a website. The AI assistant helps customers with product recommendations and purchasing decisions. The company wants to measure the direct impact of the AI assistant on sales performance. Which metric will meet these requirements?
+
+
+
+17. Which AWS service or feature stores embeddings in a vector database for use with foundation models (FMs) and Retrieval Augmented Generation (RAG)?
+
+
+
+18. Which scenario represents a practical use case for generative AI?
+
+
+
+19. A company is using Amazon Bedrock for a generative AI solution. The solution must integrate a service with vector database storage and vector search capabilities. Which AWS service will meet these requirements?
+
+
+
+20. A media streaming platform wants to provide movie recommendations to users based on the users’ account history. Which AWS service meets these requirements?
+
+
+
+21. A company has developed an ML model to approve or reject loan applications. The model's decision-making process must be transparent and explainable to comply with regulatory requirements. The company must document the decision-making process for audit purposes. Which solution will meet these requirements?
+
+
+
+22. Which considerations are important when designing prompts for generative AI?
+
+
+
+23. What is the primary benefit of using Amazon SageMaker JumpStart?
+
+
+
+24. Which factors should be considered when implementing MLOps practices?
+
+
+
+25. What is the purpose of embeddings in machine learning?
+
+
+
+26. Which Amazon Bedrock features help with content filtering and safety? 
+
+
+
+27. What is the difference between discriminative and generative AI models?
+
+
+
+28. Which metrics are commonly used to evaluate generative AI model performance?
+
+
+
+29. What is the primary purpose of Amazon Q for Business?
+
+
+
+30. Which capabilities of Amazon OpenSearch Service are most relevant for AI/ML workloads?

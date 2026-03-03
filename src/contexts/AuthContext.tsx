@@ -83,6 +83,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       window.history.replaceState({}, '', window.location.pathname);
     }
 
+    // 카카오/네이버 매직링크 리다이렉트 처리
+    // flowType: 'pkce' 모드에서는 hash 기반 access_token을 자동 처리하지 않으므로 수동 설정
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token')) {
+      const hashParams = new URLSearchParams(hash.substring(1));
+      const accessToken = hashParams.get('access_token');
+      const refreshToken = hashParams.get('refresh_token');
+      const tokenType = hashParams.get('type');
+      // recovery 타입(비밀번호 재설정)은 ResetPassword.tsx에서 별도 처리
+      if (accessToken && refreshToken && tokenType !== 'recovery') {
+        supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
+          .then(({ error }) => {
+            if (error) {
+              console.error('[Auth] Failed to set session from hash:', error);
+              toast.error('로그인 처리 중 오류가 발생했습니다.');
+            }
+            window.history.replaceState({}, '', window.location.pathname);
+          });
+      }
+    }
+
     // 앱 시작 시 무료 이벤트 설정 조회 및 realtime 구독
     fetchFreeEvent();
     const freeEventChannel = supabase

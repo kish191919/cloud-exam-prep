@@ -1,0 +1,57 @@
+1. An AI practitioner wants to evaluate ML models. The AI practitioner wants to provide explanations of model predictions to customers and stakeholders. Which AWS service or feature will meet these requirements?
+
+
+
+2. Sentiment analysis is a subset of which broader field of AI?
+
+
+
+3. A company wants to set up private access to Amazon Bedrock APIs from the company’s AWS account. The company also wants to protect its data from internet exposure. Which solution meets these requirements?
+
+
+
+4. A company receives a large amount of unstructured user feedback in text format. The company wants to analyze the sentiment of the user feedback. Which solution will meet these requirements?
+
+
+
+5. RAG improves LLMs by incorporating information from external data sources at query time. A company wants to create an AI solution to generate images and descriptions for a product catalog. The company needs to select a foundation model (FM) for this solution. The company must consider the output types of each FM. Which FM characteristic is the company evaluating?
+
+
+
+6. A company wants to use an ML model to analyze customer reviews on social media. The model must determine if each review has a neutral, positive, or negative sentiment. Which model evaluation strategy will meet these requirements?
+
+
+
+7. Which option is an example of unsupervised learning?
+
+
+
+8. An online learning company with large volumes of education materials wants to use enterprise search. Which AWS service meets these requirements?
+
+
+
+9. A company creates video content. The company wants to use generative AI to generate new creative content and to reduce video creation time. Which solution will meet these requirements in the MOST operationally efficient way?
+
+
+
+10. A company is training ML models on datasets. The datasets contain some classes that have more examples than other classes. The company wants to measure how well the model balances detecting and labeling the classes. Which metric should the company use?
+
+
+
+11. A company is analyzing financial transaction records. The company categorizes the records as either personal or business. The company inserts the categories into the transaction records. Which data preparation step does this describe?
+
+
+
+12. A company wants to extract key insights from large policy documents to increase employee efficiency. Which generative AI strategy meets this requirement?
+
+
+
+13. A company is using Amazon SageMaker to deploy a model that identifies if social media posts contain certain topics. The company needs to show how different input features influence model behavior. Which SageMaker feature meets these requirements?
+
+
+
+14. A company wants to assess internet quality in remote areas of the world. The company needs to collect internet speed data and store the data in Amazon RDS. The company will analyze internet speed variation throughout each day. The company wants to create an AI model to predict potential internet disruptions. Which type of data should the company collect for this task?
+
+
+
+15. A company wants to build an ML model to detect abnormal patterns in sensor data. The company does not have labeled data for training. Which ML method will meet these requirements?
