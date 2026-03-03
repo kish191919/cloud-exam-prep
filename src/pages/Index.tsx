@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -13,12 +12,9 @@ import {
   Shield, BarChart3, Clock, BookOpen, ArrowRight,
   Cloud, Zap, Target, Users, Smartphone, CheckCircle2, Star, Map, Gift,
   Briefcase, GraduationCap, Rocket, Brain, Database, TrendingUp,
-  MessageSquare,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
-import { useAuth } from '@/contexts/AuthContext';
-import ContactModal from '@/components/ContactModal';
 
 // iOS Safari 감지 (Chrome iOS, Firefox iOS 제외)
 const isIOSSafari =
@@ -35,8 +31,6 @@ const isStandalone =
 const Index = () => {
   const { t } = useTranslation(['pages', 'common']);
   const { canInstall, install } = usePWAInstall();
-  const { user, openAuthModal } = useAuth();
-  const [contactOpen, setContactOpen] = useState(false);
 
   const features = t('index.features', { returnObjects: true }) as Array<{ title: string; desc: string; icon: string }>;
   const steps = t('index.steps', { returnObjects: true }) as Array<{ num: string; title: string; desc: string }>;
@@ -441,37 +435,6 @@ const Index = () => {
           </Accordion>
         </div>
       </section>
-
-      {/* 고객의 소리 */}
-      <section className="py-16 md:py-20 px-4 bg-accent/5 border-y border-accent/10">
-        <div className="container mx-auto max-w-2xl text-center">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-accent/10 mb-5">
-            <MessageSquare className="h-7 w-7 text-accent" />
-          </div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-3 break-keep">고객의 소리</h2>
-          <p className="text-muted-foreground mb-7 text-base break-keep">
-            불편사항, 건의사항, 문의사항 등 서비스에 대한 다양한 의견을 남겨주세요.
-            <br className="hidden sm:block" />
-            소중한 피드백 하나하나를 꼼꼼히 검토하여 더 나은 서비스를 만들겠습니다.
-          </p>
-          <Button
-            size="lg"
-            onClick={() => {
-              if (!user) {
-                openAuthModal('login');
-              } else {
-                setContactOpen(true);
-              }
-            }}
-            className="gap-2"
-          >
-            <MessageSquare className="h-5 w-5" />
-            {user ? '문의하기' : '로그인 후 문의하기'}
-          </Button>
-        </div>
-      </section>
-
-      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
 
       {/* CTA */}
       <section className="hero-gradient text-primary-foreground py-16 md:py-20 px-4 relative overflow-hidden">

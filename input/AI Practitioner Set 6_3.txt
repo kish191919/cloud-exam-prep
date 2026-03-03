@@ -1,0 +1,57 @@
+31. A hospital developed an AI system to provide personalized treatment recommendations for patients. The AI system must provide the rationale behind the recommendations and make the insights accessible to doctors and patients. Which human-centered design principle does this scenario present?
+
+
+
+32. Which statement presents an advantage of using Retrieval Augmented Generation (RAG) for natural language processing (NLP) tasks?
+
+
+
+33. A company has created a custom model by fine-tuning an existing large language model (LLM) from Amazon Bedrock. The company wants to deploy the model to production and use the model to handle a steady rate of requests each minute. Which solution meets these requirements MOST cost-effectively?
+
+
+
+34. Which technique involves training AI models on labeled datasets to adapt the models to specific industry terminology and requirements?
+
+
+
+35. A company is creating an agent for its application by using Amazon Bedrock Agents. The agent is performing well, but the company wants to improve the agent’s accuracy by providing some specific examples. Which solution meets these requirements?
+
+
+
+36. Which option is a benefit of using infrastructure as code (IaC) in machine learning operations (MLOps)?
+
+
+
+37. A company wants to fine-tune a foundation model (FM) to answer questions for a specific domain. The company wants to use instruction-based fine-tuning. How should the company prepare the training data?
+
+
+
+38. Which ML technique ensures data compliance and privacy when training AI models on AWS?
+
+
+
+39. A manufacturing company has an application that ingests consumer complaints from publicly available sources. The application uses complex hard-coded logic to process the complaints. The company wants to scale this logic across markets and product lines. Which advantage do generative AI models offer for this scenario?
+
+
+
+40. A financial company wants to flag all credit card activity as possibly fraudulent or non-fraudulent based on transaction data. Which type of ML model meets these requirements?
+
+
+
+41. A hospital wants to use a generative AI solution with speech-to-text functionality to help improve employee skills in dictating clinical notes. Which AWS service meets these requirements?
+
+
+
+42. Which type of AI model makes numeric predictions?
+
+
+
+43. What is the purpose of vector embeddings in a large language model (LLM)?
+
+
+
+44. A company wants to fine-tune a foundation model (FM) by using AWS services. The company needs to ensure that its data stays private, safe, and secure in the source AWS Region where the data is stored. Which combination of steps will meet these requirements MOST cost-effectively? 
+
+
+
+45. A financial company uses AWS to host its generative AI models. The company must generate reports to show adherence to international regulations for handling sensitive customer data. Which AWS service meets these requirements?
