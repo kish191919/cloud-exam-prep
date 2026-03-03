@@ -150,8 +150,10 @@ def insert_question(q: dict, set_id: str, sort_order: int, supabase_url: str, su
 
 def main():
     parser = argparse.ArgumentParser(description='Supabase REST API 직접 삽입')
-    parser.add_argument('--input-file', default='output/redesigned_questions.json',
+    parser.add_argument('--input-file', default=None,
                         help='재설계된 문제 JSON 파일 (기본: output/redesigned_questions.json)')
+    parser.add_argument('--questions-json', default=None,
+                        help='문제 JSON 문자열 직접 입력 (--input-file 대안, 파일 없이 삽입 가능)')
     parser.add_argument('--set-id', required=True,
                         help='exam_sets UUID (Supabase)')
     parser.add_argument('--sort-order-start', type=int, default=1,
@@ -173,13 +175,21 @@ def main():
 
     supabase_url = supabase_url.rstrip('/')
 
-    # 입력 파일 읽기
-    input_path = Path(args.input_file)
-    if not input_path.exists():
-        print(f'[ERROR] 입력 파일 없음: {input_path}')
-        sys.exit(1)
+    # 입력 소스 결정: --questions-json > --input-file > 기본 파일
+    if args.questions_json:
+        try:
+            questions = json.loads(args.questions_json)
+        except json.JSONDecodeError as e:
+            print(f'[ERROR] --questions-json 파싱 실패: {e}')
+            sys.exit(1)
+    else:
+        input_file = args.input_file or 'output/redesigned_questions.json'
+        input_path = Path(input_file)
+        if not input_path.exists():
+            print(f'[ERROR] 입력 파일 없음: {input_path}')
+            sys.exit(1)
+        questions = json.loads(input_path.read_text(encoding='utf-8'))
 
-    questions = json.loads(input_path.read_text(encoding='utf-8'))
     if not questions:
         print('[ERROR] 재설계된 문제가 없습니다.')
         sys.exit(1)

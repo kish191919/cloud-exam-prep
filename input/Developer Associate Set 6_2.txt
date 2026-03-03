@@ -1,0 +1,57 @@
+16. Your organization receives daily CSV files from partners via SFTP. Each file needs to be processed and loaded into Amazon Redshift. Which architecture would be MOST efficient?
+
+
+
+17. A Kinesis Data Streams application is experiencing throttling errors. The stream has 10 shards and receives 50,000 records per second. What is the MOST likely cause?
+
+
+
+18. Which AWS Glue feature allows you to create ETL jobs without writing code?
+
+
+
+19. A company needs to migrate a Oracle database to Amazon Aurora PostgreSQL. The migration must complete within a maintenance window of 21 hours. Which DMS configuration would be MOST appropriate?
+
+
+
+20. When using Amazon EMR for big data processing, which storage option provides the BEST performance for temporary data during job execution?
+
+
+
+21. A data pipeline needs to handle both real-time streaming data and batch data from the same sources. Which architecture pattern would be MOST effective?
+
+
+
+22. Which Kinesis Data Streams configuration provides the highest availability?
+
+
+
+23. An AWS Glue job needs to join data from two large datasets. The job runs for 24 hours and costs a lot. How can you optimize it for better performance and cost?
+
+
+
+24. Which Amazon Kinesis service would you use to load streaming data directly into Amazon Elasticsearch Service with built-in transformation capabilities?
+
+
+
+25. A company processes log files that arrive irregularly throughout the day. Sometimes files arrive every few minutes, other times hours apart. They want to minimize processing latency while controlling costs. Which Kinesis Data Firehose buffer configuration would be MOST appropriate?
+
+
+
+26. When designing an ETL pipeline for a data lake, which data organization strategy would provide the BEST query performance in Amazon Athena?
+
+
+
+27. An AWS Lambda function processes records from a Kinesis Data Stream. The function occasionally fails due to downstream service unavailability. How should you configure error handling?
+
+
+
+28. Which AWS service would be MOST cost-effective for running infrequent, large-scale data processing jobs?
+
+
+
+29. A data engineer needs to ensure that sensitive data in transit between AWS services is encrypted. Which services provide encryption in transit by default?
+
+
+
+30. When using AWS Glue Dynamic Frames, what is the primary advantage over standard Apache Spark DataFrames?

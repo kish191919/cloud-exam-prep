@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
+import ContactFloatingButton from '@/components/ContactFloatingButton';
+import StudyFloatingButton from '@/components/StudyFloatingButton';
 
 // iOS Safari 감지 (Chrome iOS, Firefox iOS 제외)
 const isIOSSafari =
@@ -56,6 +58,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <StudyFloatingButton />
+      <ContactFloatingButton />
       <Navbar />
 
       {/* Beta Announcement Bar */}
