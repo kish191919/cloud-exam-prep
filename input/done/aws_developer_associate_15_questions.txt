@@ -1,0 +1,58 @@
+1. A development team is building a serverless application using AWS Lambda and Amazon API Gateway. The team needs to securely store database credentials and allow Lambda functions to retrieve them at runtime. Which AWS service should the developer use to store and manage these credentials?
+
+
+
+2. A developer is building an application that uploads user-generated images to Amazon S3. The application must ensure that the images are automatically encrypted at rest without requiring code changes in the application. What is the best way to achieve this requirement?
+
+
+
+3. A developer needs to process messages asynchronously in a decoupled architecture. The application sends tasks that must be processed reliably by worker services. Which AWS service should the developer use to implement this messaging pattern?
+
+
+
+4. A company is building a microservices application using AWS Lambda functions. The developer needs to orchestrate multiple Lambda functions with retry logic and error handling. Which AWS service should the developer use to coordinate these workflows?
+
+
+
+5. A developer is creating a REST API using Amazon API Gateway and AWS Lambda. The API must authenticate users using JSON Web Tokens (JWT) issued by an external identity provider. Which API Gateway feature should be used to validate the tokens?
+
+
+
+6. A developer is implementing a CI/CD pipeline to automatically build, test, and deploy a containerized application to Amazon ECS. Which AWS service can be used to automate the build and test phase of the pipeline?
+
+
+
+7. A developer is writing a Lambda function that processes events from an Amazon SQS queue. The developer notices that some messages are processed multiple times due to failures. What feature should be implemented to prevent message loss while handling failed messages?
+
+
+
+8. A developer needs to store application session data for a web application running on Amazon EC2 instances behind an Application Load Balancer. The session data must be highly available and have low latency. Which AWS service should be used?
+
+
+
+9. A developer wants to track changes to application resources and trigger automated actions whenever resources are modified. Which AWS service should be used to detect and respond to these events?
+
+
+
+10. A development team is deploying an application using AWS Elastic Beanstalk. The team wants to deploy a new version of the application with minimal downtime while gradually shifting traffic to the new version. Which deployment strategy should be used?
+
+
+
+11. A developer is creating an application that processes real-time streaming data from IoT devices and requires near real-time analytics. Which AWS service should the developer use to ingest and process the streaming data?
+
+
+
+12. A developer is building a Lambda function that accesses data in Amazon DynamoDB. The function needs permission to read and write items in a specific table. What is the most secure way to grant these permissions?
+
+
+
+13. A developer is implementing caching for a frequently accessed database query in order to reduce latency and database load. Which AWS service should be used to implement this caching layer?
+
+
+
+14. A developer needs to monitor application performance and automatically collect logs and metrics from AWS Lambda functions. Which AWS service should be used for monitoring and log collection?
+
+
+
+15. A developer is designing an application that must upload large files directly from a client browser to Amazon S3 without routing the data through the application server. What mechanism should the developer use to allow secure uploads?
+
