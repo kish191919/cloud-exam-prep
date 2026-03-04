@@ -1,10 +1,20 @@
 import { useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function StudyFloatingButton() {
   const navigate = useNavigate();
+  const { user, openAuthModal } = useAuth();
   const [hovered, setHovered] = useState(false);
+
+  const handleClick = () => {
+    if (!user) {
+      openAuthModal('login');
+    } else {
+      navigate('/exams');
+    }
+  };
 
   return (
     <div className="fixed bottom-[5.25rem] right-6 z-40 flex items-center justify-end">
@@ -43,7 +53,7 @@ export default function StudyFloatingButton() {
 
         {/* 메인 버튼 */}
         <button
-          onClick={() => navigate('/exams')}
+          onClick={handleClick}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           aria-label="학습하기 — 문제 풀기"

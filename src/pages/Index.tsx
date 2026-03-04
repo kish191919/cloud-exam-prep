@@ -1,4 +1,6 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -33,6 +35,14 @@ const isStandalone =
 const Index = () => {
   const { t } = useTranslation(['pages', 'common']);
   const { canInstall, install } = usePWAInstall();
+  const { user, openAuthModal } = useAuth();
+
+  const handleStudyClick = (e: React.MouseEvent) => {
+    if (!user) {
+      e.preventDefault();
+      openAuthModal('login');
+    }
+  };
 
   const features = t('index.features', { returnObjects: true }) as Array<{ title: string; desc: string; icon: string }>;
   const steps = t('index.steps', { returnObjects: true }) as Array<{ num: string; title: string; desc: string }>;
@@ -132,7 +142,7 @@ const Index = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 mb-14 md:mb-20">
-            <Link to="/exams" className="w-full sm:w-auto">
+            <Link to="/exams" className="w-full sm:w-auto" onClick={handleStudyClick}>
               <Button
                 size="lg"
                 className="bg-accent text-accent-foreground hover:bg-accent/90 text-base sm:text-lg font-bold px-8 sm:px-10 py-5 sm:py-7 rounded-xl shadow-2xl hover:shadow-accent/50 transition-all duration-300 hover:scale-105 accent-glow w-full"
@@ -449,7 +459,7 @@ const Index = () => {
             {t('index.cta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-            <Link to="/exams" className="w-full sm:w-auto">
+            <Link to="/exams" className="w-full sm:w-auto" onClick={handleStudyClick}>
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-6 accent-glow w-full">
                 {t('index.cta.button')} <ArrowRight className="ml-2 h-5 w-5" />
               </Button>

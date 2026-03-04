@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Cloud, Menu, X, LogOut, User, Map, BookOpen, MessageSquare, LogIn, Flag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -31,6 +32,13 @@ const Navbar = () => {
     setOpen(false);
   };
 
+  const handleExamClick = (e: React.MouseEvent) => {
+    if (!user) {
+      e.preventDefault();
+      openAuthModal('login');
+    }
+  };
+
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-card/80 backdrop-blur-md"
@@ -58,7 +66,7 @@ const Navbar = () => {
             {t('navigation.board')}
           </Link>
 
-          <Link to="/exams">
+          <Link to="/exams" onClick={handleExamClick}>
             <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
               {t('navigation.startFree')}
             </Button>
@@ -190,7 +198,7 @@ const Navbar = () => {
 
           <div className="h-px bg-border my-1" />
 
-          <Link to="/exams" onClick={() => setOpen(false)} className="block px-1 pb-1">
+          <Link to="/exams" onClick={(e) => { handleExamClick(e); if (user) setOpen(false); }} className="block px-1 pb-1">
             <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 py-6 text-base font-bold rounded-xl">
               {t('navigation.startFree')}
             </Button>

@@ -1,0 +1,57 @@
+16. A company wants to automatically deploy application code to EC2 instances. Which AWS service should they use?
+
+
+
+17. An organization needs to migrate large amounts of data into AWS using physical devices. Which AWS service supports this requirement?
+
+
+
+18. A business wants to estimate AWS service costs before deploying infrastructure. Which AWS tool should they use?
+
+
+
+19. A company wants to identify security vulnerabilities and compliance issues in its AWS environment. Which AWS service should they use?
+
+
+
+20. A developer wants to store application logs for analysis and troubleshooting. Which AWS service should they use?
+
+
+
+21. A company needs to run containers without managing the underlying servers. Which AWS service should they use?
+
+
+
+22. An organization wants to enforce multi-factor authentication for AWS users. Which AWS service manages this capability?
+
+
+
+23. A company needs to create isolated virtual networks within AWS. Which AWS service should they use?
+
+
+
+24. A business wants to securely store secrets such as database credentials and API keys. Which AWS service should they use?
+
+
+
+25. A developer wants to automate infrastructure deployment using templates. Which AWS service should be used?
+
+
+
+26. A company wants to receive recommendations to optimize AWS costs. Which AWS service should they use?
+
+
+
+27. An organization needs a scalable file storage system accessible from multiple EC2 instances. Which AWS service should they use?
+
+
+
+28. A company wants to process streaming data in real time. Which AWS service should they use?
+
+
+
+29. A developer needs a tool to visualize AWS costs and usage patterns. Which AWS tool should they use?
+
+
+
+30. A company wants to audit configurations and compliance across AWS resources. Which AWS service should they use?

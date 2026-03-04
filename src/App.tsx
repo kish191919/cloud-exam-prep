@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { FontSizeProvider } from "./contexts/FontSizeContext";
 import AuthModal from "./components/AuthModal";
@@ -89,7 +90,9 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/dashboard" element={<ProfilePage />} />
                 <Route path="/certifications" element={<CertificationsPage />} />
-                <Route path="/exams" element={<ExamList />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/exams" element={<ExamList />} />
+                </Route>
                 <Route path="/session/:sessionId" element={<ExamSession />} />
                 <Route path="/results/:sessionId" element={<ExamResults />} />
                 <Route path="/review" element={<ReviewPage />} />

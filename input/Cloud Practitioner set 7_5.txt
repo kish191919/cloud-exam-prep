@@ -1,0 +1,37 @@
+61. A business wants to automatically patch and maintain EC2 instances. Which AWS service should they use?
+
+
+
+62. A company wants to create a secure VPN connection between its corporate network and AWS. Which AWS service should they use?
+
+
+
+63. A developer wants to analyze big data using a managed Hadoop framework. Which AWS service should they use?
+
+
+
+64. A company wants to protect against DDoS attacks automatically. Which AWS service provides this protection?
+
+
+
+65. An organization wants to store long-term archival data for compliance purposes at the lowest cost. Which AWS service should they use?
+
+
+
+66. A business wants to enforce service limits and governance rules across AWS accounts. Which AWS service should they use?
+
+
+
+67. A company needs to synchronize files between on-premises systems and AWS storage. Which AWS service should they use?
+
+
+
+68. A developer wants to deploy a CI/CD pipeline for application updates. Which AWS service should they use?
+
+
+
+69. A company wants to generate insights from structured and unstructured data using a data warehouse. Which AWS service should they use?
+
+
+
+70. An organization wants to create a highly available architecture that automatically recovers from failures. Which AWS Well-Architected principle does this represent?
