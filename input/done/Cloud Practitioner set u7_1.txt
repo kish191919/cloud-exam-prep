@@ -1,0 +1,57 @@
+1. A startup wants to deploy its web application without managing servers. Which AWS service should the company use?
+
+
+
+2. A company needs a globally distributed DNS service to route users to the nearest endpoint. Which AWS service should they use?
+
+
+
+3. An organization wants to store frequently accessed files with low latency and high durability. Which AWS service is most appropriate?
+
+
+
+4. A developer wants to run code in response to events without provisioning or managing servers. Which AWS service should be used?
+
+
+
+5. A company wants to reduce costs by automatically scaling compute resources based on demand. Which AWS service feature supports this requirement?
+
+
+
+6. A business wants to host a static website with high availability and minimal operational overhead. Which AWS service should they use?
+
+
+
+7. A company needs to monitor CPU utilization and receive alerts when thresholds are exceeded. Which AWS service should be used?
+
+
+
+8. An organization needs a managed relational database service that automatically handles backups and patching. Which AWS service should they choose?
+
+
+
+9. A developer needs object storage for images and videos that must be highly durable and scalable. Which AWS service should be used?
+
+
+
+10. A company wants to analyze large datasets using SQL without managing infrastructure. Which AWS service should they use?
+
+
+
+11. A team wants to securely store and manage encryption keys used by their applications. Which AWS service should they use?
+
+
+
+12. A company needs a service to distribute content globally with low latency. Which AWS service should they choose?
+
+
+
+13. An organization wants to track user activity and API usage across AWS accounts. Which AWS service provides this capability?
+
+
+
+14. A company wants to centrally manage billing and apply consolidated billing across multiple AWS accounts. Which AWS feature should they use?
+
+
+
+15. A developer needs a fully managed NoSQL database with single-digit millisecond latency. Which AWS service should be used?
