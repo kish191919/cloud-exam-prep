@@ -1,0 +1,77 @@
+1. A company wants to move its on-premises applications to AWS but prefers not to manage the underlying servers, operating systems, or infrastructure. Which AWS Cloud service model should the company use?
+
+
+
+2. A startup needs a highly scalable object storage service to store images, videos, and backups with virtually unlimited storage capacity. Which AWS service should the startup use?
+
+
+
+3. A company wants to reduce capital expenses and instead pay only for the computing resources it uses. Which AWS Cloud concept allows this cost model?
+
+
+
+4. A developer needs to run code in response to events without provisioning or managing servers. Which AWS service allows this type of serverless execution?
+
+
+
+5. A company needs to distribute content globally with low latency by caching copies of data closer to users around the world. Which AWS service provides this capability?
+
+
+
+6. A business wants to run applications on virtual machines in the AWS Cloud with full control over the operating system and installed software. Which AWS service should the business use?
+
+
+
+7. A company wants to create isolated networks within AWS and control inbound and outbound traffic to resources. Which AWS service enables this capability?
+
+
+
+8. A developer needs to store frequently accessed data with low latency for applications and automatically scale the storage capacity as needed. Which AWS service provides this functionality?
+
+
+
+9. A company wants to ensure high availability by distributing traffic across multiple compute resources automatically. Which AWS service helps achieve this?
+
+
+
+10. A company wants to monitor resource utilization such as CPU usage, network traffic, and disk operations for AWS resources. Which AWS service provides this monitoring capability?
+
+
+
+11. A security team wants to centrally manage access to AWS services and resources by creating users, groups, and roles. Which AWS service should they use?
+
+
+
+12. A company wants to automatically adjust the number of compute resources based on incoming application traffic. Which AWS feature enables this capability?
+
+
+
+13. A company wants to analyze large datasets using a fully managed data warehouse service in AWS. Which AWS service should the company use?
+
+
+
+14. A business wants to move large amounts of archival data to a low-cost storage service designed for long-term backup. Which AWS storage service should be used?
+
+
+
+15. A developer wants to deploy applications without worrying about server provisioning, patching, or infrastructure management. Which AWS service simplifies application deployment for this use case?
+
+
+
+16. A company wants to control which AWS services and resources users can access within the organization. Which AWS service provides identity and access management capabilities?
+
+
+
+17. A business wants to receive alerts when AWS costs exceed a predefined budget. Which AWS service should be used?
+
+
+
+18. A company wants to deploy its application across multiple geographically separated locations to improve fault tolerance and availability. What AWS infrastructure concept enables this?
+
+
+
+19. A company wants to connect its on-premises data center securely to AWS through a private network connection rather than the public internet. Which AWS service enables this connectivity?
+
+
+
+20. A development team wants to track API calls made within their AWS account for security auditing and compliance purposes. Which AWS service records these activities?
