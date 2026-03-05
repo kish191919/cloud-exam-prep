@@ -123,7 +123,7 @@ exam_set_questions (
 사용자: /convert
 
 에이전트: 안녕하세요! AWS 시험 문제 변환을 시작합니다.
-  exam_id를 입력해주세요. (예: aws-aif-c01, aws-saa-c03)
+  exam_id를 입력해주세요. (예: aws-aif-c01, aws-clf-c02, aws-dea-c01, aws-saa-c03)
 
 사용자: aws-aif-c01
 

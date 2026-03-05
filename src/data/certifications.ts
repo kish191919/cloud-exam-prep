@@ -106,6 +106,7 @@ const awsCertifications: Certification[] = [
     careerPaths: ['cloud-architect'],
     description: 'AWS에서 확장 가능하고 가용성 높은 아키텍처를 설계하는 역량을 검증. 가장 인기 있는 AWS 자격증.',
     descriptionEn: 'Validates skills in designing scalable, highly available architectures on AWS. The most popular AWS certification.',
+    examId: 'aws-saa-c03',
   },
   {
     id: 'aws-dva-c02',
