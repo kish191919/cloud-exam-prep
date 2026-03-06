@@ -296,6 +296,7 @@ const azureCertifications: Certification[] = [
     careerPaths: ['all'],
     description: 'Azure 클라우드 기초 개념, 서비스, 요금제를 다루는 입문 자격증. 기술 배경 없이도 응시 가능.',
     descriptionEn: 'Entry-level certification covering Azure cloud basics, services, and pricing. No technical background required.',
+    examId: 'azure-az-900',
   },
   {
     id: 'ai-900',
