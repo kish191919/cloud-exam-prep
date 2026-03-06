@@ -1,0 +1,51 @@
+
+1. You have an Azure environment. You need to create a new Azure virtual machine from a tablet that runs the Android operating system. What are possible solution?
+
+
+2. Which service provides network traffic filtering across multiple Azure subscriptions and virtual networks?
+
+
+3. A new policy has been implemented in your organization that limits access to resource group and resource scopes in a detailed, granular way. Various groups and users will be provided access. What would you choose to use if you want to implement the new policy?
+
+
+
+4. Cost per subscriber for a cloud service provider reduces with the increase in number of subscribers. It is a public cloud service. Can you identify what this would be called?
+
+
+
+5. You plan to provision Infrastructure as a Service (IaaS) resources in Azure. Which resource is an example of IaaS?
+
+
+
+6. To which cloud models can you deploy physical servers?
+
+
+
+7. You have 50 virtual machines hosted on-premises and 50 virtual machines hosted in Azure. The on-premises virtual machines and the Azure virtual machines connect to each other. Which type of cloud model is this?
+
+
+
+8. Which Azure service provides a set of version control tools to manage code?
+
+
+
+9. You have an Azure web app. You need to manage the settings of the web app from an iPhone. What are two Azure management tools that you can use? 
+
+
+
+10. What can you use to automatically send an alert if an administrator stops an Azure virtual machine?
+
+
+11. Which Azure service can you use as a security information and event management (SIEM) solution?
+
+
+12. Your company plans 10 migrate all its data and resources to Azure. The company’s migration plan states that only Platform as a Service (PaaS) solutions must be used in Azure. You need to deploy an Azure environment that meets the company’s migration plan. What should you create?
+
+
+13. Who can use the Azure Total Cost of Ownership (TCO) calculator?
+
+
+14. You have an accounting application named App1 that uses a legacy database. You plan to move App1 to the cloud. Which service model should you use?
+
+
+15. What is the longest term you can purchase tor Azure Reserved VM Instances?

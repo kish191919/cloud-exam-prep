@@ -31,6 +31,8 @@ const certColors: Record<string, string> = {
   Azure: 'bg-primary text-primary-foreground',
 };
 
+const PROVIDER_ORDER: Record<string, number> = { 'AWS': 0, 'Azure': 1, 'GCP': 2 };
+
 const EXAM_BADGE_MAP: Record<string, string> = {
   'aws-aif-c01': '/badges/aws-aif-c01.png',
   'aws-clf-c02': '/badges/aws-clf-c02.png',
@@ -225,7 +227,7 @@ const ExamList = () => {
   };
 
   const filteredExams = filterProvider === 'all'
-    ? exams
+    ? [...exams].sort((a, b) => (PROVIDER_ORDER[a.certification] ?? 99) - (PROVIDER_ORDER[b.certification] ?? 99))
     : exams.filter(ex => ex.certification.toLowerCase() === filterProvider.toLowerCase());
 
   const handleStart = async (e: React.MouseEvent) => {
@@ -640,7 +642,7 @@ const ExamList = () => {
                             <img
                               src={EXAM_BADGE_MAP[exam.id]}
                               alt={`${exam.title} badge`}
-                              className="h-20 w-20 object-contain rounded-lg"
+                              className={`h-20 w-20 object-contain rounded-lg${exam.id.startsWith('azure') ? ' p-1' : ''}`}
                               onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                             />
                           </div>
@@ -648,7 +650,7 @@ const ExamList = () => {
                           <img
                             src={EXAM_BADGE_MAP[exam.id]}
                             alt={`${exam.title} badge`}
-                            className="md:hidden w-20 h-20 shrink-0 object-contain rounded-lg"
+                            className={`md:hidden w-20 h-20 shrink-0 object-contain rounded-lg${exam.id.startsWith('azure') ? ' p-1' : ''}`}
                             onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                           />
                         </>
