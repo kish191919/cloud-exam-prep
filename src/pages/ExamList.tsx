@@ -36,6 +36,7 @@ const EXAM_BADGE_MAP: Record<string, string> = {
   'aws-clf-c02': '/badges/aws-clf-c02.png',
   'aws-dea-c01': '/badges/aws-dea-c01.png',
   'aws-saa-c03': '/badges/aws-saa-c03.png',
+  'azure-az-900': '/badges/azure-az-900.png',
 };
 
 // certifications.ts의 description(한국어) / descriptionEn(영어) 데이터를 examId 기준으로 매핑
