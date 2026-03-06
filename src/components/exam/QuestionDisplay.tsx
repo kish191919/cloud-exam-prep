@@ -225,7 +225,7 @@ const QuestionDisplay = ({
       </div>
 
       {/* 보기 영역: 하단 고정 (border로 구분) */}
-      <div className={`${!showFeedback ? 'shrink-0 overflow-y-auto' : ''} px-3 pb-3 sm:px-5 sm:pb-4 md:px-8 md:pb-6 pt-2.5 sm:pt-3 border-t md:border-t-0 md:pt-0`}>
+      <div className={`${!showFeedback ? 'shrink-0 max-h-[55vh] md:max-h-none overflow-y-auto' : ''} px-3 pb-3 sm:px-5 sm:pb-4 md:px-8 md:pb-6 pt-2.5 sm:pt-3 border-t md:border-t-0 md:pt-0`}>
       <div className="space-y-2.5 sm:space-y-3">
         {displayOptions.map((option, index) => {
           const isSelected = selectedOptionId === option.id;
