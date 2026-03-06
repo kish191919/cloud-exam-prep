@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AppLayout from '@/components/AppLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -115,6 +115,7 @@ const ExamList = () => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [tappedId, setTappedId] = useState<string | null>(null);
   const [filterProvider, setFilterProvider] = useState<string>('all');
+  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   useEffect(() => {
     async function loadExams() {
@@ -136,6 +137,15 @@ const ExamList = () => {
       return () => clearTimeout(timer);
     }
   }, []);
+
+  useEffect(() => {
+    const activeId = tappedId ?? expandedId;
+    if (!activeId) return;
+    const el = cardRefs.current[activeId];
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [tappedId, expandedId]);
 
   const dismissModesIntro = () => {
     localStorage.setItem(MODES_INTRO_KEY, '1');
@@ -592,8 +602,11 @@ const ExamList = () => {
               const isTapped = tappedId === exam.id;
 
               return (
-                <Card
+                <div
                   key={exam.id}
+                  ref={el => { cardRefs.current[exam.id] = el; }}
+                >
+                <Card
                   onMouseEnter={() => available && setHoveredId(exam.id)}
                   onMouseLeave={() => setHoveredId(null)}
                   onClick={() => {
@@ -715,6 +728,7 @@ const ExamList = () => {
 
                   </CardContent>
                 </Card>
+                </div>
               );
             })}
           </div>
