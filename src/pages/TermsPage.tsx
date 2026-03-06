@@ -80,7 +80,7 @@ const TermsKo = () => (
       </Section>
 
       <Section title="10. 문의">
-        <p>이용약관에 관한 문의: support@cloudmaster.app</p>
+        <p>이용약관에 관한 문의: cloudmasterit.service@gmail.com</p>
       </Section>
     </div>
   </AppLayout>

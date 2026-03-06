@@ -67,7 +67,7 @@ const PrivacyKo = () => (
 
       <Section title="7. 개인정보 보호책임자">
         <p>개인정보 처리에 관한 문의 및 불만 처리는 아래로 연락해 주세요.</p>
-        <p>이메일: support@cloudmaster.app</p>
+        <p>이메일: cloudmasterit.service@gmail.com</p>
       </Section>
 
       <Section title="8. 방침 변경">
