@@ -635,12 +635,12 @@ const ExamList = () => {
                       {/* 뱃지 이미지 */}
                       {EXAM_BADGE_MAP[exam.id] && (
                         <>
-                          {/* 데스크탑: 카드 높이 전체 채우기 */}
-                          <div className="hidden md:flex shrink-0 self-stretch items-center">
+                          {/* 데스크탑: 고정 크기 */}
+                          <div className="hidden md:flex shrink-0 items-center">
                             <img
                               src={EXAM_BADGE_MAP[exam.id]}
                               alt={`${exam.title} badge`}
-                              className="h-full w-24 object-contain rounded-lg"
+                              className="h-20 w-20 object-contain rounded-lg"
                               onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                             />
                           </div>
