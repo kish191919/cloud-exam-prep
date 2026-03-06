@@ -1,0 +1,56 @@
+31. An organization wants to isolate its Azure resources into a logically separated network and control inbound/outbound traffic. Which service enables this?
+
+
+
+32. A company stores critical business documents and needs employees to map a shared network drive from their Windows machines to access files stored in Azure. Which storage service supports this scenario?
+
+
+
+33. A developer needs to pass messages between decoupled application components to ensure reliable processing even if one component is temporarily unavailable. Which Azure storage service should they use?
+
+
+
+34. A data engineer needs to store large amounts of structured NoSQL data such as user session information and telemetry using a key-value store. Which Azure service is most appropriate?
+
+
+
+35. A company is planning its Azure infrastructure and wants to understand the hierarchy of organizing resources. What is the CORRECT order from highest to lowest in the Azure organizational hierarchy?
+
+
+
+36. A company wants to deploy a web application to Azure without managing virtual machines or containers, taking advantage of built-in auto-scaling and CI/CD integration. Which service is best suited?
+
+
+
+37. Which Azure storage redundancy option replicates data across multiple datacenters within the same Azure region to protect against datacenter-level failures?
+
+
+
+38. A company needs to ensure that if the entire Azure East US region goes down, their data is still accessible from the West US region. Which storage redundancy option should they configure?
+
+
+
+39. A solution architect needs to accelerate content delivery to global users by caching static content at edge locations closer to the end users. Which Azure service provides this capability?
+
+
+
+40. An administrator needs to run compute-intensive batch processing jobs that can span thousands of virtual machine cores in Azure without managing the VMs individually. Which service should they use?
+
+
+
+41. A security team wants a centralized service to monitor the security health of Azure resources, identify misconfigurations, and receive recommendations to improve their security posture. Which service should they use?
+
+
+
+42. A company wants to protect its Azure environment against large-scale volumetric network attacks that could overwhelm their services. Which Azure service provides this protection?
+
+
+
+43. A developer wants to store database connection strings and API keys securely in Azure so that applications can retrieve them without hardcoding sensitive values in code. Which service should they use?
+
+
+
+44. An organization wants to enforce a policy that prevents any Azure resource from being deployed outside of the East US and West Europe regions. Which Azure service can enforce this?
+
+
+45. A company wants to implement the principle of least privilege so that each employee only has access to the Azure resources required for their specific job role. Which Azure feature should they configure?

@@ -144,9 +144,17 @@ const ExamList = () => {
     if (!activeId) return;
     const el = cardRefs.current[activeId];
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [tappedId, expandedId]);
+
+  useEffect(() => {
+    if (!expandedId || loadingSets[expandedId] || !setsMap[expandedId]) return;
+    const el = cardRefs.current[expandedId];
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [expandedId, setsMap, loadingSets]);
 
   const dismissModesIntro = () => {
     localStorage.setItem(MODES_INTRO_KEY, '1');
@@ -606,6 +614,7 @@ const ExamList = () => {
                 <div
                   key={exam.id}
                   ref={el => { cardRefs.current[exam.id] = el; }}
+                  className="scroll-mt-20"
                 >
                 <Card
                   onMouseEnter={() => available && setHoveredId(exam.id)}
