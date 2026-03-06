@@ -1,0 +1,80 @@
+
+251. An Amazon EC2 instance is located in a private subnet in a new VPC. This subnet does not have outbound internet access, but the EC2 instance needs the ability to download monthly security updates from an outside vendor.
+What should a solutions architect do to meet these requirements?
+
+
+
+252. A solutions architect needs to design a system to store client case files. The files are core company assets and are important. The number of files will grow over time. The files must be simultaneously accessible from multiple application servers that run on Amazon EC2 instances. The solution must have built-in redundancy.
+Which solution meets these requirements?
+
+
+
+253.A company created a new organization in AWS Organizations. The organization has multiple accounts for the company's development teams. The development team members use AWS IAM Identity Center (AWS Single Sign-On) to access the accounts. For each of the company's applications, the development teams must use a prede ned application name to tag resources that are created. A solutions architect needs to design a solution that gives the development team the ability to create resources only if the application name tag has an approved value.
+Which solution will meet these requirements?
+
+
+
+254. A company is reviewing a recent migration of a three-tier application to a VPC. The security team discovers that the principle of least privilege is not being applied to Amazon EC2 security group ingress and egress rules between the application tiers.
+What should a solutions architect do to correct this issue?
+
+
+
+255. A company has an ecommerce checkout workflow that writes an order to a database and calls a service to process the payment. Users are experiencing timeouts during the checkout process. When users resubmit the checkout form, multiple unique orders are created for the same desired transaction.
+How should a solutions architect refactor this workflow to prevent the creation of multiple orders?
+
+
+
+
+256. A solutions architect is implementing a document review application using an Amazon S3 bucket for storage. The solution must prevent accidental deletion of the documents and ensure that all versions of the documents are available. Users must be able to download, modify, and upload documents.
+Which combination of actions should be taken to meet these requirements?
+
+
+
+
+257. A company runs its databases on Amazon RDS for PostgreSQL. The company wants a secure solution to manage the master user password by rotating the password every 30 days.
+Which solution will meet these requirements with the LEAST operational overhead?
+
+
+
+258. A company has an application that places hundreds of .csv files into an Amazon S3 bucket every hour. The files are 1.5 GB in size. Each time a file is uploaded, the company needs to convert the file to Apache Parquet format and place the output file into an S3 bucket.
+Which solution will meet these requirements with the LEAST operational overhead?
+
+
+
+259. A company is implementing new data retention policies for all databases that run on Amazon RDS DB instances. The company must retain daily backups for a minimum period of 3 years. The backups must be consistent and restorable.
+Which solution should a solutions architect recommend to meet these requirements?
+
+
+
+260. A company’s compliance team needs to move its file shares to AWS. The shares run on a Windows Server SMB file share. A self-managed on-premises Active Directory controls access to the files and folders. The company wants to use Amazon FSx for Windows File Server as part of the solution. The company must ensure that the on-premises Active Directory groups restrict access to the FSx for Windows File Server SMB compliance shares,folders, and files after the move to AWS. The company has created an FSx for Windows File Server file system.
+Which solution will meet these requirements?
+
+
+
+
+261. A company recently announced the deployment of its retail website to a global audience. The website runs on multiple Amazon EC2 instances behind an Elastic Load Balancer. The instances run in an Auto Scaling group across multiple Availability Zones. The company wants to provide its customers with different versions of content based on the devices that the customers use to access the website.
+Which combination of actions should a solutions architect take to meet these requirements? 
+
+
+
+
+262. A company plans to use Amazon ElastiCache for its multi-tier web application. A solutions architect creates a Cache VPC for the ElastiCache cluster and an App VPC for the application’s Amazon EC2 instances. Both VPCs are in the us-east-1 Region. The solutions architect must implement a solution to provide the application’s EC2 instances with access to the ElastiCache cluster.
+Which solution will meet these requirements MOST cost-effectively?
+
+
+
+
+263. A company is building an application that consists of several microservices. The company has decided to use container technologies to deploy its software on AWS. The company needs a solution that minimizes the amount of ongoing effort for maintenance and scaling. The company cannot manage additional infrastructure.
+Which combination of actions should a solutions architect take to meet these requirements? 
+
+
+
+
+264. A company has a web application hosted over 10 Amazon EC2 instances with traffic directed by Amazon Route 53. The company occasionally experiences a timeout error when attempting to browse the application. The networking team finds that some DNS queries return IP addresses of unhealthy instances, resulting in the timeout error.
+What should a solutions architect implement to overcome these timeout errors?
+
+
+
+
+265. A solutions architect needs to design a highly available application consisting of web, application, and database tiers. HTTPS content delivery should be as close to the edge as possible, with the least delivery time.
+Which solution meets these requirements and is MOST secure?

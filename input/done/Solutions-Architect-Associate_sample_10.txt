@@ -1,0 +1,73 @@
+121.A company is running an online transaction processing (OLTP) workload on AWS. This workload uses an unencrypted Amazon RDS DB instance in a Multi-AZ deployment. Daily database snapshots are taken from this instance.
+What should a solutions architect do to ensure the database and snapshots are always encrypted moving forward? 
+
+
+
+122.A company wants to build a scalable key management infrastructure to support developers who need to encrypt data in their applications.
+What should a solutions architect do to reduce the operational burden? 
+
+
+
+123.A company has a dynamic web application hosted on two Amazon EC2 instances. The company has its own SSL certificate, which is on each instance to perform SSL termination. There has been an increase in traffic recently, and the operations team determined that SSL encryption and decryption is causing the compute capacity of the web servers to reach their maximum limit.
+What should a solutions architect do to increase the application's performance?
+
+
+
+124.A company has a highly dynamic batch processing job that uses many Amazon EC2 instances to complete it. The job is stateless in nature, can be started and stopped at any given time with no negative impact, and typically takes upwards of 45 minutes total to complete. The company has asked a solutions architect to design a scalable and cost-effective solution that meets the requirements of the job.
+What should the solutions architect recommend? 
+
+
+
+125.A company runs its two-tier ecommerce website on AWS. The web tier consists of a load balancer that sends traffic to Amazon EC2 instances. The database tier uses an Amazon RDS DB instance. The EC2 instances and the RDS DB instance should not be exposed to the public internet. The EC2 instances require internet access to complete payment processing of orders through a third-party web service. The application must be highly available.
+Which combination of configuration options will meet these requirements?
+
+
+
+126.A solutions architect needs to implement a solution to reduce a company's storage costs. All the company's data is in the Amazon S3 Standard storage class. The company must keep all data for at least 50 years. Data from the most recent 7 years must be highly available and immediately retrievable.
+Which solution will meet these requirements? 
+
+
+
+127.A media company is evaluating the possibility of moving its systems to the AWS Cloud. The company needs at least 25 TB of storage with the maximum possible I/O performance for video processing, 135 TB of very durable storage for storing media content, and 900 TB of storage to meet requirements for archival media that is not in use anymore.
+Which set of services should a solutions architect recommend to meet these requirements? 
+
+
+
+128.A company wants to run applications in containers in the AWS Cloud. These applications are stateless and can tolerate disruptions within the underlying infrastructure. The company needs a solution that minimizes cost and operational overhead.
+What should a solutions architect do to meet these requirements? 
+
+
+
+129.A company is running a multi-tier web application on premises. The web application is containerized and runs on a number of Linux hosts connected to a PostgreSQL database that contains user records. The operational overhead of maintaining the infrastructure and capacity planning is limiting the company's growth. A solutions architect must improve the application's infrastructure.
+Which combination of actions should the solutions architect take to accomplish this? 
+
+
+
+130.An application runs on Amazon EC2 instances across multiple Availability Zonas. The instances run in an Amazon EC2 Auto Scaling group behind an Application Load Balancer. The application performs best when the CPU utilization of the EC2 instances is at or near 25%.
+What should a solutions architect do to maintain the desired performance across all instances in the group? 
+
+
+
+131.A company is developing a file-sharing application that will use an Amazon S3 bucket for storage. The company wants to serve all the files through an Amazon CloudFront distribution. The company does not want the files to be accessible through direct navigation to the S3 URL.
+What should a solutions architect do to meet these requirements? 
+
+
+
+132.A company’s website provides users with downloadable historical performance reports. The website needs a solution that will scale to meet the company’s website demands globally. The solution should be cost-effective, limit the provisioning of infrastructure resources, and provide the fastest possible response time.
+Which combination should a solutions architect recommend to meet these requirements? 
+
+
+
+133.A company runs an Oracle database on premises. As part of the company’s migration to AWS, the company wants to upgrade the database to the most recent available version. The company also wants to set up disaster recovery (DR) for the database. The company needs to minimize the operational overhead for normal operations and DR setup. The company also needs to maintain access to the database's underlying operating system.
+Which solution will meet these requirements? 
+
+
+
+134.A company wants to move its application to a serverless solution. The serverless solution needs to analyze existing and new data by using SL. The company stores the data in an Amazon S3 bucket. The data requires encryption and must be replicated to a different AWS Region.
+Which solution will meet these requirements with the LEAST operational overhead?
+
+
+
+
+135.A company runs workloads on AWS. The company needs to connect to a service from an external provider. The service is hosted in the provider's VPC. According to the company’s security team, the connectivity must be private and must be restricted to the target service. The connection must be initiated only from the company’s VPC.
+Which solution will mast these requirements?
