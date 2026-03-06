@@ -1,5 +1,5 @@
 import { Question, ExamMode } from '@/types/exam';
-import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb, Lock, Megaphone } from 'lucide-react';
+import { Bookmark, BookmarkCheck, CheckCircle2, XCircle, ExternalLink, Lightbulb, Lock, Megaphone, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -291,6 +291,27 @@ const QuestionDisplay = ({
           );
         })}
       </div>
+
+      {/* ── 해설 ── */}
+      {showFeedback && questionExplanation && (
+        <PremiumGate
+          locked={isRestrictedSet}
+          onUpgrade={onRequestUpgrade ?? (() => {})}
+          isKo={!isEn}
+        >
+          <div className="mt-6 rounded-xl border border-blue-200 dark:border-blue-800/50 bg-blue-50/60 dark:bg-blue-950/20 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <BookOpen className="h-4 w-4 text-blue-500 shrink-0" />
+              <span className="text-sm font-semibold text-blue-700 dark:text-blue-400">
+                {isEn ? 'Explanation' : '해설'}
+              </span>
+            </div>
+            <p className="text-sm leading-relaxed text-foreground whitespace-pre-line">
+              {questionExplanation}
+            </p>
+          </div>
+        </PremiumGate>
+      )}
 
       {/* ── 핵심 암기사항 + 참고자료 (answers 아래 표시) ── */}
       {hasKeySection && (
