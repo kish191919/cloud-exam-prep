@@ -7,7 +7,6 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import ExamBadge from '@/components/ExamBadge';
-import ContactFloatingButton from '@/components/ContactFloatingButton';
 import { CERT_LANDING_DATA } from '@/data/certLandingData';
 import { PROVIDERS } from '@/data/certifications';
 
@@ -34,7 +33,7 @@ const CertLandingPage = () => {
 
   const pageTitle = isKo
     ? `${data.fullName} (${data.code}) 한국어 모의고사 | CloudMasterIT`
-    : `${data.fullNameEn} (${data.code}) Korean Practice Exam | CloudMasterIT`;
+    : `${data.fullNameEn} (${data.code}) Practice Exam | CloudMasterIT`;
 
   const metaDesc = isKo ? data.metaDescription : data.metaDescriptionEn;
 
@@ -87,7 +86,6 @@ const CertLandingPage = () => {
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
-      <ContactFloatingButton />
       <Navbar />
 
       {/* Hero */}
@@ -124,7 +122,7 @@ const CertLandingPage = () => {
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-black leading-tight break-keep">
                 {data.fullName}
                 <span className="block text-accent mt-1">
-                  ({data.code}) {isKo ? '한국어 모의고사' : 'Korean Practice Exam'}
+                  ({data.code}) {isKo ? '한국어 모의고사' : 'Practice Exam'}
                 </span>
               </h1>
             </div>
@@ -211,7 +209,7 @@ const CertLandingPage = () => {
                 <div className="flex flex-wrap gap-1.5">
                   {domain.topics.map((topic, ti) => (
                     <span key={ti} className="text-xs px-2.5 py-1 rounded-full bg-accent/10 text-accent font-medium">
-                      {topic}
+                      {isKo ? topic : (domain.topicsEn?.[ti] ?? topic)}
                     </span>
                   ))}
                 </div>
