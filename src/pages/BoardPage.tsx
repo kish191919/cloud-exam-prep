@@ -118,7 +118,7 @@ function AnnouncementCard({ item }: { item: Announcement }) {
 
 // ─── Pinned Banner ────────────────────────────────────────────────────────────
 function PinnedBanner({ item }: { item: Announcement }) {
-  const { i18n } = useTranslation('pages');
+  const { t, i18n } = useTranslation('pages');
   const isKo = i18n.language === 'ko';
   const title = !isKo && item.titleEn ? item.titleEn : item.title;
 
@@ -131,7 +131,7 @@ function PinnedBanner({ item }: { item: Announcement }) {
         <Pin className="h-3.5 w-3.5 text-accent" />
       </div>
       <div className="flex-1 min-w-0">
-        <span className="text-xs font-semibold text-accent mr-2">공지</span>
+        <span className="text-xs font-semibold text-accent mr-2">{t('board.pinned')}</span>
         <span className="text-sm font-medium truncate">{title}</span>
       </div>
       <ArrowRight className="h-3.5 w-3.5 text-accent/60 group-hover:translate-x-0.5 transition-transform shrink-0" />

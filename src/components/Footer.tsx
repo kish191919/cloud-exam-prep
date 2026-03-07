@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Cloud, MessageSquare } from 'lucide-react';
+import { Cloud } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import ContactModal from './ContactModal';
@@ -50,10 +50,9 @@ const Footer = () => {
             </Link>
             <button
               onClick={handleContactClick}
-              className="flex items-center gap-1.5 hover:text-foreground transition-colors"
+              className="hover:text-foreground transition-colors"
             >
-              <MessageSquare className="h-3.5 w-3.5" />
-              고객의 소리
+              {t('pages:index.footer.contact')}
             </button>
           </div>
           <p className="text-xs text-muted-foreground">
