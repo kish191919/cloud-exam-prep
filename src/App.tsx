@@ -62,6 +62,7 @@ const ExamResults = lazy(() => import("./pages/ExamResults"));
 const ReviewPage = lazy(() => import("./pages/ReviewPage"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
 const TermsPage = lazy(() => import("./pages/TermsPage"));
+const DisclaimerPage = lazy(() => import("./pages/DisclaimerPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const AdminQuestionsPage = lazy(() => import("./pages/AdminQuestionsPage"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
@@ -102,6 +103,7 @@ const App = () => (
                 <Route path="/blog/:slug" element={<BlogPostPage />} />
                 <Route path="/privacy" element={<PrivacyPage />} />
                 <Route path="/terms" element={<TermsPage />} />
+                <Route path="/disclaimer" element={<DisclaimerPage />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/admin/questions" element={<AdminQuestionsPage />} />
                 <Route path="/reset-password" element={<ResetPassword />} />

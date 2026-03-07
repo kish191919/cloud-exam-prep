@@ -269,7 +269,9 @@
       "terms": "Terms of Service",
       "community": "Community",
       "board": "Board",
-      "copyright": "© 2026 CloudMaster. All rights reserved."
+      "copyright": "© 2026 CloudMaster. All rights reserved.",
+      "disclaimer": "Disclaimer",
+      "nonAffiliation": "This website is not affiliated with AWS, Microsoft, or Google Cloud. Questions are created for educational purposes only."
     }
   },
   "board": {

@@ -34,6 +34,9 @@ const Footer = () => {
             <Link to="/terms" className="hover:text-foreground transition-colors">
               {t('pages:index.footer.terms')}
             </Link>
+            <Link to="/disclaimer" className="hover:text-foreground transition-colors">
+              {t('pages:index.footer.disclaimer')}
+            </Link>
             <a
               href="https://open.kakao.com/o/pnEbOZgi"
               target="_blank"
@@ -57,6 +60,9 @@ const Footer = () => {
             © {year} CloudMaster. All rights reserved.
           </p>
         </div>
+        <p className="text-xs text-muted-foreground text-center mt-4 px-4">
+          {t('pages:index.footer.nonAffiliation')}
+        </p>
       </footer>
 
       <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />

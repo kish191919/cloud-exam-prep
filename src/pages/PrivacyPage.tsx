@@ -44,7 +44,7 @@ const PrivacyKo = () => (
       </Section>
 
       <Section title="4. 제3자 제공 및 위탁">
-        <p>CloudMaster는 원칙적으로 이용자의 개인정보를 제3자에게 제공하지 않습니다. 다만 서비스 운영을 위해 아래 업체에 처리를 위탁합니다.</p>
+        <p>CloudMaster는 이용자의 개인정보를 제3자에게 판매하거나 임대하지 않습니다. 또한 법령에 의한 경우를 제외하고 제3자에게 제공하지 않습니다. 다만 서비스 운영을 위해 아래 업체에 처리를 위탁합니다.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Supabase:</strong> 데이터베이스 및 인증 (미국 소재, GDPR 준수)</li>
           <li><strong>Vercel:</strong> 웹 호스팅 (미국 소재)</li>
@@ -63,6 +63,7 @@ const PrivacyKo = () => (
 
       <Section title="6. 쿠키 및 로컬 스토리지">
         <p>CloudMaster는 로그인 상태 유지 및 학습 데이터 임시 저장을 위해 브라우저의 로컬 스토리지와 세션 스토리지를 사용합니다. 비로그인 상태에서의 학습 데이터는 브라우저 종료 시 자동으로 삭제됩니다.</p>
+        <p>본 서비스를 이용함으로써 본 방침에 따른 정보 수집 및 이용에 동의한 것으로 간주합니다.</p>
       </Section>
 
       <Section title="7. 개인정보 보호책임자">
@@ -105,7 +106,7 @@ const PrivacyEn = () => (
       </Section>
 
       <Section title="4. Third-Party Services">
-        <p>CloudMaster does not sell your data. We use the following services to operate our platform.</p>
+        <p>We do not sell, rent, or share your personal information with third parties except as described below or as required by law. We use the following services to operate our platform.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Supabase:</strong> Database and authentication (US-based, GDPR compliant)</li>
           <li><strong>Vercel:</strong> Web hosting (US-based)</li>
@@ -124,11 +125,12 @@ const PrivacyEn = () => (
 
       <Section title="6. Cookies & Local Storage">
         <p>CloudMaster uses browser local storage and session storage to maintain login state and temporarily save learning data. Learning data for non-logged-in users is automatically deleted when the browser is closed.</p>
+        <p>By using this website, you consent to the collection and use of information in accordance with this Privacy Policy.</p>
       </Section>
 
       <Section title="7. Contact">
         <p>For privacy-related inquiries, please contact us at:</p>
-        <p>Email: support@cloudmaster.app</p>
+        <p>Email: cloudmasterit.service@gmail.com</p>
       </Section>
 
       <Section title="8. Policy Updates">
