@@ -72,6 +72,7 @@ const BoardPage = lazy(() => import("./pages/BoardPage"));
 const BoardDetailPage = lazy(() => import("./pages/BoardDetailPage"));
 const BlogListPage = lazy(() => import("./pages/BlogListPage"));
 const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
+const CertLandingPage = lazy(() => import("./pages/CertLandingPage"));
 
 const queryClient = new QueryClient();
 
@@ -102,6 +103,7 @@ const AppContent = () => {
                 <Route path="/review" element={<ReviewPage />} />
                 <Route path="/board" element={<BoardPage />} />
                 <Route path="/board/:id" element={<BoardDetailPage />} />
+                <Route path="/cert/:examId" element={<CertLandingPage />} />
                 <Route path="/blog" element={<BlogListPage />} />
                 <Route path="/blog/:slug" element={<BlogPostPage />} />
                 <Route path="/privacy" element={<PrivacyPage />} />

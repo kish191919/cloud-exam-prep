@@ -134,13 +134,20 @@ function CertCard({ cert, providerColor, activeCareer, isKo }: CertCardProps) {
 
       {/* CTA */}
       {hasExam ? (
-        <Link to="/exams">
-          <Button size="sm" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 mt-1">
-            <BookOpen className="mr-1.5 h-3.5 w-3.5" />
-            {t('certifications.practiceBtn')}
-            <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
-          </Button>
-        </Link>
+        <div className="flex flex-col gap-2 mt-1">
+          <Link to={`/cert/${cert.examId}`}>
+            <Button size="sm" variant="outline" className="w-full border-accent/50 text-accent hover:bg-accent/10">
+              {isKo ? '자세히 보기' : 'Learn More'}
+            </Button>
+          </Link>
+          <Link to="/exams">
+            <Button size="sm" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+              <BookOpen className="mr-1.5 h-3.5 w-3.5" />
+              {t('certifications.practiceBtn')}
+              <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+            </Button>
+          </Link>
+        </div>
       ) : (
         <Button size="sm" variant="outline" disabled className="w-full mt-1 opacity-50">
           {t('certifications.comingSoon')}

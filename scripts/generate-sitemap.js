@@ -42,6 +42,14 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
   process.exit(1);
 }
 
+const CERT_LANDING_IDS = [
+  'aws-aif-c01',
+  'aws-clf-c02',
+  'aws-dea-c01',
+  'aws-saa-c03',
+  'azure-az-900',
+];
+
 async function fetchPublishedSlugs() {
   const url = `${SUPABASE_URL}/rest/v1/blog_posts?select=slug,published_at&is_published=eq.true&order=published_at.desc`;
   const res = await fetch(url, {
@@ -66,6 +74,7 @@ function buildSitemap(posts) {
     { url: '/exams',           priority: '0.9', changefreq: 'weekly',  lastmod: today },
     { url: '/blog',            priority: '0.9', changefreq: 'daily',   lastmod: today },
     { url: '/certifications',  priority: '0.8', changefreq: 'monthly', lastmod: today },
+    ...CERT_LANDING_IDS.map(id => ({ url: `/cert/${id}`, priority: '0.9', changefreq: 'monthly', lastmod: today })),
     { url: '/board',           priority: '0.7', changefreq: 'weekly',  lastmod: today },
     { url: '/review',          priority: '0.7', changefreq: 'weekly',  lastmod: today },
   ];
@@ -100,7 +109,8 @@ async function main() {
   const outPath = path.join(ROOT, 'public', 'sitemap.xml');
   fs.writeFileSync(outPath, sitemap, 'utf8');
   console.log(`sitemap.xml 생성 완료: ${outPath}`);
-  console.log(`  총 URL: ${6 + posts.length}개 (정적 6개 + 블로그 ${posts.length}개)`);
+  const staticCount = 6 + CERT_LANDING_IDS.length;
+  console.log(`  총 URL: ${staticCount + posts.length}개 (정적 ${staticCount}개 + 블로그 ${posts.length}개)`);
 }
 
 main().catch(err => {
