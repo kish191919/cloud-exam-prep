@@ -7,12 +7,12 @@
   </defs>
   <!-- 배경 (전체 채움 — maskable safe zone 보장) -->
   <rect width="512" height="512" fill="url(#bg)"/>
-  <!-- 구름 + 체크마크: 원본 32×32 경로를 scale(14) + 중앙 정렬 -->
-  <g transform="translate(15 72) scale(14)">
-    <path d="M26 13.5h-.18A7 7 0 0 0 12.1 11.1 5 5 0 1 0 7 21h19a4.5 4.5 0 0 0 0-9z"
-      fill="white"/>
-    <path d="M11.5 16.5l3 3 6-6"
-      stroke="#f97316" stroke-width="2.5"
-      stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Lucide Icons cloud-check (MIT License, https://lucide.dev/icons/cloud-check)
+       원본 24×24 viewBox → scale(18) + translate(40 58) 로 512×512 중앙 배치 -->
+  <g transform="translate(40 58) scale(18)"
+     fill="none" stroke="white" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" fill="white" stroke="none"/>
+    <path d="m9 12 2 2 4-4" stroke="#f97316" stroke-width="2.5"/>
   </g>
 </svg>
