@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Cloud, Menu, X, LogOut, User, Map, BookOpen, MessageSquare, LogIn, Flag } from 'lucide-react';
+import { Cloud, Menu, X, LogOut, User, Map, BookOpen, MessageSquare, LogIn, Flag, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -51,6 +51,10 @@ const Navbar = () => {
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
+          <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            {t('navigation.home')}
+          </Link>
+
           <Link to="/certifications" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             {t('navigation.roadmap')}
           </Link>
@@ -168,6 +172,15 @@ const Navbar = () => {
           )}
 
           <div className="h-px bg-border my-1" />
+
+          <Link
+            to="/"
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-foreground hover:bg-accent/10 active:bg-accent/20 transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            <Home className="h-5 w-5 text-muted-foreground" />
+            {t('navigation.home')}
+          </Link>
 
           <Link
             to="/certifications"

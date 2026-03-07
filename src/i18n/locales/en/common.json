@@ -33,6 +33,31 @@
     "contactLogin": "Sign in to Contact",
     "contactAria": "Customer Support"
   },
+  "contact": {
+    "title": "Customer Feedback",
+    "loginRequired": "You must be signed in to submit feedback.",
+    "signIn": "Sign In",
+    "successTitle": "Feedback submitted!",
+    "successMessage": "Thank you for your feedback. We'll get back to you soon.",
+    "close": "Close",
+    "typeLabel": "Type",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "Enter a subject",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Share your feedback, suggestions, or questions.",
+    "accountInfo": "Submitted from <bold>{{email}}</bold>. You can check replies in My Page.",
+    "cancel": "Cancel",
+    "send": "Send Feedback",
+    "sending": "Sending...",
+    "errorEmpty": "Please enter both subject and message.",
+    "errorSend": "An error occurred. Please try again later.",
+    "categories": {
+      "complaint": "Complaint",
+      "suggestion": "Suggestion",
+      "inquiry": "Inquiry",
+      "other": "Other"
+    }
+  },
   "loading": "Loading...",
   "error": "An error occurred",
   "footer": {
