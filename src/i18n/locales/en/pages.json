@@ -4,13 +4,13 @@
       "badge": "The Essential Cert for the AI & Cloud Era",
       "title": "AI Runs on Cloud.",
       "titleAccent": "So Should Your Career.",
-      "subtitle": "ChatGPT, Netflix, every major tech product runs on cloud infrastructure. AWS, GCP, and Azure certifications are the key to the fastest-growing careers in the AI era. Start with clear Korean explanations.",
+      "subtitle": "ChatGPT, Netflix, every major tech product runs on cloud infrastructure. AWS, GCP, and Azure certifications are the key to the fastest-growing careers in the AI era. Practice smarter with realistic questions and in-depth explanations.",
       "ctaPrimary": "Start Free Now",
       "ctaSecondary": "See How It Works",
       "stats": {
         "questions": {
           "value": "500+",
-          "label": "Questions with KR Explanations"
+          "label": "Practice Questions"
         },
         "passRate": {
           "value": "95%",
@@ -24,7 +24,7 @@
     },
     "featuresSection": {
       "title": "Why Anyone Can Pass with CloudMaster",
-      "subtitle": "Maximum efficiency in minimum time. Korean explanations, real CBT practice — everything you need."
+      "subtitle": "Maximum efficiency in minimum time. Detailed explanations, realistic CBT practice — everything you need to pass."
     },
     "features": [
       {
@@ -34,8 +34,8 @@
       },
       {
         "icon": "BookOpen",
-        "title": "Korean Explanations First",
-        "desc": "Every question comes with detailed Korean explanations. Understand the concept fully before tackling the English exam."
+        "title": "In-Depth Explanations",
+        "desc": "Every question includes a detailed explanation to help you truly understand the concept — not just memorize answers."
       },
       {
         "icon": "BarChart3",
@@ -118,7 +118,7 @@
           "role": "5-Year SI Engineer",
           "cert": "AWS SAA-C03 Passed",
           "score": "820 pts",
-          "quote": "Passed in two and a half months studying 30 minutes after work. The Korean explanations were invaluable, and being able to study on mobile during my commute made it sustainable.",
+          "quote": "Passed in two and a half months studying 30 minutes after work. The detailed explanations made every wrong answer a learning opportunity, and mobile study during my commute made it sustainable.",
           "period": "2.5 months"
         },
         {
@@ -126,7 +126,7 @@
           "role": "3-Year Financial IT Team",
           "cert": "AWS AIF-C01 Passed",
           "score": "790 pts",
-          "quote": "AI certification felt daunting, but locking in the concepts with Korean explanations first, then drilling CBT questions, made it click. Passed on the first try.",
+          "quote": "AI certification felt daunting, but locking in the concepts with in-depth explanations first, then drilling CBT questions, made it click. Passed on the first try.",
           "period": "1.5 months"
         },
         {
@@ -177,7 +177,7 @@
         {
           "icon": "GraduationCap",
           "title": "Students",
-          "desc": "A cloud certification sets you apart in a competitive job market. Use Korean explanations to master concepts fast and land your first certification."
+          "desc": "A cloud certification sets you apart in a competitive job market. Use scenario-based practice and detailed explanations to master concepts fast and land your first certification."
         },
         {
           "icon": "Rocket",
@@ -243,7 +243,7 @@
         },
         {
           "q": "Can non-IT backgrounds take these exams?",
-          "a": "Absolutely. Entry-level cloud certifications like AWS CLF-C02 require no coding experience. CloudMaster's Korean explanations break down every concept accessibly, so anyone can study systematically and pass."
+          "a": "Absolutely. Entry-level cloud certifications like AWS CLF-C02 require no coding experience. CloudMaster breaks down every concept with clear, detailed explanations, so anyone can study systematically and pass."
         },
         {
           "q": "Which AWS exams are available?",

@@ -35,7 +35,6 @@ i18n
     defaultNS: 'common',
     ns: ['common', 'pages', 'exam', 'auth'],
     fallbackLng: 'ko',
-    lng: 'ko',
 
     detection: {
       order: ['localStorage', 'navigator'],

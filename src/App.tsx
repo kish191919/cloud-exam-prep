@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from "react";
+import { useGeoLanguage } from "@/hooks/useGeoLanguage";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -74,7 +75,9 @@ const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const AppContent = () => {
+  useGeoLanguage();
+  return (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
@@ -117,6 +120,9 @@ const App = () => (
       </ThemeProvider>
     </QueryClientProvider>
   </ErrorBoundary>
-);
+  );
+};
+
+const App = () => <AppContent />;
 
 export default App;
