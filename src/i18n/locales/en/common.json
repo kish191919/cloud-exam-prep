@@ -26,6 +26,13 @@
     "previous": "Prev",
     "next": "Next"
   },
+  "floating": {
+    "study": "Study",
+    "studyAria": "Study — Practice Questions",
+    "contact": "Contact Us",
+    "contactLogin": "Sign in to Contact",
+    "contactAria": "Customer Support"
+  },
   "loading": "Loading...",
   "error": "An error occurred",
   "footer": {

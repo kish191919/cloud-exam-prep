@@ -26,6 +26,13 @@
     "previous": "이전",
     "next": "다음"
   },
+  "floating": {
+    "study": "학습하기",
+    "studyAria": "학습하기 — 문제 풀기",
+    "contact": "문의하기",
+    "contactLogin": "로그인 후 문의",
+    "contactAria": "고객의 소리 문의하기"
+  },
   "loading": "로딩 중...",
   "error": "오류가 발생했습니다",
   "footer": {

@@ -63,8 +63,8 @@ const Index = () => {
   };
 
   // 기업 스크롤 데이터 (텍스트 전용 — 상표권 안전)
-  const companiesRow1 = ['Netflix', '삼성전자', 'Kakao', 'Naver', '현대자동차', 'LG전자', '쿠팡', 'SK텔레콤', 'LINE', 'Airbnb', 'Spotify', 'Toyota', 'BMW'];
-  const companiesRow2 = ['NASA', 'Slack', 'Zoom', 'Adobe', 'Dropbox', 'Reddit', 'Pinterest', 'Twitch', 'McDonald\'s', 'GE', 'Pfizer', '배달의민족', 'Hyundai'];
+  const companiesRow1 = t('index.trustedBy.companiesRow1', { returnObjects: true }) as string[];
+  const companiesRow2 = t('index.trustedBy.companiesRow2', { returnObjects: true }) as string[];
 
   return (
     <div className="min-h-screen">
@@ -80,11 +80,11 @@ const Index = () => {
         <div className="flex flex-col items-center gap-1.5 px-4 py-3 sm:py-4 text-center">
           <div className="flex items-center gap-2 sm:gap-3">
             <Gift className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0" />
-            <span className="text-sm sm:text-base font-black uppercase tracking-widest text-accent">베타 오픈 기간</span>
+            <span className="text-sm sm:text-base font-black uppercase tracking-widest text-accent">{t('pages:index.betaBanner.badge')}</span>
             <span className="text-xs sm:text-sm bg-accent text-accent-foreground font-bold px-2.5 py-0.5 rounded-full">FREE</span>
           </div>
           <p className="text-sm sm:text-base text-foreground/80 font-medium leading-relaxed break-keep max-w-xs">
-            지금은 <strong className="text-accent font-bold">AWS · GCP · Azure 전체 문제</strong>를 완전 무료로 이용하실 수 있어요.
+            {t('pages:index.betaBanner.messagePrefix')}<strong className="text-accent font-bold">{t('pages:index.betaBanner.messageHighlight')}</strong>{t('pages:index.betaBanner.messageSuffix')}
           </p>
         </div>
       </div>

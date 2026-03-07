@@ -1,5 +1,11 @@
 {
   "index": {
+    "betaBanner": {
+      "badge": "베타 오픈 기간",
+      "messagePrefix": "지금은 ",
+      "messageHighlight": "AWS · GCP · Azure 전체 문제",
+      "messageSuffix": "를 완전 무료로 이용하실 수 있어요."
+    },
     "hero": {
       "badge": "AI 시대·빅데이터 시대의 필수 자격증",
       "title": "AI도, 빅데이터도,",
@@ -142,7 +148,9 @@
     "trustedBy": {
       "title": "전 세계 수만 개의 기업이 선택한 클라우드 플랫폼",
       "subtitle": "AWS · GCP · Azure는 글로벌 IT 인프라의 표준입니다",
-      "disclaimer": "공개된 AWS · GCP · Azure 레퍼런스 기준"
+      "disclaimer": "공개된 AWS · GCP · Azure 레퍼런스 기준",
+      "companiesRow1": ["Netflix", "삼성전자", "Kakao", "Naver", "현대자동차", "LG전자", "쿠팡", "SK텔레콤", "LINE", "Airbnb", "Spotify", "Toyota", "BMW"],
+      "companiesRow2": ["NASA", "Slack", "Zoom", "Adobe", "Dropbox", "Reddit", "Pinterest", "Twitch", "McDonald's", "GE", "Pfizer", "배달의민족", "Hyundai"]
     },
     "whyCloud": {
       "title": "왜 클라우드 자격증인가?",

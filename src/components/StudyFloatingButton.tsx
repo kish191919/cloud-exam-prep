@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function StudyFloatingButton() {
   const navigate = useNavigate();
+  const { t } = useTranslation('common');
   const { user, openAuthModal } = useAuth();
   const [hovered, setHovered] = useState(false);
 
@@ -27,7 +29,7 @@ export default function StudyFloatingButton() {
           ${hovered ? 'opacity-100 translate-x-0 pointer-events-none' : 'opacity-0 translate-x-3 pointer-events-none'}
         `}
       >
-        학습하기
+        {t('floating.study')}
       </div>
 
       {/* 펄스 링 레이어 */}
@@ -56,7 +58,7 @@ export default function StudyFloatingButton() {
           onClick={handleClick}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          aria-label="학습하기 — 문제 풀기"
+          aria-label={t('floating.studyAria')}
           className={`
             relative flex items-center justify-center
             w-12 h-12 rounded-full

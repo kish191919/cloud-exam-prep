@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { MessageSquare, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import ContactModal from './ContactModal';
 
 export default function ContactFloatingButton() {
+  const { t } = useTranslation('common');
   const { user, openAuthModal } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -29,7 +31,7 @@ export default function ContactFloatingButton() {
             ${hovered ? 'opacity-100 translate-x-0 pointer-events-none' : 'opacity-0 translate-x-3 pointer-events-none'}
           `}
         >
-          {user ? '문의하기' : '로그인 후 문의'}
+          {user ? t('floating.contact') : t('floating.contactLogin')}
         </div>
 
         {/* 펄스 링 레이어 */}
@@ -58,7 +60,7 @@ export default function ContactFloatingButton() {
             onClick={handleClick}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
-            aria-label="고객의 소리 문의하기"
+            aria-label={t('floating.contactAria')}
             className={`
               relative flex items-center justify-center
               w-12 h-12 rounded-full
