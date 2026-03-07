@@ -51,9 +51,6 @@ const Navbar = () => {
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
-          <LanguageSwitcher />
-          <ThemeToggle />
-
           <Link to="/certifications" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             {t('navigation.roadmap')}
           </Link>
@@ -71,6 +68,9 @@ const Navbar = () => {
               {t('navigation.startFree')}
             </Button>
           </Link>
+
+          <LanguageSwitcher />
+          <ThemeToggle />
 
           {user ? (
             <DropdownMenu>
