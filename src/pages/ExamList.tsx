@@ -22,6 +22,7 @@ import type { ExamConfig, ExamSet, ExamMode } from '@/types/exam';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { PROVIDERS } from '@/data/certifications';
+import ExamBadge from '@/components/ExamBadge';
 
 const MODES_INTRO_KEY = 'cloudmaster_exam_modes_seen';
 
@@ -32,14 +33,6 @@ const certColors: Record<string, string> = {
 };
 
 const PROVIDER_ORDER: Record<string, number> = { 'AWS': 0, 'Azure': 1, 'GCP': 2 };
-
-const EXAM_BADGE_MAP: Record<string, string> = {
-  'aws-aif-c01': '/badges/aws-aif-c01.png',
-  'aws-clf-c02': '/badges/aws-clf-c02.png',
-  'aws-dea-c01': '/badges/aws-dea-c01.png',
-  'aws-saa-c03': '/badges/aws-saa-c03.png',
-  'azure-az-900': '/badges/azure-az-900.png',
-};
 
 // certifications.ts의 description(한국어) / descriptionEn(영어) 데이터를 examId 기준으로 매핑
 const EXAM_DESC_MAP: Record<string, { ko: string; en: string }> = {
@@ -634,27 +627,13 @@ const ExamList = () => {
                     {/* ── 헤더 행: 뱃지 + 정보 + 우측 패널(데스크탑) ── */}
                     <div className="flex items-stretch gap-4 md:gap-5">
 
-                      {/* 뱃지 이미지 */}
-                      {EXAM_BADGE_MAP[exam.id] && (
-                        <>
-                          {/* 데스크탑: 고정 크기 */}
-                          <div className="hidden md:flex shrink-0 items-center">
-                            <img
-                              src={EXAM_BADGE_MAP[exam.id]}
-                              alt={`${exam.title} badge`}
-                              className={`h-20 w-20 object-contain rounded-lg${exam.id.startsWith('azure') ? ' p-1' : ''}`}
-                              onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-                            />
-                          </div>
-                          {/* 모바일: 고정 크기 */}
-                          <img
-                            src={EXAM_BADGE_MAP[exam.id]}
-                            alt={`${exam.title} badge`}
-                            className={`md:hidden w-20 h-20 shrink-0 object-contain rounded-lg${exam.id.startsWith('azure') ? ' p-1' : ''}`}
-                            onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-                          />
-                        </>
-                      )}
+                      {/* 뱃지 */}
+                      <div className="hidden md:flex shrink-0 items-center">
+                        <ExamBadge provider={exam.certification} code={exam.code} />
+                      </div>
+                      <div className="md:hidden shrink-0">
+                        <ExamBadge provider={exam.certification} code={exam.code} />
+                      </div>
 
                       {/* 제목 + 설명 */}
                       <div className="flex-1 min-w-0">
