@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
-  XCircle, Bookmark, Loader2, PenTool, ChevronDown, ChevronUp,
+  XCircle, Bookmark, Loader2, PenTool, ChevronDown, ChevronUp, Trash2,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
@@ -47,6 +47,13 @@ const ReviewPage = () => {
   const [loading, setLoading] = useState(true);
   const [creatingSession, setCreatingSession] = useState(false);
   const [expandedExams, setExpandedExams] = useState<Set<string>>(new Set());
+  const [clearedWrongKeys, setClearedWrongKeys] = useState<Set<string>>(() => {
+    try {
+      const stored = localStorage.getItem('cloudmaster_cleared_wrong_v1');
+      return stored ? new Set(JSON.parse(stored) as string[]) : new Set();
+    } catch { return new Set(); }
+  });
+  const [confirmClearKey, setConfirmClearKey] = useState<string | null>(null);
 
   const loadSessionsAndQuestions = async () => {
     setLoading(true);
@@ -239,15 +246,19 @@ const ReviewPage = () => {
   const bookmarksByExam: Record<string, Map<string, QuestionWithMeta>> = {};
 
   Object.entries(latestAnswerPerExam).forEach(([examKey, answerMap]) => {
-    answerMap.forEach(({ answer, question, sessionId, examId, timestamp }, qid) => {
-      // Wrong answers: latest answer is wrong AND not mastered in review
-      if (answer !== question.correctOptionId && !reviewedCorrectByExam[examKey]?.has(qid)) {
-        if (!wrongByExam[examKey]) wrongByExam[examKey] = new Map();
-        wrongByExam[examKey].set(qid, {
-          ...question, sessionId, examTitle: examKey, examId, userAnswer: answer, date: timestamp,
-        });
-      }
-    });
+    if (clearedWrongKeys.has(examKey)) {
+      // Skip cleared groups — bookmarks still shown below
+    } else {
+      answerMap.forEach(({ answer, question, sessionId, examId, timestamp }, qid) => {
+        // Wrong answers: latest answer is wrong AND not mastered in review
+        if (answer !== question.correctOptionId && !reviewedCorrectByExam[examKey]?.has(qid)) {
+          if (!wrongByExam[examKey]) wrongByExam[examKey] = new Map();
+          wrongByExam[examKey].set(qid, {
+            ...question, sessionId, examTitle: examKey, examId, userAnswer: answer, date: timestamp,
+          });
+        }
+      });
+    }
 
     // Bookmarks: based on latest bookmark status, for questions seen in this exam key
     answerMap.forEach(({ question, sessionId, examId, timestamp }) => {
@@ -328,6 +339,18 @@ const ReviewPage = () => {
     });
   };
 
+  const clearWrongGroup = (examKey: string) => {
+    setClearedWrongKeys(prev => {
+      const next = new Set(prev);
+      next.add(examKey);
+      try {
+        localStorage.setItem('cloudmaster_cleared_wrong_v1', JSON.stringify(Array.from(next)));
+      } catch { /* ignore */ }
+      return next;
+    });
+    setConfirmClearKey(null);
+  };
+
   if (loading) {
     return (
       <AppLayout>
@@ -349,24 +372,28 @@ const ReviewPage = () => {
         {/* Summary stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">{isKo ? '오답 문제' : 'Wrong Answers'}</p>
-                  <p className="text-2xl font-bold text-destructive">{totalWrong}</p>
+            <CardContent className="pt-4 pb-4">
+              <div className="flex items-center gap-4">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-destructive/10 shrink-0">
+                  <XCircle className="h-5 w-5 text-destructive" />
                 </div>
-                <XCircle className="h-8 w-8 text-destructive" />
+                <div>
+                  <p className="text-xs text-muted-foreground mb-0.5">{isKo ? '오답 문제' : 'Wrong Answers'}</p>
+                  <p className="text-2xl font-bold text-destructive leading-none">{totalWrong}</p>
+                </div>
               </div>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">{isKo ? '북마크' : 'Bookmarks'}</p>
-                  <p className="text-2xl font-bold text-accent">{totalBookmarks}</p>
+            <CardContent className="pt-4 pb-4">
+              <div className="flex items-center gap-4">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent/10 shrink-0">
+                  <Bookmark className="h-5 w-5 text-accent" />
                 </div>
-                <Bookmark className="h-8 w-8 text-accent" />
+                <div>
+                  <p className="text-xs text-muted-foreground mb-0.5">{isKo ? '북마크' : 'Bookmarks'}</p>
+                  <p className="text-2xl font-bold text-accent leading-none">{totalBookmarks}</p>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -416,63 +443,96 @@ const ReviewPage = () => {
                   {/* Set rows */}
                   {isExpanded && (
                     <div className="border-t divide-y">
-                      {examGroup.sets.map(setGroup => (
-                        <div
-                          key={setGroup.examKey}
-                          className="px-5 py-3 flex flex-col sm:flex-row sm:items-center gap-3"
-                        >
-                          {/* Set label + badges */}
-                          <div className="flex items-center gap-2 sm:w-48 shrink-0">
-                            <span className="text-sm font-medium text-foreground">{setGroup.setLabel}</span>
-                            <div className="flex gap-1">
+                      {examGroup.sets.map(setGroup => {
+                        const isConfirming = confirmClearKey === setGroup.examKey;
+                        return (
+                          <div
+                            key={setGroup.examKey}
+                            className="px-5 py-3.5 flex flex-col gap-2.5"
+                          >
+                            {/* Row 1: set label + counts + trash */}
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-sm font-semibold text-foreground">{setGroup.setLabel}</span>
+                              <div className="flex items-center gap-2">
+                                {setGroup.wrong.length > 0 && (
+                                  <span className="flex items-center gap-1 text-xs text-destructive font-medium">
+                                    <XCircle className="h-3.5 w-3.5" />
+                                    {setGroup.wrong.length}{isKo ? '개 오답' : ' wrong'}
+                                  </span>
+                                )}
+                                {setGroup.bookmarks.length > 0 && (
+                                  <span className="flex items-center gap-1 text-xs text-accent font-medium">
+                                    <Bookmark className="h-3.5 w-3.5" />
+                                    {setGroup.bookmarks.length}{isKo ? '개 북마크' : ' saved'}
+                                  </span>
+                                )}
+                                {/* Delete confirmation or trash button */}
+                                {setGroup.wrong.length > 0 && (
+                                  isConfirming ? (
+                                    <span className="flex items-center gap-1.5 ml-1">
+                                      <span className="text-xs text-muted-foreground">{t('review.clearConfirm')}</span>
+                                      <button
+                                        className="text-xs text-destructive font-medium hover:underline"
+                                        onClick={() => clearWrongGroup(setGroup.examKey)}
+                                      >
+                                        {t('review.clearWrong')}
+                                      </button>
+                                      <button
+                                        className="text-xs text-muted-foreground hover:underline"
+                                        onClick={() => setConfirmClearKey(null)}
+                                      >
+                                        {t('review.clearCancel')}
+                                      </button>
+                                    </span>
+                                  ) : (
+                                    <button
+                                      className="ml-1 p-1 rounded text-muted-foreground/50 hover:text-destructive hover:bg-destructive/10 transition-colors"
+                                      title={t('review.clearWrong')}
+                                      onClick={() => setConfirmClearKey(setGroup.examKey)}
+                                    >
+                                      <Trash2 className="h-3.5 w-3.5" />
+                                    </button>
+                                  )
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Row 2: action buttons */}
+                            <div className="flex flex-wrap gap-2">
                               {setGroup.wrong.length > 0 && (
-                                <Badge variant="outline" className="border-destructive/40 text-destructive text-xs px-1.5">
-                                  <XCircle className="h-2.5 w-2.5 mr-0.5" />{setGroup.wrong.length}
-                                </Badge>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-8 text-xs px-3 border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                  disabled={creatingSession}
+                                  onClick={() => startReviewSession(
+                                    setGroup.examId, setGroup.examKey, setGroup.wrong,
+                                    'practice', isKo ? '오답' : 'Wrong Answers'
+                                  )}
+                                >
+                                  <PenTool className="h-3.5 w-3.5 mr-1.5" />
+                                  {t('review.retryWrong')}
+                                </Button>
                               )}
                               {setGroup.bookmarks.length > 0 && (
-                                <Badge variant="outline" className="border-accent/40 text-accent text-xs px-1.5">
-                                  <Bookmark className="h-2.5 w-2.5 mr-0.5" />{setGroup.bookmarks.length}
-                                </Badge>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-8 text-xs px-3 border-accent/30 text-accent hover:bg-accent/10 hover:text-accent"
+                                  disabled={creatingSession}
+                                  onClick={() => startReviewSession(
+                                    setGroup.examId, setGroup.examKey, setGroup.bookmarks,
+                                    'practice', isKo ? '북마크' : 'Bookmarks'
+                                  )}
+                                >
+                                  <Bookmark className="h-3.5 w-3.5 mr-1.5" />
+                                  {t('review.retryBookmarks')}
+                                </Button>
                               )}
                             </div>
                           </div>
-
-                          {/* Action buttons */}
-                          <div className="flex flex-wrap gap-1.5">
-                            {setGroup.wrong.length > 0 && (
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="h-7 text-xs px-2.5"
-                                disabled={creatingSession}
-                                onClick={() => startReviewSession(
-                                  setGroup.examId, setGroup.examKey, setGroup.wrong,
-                                  'practice', isKo ? '오답' : 'Wrong Answers'
-                                )}
-                              >
-                                <PenTool className="h-3 w-3 mr-1" />
-                                {isKo ? '오답 테스트' : 'Wrong Test'}
-                              </Button>
-                            )}
-                            {setGroup.bookmarks.length > 0 && (
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="h-7 text-xs px-2.5"
-                                disabled={creatingSession}
-                                onClick={() => startReviewSession(
-                                  setGroup.examId, setGroup.examKey, setGroup.bookmarks,
-                                  'practice', isKo ? '북마크' : 'Bookmarks'
-                                )}
-                              >
-                                <PenTool className="h-3 w-3 mr-1" />
-                                {isKo ? '북마크 테스트' : 'Bookmarks Test'}
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </Card>

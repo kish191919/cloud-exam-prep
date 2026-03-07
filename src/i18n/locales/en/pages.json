@@ -404,7 +404,12 @@
     "wrongAnswers": "Wrong Answers",
     "bookmarked": "Bookmarked",
     "noWrong": "No wrong answers yet. Take an exam first!",
-    "noBookmarked": "No bookmarked questions yet. Bookmark questions during an exam!"
+    "noBookmarked": "No bookmarked questions yet. Bookmark questions during an exam!",
+    "retryWrong": "Retry",
+    "retryBookmarks": "Bookmarks",
+    "clearWrong": "Clear wrong answers",
+    "clearConfirm": "Clear?",
+    "clearCancel": "Cancel"
   },
   "notFound": {
     "title": "404",
