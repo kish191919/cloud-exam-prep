@@ -270,6 +270,7 @@ export interface ProfileResult {
   subscription_tier: 'free' | 'premium';
   subscription_expires_at: string | null;
   created_at: string;
+  last_sign_in_at: string | null;
 }
 
 export async function getAllProfiles(
@@ -280,7 +281,7 @@ export async function getAllProfiles(
 ): Promise<{ data: ProfileResult[]; count: number }> {
   let query = supabase
     .from('profiles')
-    .select('id, email, subscription_tier, subscription_expires_at, created_at', { count: 'exact' })
+    .select('id, email, subscription_tier, subscription_expires_at, created_at, last_sign_in_at', { count: 'exact' })
     .order('created_at', { ascending: false });
 
   if (filterTier) query = query.eq('subscription_tier', filterTier);

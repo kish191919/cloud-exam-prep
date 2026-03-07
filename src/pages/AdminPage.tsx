@@ -1195,9 +1195,10 @@ const SubscriptionManager = () => {
             <>
               <div className="rounded-lg border border-border overflow-hidden">
                 {/* Table header */}
-                <div className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-0 bg-muted/50 px-4 py-2.5 text-xs font-semibold text-muted-foreground border-b border-border">
+                <div className="grid grid-cols-[1fr_auto_auto_auto_auto_auto] gap-0 bg-muted/50 px-4 py-2.5 text-xs font-semibold text-muted-foreground border-b border-border">
                   <span>이메일</span>
                   <span className="text-center w-20">가입일</span>
+                  <span className="text-center w-24">마지막 접속</span>
                   <span className="text-center w-20">만료일</span>
                   <span className="text-center w-20">등급</span>
                   <span className="text-center w-28">액션</span>
@@ -1207,7 +1208,7 @@ const SubscriptionManager = () => {
                 {profiles.map((profile, idx) => (
                   <div
                     key={profile.id}
-                    className={`grid grid-cols-[1fr_auto_auto_auto_auto] gap-0 items-center px-4 py-3 text-sm transition-colors hover:bg-muted/30 ${
+                    className={`grid grid-cols-[1fr_auto_auto_auto_auto_auto] gap-0 items-center px-4 py-3 text-sm transition-colors hover:bg-muted/30 ${
                       idx !== profiles.length - 1 ? 'border-b border-border' : ''
                     }`}
                   >
@@ -1217,6 +1218,9 @@ const SubscriptionManager = () => {
                     </div>
                     <span className="text-xs text-muted-foreground w-20 text-center">
                       {formatDate(profile.created_at)}
+                    </span>
+                    <span className="text-xs text-muted-foreground w-24 text-center">
+                      {formatDate(profile.last_sign_in_at)}
                     </span>
                     <span className="text-xs text-muted-foreground w-20 text-center">
                       {formatDate(profile.subscription_expires_at)}

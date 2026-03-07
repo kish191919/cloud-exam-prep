@@ -220,6 +220,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         subscribeToUserChannels(session.user.id, session.user.email);
         if (event === 'SIGNED_IN') {
           setAuthModalOpen(false);
+          supabase.from('profiles').update({ last_sign_in_at: new Date().toISOString() }).eq('id', session.user.id);
         }
       } else {
         setSubscriptionTier('free');
