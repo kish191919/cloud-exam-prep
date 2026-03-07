@@ -1,0 +1,43 @@
+1. The operations team at a manufacturing firm needs help. To migrate 50 TB of on‑premises data to Azure with limited bandwidth, which solution is most suitable?
+
+
+2. The operations team at a manufacturing firm needs help. Which declarative language is used to define Azure resources and supports infrastructure as code?
+
+
+3. A security engineer at a hospital needs help. You need to collect metrics, logs, and telemetry from applications and resources in Azure. Which tool should you use?
+
+
+4. A startup founder needs help. What is a key benefit of serverless architectures compared to deploying VMs?
+
+
+5. The IT team at Fabrikam needs help. Which cloud service type offers the most control over the underlying operating system and hardware?
+
+
+6. A cloud administrator at Contoso needs help. To detect risky sign‑ins and enforce password resets based on user risk, which service should you use?
+
+
+7. A company wants to allow external partner organizations to access certain applications. Which capability should they use?
+
+
+8. An enterprise architect at a global organization needs help. Which Azure service should you choose to run containers without orchestrating infrastructure?
+
+
+9. A network architect at a bank needs help. In the shared responsibility model for Azure, what is Microsoft primarily responsible for?
+
+
+10. A developer at Tailspin Toys needs help. Which Azure compute service automatically scales identical instances in response to demand?
+
+
+11. An organization needs to deploy a custom application without worrying about managing servers or middleware. Which cloud model is most appropriate?
+
+
+12. A startup founder needs help. What distinguishes capital expenditure (CapEx) from operational expenditure (OpEx) when comparing on‑premises vs cloud?
+
+
+13. A developer at Tailspin Toys needs clarification. Which use case is most appropriate for SaaS rather than PaaS or IaaS?
+
+
+14. Which Azure service should you choose to run containers without orchestrating infrastructure?
+
+
+15. What does Azure Virtual Network (VNet) primarily provide?

@@ -1,0 +1,43 @@
+1. A cloud administrator at Contoso needs help. Which Azure security feature provides recommendations and alerts to help you protect workloads from threats?
+
+
+2. A cloud administrator at Contoso needs help. Which Azure service helps you discover, classify, and govern sensitive data across your environment?
+
+
+3. A cloud administrator at Contoso needs help. Which Azure service would you use to run CLI or PowerShell commands directly from your web browser without installing anything locally?
+
+
+4. A cloud administrator at Contoso needs help. Which Azure storage service is best suited for storing unstructured data such as images and videos?
+
+
+5. A cloud administrator at Contoso needs help. Which cloud model allows you to migrate existing VMs to Azure while still controlling the OS and software?
+
+
+6. A cloud administrator at Contoso needs help. Which directory service provides managed domain services (such as domain join, group policy, LDAP) without deploying domain controllers?
+
+
+7. A cloud administrator at Contoso needs help. Which service provides personalized alerts about Azure service issues and planned maintenance that might affect you?
+
+
+8. A cloud administrator at Contoso needs help. Which statement best describes a consumption‑based pricing model in Azure?
+
+
+9. A cloud administrator at Contoso needs help. Why should you apply tags to your Azure resources?
+
+
+10. A company migrating to Azure wants to ensure that all newly created resources include the tag "Environment" with a value of either "Production" or "Development". Which tool enforces this?
+
+
+11. A company wants to estimate cost savings from migrating their on‑premises environment to Azure. Which tool should they use to perform this assessment?
+
+
+12. A developer at Tailspin Toys needs clarification. Your company is migrating on‑premises servers to Azure. Which spending model does this shift typically result in?
+
+
+13. A developer at Tailspin Toys needs clarification. Your team wants to run event‑driven code without managing any servers and only pay when code runs. Which option is best?
+
+
+14. A developer at Tailspin Toys needs help. In the shared responsibility model for Azure, what is Microsoft primarily responsible for?
+
+
+15. A developer at Tailspin Toys needs help. What distinguishes capital expenditure (CapEx) from operational expenditure (OpEx) when comparing on‑premises vs cloud?

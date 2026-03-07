@@ -20,7 +20,7 @@
 안녕하세요! AWS 시험 문제 변환을 시작합니다.
 
 먼저 시험 ID를 입력해주세요.
-예시: aws-aif-c01, aws-clf-c02, aws-dea-c01, aws-saa-c03
+예시: aws-aif-c01, aws-clf-c02, aws-dea-c01, aws-saa-c03, azure-az-900
 
 exam_id:
 ```
