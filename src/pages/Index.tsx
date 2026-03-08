@@ -269,7 +269,7 @@ const Index = () => {
       </section>
 
       {/* 자격증 로드맵 CTA */}
-      <section className="py-10 md:py-12 px-4 bg-accent/5 border-y border-accent/10">
+      <section className="py-10 md:py-12 px-4 border-y border-primary/20" style={{ background: 'linear-gradient(135deg, hsl(222 70% 54% / 0.14) 0%, hsl(222 58% 48% / 0.09) 50%, hsl(222 70% 54% / 0.14) 100%)' }}>
         <div className="container mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold text-accent uppercase tracking-wider mb-2">
             {t('certifications.roadmapCta.eyebrow')}
@@ -294,7 +294,7 @@ const Index = () => {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-16 md:py-20 px-4 bg-muted/20">
+      <section id="features" className="py-16 md:py-20 px-4" style={{ background: 'hsl(210 40% 92%)' }}>
         <div className="container mx-auto max-w-5xl">
           <div className="text-center mb-10 md:mb-14">
             <h2 className="text-2xl md:text-4xl font-bold mb-3 break-keep">{t('index.featuresSection.title')}</h2>
@@ -320,7 +320,7 @@ const Index = () => {
       </section>
 
       {/* 30분 루틴 */}
-      <section id="routine" className="py-16 md:py-20 px-4 bg-gradient-to-br from-primary/5 via-card to-accent/5">
+      <section id="routine" className="py-16 md:py-20 px-4 bg-card">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-10 md:mb-14">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-semibold mb-5">
@@ -336,7 +336,7 @@ const Index = () => {
             {routineSteps.map((step, i) => {
               const IconComponent = iconMap[step.icon];
               return (
-                <a key={i} href="https://cloudmasterit.com/exams" className="block bg-background rounded-2xl p-5 md:p-6 border card-hover">
+                <a key={i} href="https://cloudmasterit.com/exams" className="block rounded-2xl p-5 md:p-6 border border-primary/15 card-hover shadow-sm" style={{ background: 'linear-gradient(135deg, hsl(210 40% 92%) 0%, hsl(210 40% 94%) 100%)' }}>
                   {/* 헤더: 아이콘 + 시간 배지 + 소요시간 — 한 줄 */}
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-9 h-9 md:w-10 md:h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
@@ -366,7 +366,7 @@ const Index = () => {
       </section>
 
       {/* How it works */}
-      <section className="py-16 md:py-20 px-4 bg-card">
+      <section className="py-16 md:py-20 px-4" style={{ background: 'linear-gradient(160deg, hsl(222 58% 48% / 0.10) 0%, hsl(210 55% 96%) 50%, hsl(222 70% 54% / 0.08) 100%)' }}>
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-2xl md:text-4xl font-bold text-center mb-10 md:mb-14 break-keep">{t('index.howItWorks.title')}</h2>
           <div className="grid sm:grid-cols-3 gap-8 md:gap-8">
@@ -427,7 +427,7 @@ const Index = () => {
       </section>}
 
       {/* FAQ */}
-      <section id="faq" className="py-16 md:py-20 px-4">
+      <section id="faq" className="py-16 md:py-20 px-4 bg-card border-t border-border">
         <div className="container mx-auto max-w-3xl">
           <h2 className="text-2xl md:text-4xl font-bold text-center mb-10 md:mb-14 break-keep">{t('index.faq.title')}</h2>
           <Accordion type="single" collapsible className="space-y-3">
