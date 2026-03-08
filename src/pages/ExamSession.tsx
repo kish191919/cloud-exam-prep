@@ -198,6 +198,19 @@ const ExamSession = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [session, mode, selectAnswer, navigateTo]);
 
+  // 복사 방지: Ctrl/Cmd + C/A/P/S 차단
+  useEffect(() => {
+    const handleCopyAttempt = (e: KeyboardEvent) => {
+      if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') return;
+      const isCtrl = e.ctrlKey || e.metaKey;
+      if (isCtrl && ['c', 'a', 'p', 's'].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener('keydown', handleCopyAttempt);
+    return () => document.removeEventListener('keydown', handleCopyAttempt);
+  }, []);
+
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center bg-background">
