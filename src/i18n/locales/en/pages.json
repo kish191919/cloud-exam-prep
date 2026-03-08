@@ -35,13 +35,13 @@
     "features": [
       {
         "icon": "Shield",
-        "title": "Realistic CBT Environment",
-        "desc": "Timer, auto-save, bookmarks, and question navigation — practice in conditions identical to the real exam."
+        "title": "3 Study Modes for Every Stage",
+        "desc": "Practice Mode to build habits, Study Mode to lock in concepts with instant explanations, Exam Mode to simulate the real test. Switch modes to match your goal."
       },
       {
         "icon": "BookOpen",
-        "title": "In-Depth Explanations",
-        "desc": "Every question includes a detailed explanation to help you truly understand the concept — not just memorize answers."
+        "title": "Explanations + Key Takeaways",
+        "desc": "Every question includes a detailed explanation and a curated key-takeaway summary for last-minute review — so you understand concepts, not just answers."
       },
       {
         "icon": "BarChart3",
@@ -55,8 +55,8 @@
       },
       {
         "icon": "Target",
-        "title": "Domain-Focused Study",
-        "desc": "No need to study everything. Target weak domains and use your limited time efficiently."
+        "title": "Certification Roadmap & Domains",
+        "desc": "Browse the AWS, GCP, and Azure certification roadmap to set your target. See domain weights and topic breakdowns before you even start studying."
       },
       {
         "icon": "Smartphone",
@@ -70,18 +70,18 @@
     "steps": [
       {
         "num": "01",
-        "title": "Solve Today's Questions",
-        "desc": "Work through 10–20 CBT questions under timed conditions. Just 15 minutes after work."
+        "title": "Choose Your Target Certification",
+        "desc": "Explore the AWS, GCP, and Azure certification roadmap to pick your goal. Review domain breakdowns and difficulty levels before you begin."
       },
       {
         "num": "02",
-        "title": "Review Wrong Answers",
-        "desc": "Read the detailed explanations for every mistake. Understanding why you were wrong is the key."
+        "title": "Study Across 3 Modes",
+        "desc": "Use Practice Mode to build fluency, Study Mode to master concepts, and Exam Mode to sharpen your test-day instincts. Cycle through all three to accelerate your progress."
       },
       {
         "num": "03",
-        "title": "Identify Weak Domains",
-        "desc": "Check your analytics report to find today's weak domain and plan your focus for tomorrow."
+        "title": "Target Weak Spots with Analytics",
+        "desc": "Your analytics report shows exactly where you're weak by domain. Drill wrong answers until weak spots become strengths — then go take the exam."
       }
     ],
     "routine": {
@@ -92,22 +92,22 @@
         {
           "time": "Start Studying",
           "duration": "15 min",
-          "title": "Solve Today's CBT Questions",
-          "desc": "Work through 10–20 questions in a timed CBT environment to keep your exam instincts sharp.",
+          "title": "Practice Mode: Solve CBT Questions",
+          "desc": "Open Practice Mode and work through 10–20 questions with the timer on. Realistic pressure keeps your exam instincts sharp.",
           "icon": "Target"
         },
         {
           "time": "+15 min",
           "duration": "10 min",
-          "title": "Review Wrong Answers",
-          "desc": "Read the detailed explanations for every mistake. Understanding why you were wrong is the key to not repeating it.",
+          "title": "Study Mode: Master Wrong Answers",
+          "desc": "Switch to Study Mode to read detailed explanations and key takeaways for every mistake. Understanding the \"why\" stops you from repeating it.",
           "icon": "BookOpen"
         },
         {
           "time": "+25 min",
           "duration": "5 min",
-          "title": "Check Your Weak Domains",
-          "desc": "Pull up your analytics report, note today's weak domain, and plan what to focus on tomorrow.",
+          "title": "Analytics: Lock In Tomorrow's Focus",
+          "desc": "Check your domain analytics report to see today's weak spots. As data accumulates, your study plan gets smarter and your gaps close faster.",
           "icon": "BarChart3"
         }
       ],

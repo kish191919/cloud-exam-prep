@@ -294,7 +294,7 @@ const Index = () => {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-16 md:py-20 px-4">
+      <section id="features" className="py-16 md:py-20 px-4 bg-muted/20">
         <div className="container mx-auto max-w-5xl">
           <div className="text-center mb-10 md:mb-14">
             <h2 className="text-2xl md:text-4xl font-bold mb-3 break-keep">{t('index.featuresSection.title')}</h2>
@@ -319,34 +319,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* 학습 대상 */}
-      <section className="py-16 md:py-20 px-4 section-alt">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-10 md:mb-14">
-            <h2 className="text-2xl md:text-4xl font-bold mb-3 break-keep">{t('index.audience.title')}</h2>
-            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto break-keep">
-              {t('index.audience.subtitle')}
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-3 gap-5 md:gap-8">
-            {audienceItems.map((item, i) => {
-              const IconComponent = iconMap[item.icon];
-              return (
-                <a key={i} href="https://cloudmasterit.com/exams" className="block bg-card rounded-2xl p-6 md:p-8 border card-hover text-center">
-                  <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
-                    {IconComponent && <IconComponent className="h-7 w-7 text-accent" />}
-                  </div>
-                  <h3 className="font-bold text-lg md:text-xl mb-3 break-keep">{item.title}</h3>
-                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed break-keep">{item.desc}</p>
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* 30분 루틴 */}
-      <section id="routine" className="py-16 md:py-20 px-4 bg-card">
+      <section id="routine" className="py-16 md:py-20 px-4 bg-gradient-to-br from-primary/5 via-card to-accent/5">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-10 md:mb-14">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-semibold mb-5">
@@ -392,7 +366,7 @@ const Index = () => {
       </section>
 
       {/* How it works */}
-      <section className="py-16 md:py-20 px-4">
+      <section className="py-16 md:py-20 px-4 bg-card">
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-2xl md:text-4xl font-bold text-center mb-10 md:mb-14 break-keep">{t('index.howItWorks.title')}</h2>
           <div className="grid sm:grid-cols-3 gap-8 md:gap-8">
@@ -453,7 +427,7 @@ const Index = () => {
       </section>}
 
       {/* FAQ */}
-      <section id="faq" className="py-16 md:py-20 px-4 bg-card">
+      <section id="faq" className="py-16 md:py-20 px-4">
         <div className="container mx-auto max-w-3xl">
           <h2 className="text-2xl md:text-4xl font-bold text-center mb-10 md:mb-14 break-keep">{t('index.faq.title')}</h2>
           <Accordion type="single" collapsible className="space-y-3">
