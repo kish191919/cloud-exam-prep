@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowRight, ChevronDown, BookOpen } from 'lucide-react';
+import { ArrowRight, ChevronDown, BookOpen, Cloud } from 'lucide-react';
 import {
   PROVIDERS,
   LEVEL_META,
@@ -106,7 +106,7 @@ function CertCard({ cert, providerColor, activeCareer, isKo }: CertCardProps) {
       {/* Name & Code */}
       <div>
         <h3 className="font-bold text-base leading-snug">{cert.name}</h3>
-        <p className="text-sm font-mono mt-0.5" style={{ color: providerColor }}>
+        <p className="text-sm font-mono mt-0.5 text-accent">
           {cert.code}
         </p>
       </div>
@@ -218,10 +218,7 @@ function ProviderRoadmap({ provider, activeCareer, isKo }: ProviderRoadmapProps)
     <div className="space-y-6">
       {/* Provider intro */}
       <div className="flex items-center gap-3 mb-8 p-4 bg-card rounded-xl border">
-        <div
-          className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-black text-sm flex-shrink-0"
-          style={{ backgroundColor: provider.color }}
-        >
+        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-accent text-accent-foreground font-black text-sm flex-shrink-0">
           {provider.id === 'AWS' ? 'AWS' : provider.id === 'GCP' ? 'GCP' : 'AZ'}
         </div>
         <div>
@@ -272,20 +269,26 @@ const CertificationsPage = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="hero-gradient text-primary-foreground pt-24 md:pt-32 pb-16 px-4">
-        <div className="container mx-auto max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/10 text-sm font-semibold mb-6">
-            <span>☁️</span>
-            <span>{t('certifications.hero.badge')}</span>
+      <section className="relative hero-gradient text-foreground pt-24 md:pt-32 pb-16 px-4 overflow-hidden">
+        {/* 배경 블러 장식 */}
+        <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
+          <div className="absolute top-20 left-0 w-64 h-64 bg-primary rounded-full blur-3xl -translate-x-1/2" />
+          <div className="absolute bottom-10 right-0 w-80 h-80 bg-accent rounded-full blur-3xl translate-x-1/3" />
+        </div>
+
+        <div className="container mx-auto max-w-3xl text-center relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-primary/30 text-sm mb-6 bg-primary/10 backdrop-blur-sm shadow-lg">
+            <Cloud className="h-4 w-4 text-accent animate-pulse" />
+            <span className="font-semibold whitespace-nowrap">{t('certifications.hero.badge')}</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight mb-5">
             {t('certifications.hero.title')}
             <br />
-            <span className="bg-gradient-to-r from-accent via-accent/80 to-accent bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent">
               {t('certifications.hero.titleAccent')}
             </span>
           </h1>
-          <p className="text-lg text-primary-foreground/80 max-w-xl mx-auto leading-relaxed" style={{ wordBreak: 'keep-all' }}>
+          <p className="text-lg text-foreground/70 max-w-xl mx-auto leading-relaxed" style={{ wordBreak: 'keep-all' }}>
             {t('certifications.hero.subtitle')}
           </p>
         </div>
