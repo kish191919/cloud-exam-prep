@@ -211,13 +211,13 @@ const Index = () => {
             {whyCloudItems.map((item, i) => {
               const IconComponent = iconMap[item.icon];
               return (
-                <div key={i} className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-primary-foreground/20 hover:bg-primary-foreground/15 transition-all duration-300 hover:scale-105">
-                  <div className="relative w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4">
+                <div key={i} className="bg-white/12 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/25 hover:bg-white/18 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                  <div className="relative w-12 h-12 rounded-xl bg-white/25 flex items-center justify-center mb-4">
                     <div
-                      className="absolute inset-0 rounded-xl bg-accent/30"
+                      className="absolute inset-0 rounded-xl bg-white/20"
                       style={{ animation: `ping-slow 2.5s ease-out infinite`, animationDelay: `${i * 0.6}s` }}
                     />
-                    {IconComponent && <IconComponent className="h-6 w-6 text-accent relative z-10" />}
+                    {IconComponent && <IconComponent className="h-6 w-6 text-white relative z-10" />}
                   </div>
                   <h3 className="font-bold text-lg md:text-xl mb-3 break-keep">{item.title}</h3>
                   <p className="text-sm md:text-base text-primary-foreground/70 leading-relaxed break-keep">{item.desc}</p>
