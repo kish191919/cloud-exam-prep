@@ -314,7 +314,7 @@ const ExamSession = () => {
                 onClick={() => i18n.changeLanguage(isKo ? 'en' : 'ko')}
                 className="text-xs sm:text-sm px-2 sm:px-2.5 h-8 text-muted-foreground hover:text-foreground"
               >
-                {isKo ? '🇺🇸 EN' : '🇰🇷 KO'}
+                {isKo ? '🇰🇷 KO' : '🇺🇸 EN'}
               </Button>
             </TooltipTrigger>
             <TooltipContent>
