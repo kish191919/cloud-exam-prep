@@ -1,14 +1,12 @@
-import { Sun, Moon, BookOpen, Leaf } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTranslation } from 'react-i18next';
 
 const THEME_META = {
-  light:  { Icon: BookOpen, nextLabel: { ko: '세피아로 전환',   en: 'Switch to Sepia'   }, nextShort: { ko: '세피아',   en: 'Sepia'   } },
-  sepia:  { Icon: Leaf,     nextLabel: { ko: '포레스트로 전환', en: 'Switch to Forest'  }, nextShort: { ko: '포레스트', en: 'Forest'  } },
-  forest: { Icon: Moon,     nextLabel: { ko: '다크로 전환',     en: 'Switch to Dark'    }, nextShort: { ko: '다크',     en: 'Dark'    } },
-  dark:   { Icon: Sun,      nextLabel: { ko: '라이트로 전환',   en: 'Switch to Light'   }, nextShort: { ko: '라이트',   en: 'Light'   } },
+  light: { Icon: Moon, nextLabel: { ko: '다크로 전환',   en: 'Switch to Dark'  }, nextShort: { ko: '다크',   en: 'Dark'  } },
+  dark:  { Icon: Sun,  nextLabel: { ko: '라이트로 전환', en: 'Switch to Light' }, nextShort: { ko: '라이트', en: 'Light' } },
 } as const;
 
 const ThemeToggle = () => {
@@ -16,7 +14,7 @@ const ThemeToggle = () => {
   const { i18n } = useTranslation();
   const lang = i18n.language === 'ko' ? 'ko' : 'en';
 
-  const meta = THEME_META[theme];
+  const meta = THEME_META[theme as 'light' | 'dark'] ?? THEME_META.light;
   const label = meta.nextLabel[lang];
   const shortLabel = meta.nextShort[lang];
 

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark' | 'sepia' | 'forest';
+type Theme = 'light' | 'dark';
 
 interface ThemeContextValue {
   theme: Theme;
@@ -15,7 +15,7 @@ const ThemeContext = createContext<ThemeContextValue>({
 });
 
 const ALL_THEME_CLASSES = ['dark', 'sepia', 'forest'] as const;
-const CYCLE: Theme[] = ['light', 'sepia', 'forest', 'dark'];
+const CYCLE: Theme[] = ['light', 'dark'];
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {

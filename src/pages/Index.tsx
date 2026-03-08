@@ -199,8 +199,7 @@ const Index = () => {
       </section>
 
       {/* 왜 클라우드 자격증인가 */}
-      <section className="relative hero-gradient text-primary-foreground py-16 md:py-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 hero-dots pointer-events-none opacity-50" />
+      <section className="relative bg-primary text-primary-foreground py-16 md:py-20 px-4 overflow-hidden">
         <div className="container mx-auto max-w-5xl relative z-10">
           <div className="text-center mb-10 md:mb-14">
             <h2 className="text-2xl md:text-4xl font-bold mb-3 break-keep">{t('index.whyCloud.title')}</h2>
@@ -469,8 +468,7 @@ const Index = () => {
       </section>
 
       {/* CTA */}
-      <section className="hero-gradient text-primary-foreground py-16 md:py-20 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 hero-dots pointer-events-none" />
+      <section className="bg-primary text-primary-foreground py-16 md:py-20 px-4 relative overflow-hidden">
         <div className="container mx-auto text-center max-w-2xl relative z-10">
           <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4 break-keep">{t('index.cta.title')}</h2>
           <p className="text-primary-foreground/70 mb-7 md:mb-8 text-base md:text-lg break-keep">
