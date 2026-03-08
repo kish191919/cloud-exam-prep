@@ -92,7 +92,7 @@ const Index = () => {
 
       {/* Beta Announcement Bar */}
       <div
-        className="w-full bg-gradient-to-r from-accent/12 via-accent/8 to-accent/12 border-b border-accent/20"
+        className="w-full bg-gradient-to-r from-accent/25 via-accent/20 to-accent/25 border-y-2 border-accent/40"
         style={{ paddingTop: 'calc(3.5rem + env(safe-area-inset-top))' }}
       >
         <div className="flex flex-col items-center gap-1.5 px-4 py-3 sm:py-4 text-center">
