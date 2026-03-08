@@ -26,7 +26,7 @@ export function FontFamilyProvider({ children }: { children: React.ReactNode }) 
   });
 
   useEffect(() => {
-    document.documentElement.style.fontFamily = FONT_FAMILY_MAP[fontFamily];
+    document.body.style.fontFamily = FONT_FAMILY_MAP[fontFamily];
     localStorage.setItem('cloudmaster_fontFamily', fontFamily);
   }, [fontFamily]);
 
