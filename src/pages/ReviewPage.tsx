@@ -446,21 +446,23 @@ const ReviewPage = () => {
                           key={setGroup.examKey}
                           className="px-5 py-4 flex items-center justify-between gap-3"
                         >
-                          {/* Left: set label + counts */}
-                          <div className="flex items-center gap-2.5 min-w-0">
+                          {/* Left: set label (row 1) + count badges (row 2) */}
+                          <div className="flex flex-col gap-1.5 min-w-0">
                             <span className="text-sm font-semibold text-foreground truncate">{setGroup.setLabel}</span>
-                            {setGroup.wrong.length > 0 && (
-                              <span className="flex items-center gap-1 text-xs text-destructive font-medium shrink-0">
-                                <XCircle className="h-3.5 w-3.5" />
-                                {setGroup.wrong.length}{isKo ? '개 오답' : ' wrong'}
-                              </span>
-                            )}
-                            {setGroup.bookmarks.length > 0 && (
-                              <span className="flex items-center gap-1 text-xs text-accent font-medium shrink-0">
-                                <Bookmark className="h-3.5 w-3.5" />
-                                {setGroup.bookmarks.length}{isKo ? '개 북마크' : ' saved'}
-                              </span>
-                            )}
+                            <div className="flex items-center gap-1.5">
+                              {setGroup.wrong.length > 0 && (
+                                <span className="inline-flex items-center gap-1 text-xs font-medium text-destructive bg-destructive/10 px-2 py-0.5 rounded-full shrink-0">
+                                  <XCircle className="h-3 w-3" />
+                                  {setGroup.wrong.length}{isKo ? '개 오답' : ' wrong'}
+                                </span>
+                              )}
+                              {setGroup.bookmarks.length > 0 && (
+                                <span className="inline-flex items-center gap-1 text-xs font-medium text-accent bg-accent/10 px-2 py-0.5 rounded-full shrink-0">
+                                  <Bookmark className="h-3 w-3" />
+                                  {setGroup.bookmarks.length}{isKo ? '개 북마크' : ' saved'}
+                                </span>
+                              )}
+                            </div>
                           </div>
 
                           {/* Right: action buttons + trash */}

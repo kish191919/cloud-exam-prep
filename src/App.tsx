@@ -11,6 +11,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { FontSizeProvider } from "./contexts/FontSizeContext";
+import { FontFamilyProvider } from "./contexts/FontFamilyContext";
 import AuthModal from "./components/AuthModal";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 
@@ -81,6 +82,7 @@ const AppContent = () => {
   return (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
+      <FontFamilyProvider>
       <ThemeProvider>
       <FontSizeProvider>
       <TooltipProvider>
@@ -120,6 +122,7 @@ const AppContent = () => {
       </TooltipProvider>
       </FontSizeProvider>
       </ThemeProvider>
+      </FontFamilyProvider>
     </QueryClientProvider>
   </ErrorBoundary>
   );

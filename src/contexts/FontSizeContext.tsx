@@ -4,11 +4,13 @@ type FontSize = 'sm' | 'md' | 'lg';
 
 interface FontSizeContextValue {
   fontSize: FontSize;
+  setFontSize: (size: FontSize) => void;
   cycleFontSize: () => void;
 }
 
 const FontSizeContext = createContext<FontSizeContextValue>({
   fontSize: 'md',
+  setFontSize: () => {},
   cycleFontSize: () => {},
 });
 
@@ -40,7 +42,7 @@ export function FontSizeProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <FontSizeContext.Provider value={{ fontSize, cycleFontSize }}>
+    <FontSizeContext.Provider value={{ fontSize, setFontSize, cycleFontSize }}>
       {children}
     </FontSizeContext.Provider>
   );
