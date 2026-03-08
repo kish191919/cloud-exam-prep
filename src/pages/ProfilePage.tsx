@@ -10,7 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { getAllSessions } from '@/hooks/useExamSession';
 import type { ExamSession } from '@/types/exam';
-import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Star, Sun, Moon, Globe, Leaf, Flag, MessageSquare, ChevronDown, Pencil, X, Check } from 'lucide-react';
+import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Star, Sun, Moon, Globe, Leaf, Flag, MessageSquare, ChevronDown, Pencil, X, Check, Award, ArrowRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useFontSize } from '@/contexts/FontSizeContext';
@@ -132,11 +132,56 @@ export default function ProfilePage() {
     submitted.length > 0
       ? Math.round(submitted.reduce((sum, s) => sum + (s.score || 0), 0) / submitted.length)
       : 0;
+  const bestScore =
+    submitted.length > 0
+      ? Math.max(...submitted.map((s) => s.score || 0))
+      : 0;
 
-  const stats = [
-    { icon: BookOpen, label: t('profile.stats.examsTaken'), value: `${submitted.length}${t('profile.stats.examsTakenUnit')}` },
-    { icon: Target, label: t('profile.stats.averageScore'), value: submitted.length > 0 ? `${avgScore}%` : '-' },
-    { icon: TrendingUp, label: t('profile.stats.inProgress'), value: `${inProgress.length}${t('profile.stats.inProgressUnit')}` },
+  const avgScoreColor =
+    avgScore >= 70 ? 'text-emerald-500' : avgScore >= 50 ? 'text-yellow-500' : 'text-red-500';
+  const bestScoreColor =
+    bestScore >= 70 ? 'text-emerald-500' : bestScore >= 50 ? 'text-yellow-500' : 'text-red-500';
+
+  const statsData = [
+    {
+      icon: BookOpen,
+      label: t('profile.stats.examsTaken'),
+      value: `${submitted.length}${t('profile.stats.examsTakenUnit')}`,
+      valueColor: 'text-accent',
+      bgColor: 'bg-accent/10',
+      iconColor: 'text-accent',
+    },
+    {
+      icon: Target,
+      label: t('profile.stats.averageScore'),
+      value: submitted.length > 0 ? `${avgScore}%` : '-',
+      valueColor: submitted.length > 0 ? avgScoreColor : 'text-muted-foreground',
+      bgColor: submitted.length > 0
+        ? avgScore >= 70 ? 'bg-emerald-500/10' : avgScore >= 50 ? 'bg-yellow-500/10' : 'bg-red-500/10'
+        : 'bg-muted/30',
+      iconColor: submitted.length > 0 ? avgScoreColor : 'text-muted-foreground',
+      isScore: true,
+      scoreValue: avgScore,
+      hasData: submitted.length > 0,
+    },
+    {
+      icon: Award,
+      label: t('profile.stats.bestScore'),
+      value: submitted.length > 0 ? `${bestScore}%` : '-',
+      valueColor: submitted.length > 0 ? bestScoreColor : 'text-muted-foreground',
+      bgColor: submitted.length > 0
+        ? bestScore >= 70 ? 'bg-emerald-500/10' : bestScore >= 50 ? 'bg-yellow-500/10' : 'bg-red-500/10'
+        : 'bg-muted/30',
+      iconColor: submitted.length > 0 ? bestScoreColor : 'text-muted-foreground',
+    },
+    {
+      icon: TrendingUp,
+      label: t('profile.stats.inProgress'),
+      value: `${inProgress.length}${t('profile.stats.inProgressUnit')}`,
+      valueColor: 'text-blue-500',
+      bgColor: 'bg-blue-500/10',
+      iconColor: 'text-blue-500',
+    },
   ];
 
   return (
@@ -258,29 +303,70 @@ export default function ProfilePage() {
             </CardHeader>
             <CardContent>
               {loading ? (
-                <p className="text-sm text-muted-foreground">{t('profile.stats.loading')}</p>
-              ) : (
-                <div className="grid grid-cols-3 gap-4">
-                  {stats.map((s, i) => (
-                    <div key={i} className="flex flex-col items-center gap-1 text-center">
-                      <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-                        <s.icon className="h-5 w-5 text-accent" />
-                      </div>
-                      <p className="text-xl font-bold">{s.value}</p>
-                      <p className="text-xs text-muted-foreground">{s.label}</p>
-                    </div>
+                <div className="grid grid-cols-2 gap-3">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="rounded-xl border bg-muted/20 p-4 h-20 animate-pulse" />
                   ))}
                 </div>
-              )}
-
-              {!loading && submitted.length > 0 && (
-                <div className="mt-4">
-                  <Link to="/review">
-                    <Button variant="outline" size="sm">
-                      {t('profile.stats.reviewBtn')}
+              ) : submitted.length === 0 && inProgress.length === 0 ? (
+                <div className="flex flex-col items-center gap-3 py-6 text-center">
+                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
+                    <BookOpen className="h-6 w-6 text-accent/50" />
+                  </div>
+                  <p className="text-sm text-muted-foreground">{t('profile.stats.noExams')}</p>
+                  <Link to="/exams">
+                    <Button size="sm" className="gap-1.5">
+                      {t('profile.stats.startPractice')}
+                      <ArrowRight className="h-3.5 w-3.5" />
                     </Button>
                   </Link>
                 </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 gap-3">
+                    {statsData.map((s, i) => (
+                      <div key={i} className="rounded-xl border bg-card p-4 flex items-start gap-3">
+                        {s.isScore && s.hasData ? (
+                          <div className="relative shrink-0 w-10 h-10">
+                            {(() => {
+                              const r = 16;
+                              const circ = 2 * Math.PI * r;
+                              const offset = circ - (s.scoreValue! / 100) * circ;
+                              return (
+                                <svg width="40" height="40" className="rotate-[-90deg]">
+                                  <circle cx="20" cy="20" r={r} stroke="currentColor" strokeWidth="3.5" fill="none" className="text-muted/20" />
+                                  <circle cx="20" cy="20" r={r} stroke="currentColor" strokeWidth="3.5" fill="none"
+                                    strokeDasharray={circ} strokeDashoffset={offset}
+                                    strokeLinecap="round" className={s.iconColor} />
+                                </svg>
+                              );
+                            })()}
+                            <s.icon className={`absolute inset-0 m-auto h-3.5 w-3.5 ${s.iconColor}`} />
+                          </div>
+                        ) : (
+                          <div className={`shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${s.bgColor}`}>
+                            <s.icon className={`h-5 w-5 ${s.iconColor}`} />
+                          </div>
+                        )}
+                        <div className="min-w-0">
+                          <p className={`text-2xl font-black leading-none ${s.valueColor}`}>{s.value}</p>
+                          <p className="text-xs text-muted-foreground mt-1 leading-tight">{s.label}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {submitted.length > 0 && (
+                    <div className="mt-3">
+                      <Link to="/review">
+                        <Button size="sm" className="w-full gap-1.5">
+                          {t('profile.stats.reviewBtn')}
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
+                </>
               )}
             </CardContent>
           </Card>

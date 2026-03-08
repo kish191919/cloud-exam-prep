@@ -485,9 +485,12 @@
       "examsTaken": "Exams Taken",
       "examsTakenUnit": "",
       "averageScore": "Average Score",
+      "bestScore": "Best Score",
       "inProgress": "In Progress",
       "inProgressUnit": "",
-      "reviewBtn": "Review Wrong Answers"
+      "reviewBtn": "Review Wrong Answers",
+      "noExams": "No exams completed yet. Start your first practice!",
+      "startPractice": "Start Practice"
     },
     "settings": {
       "title": "Preferences",
