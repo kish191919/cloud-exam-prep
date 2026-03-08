@@ -181,15 +181,15 @@ const Index = () => {
 
           {/* Stats Section — always 3 columns */}
           <div className="grid grid-cols-3 gap-3 sm:gap-6 md:gap-8 max-w-4xl mx-auto">
-            <div className="bg-white/70 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div className="bg-card/70 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
               <div className="text-2xl sm:text-4xl md:text-6xl font-black text-accent mb-1 sm:mb-2 tracking-tight">{t('index.hero.stats.questions.value')}</div>
               <div className="text-xs sm:text-sm md:text-base text-foreground/60 font-semibold uppercase tracking-wide leading-tight break-keep">{t('index.hero.stats.questions.label')}</div>
             </div>
-            <div className="bg-white/70 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div className="bg-card/70 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
               <div className="text-2xl sm:text-4xl md:text-6xl font-black text-accent mb-1 sm:mb-2 tracking-tight">{t('index.hero.stats.passRate.value')}</div>
               <div className="text-xs sm:text-sm md:text-base text-foreground/60 font-semibold uppercase tracking-wide leading-tight break-keep">{t('index.hero.stats.passRate.label')}</div>
             </div>
-            <div className="bg-white/70 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div className="bg-card/70 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
               <div className="text-2xl sm:text-4xl md:text-6xl font-black text-accent mb-1 sm:mb-2 tracking-tight">{t('index.hero.stats.providers.value')}</div>
               <div className="text-xs sm:text-sm md:text-base text-foreground/60 font-semibold uppercase tracking-wide leading-tight break-keep">{t('index.hero.stats.providers.label')}</div>
             </div>
