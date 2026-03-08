@@ -3,7 +3,7 @@
     "betaBanner": {
       "badge": "Beta Open Period",
       "messagePrefix": "All ",
-      "messageHighlight": "AWS · GCP · Azure questions",
+      "messageHighlight": "AWS · GCP · AZURE questions",
       "messageSuffix": " are completely free right now."
     },
     "hero": {
