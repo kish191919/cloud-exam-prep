@@ -16,7 +16,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { submitReport, hasReported, REASON_LABELS, type ReportReason } from '@/services/reportService';
+import { submitReport, hasReported, REASON_LABELS, REASON_LABELS_EN, type ReportReason } from '@/services/reportService';
 
 interface QuestionDisplayProps {
   question: Question;
@@ -206,17 +206,17 @@ const QuestionDisplay = ({
               className={`px-2 sm:px-3 ${isBookmarked ? 'text-accent' : 'text-muted-foreground'}`}
             >
               {isBookmarked ? <BookmarkCheck className="h-4 w-4 sm:mr-1" /> : <Bookmark className="h-4 w-4 sm:mr-1" />}
-              <span className="hidden sm:inline">{isBookmarked ? '북마크' : '북마크'}</span>
+              <span className="hidden sm:inline">{isEn ? (isBookmarked ? 'Saved' : 'Bookmark') : '북마크'}</span>
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={handleReportClick}
-              title={alreadyReported ? '신고한 문제' : '문제 신고'}
+              title={isEn ? (alreadyReported ? 'Reported' : 'Report') : (alreadyReported ? '신고한 문제' : '문제 신고')}
               className={`px-2 sm:px-3 ${alreadyReported ? 'text-orange-500' : 'text-muted-foreground'}`}
             >
               <Megaphone className="h-4 w-4 sm:mr-1" />
-              <span className="hidden sm:inline">문제 신고</span>
+              <span className="hidden sm:inline">{isEn ? 'Report' : '문제 신고'}</span>
             </Button>
           </div>
         </div>
@@ -342,7 +342,7 @@ const QuestionDisplay = ({
             <div className="rounded-xl border border-border bg-muted/30 p-4">
               <div className="flex items-center gap-2 mb-2">
                 <ExternalLink className="h-4 w-4 text-blue-500 shrink-0" />
-                <span className="text-sm font-semibold">참고자료</span>
+                <span className="text-sm font-semibold">{isEn ? 'References' : '참고자료'}</span>
               </div>
               <ul className="space-y-1.5">
                 {question.refLinks.map((link, idx) => (
@@ -372,12 +372,12 @@ const QuestionDisplay = ({
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Megaphone className="h-4 w-4 text-orange-500" />
-              문제 신고
+              {isEn ? 'Report Issue' : '문제 신고'}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
-            <p className="text-sm text-muted-foreground">어떤 문제가 있나요?</p>
+            <p className="text-sm text-muted-foreground">{isEn ? 'What is the issue?' : '어떤 문제가 있나요?'}</p>
             <div className="space-y-2">
               {(Object.keys(REASON_LABELS) as ReportReason[]).map(reason => (
                 <label
@@ -396,15 +396,15 @@ const QuestionDisplay = ({
                     onChange={() => setReportReason(reason)}
                     className="accent-accent"
                   />
-                  <span className="text-sm">{REASON_LABELS[reason]}</span>
+                  <span className="text-sm">{isEn ? REASON_LABELS_EN[reason] : REASON_LABELS[reason]}</span>
                 </label>
               ))}
             </div>
 
             <div>
-              <p className="text-sm font-medium mb-1.5">상세 설명 (선택)</p>
+              <p className="text-sm font-medium mb-1.5">{isEn ? 'Details (optional)' : '상세 설명 (선택)'}</p>
               <Textarea
-                placeholder="구체적인 내용을 입력해주세요..."
+                placeholder={isEn ? 'Please describe the issue...' : '구체적인 내용을 입력해주세요...'}
                 value={reportComment}
                 onChange={e => setReportComment(e.target.value)}
                 rows={3}
@@ -415,7 +415,7 @@ const QuestionDisplay = ({
 
           <DialogFooter className="gap-2">
             <Button variant="outline" size="sm" onClick={() => setReportOpen(false)}>
-              취소
+              {isEn ? 'Cancel' : '취소'}
             </Button>
             <Button
               size="sm"
@@ -423,7 +423,7 @@ const QuestionDisplay = ({
               disabled={reportSubmitting}
               className="bg-accent text-accent-foreground hover:bg-accent/90"
             >
-              {reportSubmitting ? '제출 중...' : '신고 제출'}
+              {isEn ? (reportSubmitting ? 'Submitting...' : 'Submit Report') : (reportSubmitting ? '제출 중...' : '신고 제출')}
             </Button>
           </DialogFooter>
         </DialogContent>

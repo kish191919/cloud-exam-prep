@@ -465,6 +465,61 @@
       }
     }
   },
+  "profile": {
+    "providerLogin": "Signed in with {{provider}}",
+    "providers": { "google": "Google", "kakao": "Kakao", "naver": "Naver", "email": "Email" },
+    "defaultUser": "User",
+    "saveName": "Save",
+    "cancelName": "Cancel",
+    "editName": "Edit name",
+    "subscription": {
+      "title": "Subscription",
+      "premium": "Premium",
+      "free": "Free",
+      "expiresOn": "Expires {{date}}",
+      "freeEvent": "Free access active until {{date}}",
+      "upgradeDesc": "Upgrade to Premium to access all exam questions without limits.",
+      "upgradeBtn": "Coming Soon"
+    },
+    "stats": {
+      "title": "Study Stats",
+      "loading": "Loading...",
+      "examsTaken": "Exams Taken",
+      "examsTakenUnit": "",
+      "averageScore": "Average Score",
+      "inProgress": "In Progress",
+      "inProgressUnit": "",
+      "reviewBtn": "Review Wrong Answers"
+    },
+    "settings": {
+      "title": "Preferences",
+      "themeLabel": "Theme",
+      "themes": { "light": "Light", "sepia": "Sepia", "forest": "Forest", "dark": "Dark" },
+      "languageLabel": "Language"
+    },
+    "account": {
+      "title": "Account Info",
+      "joinedAt": "Joined",
+      "lastLogin": "Last Sign-in",
+      "loginMethod": "Sign-in Method"
+    },
+    "quickNav": {
+      "title": "Quick Links",
+      "practice": "Practice Exams",
+      "roadmap": "Certification Roadmap",
+      "review": "Review Wrong Answers"
+    },
+    "contacts": {
+      "title": "My Inquiries",
+      "messageLabel": "Message",
+      "adminReply": "Admin Reply",
+      "noReply": "No reply yet."
+    },
+    "reports": {
+      "title": "My Reports",
+      "adminNote": "Admin Note"
+    }
+  },
   "certifications": {
     "hero": {
       "badge": "Cloud Certification Roadmap",

@@ -143,6 +143,13 @@ export const REASON_LABELS: Record<ReportReason, string> = {
   other: '기타',
 };
 
+export const REASON_LABELS_EN: Record<ReportReason, string> = {
+  wrong_answer: 'Wrong answer',
+  unclear: 'Unclear question',
+  typo: 'Typo / formatting error',
+  other: 'Other',
+};
+
 export const STATUS_LABELS: Record<ReportStatus, string> = {
   pending: '검토 대기',
   reviewing: '검토 중',

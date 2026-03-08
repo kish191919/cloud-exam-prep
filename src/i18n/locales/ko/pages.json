@@ -465,6 +465,61 @@
       }
     }
   },
+  "profile": {
+    "providerLogin": "{{provider}} 로그인",
+    "providers": { "google": "Google", "kakao": "카카오", "naver": "네이버", "email": "이메일" },
+    "defaultUser": "사용자",
+    "saveName": "저장",
+    "cancelName": "취소",
+    "editName": "이름 변경",
+    "subscription": {
+      "title": "구독 상태",
+      "premium": "프리미엄",
+      "free": "무료",
+      "expiresOn": "만료일: {{date}}",
+      "freeEvent": "무료 이벤트 기간 중 ({{date}}까지 전체 이용 가능)",
+      "upgradeDesc": "프리미엄으로 업그레이드하면 모든 시험 문제를 제한 없이 이용할 수 있습니다.",
+      "upgradeBtn": "준비 중"
+    },
+    "stats": {
+      "title": "학습 통계",
+      "loading": "불러오는 중...",
+      "examsTaken": "완료한 시험",
+      "examsTakenUnit": "회",
+      "averageScore": "평균 점수",
+      "inProgress": "진행 중",
+      "inProgressUnit": "개",
+      "reviewBtn": "오답 복습 보기"
+    },
+    "settings": {
+      "title": "환경 설정",
+      "themeLabel": "화면 모드",
+      "themes": { "light": "라이트", "sepia": "세피아", "forest": "포레스트", "dark": "다크" },
+      "languageLabel": "언어"
+    },
+    "account": {
+      "title": "계정 정보",
+      "joinedAt": "가입일",
+      "lastLogin": "마지막 로그인",
+      "loginMethod": "로그인 방법"
+    },
+    "quickNav": {
+      "title": "빠른 이동",
+      "practice": "연습 문제 풀기",
+      "roadmap": "자격증 로드맵",
+      "review": "오답 복습"
+    },
+    "contacts": {
+      "title": "내 문의내역",
+      "messageLabel": "문의 내용",
+      "adminReply": "관리자 답변",
+      "noReply": "아직 답변이 등록되지 않았습니다."
+    },
+    "reports": {
+      "title": "내 신고 내역",
+      "adminNote": "관리자 답변"
+    }
+  },
   "certifications": {
     "hero": {
       "badge": "클라우드 자격증 로드맵",

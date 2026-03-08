@@ -18,26 +18,23 @@ import { getMyReports, getQuestionSetInfo, REASON_LABELS, STATUS_LABELS, type Qu
 import { getMyContacts } from '@/services/contactService';
 import { CATEGORY_LABELS as CONTACT_CATEGORY_LABELS, STATUS_LABELS as CONTACT_STATUS_LABELS, type ContactMessage, type ContactStatus } from '@/types/contact';
 
-const PROVIDER_LABEL: Record<string, string> = {
-  google: 'Google',
-  kakao: '카카오',
-  naver: '네이버',
-  email: '이메일',
-};
-
-function formatDate(dateStr: string | null | undefined): string {
-  if (!dateStr) return '-';
-  return new Date(dateStr).toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+function makeDateFormatter(lang: string) {
+  const locale = lang === 'ko' ? 'ko-KR' : 'en-US';
+  return (dateStr: string | null | undefined): string => {
+    if (!dateStr) return '-';
+    return new Date(dateStr).toLocaleDateString(locale, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
 }
 
 export default function ProfilePage() {
   const { user, subscriptionTier, isPremium, hasFullAccess, openAuthModal } = useAuth();
   const { theme, setTheme } = useTheme();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation('pages');
+  const formatDate = makeDateFormatter(i18n.language);
 
   const [profile, setProfile] = useState<{
     subscription_expires_at: string | null;
@@ -97,10 +94,10 @@ export default function ProfilePage() {
     return <Navigate to="/" replace />;
   }
 
-  const userName = user.user_metadata?.full_name || user.email?.split('@')[0] || '사용자';
+  const userName = user.user_metadata?.full_name || user.email?.split('@')[0] || t('profile.defaultUser');
   const userInitial = userName[0]?.toUpperCase() || 'U';
   const provider = (user.identities?.[0]?.provider ?? 'email') as string;
-  const providerLabel = PROVIDER_LABEL[provider] ?? '이메일';
+  const providerLabel = t(`profile.providers.${provider}`, t('profile.providers.email'));
 
   const handleEditName = () => {
     setNameInput(userName);
@@ -133,9 +130,9 @@ export default function ProfilePage() {
       : 0;
 
   const stats = [
-    { icon: BookOpen, label: '완료한 시험', value: `${submitted.length}회` },
-    { icon: Target, label: '평균 점수', value: submitted.length > 0 ? `${avgScore}%` : '-' },
-    { icon: TrendingUp, label: '진행 중', value: `${inProgress.length}개` },
+    { icon: BookOpen, label: t('profile.stats.examsTaken'), value: `${submitted.length}${t('profile.stats.examsTakenUnit')}` },
+    { icon: Target, label: t('profile.stats.averageScore'), value: submitted.length > 0 ? `${avgScore}%` : '-' },
+    { icon: TrendingUp, label: t('profile.stats.inProgress'), value: `${inProgress.length}${t('profile.stats.inProgressUnit')}` },
   ];
 
   return (
@@ -168,7 +165,7 @@ export default function ProfilePage() {
                   onClick={handleSaveName}
                   disabled={nameSaving}
                   className="text-accent hover:text-accent/80 disabled:opacity-50"
-                  title="저장"
+                  title={t('profile.saveName')}
                 >
                   <Check className="h-4 w-4" />
                 </button>
@@ -176,7 +173,7 @@ export default function ProfilePage() {
                   onClick={handleCancelName}
                   disabled={nameSaving}
                   className="text-muted-foreground hover:text-foreground"
-                  title="취소"
+                  title={t('profile.cancelName')}
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -187,14 +184,14 @@ export default function ProfilePage() {
                 <button
                   onClick={handleEditName}
                   className="text-muted-foreground hover:text-foreground transition-colors"
-                  title="이름 변경"
+                  title={t('profile.editName')}
                 >
                   <Pencil className="h-4 w-4" />
                 </button>
               </div>
             )}
             <Badge variant="outline" className="mt-1 text-xs">
-              {providerLabel} 로그인
+              {t('profile.providerLogin', { provider: providerLabel })}
             </Badge>
           </div>
         </div>
@@ -205,7 +202,7 @@ export default function ProfilePage() {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Crown className="h-4 w-4 text-amber-500" />
-                구독 상태
+                {t('profile.subscription.title')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -217,18 +214,18 @@ export default function ProfilePage() {
                       : 'bg-muted text-muted-foreground hover:bg-muted'
                   }
                 >
-                  {isPremium ? '프리미엄' : '무료'}
+                  {isPremium ? t('profile.subscription.premium') : t('profile.subscription.free')}
                 </Badge>
 
                 {isPremium && profile?.subscription_expires_at && (
                   <span className="text-sm text-muted-foreground">
-                    만료일: {formatDate(profile.subscription_expires_at)}
+                    {t('profile.subscription.expiresOn', { date: formatDate(profile.subscription_expires_at) })}
                   </span>
                 )}
 
                 {!isPremium && hasFullAccess && freeEventExpiry && (
                   <span className="text-sm text-emerald-600 dark:text-emerald-400">
-                    무료 이벤트 기간 중 ({formatDate(freeEventExpiry)}까지 전체 이용 가능)
+                    {t('profile.subscription.freeEvent', { date: formatDate(freeEventExpiry) })}
                   </span>
                 )}
               </div>
@@ -237,10 +234,10 @@ export default function ProfilePage() {
                 <div className="mt-4 flex items-center gap-3 rounded-lg border border-dashed border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 px-4 py-3">
                   <Star className="h-4 w-4 text-amber-500 shrink-0" />
                   <p className="text-sm text-muted-foreground flex-1">
-                    프리미엄으로 업그레이드하면 모든 시험 문제를 제한 없이 이용할 수 있습니다.
+                    {t('profile.subscription.upgradeDesc')}
                   </p>
                   <Button size="sm" disabled className="shrink-0">
-                    준비 중
+                    {t('profile.subscription.upgradeBtn')}
                   </Button>
                 </div>
               )}
@@ -252,12 +249,12 @@ export default function ProfilePage() {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
                 <BookOpen className="h-4 w-4 text-accent" />
-                학습 통계
+                {t('profile.stats.title')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
-                <p className="text-sm text-muted-foreground">불러오는 중...</p>
+                <p className="text-sm text-muted-foreground">{t('profile.stats.loading')}</p>
               ) : (
                 <div className="grid grid-cols-3 gap-4">
                   {stats.map((s, i) => (
@@ -276,7 +273,7 @@ export default function ProfilePage() {
                 <div className="mt-4">
                   <Link to="/review">
                     <Button variant="outline" size="sm">
-                      오답 복습 보기
+                      {t('profile.stats.reviewBtn')}
                     </Button>
                   </Link>
                 </div>
@@ -289,19 +286,19 @@ export default function ProfilePage() {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Globe className="h-4 w-4 text-accent" />
-                환경 설정
+                {t('profile.settings.title')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
               <div>
-                <p className="text-sm font-medium mb-2">화면 모드</p>
+                <p className="text-sm font-medium mb-2">{t('profile.settings.themeLabel')}</p>
                 <div className="flex flex-wrap gap-2">
                   {([
-                    { key: 'light',  Icon: Sun,      label: '라이트' },
-                    { key: 'sepia',  Icon: BookOpen, label: '세피아' },
-                    { key: 'forest', Icon: Leaf,     label: '포레스트' },
-                    { key: 'dark',   Icon: Moon,     label: '다크' },
-                  ] as const).map(({ key, Icon, label }) => (
+                    { key: 'light',  Icon: Sun      },
+                    { key: 'sepia',  Icon: BookOpen },
+                    { key: 'forest', Icon: Leaf     },
+                    { key: 'dark',   Icon: Moon     },
+                  ] as const).map(({ key, Icon }) => (
                     <Button
                       key={key}
                       variant={theme === key ? 'default' : 'outline'}
@@ -310,14 +307,14 @@ export default function ProfilePage() {
                       className="flex items-center gap-2"
                     >
                       <Icon className="h-4 w-4" />
-                      {label}
+                      {t(`profile.settings.themes.${key}`)}
                     </Button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <p className="text-sm font-medium mb-2">언어</p>
+                <p className="text-sm font-medium mb-2">{t('profile.settings.languageLabel')}</p>
                 <div className="flex gap-2">
                   <Button
                     variant={i18n.language === 'ko' ? 'default' : 'outline'}
@@ -343,20 +340,20 @@ export default function ProfilePage() {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Calendar className="h-4 w-4 text-accent" />
-                계정 정보
+                {t('profile.account.title')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">가입일</span>
+                <span className="text-muted-foreground">{t('profile.account.joinedAt')}</span>
                 <span>{formatDate(profile?.created_at || user.created_at)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">마지막 로그인</span>
+                <span className="text-muted-foreground">{t('profile.account.lastLogin')}</span>
                 <span>{formatDate(user.last_sign_in_at)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">로그인 방법</span>
+                <span className="text-muted-foreground">{t('profile.account.loginMethod')}</span>
                 <span>{providerLabel}</span>
               </div>
             </CardContent>
@@ -367,27 +364,27 @@ export default function ProfilePage() {
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
                 <LogIn className="h-4 w-4 text-accent" />
-                빠른 이동
+                {t('profile.quickNav.title')}
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-2">
               <Link to="/exams">
                 <Button variant="outline" size="sm" className="w-full justify-start">
                   <BookOpen className="h-4 w-4 mr-2" />
-                  연습 문제 풀기
+                  {t('profile.quickNav.practice')}
                 </Button>
               </Link>
               <Link to="/certifications">
                 <Button variant="outline" size="sm" className="w-full justify-start">
                   <Target className="h-4 w-4 mr-2" />
-                  자격증 로드맵
+                  {t('profile.quickNav.roadmap')}
                 </Button>
               </Link>
               {submitted.length > 0 && (
                 <Link to="/review">
                   <Button variant="outline" size="sm" className="w-full justify-start">
                     <TrendingUp className="h-4 w-4 mr-2" />
-                    오답 복습
+                    {t('profile.quickNav.review')}
                   </Button>
                 </Link>
               )}
@@ -401,7 +398,7 @@ export default function ProfilePage() {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <MessageSquare className="h-4 w-4 text-accent" />
-                  내 문의내역
+                  {t('profile.contacts.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -434,7 +431,7 @@ export default function ProfilePage() {
                               <span className="font-medium truncate">{contact.subject}</span>
                             </div>
                             <p className="text-xs text-muted-foreground">
-                              {new Date(contact.createdAt).toLocaleDateString('ko-KR')}
+                              {new Date(contact.createdAt).toLocaleDateString(i18n.language === 'ko' ? 'ko-KR' : 'en-US')}
                             </p>
                           </div>
                           <ChevronDown className={`h-4 w-4 text-muted-foreground shrink-0 mt-0.5 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
@@ -443,22 +440,22 @@ export default function ProfilePage() {
                         {isExpanded && (
                           <div className="px-3 pb-3 space-y-2 border-t border-border pt-3">
                             <div className="rounded-lg bg-muted/40 p-3">
-                              <p className="text-xs font-medium text-muted-foreground mb-1">문의 내용</p>
+                              <p className="text-xs font-medium text-muted-foreground mb-1">{t('profile.contacts.messageLabel')}</p>
                               <p className="text-sm whitespace-pre-wrap">{contact.message}</p>
                             </div>
                             {contact.adminResponse && (
                               <div className="rounded-lg p-3 bg-accent/5 border border-accent/20">
-                                <p className="text-xs font-medium text-accent mb-1">관리자 답변</p>
+                                <p className="text-xs font-medium text-accent mb-1">{t('profile.contacts.adminReply')}</p>
                                 <p className="text-sm whitespace-pre-wrap">{contact.adminResponse}</p>
                                 {contact.respondedAt && (
                                   <p className="text-xs text-muted-foreground mt-1">
-                                    {new Date(contact.respondedAt).toLocaleDateString('ko-KR')}
+                                    {new Date(contact.respondedAt).toLocaleDateString(i18n.language === 'ko' ? 'ko-KR' : 'en-US')}
                                   </p>
                                 )}
                               </div>
                             )}
                             {!contact.adminResponse && contact.status !== 'closed' && (
-                              <p className="text-xs text-muted-foreground italic">아직 답변이 등록되지 않았습니다.</p>
+                              <p className="text-xs text-muted-foreground italic">{t('profile.contacts.noReply')}</p>
                             )}
                           </div>
                         )}
@@ -475,7 +472,7 @@ export default function ProfilePage() {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Flag className="h-4 w-4 text-orange-500" />
-                  내 신고 내역
+                  {t('profile.reports.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -515,13 +512,13 @@ export default function ProfilePage() {
                         )}
                         {report.admin_note && (
                           <div className="mt-1 p-2 rounded bg-accent/5 border border-accent/20">
-                            <p className="text-xs font-medium text-accent mb-0.5">관리자 답변</p>
+                            <p className="text-xs font-medium text-accent mb-0.5">{t('profile.reports.adminNote')}</p>
                             <p className="text-xs text-foreground">{report.admin_note}</p>
                           </div>
                         )}
                       </div>
                       <span className="text-xs text-muted-foreground shrink-0">
-                        {new Date(report.created_at).toLocaleDateString('ko-KR')}
+                        {new Date(report.created_at).toLocaleDateString(i18n.language === 'ko' ? 'ko-KR' : 'en-US')}
                       </span>
                     </div>
                   ))}
