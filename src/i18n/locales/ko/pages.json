@@ -3,14 +3,14 @@
     "betaBanner": {
       "badge": "베타 오픈 기간",
       "messagePrefix": "지금은 ",
-      "messageHighlight": "AWS · GCP · Azure 전체 문제",
+      "messageHighlight": "AWS · GCP · AZURE 전체 문제",
       "messageSuffix": "를 완전 무료로 이용하실 수 있어요."
     },
     "hero": {
       "badge": "AI 시대·빅데이터 시대의 필수 자격증",
       "title": "AI도, 빅데이터도,",
       "titleAccent": "클라우드 위에서 시작합니다",
-      "subtitle": "ChatGPT, 넷플릭스, 카카오 — 우리가 매일 쓰는 모든 서비스는 클라우드 위에서 동작합니다. AWS · GCP · Azure 자격증은 이 AI·클라우드 시대에 가장 빠르게 성장하는 커리어의 문을 여는 열쇠입니다. 한국어 해설로 빠르게 준비하세요.",
+      "subtitle": "ChatGPT, 넷플릭스, 카카오 — 우리가 매일 쓰는 모든 서비스는 클라우드 위에서 동작합니다. AWS · GCP · AZURE 자격증은 이 AI·클라우드 시대에 가장 빠르게 성장하는 커리어의 문을 여는 열쇠입니다. 한국어 해설로 빠르게 준비하세요.",
       "ctaPrimary": "지금 무료로 시작하기",
       "ctaSecondary": "학습 방법 보기",
       "stats": {
@@ -147,8 +147,8 @@
     },
     "trustedBy": {
       "title": "전 세계 수만 개의 기업이 선택한 클라우드 플랫폼",
-      "subtitle": "AWS · GCP · Azure는 글로벌 IT 인프라의 표준입니다",
-      "disclaimer": "공개된 AWS · GCP · Azure 레퍼런스 기준",
+      "subtitle": "AWS · GCP · AZURE는 글로벌 IT 인프라의 표준입니다",
+      "disclaimer": "공개된 AWS · GCP · AZURE 레퍼런스 기준",
       "companiesRow1": ["Netflix", "삼성전자", "Kakao", "Naver", "현대자동차", "LG전자", "쿠팡", "SK텔레콤", "LINE", "Airbnb", "Spotify", "Toyota", "BMW"],
       "companiesRow2": ["NASA", "Slack", "Zoom", "Adobe", "Dropbox", "Reddit", "Pinterest", "Twitch", "McDonald's", "GE", "Pfizer", "배달의민족", "Hyundai"]
     },
@@ -416,7 +416,7 @@
   },
   "blog": {
     "title": "공부자료",
-    "subtitle": "AWS · GCP · Azure 자격증 합격을 위한 핵심 개념, 서비스 비교, 치트시트를 무료로 제공합니다.",
+    "subtitle": "AWS · GCP · AZURE 자격증 합격을 위한 핵심 개념, 서비스 비교, 치트시트를 무료로 제공합니다.",
     "seoTitle": "AWS·GCP·Azure 자격증 공부자료 | CloudMaster",
     "seoDesc": "AWS, GCP, Azure 자격증 합격을 위한 핵심 개념 정리, 서비스 비교표, 치트시트를 무료로 제공합니다.",
     "tabs": {
@@ -530,7 +530,7 @@
       "badge": "클라우드 자격증 로드맵",
       "title": "어떤 자격증부터",
       "titleAccent": "시작해야 할까요?",
-      "subtitle": "AWS · GCP · Azure 자격증 체계와 레벨별 로드맵을 한눈에 확인하고, 내 커리어에 맞는 첫 번째 자격증을 찾아보세요."
+      "subtitle": "AWS · GCP · AZURE 자격증 체계와 레벨별 로드맵을 한눈에 확인하고, 내 커리어에 맞는 첫 번째 자격증을 찾아보세요."
     },
     "filterLabel": "커리어 경로로 필터링",
     "certCount": "{{count}}개 자격증",
@@ -560,7 +560,7 @@
     },
     "roadmapCta": {
       "eyebrow": "어디서 시작해야 할지 모르겠나요?",
-      "title": "AWS · GCP · Azure 자격증 로드맵",
+      "title": "AWS · GCP · AZURE 자격증 로드맵",
       "subtitle": "입문부터 전문가까지 레벨별 자격증과 커리어 경로를 한눈에 확인하세요.",
       "button": "자격증 로드맵 보기"
     }

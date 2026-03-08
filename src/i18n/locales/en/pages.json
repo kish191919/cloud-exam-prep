@@ -147,8 +147,8 @@
     },
     "trustedBy": {
       "title": "Trusted by Tens of Thousands of Companies Worldwide",
-      "subtitle": "AWS · GCP · Azure are the global standard for IT infrastructure",
-      "disclaimer": "Based on publicly available AWS · GCP · Azure reference customers",
+      "subtitle": "AWS · GCP · AZURE are the global standard for IT infrastructure",
+      "disclaimer": "Based on publicly available AWS · GCP · AZURE reference customers",
       "companiesRow1": ["Netflix", "Samsung", "Kakao", "Naver", "Hyundai", "LG Electronics", "Coupang", "SK Telecom", "LINE", "Airbnb", "Spotify", "Toyota", "BMW"],
       "companiesRow2": ["NASA", "Slack", "Zoom", "Adobe", "Dropbox", "Reddit", "Pinterest", "Twitch", "McDonald's", "GE", "Pfizer", "Baemin", "Hyundai"]
     },
@@ -560,7 +560,7 @@
     },
     "roadmapCta": {
       "eyebrow": "Not sure where to begin?",
-      "title": "AWS · GCP · Azure Certification Roadmap",
+      "title": "AWS · GCP · AZURE Certification Roadmap",
       "subtitle": "See level-by-level certifications and career paths at a glance.",
       "button": "View Certification Roadmap"
     }
