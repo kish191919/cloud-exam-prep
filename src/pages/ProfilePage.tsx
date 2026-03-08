@@ -13,6 +13,8 @@ import type { ExamSession } from '@/types/exam';
 import { Crown, BookOpen, Target, TrendingUp, Calendar, LogIn, Star, Sun, Moon, Globe, Leaf, Flag, MessageSquare, ChevronDown, Pencil, X, Check } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useFontSize } from '@/contexts/FontSizeContext';
+import { useFontFamily } from '@/contexts/FontFamilyContext';
 import { useTranslation } from 'react-i18next';
 import { getMyReports, getQuestionSetInfo, REASON_LABELS, STATUS_LABELS, type QuestionReport, type QuestionSetInfo } from '@/services/reportService';
 import { getMyContacts } from '@/services/contactService';
@@ -33,6 +35,8 @@ function makeDateFormatter(lang: string) {
 export default function ProfilePage() {
   const { user, subscriptionTier, isPremium, hasFullAccess, openAuthModal } = useAuth();
   const { theme, setTheme } = useTheme();
+  const { fontSize, setFontSize } = useFontSize();
+  const { fontFamily, setFontFamily } = useFontFamily();
   const { t, i18n } = useTranslation('pages');
   const formatDate = makeDateFormatter(i18n.language);
 
@@ -330,6 +334,38 @@ export default function ProfilePage() {
                   >
                     🇺🇸 English
                   </Button>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm font-medium mb-2">{t('profile.settings.fontSizeLabel')}</p>
+                <div className="flex gap-2">
+                  {(['sm', 'md', 'lg'] as const).map((size) => (
+                    <Button
+                      key={size}
+                      variant={fontSize === size ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setFontSize(size)}
+                    >
+                      {t(`profile.settings.fontSizes.${size}`)}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm font-medium mb-2">{t('profile.settings.fontFamilyLabel')}</p>
+                <div className="flex flex-wrap gap-2">
+                  {(['outfit', 'inter', 'noto-sans-kr'] as const).map((family) => (
+                    <Button
+                      key={family}
+                      variant={fontFamily === family ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setFontFamily(family)}
+                    >
+                      {t(`profile.settings.fontFamilies.${family}`)}
+                    </Button>
+                  ))}
                 </div>
               </div>
             </CardContent>

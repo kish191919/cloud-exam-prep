@@ -493,7 +493,11 @@
       "title": "Preferences",
       "themeLabel": "Theme",
       "themes": { "light": "Light", "sepia": "Sepia", "forest": "Forest", "dark": "Dark" },
-      "languageLabel": "Language"
+      "languageLabel": "Language",
+      "fontSizeLabel": "Font Size",
+      "fontSizes": { "sm": "Small", "md": "Medium", "lg": "Large" },
+      "fontFamilyLabel": "Font",
+      "fontFamilies": { "outfit": "Outfit (Default)", "inter": "Inter", "noto-sans-kr": "Noto Sans" }
     },
     "account": {
       "title": "Account Info",
