@@ -15,6 +15,7 @@ import {
   Cloud, Zap, Target, Users, Smartphone, CheckCircle2, Star, Map, Gift,
   Briefcase, GraduationCap, Rocket, Brain, Database, TrendingUp,
 } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { usePWAInstall } from '@/hooks/usePWAInstall';
 import ContactFloatingButton from '@/components/ContactFloatingButton';
@@ -68,6 +69,23 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>CloudMaster - AWS·GCP·Azure 클라우드 자격증 모의고사</title>
+        <meta name="description" content="AWS CLF·SAA·AIF, Azure AZ-900 클라우드 자격증 합격을 위한 한국어 실전 모의고사. AI가 생성한 상세 해설, 오답 분석, 핵심 암기사항으로 단기 합격하세요." />
+        <meta property="og:title" content="CloudMaster - AWS·GCP·Azure 클라우드 자격증 모의고사" />
+        <meta property="og:description" content="AWS CLF·SAA·AIF, Azure AZ-900 클라우드 자격증 합격을 위한 한국어 실전 모의고사. AI가 생성한 상세 해설, 오답 분석, 핵심 암기사항으로 단기 합격하세요." />
+        <meta property="og:url" content="https://cloudmasterit.com/" />
+        <link rel="canonical" href="https://cloudmasterit.com/" />
+        <script type="application/ld+json">{JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqs.map((faq: { q: string; a: string }) => ({
+            '@type': 'Question',
+            name: faq.q,
+            acceptedAnswer: { '@type': 'Answer', text: faq.a },
+          })),
+        })}</script>
+      </Helmet>
       <StudyFloatingButton />
       <ContactFloatingButton />
       <Navbar />

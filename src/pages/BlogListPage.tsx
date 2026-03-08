@@ -216,7 +216,18 @@ const BlogListPage = () => {
         <meta property="og:title" content={t('blog.seoTitle')} />
         <meta property="og:description" content={t('blog.seoDesc')} />
         <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://cloudmasterit.com/logo.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <link rel="canonical" href="https://cloudmasterit.com/blog" />
+        <script type="application/ld+json">{JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'CollectionPage',
+          name: 'CloudMaster 블로그 - AWS·GCP·Azure 학습 자료',
+          description: 'AWS, GCP, Azure 클라우드 자격증 학습을 위한 도메인 가이드, 서비스 비교, 시험 전략 아티클',
+          url: 'https://cloudmasterit.com/blog',
+          publisher: { '@type': 'Organization', name: 'CloudMaster', url: 'https://cloudmasterit.com' },
+        })}</script>
       </Helmet>
 
       <Navbar />

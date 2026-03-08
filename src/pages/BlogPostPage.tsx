@@ -239,13 +239,25 @@ const BlogPostPage = () => {
         <link rel="canonical" href={siteUrl} />
         <script type="application/ld+json">{JSON.stringify({
           '@context': 'https://schema.org',
-          '@type': 'Article',
-          headline: title,
-          description: excerpt,
-          datePublished: post.publishedAt,
-          image: post.coverImageUrl,
-          publisher: { '@type': 'Organization', name: 'CloudMaster', url: 'https://cloudmasterit.com' },
-          mainEntityOfPage: { '@type': 'WebPage', '@id': siteUrl },
+          '@graph': [
+            {
+              '@type': 'Article',
+              headline: title,
+              description: excerpt,
+              datePublished: post.publishedAt,
+              image: post.coverImageUrl,
+              author: { '@type': 'Organization', name: 'CloudMaster', url: 'https://cloudmasterit.com' },
+              publisher: { '@type': 'Organization', name: 'CloudMaster', url: 'https://cloudmasterit.com' },
+              mainEntityOfPage: { '@type': 'WebPage', '@id': siteUrl },
+            },
+            {
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: '블로그', item: 'https://cloudmasterit.com/blog' },
+                { '@type': 'ListItem', position: 2, name: title, item: siteUrl },
+              ],
+            },
+          ],
         })}</script>
       </Helmet>
 
