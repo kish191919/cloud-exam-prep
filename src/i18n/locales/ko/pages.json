@@ -497,7 +497,7 @@
       "fontSizeLabel": "글씨 크기",
       "fontSizes": { "sm": "소", "md": "중", "lg": "대" },
       "fontFamilyLabel": "서체",
-      "fontFamilies": { "outfit": "Outfit (기본)", "inter": "Inter", "noto-sans-kr": "Noto Sans" }
+      "fontFamilies": { "outfit": "Outfit (기본)", "inter": "Inter", "noto-sans-kr": "Noto Sans", "nanum-gothic": "나눔고딕", "roboto": "Roboto", "nunito": "Nunito" }
     },
     "account": {
       "title": "계정 정보",

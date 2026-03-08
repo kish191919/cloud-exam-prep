@@ -4,6 +4,9 @@ import App from "./App.tsx";
 import "@fontsource-variable/outfit"; // 자체 호스팅 폰트 (Google Fonts CDN 대체)
 import "@fontsource-variable/inter";
 import "@fontsource/noto-sans-kr";
+import "@fontsource/nanum-gothic";
+import "@fontsource/roboto";
+import "@fontsource-variable/nunito";
 import "./index.css";
 import "./i18n/config"; // Initialize i18n
 

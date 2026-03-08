@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-export type FontFamily = 'outfit' | 'inter' | 'noto-sans-kr';
+export type FontFamily = 'outfit' | 'inter' | 'noto-sans-kr' | 'nanum-gothic' | 'roboto' | 'nunito';
 
 interface FontFamilyContextValue {
   fontFamily: FontFamily;
@@ -11,6 +11,9 @@ const FONT_FAMILY_MAP: Record<FontFamily, string> = {
   outfit: '"Outfit Variable", Outfit, system-ui, sans-serif',
   inter: '"Inter Variable", Inter, system-ui, sans-serif',
   'noto-sans-kr': '"Noto Sans KR", system-ui, sans-serif',
+  'nanum-gothic': '"Nanum Gothic", sans-serif',
+  roboto: 'Roboto, system-ui, sans-serif',
+  nunito: '"Nunito Variable", Nunito, system-ui, sans-serif',
 };
 
 const FontFamilyContext = createContext<FontFamilyContextValue>({

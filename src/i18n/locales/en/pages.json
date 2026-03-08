@@ -497,7 +497,7 @@
       "fontSizeLabel": "Font Size",
       "fontSizes": { "sm": "Small", "md": "Medium", "lg": "Large" },
       "fontFamilyLabel": "Font",
-      "fontFamilies": { "outfit": "Outfit (Default)", "inter": "Inter", "noto-sans-kr": "Noto Sans" }
+      "fontFamilies": { "outfit": "Outfit (Default)", "inter": "Inter", "noto-sans-kr": "Noto Sans", "nanum-gothic": "Nanum Gothic", "roboto": "Roboto", "nunito": "Nunito" }
     },
     "account": {
       "title": "Account Info",

@@ -356,7 +356,7 @@ export default function ProfilePage() {
               <div>
                 <p className="text-sm font-medium mb-2">{t('profile.settings.fontFamilyLabel')}</p>
                 <div className="flex flex-wrap gap-2">
-                  {(['outfit', 'inter', 'noto-sans-kr'] as const).map((family) => (
+                  {(['outfit', 'inter', 'noto-sans-kr', 'nanum-gothic', 'roboto', 'nunito'] as const).map((family) => (
                     <Button
                       key={family}
                       variant={fontFamily === family ? 'default' : 'outline'}
