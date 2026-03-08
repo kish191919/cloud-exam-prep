@@ -45,30 +45,30 @@ const Navbar = () => {
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
     >
       <div className="container mx-auto flex items-center justify-between px-4 py-3">
-        <Link to="/" className="flex items-center gap-2 font-bold text-xl">
+        <Link to="/" className="flex items-center gap-2 font-bold text-2xl">
           <Cloud className="h-7 w-7 text-accent" />
           <span>{t('brand')}</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/" className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors">
             {t('navigation.home')}
           </Link>
 
-          <Link to="/certifications" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/certifications" className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors">
             {t('navigation.roadmap')}
           </Link>
 
-          <Link to="/blog" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/blog" className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors">
             {t('navigation.blog')}
           </Link>
 
-          <Link to="/board" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/board" className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors">
             {t('navigation.board')}
           </Link>
 
           <Link to="/exams" onClick={handleExamClick}>
-            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button size="default" className="bg-accent text-accent-foreground hover:bg-accent/90">
               {t('navigation.startFree')}
             </Button>
           </Link>
