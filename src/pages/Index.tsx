@@ -108,15 +108,15 @@ const Index = () => {
       </div>
 
       {/* Hero */}
-      <section className="relative hero-gradient text-primary-foreground pt-12 md:pt-20 pb-20 md:pb-28 px-4 overflow-hidden">
-        {/* Dot pattern overlay */}
+      <section className="relative hero-gradient text-foreground pt-12 md:pt-20 pb-20 md:pb-28 px-4 overflow-hidden">
+        {/* Grid pattern overlay */}
         <div className="absolute inset-0 hero-dots pointer-events-none" />
 
         {/* Background blur decorations */}
-        <div className="absolute inset-0 opacity-15 pointer-events-none overflow-hidden">
-          <div className="absolute top-20 left-0 w-64 h-64 bg-accent rounded-full blur-3xl -translate-x-1/2" />
-          <div className="absolute bottom-10 right-0 w-80 h-80 bg-primary rounded-full blur-3xl translate-x-1/3" />
-          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
+          <div className="absolute top-20 left-0 w-64 h-64 bg-primary rounded-full blur-3xl -translate-x-1/2" />
+          <div className="absolute bottom-10 right-0 w-80 h-80 bg-accent rounded-full blur-3xl translate-x-1/3" />
+          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-primary/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
         </div>
 
         {/* Floating data particles */}
@@ -124,7 +124,7 @@ const Index = () => {
           {[...Array(14)].map((_, i) => (
             <div
               key={i}
-              className="absolute rounded-full bg-accent/60"
+              className="absolute rounded-full bg-primary/40"
               style={{
                 width: `${2 + (i % 3)}px`,
                 height: `${2 + (i % 3)}px`,
@@ -139,7 +139,7 @@ const Index = () => {
 
         <div className="container mx-auto text-center max-w-5xl relative z-10">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-accent/30 text-sm mb-6 bg-accent/10 backdrop-blur-sm shadow-lg">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-primary/30 text-sm mb-6 bg-primary/10 backdrop-blur-sm shadow-lg">
             <Zap className="h-4 w-4 text-accent animate-pulse" />
             <span className="font-semibold whitespace-nowrap">{t('index.hero.badge')}</span>
           </div>
@@ -148,13 +148,13 @@ const Index = () => {
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.2] mt-4 mb-5 md:mb-8 tracking-tight break-keep">
             {t('index.hero.title')}
             <br />
-            <span className="bg-gradient-to-r from-accent via-accent/80 to-accent bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent">
               {t('index.hero.titleAccent')}
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-sm sm:text-base md:text-lg text-primary-foreground/80 max-w-2xl mx-auto mb-10 md:mb-14 leading-relaxed font-medium break-keep">
+          <p className="text-sm sm:text-base md:text-lg text-foreground/70 max-w-2xl mx-auto mb-10 md:mb-14 leading-relaxed font-medium break-keep">
             {t('index.hero.subtitle')}
           </p>
 
@@ -172,7 +172,7 @@ const Index = () => {
               <Button
                 size="lg"
                 variant="ghost"
-                className="border-2 border-primary-foreground/50 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground text-base sm:text-lg font-semibold px-8 sm:px-10 py-5 sm:py-7 rounded-xl backdrop-blur-sm transition-all duration-300 hover:scale-105 w-full"
+                className="border-2 border-primary/40 text-primary bg-primary/8 hover:bg-primary/15 hover:text-primary text-base sm:text-lg font-semibold px-8 sm:px-10 py-5 sm:py-7 rounded-xl backdrop-blur-sm transition-all duration-300 hover:scale-105 w-full"
               >
                 {t('index.hero.ctaSecondary')}
               </Button>
@@ -181,17 +181,17 @@ const Index = () => {
 
           {/* Stats Section — always 3 columns */}
           <div className="grid grid-cols-3 gap-3 sm:gap-6 md:gap-8 max-w-4xl mx-auto">
-            <div className="bg-primary-foreground/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary-foreground/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div className="bg-white/70 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
               <div className="text-2xl sm:text-4xl md:text-6xl font-black text-accent mb-1 sm:mb-2 tracking-tight">{t('index.hero.stats.questions.value')}</div>
-              <div className="text-xs sm:text-sm md:text-base text-primary-foreground/70 font-semibold uppercase tracking-wide leading-tight break-keep">{t('index.hero.stats.questions.label')}</div>
+              <div className="text-xs sm:text-sm md:text-base text-foreground/60 font-semibold uppercase tracking-wide leading-tight break-keep">{t('index.hero.stats.questions.label')}</div>
             </div>
-            <div className="bg-primary-foreground/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary-foreground/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div className="bg-white/70 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
               <div className="text-2xl sm:text-4xl md:text-6xl font-black text-accent mb-1 sm:mb-2 tracking-tight">{t('index.hero.stats.passRate.value')}</div>
-              <div className="text-xs sm:text-sm md:text-base text-primary-foreground/70 font-semibold uppercase tracking-wide leading-tight break-keep">{t('index.hero.stats.passRate.label')}</div>
+              <div className="text-xs sm:text-sm md:text-base text-foreground/60 font-semibold uppercase tracking-wide leading-tight break-keep">{t('index.hero.stats.passRate.label')}</div>
             </div>
-            <div className="bg-primary-foreground/10 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary-foreground/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div className="bg-white/70 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 border border-primary/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
               <div className="text-2xl sm:text-4xl md:text-6xl font-black text-accent mb-1 sm:mb-2 tracking-tight">{t('index.hero.stats.providers.value')}</div>
-              <div className="text-xs sm:text-sm md:text-base text-primary-foreground/70 font-semibold uppercase tracking-wide leading-tight break-keep">{t('index.hero.stats.providers.label')}</div>
+              <div className="text-xs sm:text-sm md:text-base text-foreground/60 font-semibold uppercase tracking-wide leading-tight break-keep">{t('index.hero.stats.providers.label')}</div>
             </div>
           </div>
 
