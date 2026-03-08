@@ -89,10 +89,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       window.history.replaceState({}, '', window.location.pathname);
     }
 
-    // 카카오/네이버 매직링크 리다이렉트 처리
-    // flowType: 'pkce' 모드에서는 hash 기반 access_token을 자동 처리하지 않으므로 수동 설정
+    // OAuth(PKCE) 및 카카오/네이버 매직링크 리다이렉트 처리
+    // PKCE 모드: ?code= 쿼리파라미터로 돌아옴 → exchangeCodeForSession 수동 호출
+    // 매직링크(implicit fallback): #access_token 해시로 돌아옴 → setSession 수동 호출
+    const code = params.get('code');
     const hash = window.location.hash;
-    if (hash && hash.includes('access_token')) {
+
+    if (code) {
+      supabase.auth.exchangeCodeForSession(code)
+        .then(({ error }) => {
+          if (error) {
+            console.error('[Auth] PKCE code exchange failed:', error);
+            toast.error('로그인 처리 중 오류가 발생했습니다.');
+          }
+          window.history.replaceState({}, '', window.location.pathname);
+        });
+    } else if (hash && hash.includes('access_token')) {
       const hashParams = new URLSearchParams(hash.substring(1));
       const accessToken = hashParams.get('access_token');
       const refreshToken = hashParams.get('refresh_token');
