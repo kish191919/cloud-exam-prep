@@ -10,7 +10,7 @@
       "badge": "The Essential Cert for the AI & Cloud Era",
       "title": "AI Runs on Cloud.",
       "titleAccent": "So Should Your Career.",
-      "subtitle": "ChatGPT, Netflix, every major tech product runs on cloud infrastructure. AWS, GCP, and Azure certifications are the key to the fastest-growing careers in the AI era. Practice smarter with realistic questions and in-depth explanations.",
+      "subtitle": "ChatGPT, Netflix, every major tech product runs on cloud infrastructure. AWS, GCP and AZURE certifications are the key to the fastest-growing careers in the AI era. Practice smarter with realistic questions and in-depth explanations.",
       "ctaPrimary": "Start Free Now",
       "ctaSecondary": "See How It Works",
       "stats": {
@@ -56,7 +56,7 @@
       {
         "icon": "Target",
         "title": "Certification Roadmap & Domains",
-        "desc": "Browse the AWS, GCP, and Azure certification roadmap to set your target. See domain weights and topic breakdowns before you even start studying."
+        "desc": "Browse the AWS, GCP and AZURE certification roadmap to set your target. See domain weights and topic breakdowns before you even start studying."
       },
       {
         "icon": "Smartphone",
@@ -71,7 +71,7 @@
       {
         "num": "01",
         "title": "Choose Your Target Certification",
-        "desc": "Explore the AWS, GCP, and Azure certification roadmap to pick your goal. Review domain breakdowns and difficulty levels before you begin."
+        "desc": "Explore the AWS, GCP and AZURE certification roadmap to pick your goal. Review domain breakdowns and difficulty levels before you begin."
       },
       {
         "num": "02",
@@ -169,7 +169,7 @@
         {
           "icon": "TrendingUp",
           "title": "The Fastest-Growing Career Credential",
-          "desc": "AWS, GCP, and Azure certifications consistently rank in the Top 5 most valued IT credentials worldwide. One cert can transform your salary, your job prospects, and your career trajectory."
+          "desc": "AWS, GCP and AZURE certifications consistently rank in the Top 5 most valued IT credentials worldwide. One cert can transform your salary, your job prospects, and your career trajectory."
         }
       ]
     },
@@ -246,7 +246,7 @@
       "title": "Frequently Asked Questions",
       "questions": [
         {
-          "q": "What are AWS, GCP, and Azure — and why do I need them?",
+          "q": "What are AWS, GCP and AZURE — and why do I need them?",
           "a": "AWS (Amazon), GCP (Google), and Azure (Microsoft) are the three cloud platforms that power over 70% of the world's digital infrastructure. ChatGPT, Netflix, and countless everyday services run on them. Since 90%+ of AI and big data work is cloud-based, these certifications are essential for anyone in or entering the tech industry."
         },
         {
@@ -416,9 +416,9 @@
   },
   "blog": {
     "title": "Study Resources",
-    "subtitle": "Free study notes, service comparisons, and cheatsheets to help you pass AWS, GCP, and Azure certifications.",
+    "subtitle": "Free study notes, service comparisons, and cheatsheets to help you pass AWS, GCP and AZURE certifications.",
     "seoTitle": "AWS·GCP·Azure Certification Study Resources | CloudMaster",
-    "seoDesc": "Free study notes, service comparison tables, and cheatsheets for AWS, GCP, and Azure certifications.",
+    "seoDesc": "Free study notes, service comparison tables, and cheatsheets for AWS, GCP and AZURE certifications.",
     "tabs": {
       "all": "All",
       "aws": "AWS",
@@ -530,7 +530,7 @@
       "badge": "Cloud Certification Roadmap",
       "title": "Which certification",
       "titleAccent": "should you start with?",
-      "subtitle": "Explore the AWS, GCP, and Azure certification hierarchy, visualize your level-by-level roadmap, and find the perfect first certification for your career."
+      "subtitle": "Explore the AWS, GCP and AZURE certification hierarchy, visualize your level-by-level roadmap, and find the perfect first certification for your career."
     },
     "filterLabel": "Filter by career path",
     "certCount": "{{count}} certifications",

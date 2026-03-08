@@ -26,7 +26,7 @@ CloudMaster는 직장인과 취업 준비생이 퇴근 후 30분, 주말 1시간
 앞으로도 유용한 정보를 꾸준히 공유하겠습니다. 함께 합격을 향해 나아가요!
 
 — CloudMaster 팀$KO$,
-  $EN$Hello! Welcome to CloudMaster — your Korean-first prep platform for AWS, GCP, and Azure certifications.
+  $EN$Hello! Welcome to CloudMaster — your Korean-first prep platform for AWS, GCP and AZURE certifications.
 
 In this board, we regularly publish:
 
@@ -380,7 +380,7 @@ Start with AZ-900 on CloudMaster and progress toward the certification that fits
   클라우드 자격증 1개 취득 만으로도 평균 연봉이 15~26% 상승하는 효과를 볼 수 있으며, 복수 자격증 취득 시 프리미엄이 더 커집니다. 특히 AI/ML 특화 자격증은 2025년 이후 가장 가파른 연봉 상승세를 보이고 있습니다.
 
 CloudMaster에서 지금 바로 학습을 시작하고, 연봉 상승의 첫 발걸음을 내딛으세요.$KO$,
-  $EN$How much does a cloud certification actually boost your salary? Here's a data-driven breakdown of average compensation for AWS, GCP, and Azure certification holders, based on domestic and global salary surveys.
+  $EN$How much does a cloud certification actually boost your salary? Here's a data-driven breakdown of average compensation for AWS, GCP and AZURE certification holders, based on domestic and global salary surveys.
 
 
 ━━ Korea Average Salaries by Cloud Certification (2025–2026) ━━

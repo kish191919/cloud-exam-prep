@@ -100,7 +100,7 @@ const TermsEn = () => (
       <p className="text-sm text-muted-foreground mb-8">Last updated: February 2026</p>
 
       <Section title="1. About the Service">
-        <p>CloudMaster ("Service") is an independent online educational platform for users preparing for AWS, GCP, and Azure cloud certifications. These Terms govern the relationship between users and CloudMaster regarding the use of the Service.</p>
+        <p>CloudMaster ("Service") is an independent online educational platform for users preparing for AWS, GCP and AZURE cloud certifications. These Terms govern the relationship between users and CloudMaster regarding the use of the Service.</p>
         <p>This website is not affiliated with, endorsed by, or sponsored by Amazon Web Services (AWS), Microsoft, or Google Cloud.</p>
       </Section>
 
