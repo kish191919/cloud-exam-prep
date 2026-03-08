@@ -407,9 +407,7 @@
     "noBookmarked": "No bookmarked questions yet. Bookmark questions during an exam!",
     "retryWrong": "Retry",
     "retryBookmarks": "Bookmarks",
-    "clearWrong": "Clear wrong answers",
-    "clearConfirm": "Clear?",
-    "clearCancel": "Cancel"
+    "clearWrong": "Clear wrong answers"
   },
   "notFound": {
     "title": "404",

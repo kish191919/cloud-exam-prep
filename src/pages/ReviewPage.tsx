@@ -53,7 +53,6 @@ const ReviewPage = () => {
       return stored ? new Set(JSON.parse(stored) as string[]) : new Set();
     } catch { return new Set(); }
   });
-  const [confirmClearKey, setConfirmClearKey] = useState<string | null>(null);
 
   const loadSessionsAndQuestions = async () => {
     setLoading(true);
@@ -348,7 +347,6 @@ const ReviewPage = () => {
       } catch { /* ignore */ }
       return next;
     });
-    setConfirmClearKey(null);
   };
 
   if (loading) {
@@ -443,96 +441,72 @@ const ReviewPage = () => {
                   {/* Set rows */}
                   {isExpanded && (
                     <div className="border-t divide-y">
-                      {examGroup.sets.map(setGroup => {
-                        const isConfirming = confirmClearKey === setGroup.examKey;
-                        return (
-                          <div
-                            key={setGroup.examKey}
-                            className="px-5 py-3.5 flex flex-col gap-2.5"
-                          >
-                            {/* Row 1: set label + counts + trash */}
-                            <div className="flex items-center justify-between gap-2">
-                              <span className="text-sm font-semibold text-foreground">{setGroup.setLabel}</span>
-                              <div className="flex items-center gap-2">
-                                {setGroup.wrong.length > 0 && (
-                                  <span className="flex items-center gap-1 text-xs text-destructive font-medium">
-                                    <XCircle className="h-3.5 w-3.5" />
-                                    {setGroup.wrong.length}{isKo ? '개 오답' : ' wrong'}
-                                  </span>
-                                )}
-                                {setGroup.bookmarks.length > 0 && (
-                                  <span className="flex items-center gap-1 text-xs text-accent font-medium">
-                                    <Bookmark className="h-3.5 w-3.5" />
-                                    {setGroup.bookmarks.length}{isKo ? '개 북마크' : ' saved'}
-                                  </span>
-                                )}
-                                {/* Delete confirmation or trash button */}
-                                {setGroup.wrong.length > 0 && (
-                                  isConfirming ? (
-                                    <span className="flex items-center gap-1.5 ml-1">
-                                      <span className="text-xs text-muted-foreground">{t('review.clearConfirm')}</span>
-                                      <button
-                                        className="text-xs text-destructive font-medium hover:underline"
-                                        onClick={() => clearWrongGroup(setGroup.examKey)}
-                                      >
-                                        {t('review.clearWrong')}
-                                      </button>
-                                      <button
-                                        className="text-xs text-muted-foreground hover:underline"
-                                        onClick={() => setConfirmClearKey(null)}
-                                      >
-                                        {t('review.clearCancel')}
-                                      </button>
-                                    </span>
-                                  ) : (
-                                    <button
-                                      className="ml-1 p-1 rounded text-muted-foreground/50 hover:text-destructive hover:bg-destructive/10 transition-colors"
-                                      title={t('review.clearWrong')}
-                                      onClick={() => setConfirmClearKey(setGroup.examKey)}
-                                    >
-                                      <Trash2 className="h-3.5 w-3.5" />
-                                    </button>
-                                  )
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Row 2: action buttons */}
-                            <div className="flex flex-wrap gap-2">
-                              {setGroup.wrong.length > 0 && (
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="h-8 text-xs px-3 border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive"
-                                  disabled={creatingSession}
-                                  onClick={() => startReviewSession(
-                                    setGroup.examId, setGroup.examKey, setGroup.wrong,
-                                    'practice', isKo ? '오답' : 'Wrong Answers'
-                                  )}
-                                >
-                                  <PenTool className="h-3.5 w-3.5 mr-1.5" />
-                                  {t('review.retryWrong')}
-                                </Button>
-                              )}
-                              {setGroup.bookmarks.length > 0 && (
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="h-8 text-xs px-3 border-accent/30 text-accent hover:bg-accent/10 hover:text-accent"
-                                  disabled={creatingSession}
-                                  onClick={() => startReviewSession(
-                                    setGroup.examId, setGroup.examKey, setGroup.bookmarks,
-                                    'practice', isKo ? '북마크' : 'Bookmarks'
-                                  )}
-                                >
-                                  <Bookmark className="h-3.5 w-3.5 mr-1.5" />
-                                  {t('review.retryBookmarks')}
-                                </Button>
-                              )}
-                            </div>
+                      {examGroup.sets.map(setGroup => (
+                        <div
+                          key={setGroup.examKey}
+                          className="px-5 py-4 flex items-center justify-between gap-3"
+                        >
+                          {/* Left: set label + counts */}
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <span className="text-sm font-semibold text-foreground truncate">{setGroup.setLabel}</span>
+                            {setGroup.wrong.length > 0 && (
+                              <span className="flex items-center gap-1 text-xs text-destructive font-medium shrink-0">
+                                <XCircle className="h-3.5 w-3.5" />
+                                {setGroup.wrong.length}{isKo ? '개 오답' : ' wrong'}
+                              </span>
+                            )}
+                            {setGroup.bookmarks.length > 0 && (
+                              <span className="flex items-center gap-1 text-xs text-accent font-medium shrink-0">
+                                <Bookmark className="h-3.5 w-3.5" />
+                                {setGroup.bookmarks.length}{isKo ? '개 북마크' : ' saved'}
+                              </span>
+                            )}
                           </div>
-                        );
-                      })}
+
+                          {/* Right: action buttons + trash */}
+                          <div className="flex items-center gap-2 shrink-0">
+                            {setGroup.wrong.length > 0 && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-8 text-xs px-3 border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                disabled={creatingSession}
+                                onClick={() => startReviewSession(
+                                  setGroup.examId, setGroup.examKey, setGroup.wrong,
+                                  'practice', isKo ? '오답' : 'Wrong Answers'
+                                )}
+                              >
+                                <PenTool className="h-3.5 w-3.5 mr-1.5" />
+                                {t('review.retryWrong')}
+                              </Button>
+                            )}
+                            {setGroup.bookmarks.length > 0 && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-8 text-xs px-3 border-accent/30 text-accent hover:bg-accent/10 hover:text-accent"
+                                disabled={creatingSession}
+                                onClick={() => startReviewSession(
+                                  setGroup.examId, setGroup.examKey, setGroup.bookmarks,
+                                  'practice', isKo ? '북마크' : 'Bookmarks'
+                                )}
+                              >
+                                <Bookmark className="h-3.5 w-3.5 mr-1.5" />
+                                {t('review.retryBookmarks')}
+                              </Button>
+                            )}
+                            {setGroup.wrong.length > 0 && (
+                              <button
+                                className="p-1.5 rounded text-muted-foreground/40 hover:text-destructive hover:bg-destructive/10 transition-colors"
+                                title={t('review.clearWrong')}
+                                onClick={() => clearWrongGroup(setGroup.examKey)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </Card>

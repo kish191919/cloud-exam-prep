@@ -407,9 +407,7 @@
     "noBookmarked": "아직 북마크한 문제가 없습니다. 시험 중 문제를 북마크하세요!",
     "retryWrong": "오답 다시 풀기",
     "retryBookmarks": "북마크 다시 풀기",
-    "clearWrong": "오답 기록 삭제",
-    "clearConfirm": "삭제할까요?",
-    "clearCancel": "취소"
+    "clearWrong": "오답 기록 삭제"
   },
   "notFound": {
     "title": "404",
