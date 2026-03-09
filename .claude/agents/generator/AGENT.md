@@ -195,7 +195,8 @@ Gap 우선순위 (커버리지 낮은 순):
 - ⚠️ 3자리 zero-padding 필수. `awsaifc01-q67` 형식 절대 금지
 
 **domain_tags 활용:**
-- 선정한 개념에 가장 적합한 도메인 태그를 `tag`/`tag_en` 필드로 사용
+- 선정한 개념에 가장 적합한 도메인 태그를 `tag`/`tag_en`/`tag_pt`/`tag_es`/`tag_ja` 필드로 사용
+- domain_tags 테이블의 해당 행에서 각 언어 열(포르투갈어 태그·스페인어 태그·일본어 태그)의 값을 그대로 복사한다
 
 **문제 출력 구조 (STEP G-C 완료 후 최종 — 한국어 필드만):**
 ```json
@@ -209,6 +210,9 @@ Gap 우선순위 (커버리지 낮은 순):
   "ref_links": "[{\"name\": \"...\", \"url\": \"https://docs.aws.amazon.com/...\"}]",
   "tag": "도메인 태그 (한국어)",
   "tag_en": "Domain tag (English)",
+  "tag_pt": "Tag de domínio (Português)",
+  "tag_es": "Etiqueta de dominio (Español)",
+  "tag_ja": "ドメインタグ（日本語）",
   "options": [
     {"option_id": "a", "text": "...", "explanation": "왜 오답인지", "sort_order": 1},
     {"option_id": "b", "text": "...", "explanation": "왜 정답인지", "sort_order": 2},
@@ -247,6 +251,7 @@ Main의 [G-5.5] 번역 배치에서 별도로 추가된다.
 [PASS] options 완결성: a, b, c, d 4개 보기 모두 text + explanation 필드가 누락 없이 포함됨
 [PASS] 규칙 8: 줄바꿈 서식 (질문 앞 \n\n 확인, 4문장+ 시 첫 문장 뒤 \n\n 확인)
 [PASS] text 선행 공백 없음: text 필드가 \n, 공백 없이 첫 문장(한글 또는 AWS 서비스명)으로 바로 시작함
+[PASS] 다국어 태그 완결성: tag_pt, tag_es, tag_ja 필드가 domain_tags 테이블에서 올바르게 복사됨
 ```
 
 - **전체 PASS** → 이 개념 처리 완료

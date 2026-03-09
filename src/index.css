@@ -207,4 +207,41 @@
     background-image: radial-gradient(circle, hsl(0 0% 100% / 0.05) 1px, transparent 1px);
     background-size: 28px 28px;
   }
+
+  /* 로드맵 CTA 섹션 */
+  .roadmap-cta-bg {
+    background: linear-gradient(135deg, hsl(222 70% 54% / 0.14) 0%, hsl(222 58% 48% / 0.09) 50%, hsl(222 70% 54% / 0.14) 100%);
+  }
+  .dark .roadmap-cta-bg {
+    background: linear-gradient(135deg, hsl(222 70% 60% / 0.10) 0%, hsl(222 60% 55% / 0.06) 50%, hsl(222 70% 60% / 0.10) 100%);
+  }
+
+  /* Features 섹션 */
+  .features-section-bg {
+    background: hsl(210 40% 92%);
+  }
+  .dark .features-section-bg {
+    background: hsl(var(--secondary));
+  }
+
+  /* 루틴 카드 */
+  .routine-card-bg {
+    background: linear-gradient(135deg, hsl(210 40% 92%) 0%, hsl(210 40% 94%) 100%);
+  }
+  .dark .routine-card-bg {
+    background: hsl(var(--card));
+  }
+
+  /* How It Works 섹션 */
+  .howitworks-section-bg {
+    background: linear-gradient(160deg, hsl(222 58% 48% / 0.10) 0%, hsl(210 55% 96%) 50%, hsl(222 70% 54% / 0.08) 100%);
+  }
+  .dark .howitworks-section-bg {
+    background: hsl(var(--background));
+  }
+
+  /* 다크 모드 카드 hover 그림자 */
+  .dark .card-hover:hover {
+    box-shadow: 0 8px 30px hsl(220 60% 80% / 0.06);
+  }
 }

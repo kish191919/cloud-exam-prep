@@ -132,7 +132,14 @@ def insert_question(q: dict, set_id: str, sort_order: int, supabase_url: str, su
     # 3. question_tags
     tag = q.get('tag') or ''
     if tag:
-        tag_body = {'question_id': qid, 'tag': tag}
+        tag_body = {
+            'question_id': qid,
+            'tag': tag,
+            'tag_en': q.get('tag_en') or None,
+            'tag_pt': q.get('tag_pt') or None,
+            'tag_es': q.get('tag_es') or None,
+            'tag_ja': q.get('tag_ja') or None,
+        }
         status, body = supabase_post(supabase_url, supabase_key, 'question_tags', tag_body)
         if status not in (200, 201):
             errors.append(f'question_tags INSERT 실패: {status} {body[:200]}')
