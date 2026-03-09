@@ -537,6 +537,7 @@
     "available": "Disponível",
     "comingSoon": "Em Breve",
     "practiceBtn": "Praticar Agora",
+    "learnMore": "Saiba Mais",
     "careers": {
       "all":             { "label": "Todos" },
       "cloud-architect": { "label": "Arquiteto Cloud" },
@@ -563,6 +564,43 @@
       "title": "Trilha de Certificação AWS · GCP · AZURE",
       "subtitle": "Veja as certificações nível por nível e os caminhos de carreira de relance.",
       "button": "Ver Trilha de Certificação"
+    }
+  },
+  "certLanding": {
+    "home": "Início",
+    "certifications": "Certificações",
+    "practiceExamBadge": "Simulado",
+    "startFree": "Comece a Praticar Gratuitamente",
+    "officialGuide": "Guia Oficial do Exame",
+    "validity": "Validade: {{years}} anos após aprovação (renovação necessária)",
+    "domainTitle": "Distribuição por Domínio do Exame",
+    "domainSubtitle": "{{questions}} questões · {{duration}} min · Pontuação mínima {{score}}",
+    "studyModesTitle": "3 Modos de Estudo",
+    "studyModesSubtitle": "Escolha o modo que se adapta ao seu estilo de aprendizado.",
+    "practiceMode": {
+      "title": "Modo Prática",
+      "desc": "Receba feedback imediato após cada questão. Ideal para revisar respostas erradas."
+    },
+    "studyMode": {
+      "title": "Modo Estudo",
+      "desc": "Estude com as respostas mostradas desde o início. Recomendado para iniciantes."
+    },
+    "examMode": {
+      "title": "Modo Exame",
+      "desc": "Ambiente cronometrado de {{duration}} minutos correspondendo às condições reais do exame."
+    },
+    "ctaTitle": "Comece sua jornada {{code}} hoje",
+    "ctaSubtitle": "Pratique com mais de {{count}} questões. Comece gratuitamente.",
+    "seo": {
+      "titleSuffix": "Simulado"
+    },
+    "stats": {
+      "duration": "Duração",
+      "durationUnit": "min",
+      "questions": "Questões",
+      "questionsUnit": "Q",
+      "passScore": "Pontuação",
+      "practiceQ": "Simulado"
     }
   }
 }

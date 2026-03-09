@@ -537,6 +537,7 @@
     "available": "Disponible",
     "comingSoon": "Próximamente",
     "practiceBtn": "Practicar Ahora",
+    "learnMore": "Ver Más",
     "careers": {
       "all":             { "label": "Todos" },
       "cloud-architect": { "label": "Arquitecto Cloud" },
@@ -563,6 +564,43 @@
       "title": "Hoja de Ruta de Certificación AWS · GCP · AZURE",
       "subtitle": "Ve las certificaciones nivel por nivel y las trayectorias profesionales de un vistazo.",
       "button": "Ver Hoja de Ruta de Certificación"
+    }
+  },
+  "certLanding": {
+    "home": "Inicio",
+    "certifications": "Certificaciones",
+    "practiceExamBadge": "Simulacro",
+    "startFree": "Comenzar a Practicar Gratis",
+    "officialGuide": "Guía Oficial del Examen",
+    "validity": "Validez: {{years}} años tras aprobar (renovación requerida)",
+    "domainTitle": "Desglose por Dominio del Examen",
+    "domainSubtitle": "{{questions}} preguntas · {{duration}} min · Puntuación mínima {{score}}",
+    "studyModesTitle": "3 Modos de Estudio",
+    "studyModesSubtitle": "Elige el modo que se adapte a tu estilo de aprendizaje.",
+    "practiceMode": {
+      "title": "Modo Práctica",
+      "desc": "Obtén retroalimentación instantánea después de cada pregunta. Ideal para revisar respuestas incorrectas."
+    },
+    "studyMode": {
+      "title": "Modo Estudio",
+      "desc": "Estudia con las respuestas mostradas desde el principio. Recomendado para principiantes."
+    },
+    "examMode": {
+      "title": "Modo Examen",
+      "desc": "Entorno cronometrado de {{duration}} minutos que coincide con las condiciones del examen real."
+    },
+    "ctaTitle": "Comienza tu camino hacia {{code}} hoy",
+    "ctaSubtitle": "Practica con más de {{count}} preguntas. Comienza gratis.",
+    "seo": {
+      "titleSuffix": "Simulacro"
+    },
+    "stats": {
+      "duration": "Duración",
+      "durationUnit": "min",
+      "questions": "Preguntas",
+      "questionsUnit": "P",
+      "passScore": "Puntuación",
+      "practiceQ": "Práctica"
     }
   }
 }

@@ -537,6 +537,7 @@
     "available": "利用可能",
     "comingSoon": "近日公開",
     "practiceBtn": "今すぐ練習",
+    "learnMore": "詳細を見る",
     "careers": {
       "all":             { "label": "すべて" },
       "cloud-architect": { "label": "クラウドアーキテクト" },
@@ -563,6 +564,43 @@
       "title": "AWS・GCP・AZURE 資格ロードマップ",
       "subtitle": "レベル別の資格とキャリアパスを一目で確認できます。",
       "button": "資格ロードマップを見る"
+    }
+  },
+  "certLanding": {
+    "home": "ホーム",
+    "certifications": "資格認定",
+    "practiceExamBadge": "模擬試験",
+    "startFree": "無料で練習を始める",
+    "officialGuide": "公式試験ガイド",
+    "validity": "有効期限：取得後{{years}}年（更新が必要）",
+    "domainTitle": "試験ドメイン別出題割合",
+    "domainSubtitle": "全{{questions}}問 · {{duration}}分 · 合格点{{score}}点",
+    "studyModesTitle": "3つの学習モード",
+    "studyModesSubtitle": "学習目的に合わせてモードを選択してください。",
+    "practiceMode": {
+      "title": "練習モード",
+      "desc": "各問題の後すぐにフィードバックが得られます。間違えた問題の復習に最適。"
+    },
+    "studyMode": {
+      "title": "学習モード",
+      "desc": "最初から解答・解説を見ながら概念を学びます。初学者にお勧め。"
+    },
+    "examMode": {
+      "title": "試験モード",
+      "desc": "実際の試験と同じ{{duration}}分制限環境。本番感覚を最大化します。"
+    },
+    "ctaTitle": "{{code}}の合格に向けて今すぐ始めよう",
+    "ctaSubtitle": "{{count}}問以上の問題で実力を養いましょう。無料で始められます。",
+    "seo": {
+      "titleSuffix": "模擬試験"
+    },
+    "stats": {
+      "duration": "試験時間",
+      "durationUnit": "分",
+      "questions": "出題数",
+      "questionsUnit": "問",
+      "passScore": "合格点",
+      "practiceQ": "練習問題"
     }
   }
 }

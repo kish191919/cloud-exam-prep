@@ -16,7 +16,7 @@ export async function getAllExams(): Promise<ExamConfig[]> {
     id: exam.id,
     title: exam.title,
     code: exam.code,
-    certification: exam.certification as 'AWS' | 'GCP' | 'AZURE',
+    certification: (exam.certification as string)?.toUpperCase() as 'AWS' | 'GCP' | 'AZURE',
     description: exam.description,
     timeLimitMinutes: exam.time_limit_minutes,
     passingScore: exam.passing_score,

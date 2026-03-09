@@ -537,6 +537,7 @@
     "available": "문제 있음",
     "comingSoon": "준비중",
     "practiceBtn": "실습하기",
+    "learnMore": "자세히 보기",
     "careers": {
       "all":             { "label": "전체" },
       "cloud-architect": { "label": "클라우드 아키텍트" },
@@ -563,6 +564,43 @@
       "title": "AWS · GCP · AZURE 자격증 로드맵",
       "subtitle": "입문부터 전문가까지 레벨별 자격증과 커리어 경로를 한눈에 확인하세요.",
       "button": "자격증 로드맵 보기"
+    }
+  },
+  "certLanding": {
+    "home": "홈",
+    "certifications": "자격증",
+    "practiceExamBadge": "한국어 모의고사",
+    "startFree": "무료로 연습 시작하기",
+    "officialGuide": "공식 시험 안내",
+    "validity": "유효 기간: 취득 후 {{years}}년 (재인증 필요)",
+    "domainTitle": "도메인별 출제 비율",
+    "domainSubtitle": "총 {{questions}}문항 · {{duration}}분 · 합격 점수 {{score}}점",
+    "studyModesTitle": "3가지 학습 모드",
+    "studyModesSubtitle": "학습 목적에 맞게 모드를 선택하세요.",
+    "practiceMode": {
+      "title": "연습 모드",
+      "desc": "문제를 풀면 즉시 정답과 해설을 확인합니다. 틀린 문제 복습에 최적."
+    },
+    "studyMode": {
+      "title": "해설 모드",
+      "desc": "정답·해설을 처음부터 보며 개념을 학습합니다. 처음 공부하는 분께 추천."
+    },
+    "examMode": {
+      "title": "실전 모드",
+      "desc": "실제 시험과 동일한 {{duration}}분 제한 환경. 실전 감각을 극대화합니다."
+    },
+    "ctaTitle": "{{code}} 합격을 향해 지금 시작하세요",
+    "ctaSubtitle": "{{count}}개 이상의 한국어 문제로 실전 감각을 키우세요. 무료로 시작할 수 있습니다.",
+    "seo": {
+      "titleSuffix": "한국어 모의고사"
+    },
+    "stats": {
+      "duration": "시험 시간",
+      "durationUnit": "분",
+      "questions": "출제 문항",
+      "questionsUnit": "문항",
+      "passScore": "합격 점수",
+      "practiceQ": "모의고사"
     }
   }
 }

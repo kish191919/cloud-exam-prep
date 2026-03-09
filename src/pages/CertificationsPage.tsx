@@ -137,7 +137,7 @@ function CertCard({ cert, providerColor, activeCareer, isKo }: CertCardProps) {
         <div className="flex flex-col gap-2 mt-1">
           <Link to={`/cert/${cert.examId}`}>
             <Button size="sm" variant="outline" className="w-full border-accent/50 text-accent hover:bg-accent/10">
-              {isKo ? '자세히 보기' : 'Learn More'}
+              {t('certifications.learnMore')}
             </Button>
           </Link>
           <Link to="/exams">

@@ -13,7 +13,7 @@ import { PROVIDERS } from '@/data/certifications';
 const CertLandingPage = () => {
   const { examId } = useParams<{ examId: string }>();
   const { user, openAuthModal } = useAuth();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation('pages');
   const isKo = i18n.language === 'ko';
 
   const data = examId ? CERT_LANDING_DATA[examId] : null;
@@ -31,10 +31,8 @@ const CertLandingPage = () => {
     }
   };
 
-  const pageTitle = isKo
-    ? `${data.fullName} (${data.code}) 한국어 모의고사 | CloudMasterIT`
-    : `${data.fullNameEn} (${data.code}) Practice Exam | CloudMasterIT`;
-
+  const certName = isKo ? data.fullName : data.fullNameEn;
+  const pageTitle = `${certName} (${data.code}) ${t('certLanding.seo.titleSuffix')} | CloudMasterIT`;
   const metaDesc = isKo ? data.metaDescription : data.metaDescriptionEn;
 
   const jsonLd = {
@@ -53,22 +51,22 @@ const CertLandingPage = () => {
 
   const stats = [
     {
-      label: isKo ? '시험 시간' : 'Duration',
-      value: `${data.durationMin}${isKo ? '분' : 'min'}`,
+      label: t('certLanding.stats.duration'),
+      value: `${data.durationMin}${t('certLanding.stats.durationUnit')}`,
       icon: <Clock className="h-4 w-4" />,
     },
     {
-      label: isKo ? '출제 문항' : 'Questions',
-      value: `${data.examQuestions}${isKo ? '문항' : 'Q'}`,
+      label: t('certLanding.stats.questions'),
+      value: `${data.examQuestions}${t('certLanding.stats.questionsUnit')}`,
       icon: <FileText className="h-4 w-4" />,
     },
     {
-      label: isKo ? '합격 점수' : 'Pass Score',
+      label: t('certLanding.stats.passScore'),
       value: `${data.passingScore}/1000`,
       icon: <Target className="h-4 w-4" />,
     },
     {
-      label: isKo ? '모의고사' : 'Practice Q',
+      label: t('certLanding.stats.practiceQ'),
       value: `${data.dbCountApprox.toLocaleString()}+`,
       icon: <BookOpen className="h-4 w-4" />,
     },
@@ -96,11 +94,11 @@ const CertLandingPage = () => {
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-xs text-primary-foreground/60 mb-6">
             <Link to="/" className="hover:text-primary-foreground/90 transition-colors">
-              {isKo ? '홈' : 'Home'}
+              {t('certLanding.home')}
             </Link>
             <span>/</span>
             <Link to="/certifications" className="hover:text-primary-foreground/90 transition-colors">
-              {isKo ? '자격증' : 'Certifications'}
+              {t('certLanding.certifications')}
             </Link>
             <span>/</span>
             <span className="text-primary-foreground/90">{data.code}</span>
@@ -120,9 +118,9 @@ const CertLandingPage = () => {
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-black leading-tight break-keep">
-                {data.fullName}
+                {certName}
                 <span className="block text-accent mt-1">
-                  ({data.code}) {isKo ? '한국어 모의고사' : 'Practice Exam'}
+                  ({data.code}) {t('certLanding.practiceExamBadge')}
                 </span>
               </h1>
             </div>

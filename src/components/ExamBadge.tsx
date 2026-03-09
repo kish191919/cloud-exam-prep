@@ -11,7 +11,8 @@ const PROVIDER_CONFIG = {
 };
 
 export default function ExamBadge({ provider, code, size = 80 }: ExamBadgeProps) {
-  const { accent, label } = PROVIDER_CONFIG[provider];
+  const { accent, label } = PROVIDER_CONFIG[provider as keyof typeof PROVIDER_CONFIG]
+    ?? { accent: '#888888', label: provider };
   const dashIdx = code.indexOf('-');
   const hasDash = dashIdx !== -1;
   const part1 = hasDash ? code.slice(0, dashIdx) : code;

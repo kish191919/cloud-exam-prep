@@ -537,6 +537,7 @@
     "available": "Available",
     "comingSoon": "Coming Soon",
     "practiceBtn": "Practice Now",
+    "learnMore": "Learn More",
     "careers": {
       "all":             { "label": "All" },
       "cloud-architect": { "label": "Cloud Architect" },
@@ -563,6 +564,43 @@
       "title": "AWS · GCP · AZURE Certification Roadmap",
       "subtitle": "See level-by-level certifications and career paths at a glance.",
       "button": "View Certification Roadmap"
+    }
+  },
+  "certLanding": {
+    "home": "Home",
+    "certifications": "Certifications",
+    "practiceExamBadge": "Practice Exam",
+    "startFree": "Start Practicing for Free",
+    "officialGuide": "Official Exam Guide",
+    "validity": "Validity: {{years}} years after passing (renewal required)",
+    "domainTitle": "Exam Domain Breakdown",
+    "domainSubtitle": "{{questions}} questions · {{duration}} min · Passing score {{score}}",
+    "studyModesTitle": "3 Study Modes",
+    "studyModesSubtitle": "Choose the mode that fits your learning style.",
+    "practiceMode": {
+      "title": "Practice Mode",
+      "desc": "Get instant feedback after each question. Best for reviewing wrong answers."
+    },
+    "studyMode": {
+      "title": "Study Mode",
+      "desc": "Study with answers shown from the start. Recommended for beginners."
+    },
+    "examMode": {
+      "title": "Exam Mode",
+      "desc": "Timed {{duration}}-minute environment matching real exam conditions."
+    },
+    "ctaTitle": "Start your {{code}} journey today",
+    "ctaSubtitle": "Practice with {{count}}+ questions. Start for free.",
+    "seo": {
+      "titleSuffix": "Practice Exam"
+    },
+    "stats": {
+      "duration": "Duration",
+      "durationUnit": "min",
+      "questions": "Questions",
+      "questionsUnit": "Q",
+      "passScore": "Pass Score",
+      "practiceQ": "Practice Q"
     }
   }
 }
