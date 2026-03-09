@@ -63,15 +63,20 @@ interface CertCardProps {
   cert: Certification;
   providerColor: string;
   activeCareer: CareerPath;
-  isKo: boolean;
+  lang: string;
 }
 
-function CertCard({ cert, providerColor, activeCareer, isKo }: CertCardProps) {
+function CertCard({ cert, providerColor, activeCareer, lang }: CertCardProps) {
   const { t } = useTranslation('pages');
   const levelMeta = LEVEL_META[cert.level];
   const isHighlighted = activeCareer === 'all' || cert.careerPaths.includes(activeCareer);
   const hasExam = Boolean(cert.examId);
-  const description = isKo ? cert.description : cert.descriptionEn;
+  const description =
+    lang === 'ko' ? cert.description
+    : lang === 'ja' ? (cert.descriptionJa ?? cert.descriptionEn)
+    : lang === 'es' ? (cert.descriptionEs ?? cert.descriptionEn)
+    : lang === 'pt' ? (cert.descriptionPt ?? cert.descriptionEn)
+    : cert.descriptionEn;
 
   return (
     <div
@@ -165,10 +170,10 @@ interface LevelSectionProps {
   certs: Certification[];
   providerColor: string;
   activeCareer: CareerPath;
-  isKo: boolean;
+  lang: string;
 }
 
-function LevelSection({ level, certs, providerColor, activeCareer, isKo }: LevelSectionProps) {
+function LevelSection({ level, certs, providerColor, activeCareer, lang }: LevelSectionProps) {
   const { t } = useTranslation('pages');
   if (certs.length === 0) return null;
   const meta = LEVEL_META[level];
@@ -193,7 +198,7 @@ function LevelSection({ level, certs, providerColor, activeCareer, isKo }: Level
             cert={cert}
             providerColor={providerColor}
             activeCareer={activeCareer}
-            isKo={isKo}
+            lang={lang}
           />
         ))}
       </div>
@@ -207,12 +212,12 @@ function LevelSection({ level, certs, providerColor, activeCareer, isKo }: Level
 interface ProviderRoadmapProps {
   provider: ProviderConfig;
   activeCareer: CareerPath;
-  isKo: boolean;
+  lang: string;
 }
 
-function ProviderRoadmap({ provider, activeCareer, isKo }: ProviderRoadmapProps) {
+function ProviderRoadmap({ provider, activeCareer, lang }: ProviderRoadmapProps) {
   const { t } = useTranslation('pages');
-  const tagline = isKo ? provider.tagline : provider.taglineEn;
+  const tagline = lang === 'ko' ? provider.tagline : provider.taglineEn;
 
   return (
     <div className="space-y-6">
@@ -242,7 +247,7 @@ function ProviderRoadmap({ provider, activeCareer, isKo }: ProviderRoadmapProps)
               certs={certs}
               providerColor={provider.color}
               activeCareer={activeCareer}
-              isKo={isKo}
+              lang={lang}
             />
             {idx < provider.levels.length - 1 && (
               <div className="flex justify-center py-3">
@@ -262,7 +267,7 @@ function ProviderRoadmap({ provider, activeCareer, isKo }: ProviderRoadmapProps)
 const CertificationsPage = () => {
   const [activeCareer, setActiveCareer] = useState<CareerPath>('all');
   const { t, i18n } = useTranslation('pages');
-  const isKo = i18n.language === 'ko';
+  const lang = i18n.language;
 
   return (
     <div className="min-h-screen">
@@ -318,7 +323,7 @@ const CertificationsPage = () => {
 
             {PROVIDERS.map((provider) => (
               <TabsContent key={provider.id} value={provider.id}>
-                <ProviderRoadmap provider={provider} activeCareer={activeCareer} isKo={isKo} />
+                <ProviderRoadmap provider={provider} activeCareer={activeCareer} lang={lang} />
               </TabsContent>
             ))}
           </Tabs>
