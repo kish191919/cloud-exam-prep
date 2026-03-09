@@ -48,6 +48,7 @@ const QuestionDisplay = ({
 }: QuestionDisplayProps) => {
   const { i18n } = useTranslation();
   const lang = i18n.language;
+  const isEn = lang === 'en';
   const loc = (ko: string, en?: string, pt?: string, es?: string, ja?: string): string => {
     if (lang === 'en' && en) return en;
     if (lang === 'pt' && pt) return pt;
