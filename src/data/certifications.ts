@@ -9,6 +9,9 @@ export interface Certification {
   careerPaths: CareerPath[];
   description: string;     // 한국어 설명
   descriptionEn: string;   // 영어 설명
+  descriptionJa?: string;  // 일본어 설명
+  descriptionEs?: string;  // 스페인어 설명
+  descriptionPt?: string;  // 포르투갈어 설명
   examId?: string; // Supabase exams.id — 있으면 /exams 링크, 없으면 준비중
 }
 
@@ -85,6 +88,9 @@ const awsCertifications: Certification[] = [
     careerPaths: ['all'],
     description: 'AWS 클라우드의 핵심 개념, 서비스, 요금제를 전반적으로 다루는 입문 자격증. 모든 커리어의 출발점.',
     descriptionEn: 'Entry-level certification covering core AWS cloud concepts, services, and pricing. The ideal starting point for any cloud career.',
+    descriptionJa: 'AWSクラウドのコアコンセプト、サービス、料金を幅広くカバーする入門資格。あらゆるクラウドキャリアの出発点。',
+    descriptionEs: 'Certificación de nivel básico que cubre los conceptos, servicios y precios principales de AWS Cloud. El punto de partida ideal para cualquier carrera en la nube.',
+    descriptionPt: 'Certificação de nível básico cobrindo conceitos, serviços e preços essenciais da AWS Cloud. O ponto de partida ideal para qualquer carreira em nuvem.',
     examId: 'aws-clf-c02',
   },
   {
@@ -95,6 +101,9 @@ const awsCertifications: Certification[] = [
     careerPaths: ['data-ml'],
     description: 'AWS AI/ML 서비스와 생성형 AI 개념을 다루는 AI 전문 입문 자격증. 기술 배경 없이도 도전 가능.',
     descriptionEn: 'Foundational AI certification covering AWS AI/ML services and generative AI concepts. No technical background required.',
+    descriptionJa: 'AWS AI/MLサービスと生成AIの概念をカバーする基礎的なAI資格。技術的な背景がなくても挑戦できます。',
+    descriptionEs: 'Certificación fundacional de IA que cubre los servicios AWS AI/ML y conceptos de IA generativa. No se requiere experiencia técnica previa.',
+    descriptionPt: 'Certificação fundacional de IA cobrindo serviços AWS AI/ML e conceitos de IA generativa. Não requer experiência técnica prévia.',
     examId: 'aws-aif-c01',
   },
   // Associate
@@ -106,6 +115,9 @@ const awsCertifications: Certification[] = [
     careerPaths: ['cloud-architect'],
     description: 'AWS에서 확장 가능하고 가용성 높은 아키텍처를 설계하는 역량을 검증. 가장 인기 있는 AWS 자격증.',
     descriptionEn: 'Validates skills in designing scalable, highly available architectures on AWS. The most popular AWS certification.',
+    descriptionJa: 'AWSでスケーラブルで可用性の高いアーキテクチャを設計するスキルを検証。最も人気のあるAWS資格。',
+    descriptionEs: 'Valida las habilidades para diseñar arquitecturas escalables y de alta disponibilidad en AWS. La certificación AWS más popular.',
+    descriptionPt: 'Valida habilidades no design de arquiteturas escaláveis e altamente disponíveis na AWS. A certificação AWS mais popular.',
     examId: 'aws-saa-c03',
   },
   {
@@ -116,6 +128,9 @@ const awsCertifications: Certification[] = [
     careerPaths: ['developer'],
     description: 'AWS 기반 애플리케이션 개발, 배포, 디버깅 역량을 검증. CI/CD와 서버리스 아키텍처 포함.',
     descriptionEn: 'Validates proficiency in developing, deploying, and debugging AWS-based applications. Covers CI/CD and serverless architectures.',
+    descriptionJa: 'AWSベースのアプリケーションの開発・デプロイ・デバッグ能力を検証。CI/CDとサーバーレスアーキテクチャを含む。',
+    descriptionEs: 'Valida la competencia en desarrollo, despliegue y depuración de aplicaciones basadas en AWS. Cubre CI/CD y arquitecturas serverless.',
+    descriptionPt: 'Valida proficiência no desenvolvimento, implantação e depuração de aplicações baseadas em AWS. Cobre CI/CD e arquiteturas serverless.',
     examId: 'aws-dea-c01',
   },
   {
@@ -296,6 +311,9 @@ const azureCertifications: Certification[] = [
     careerPaths: ['all'],
     description: 'AZURE 클라우드 기초 개념, 서비스, 요금제를 다루는 입문 자격증. 기술 배경 없이도 응시 가능.',
     descriptionEn: 'Entry-level certification covering AZURE cloud basics, services, and pricing. No technical background required.',
+    descriptionJa: 'AZUREクラウドの基礎概念、サービス、料金を扱う入門資格。技術的な背景がなくても受験できます。',
+    descriptionEs: 'Certificación de nivel básico que cubre los fundamentos de la nube AZURE, servicios y precios. No se requiere experiencia técnica previa.',
+    descriptionPt: 'Certificação de nível básico cobrindo fundamentos da nuvem AZURE, serviços e preços. Nenhuma experiência técnica prévia necessária.',
     examId: 'azure-az-900',
   },
   {

@@ -35,10 +35,13 @@ const certColors: Record<string, string> = {
 const PROVIDER_ORDER: Record<string, number> = { 'AWS': 0, 'AZURE': 1, 'GCP': 2 };
 
 // certifications.ts의 description(한국어) / descriptionEn(영어) 데이터를 examId 기준으로 매핑
-const EXAM_DESC_MAP: Record<string, { ko: string; en: string }> = {
+const EXAM_DESC_MAP: Record<string, { ko: string; en: string; ja?: string; es?: string; pt?: string }> = {
   'aws-dea-c01': {
     ko: 'AWS 데이터 서비스를 활용한 데이터 파이프라인 구축과 데이터 저장소 설계 역량을 검증합니다.',
     en: 'Validates skills in implementing data pipelines and designing data stores using AWS data services.',
+    ja: 'AWSデータサービスを使用したデータパイプラインの構築とデータストア設計スキルを検証します。',
+    es: 'Valida habilidades en la implementación de pipelines de datos y diseño de almacenes de datos usando servicios de datos de AWS.',
+    pt: 'Valida habilidades na implementação de pipelines de dados e design de armazenamentos de dados usando serviços de dados da AWS.',
   },
 };
 for (const provider of PROVIDERS) {
@@ -47,6 +50,9 @@ for (const provider of PROVIDERS) {
       EXAM_DESC_MAP[cert.examId] = {
         ko: cert.description,
         en: cert.descriptionEn,
+        ja: cert.descriptionJa,
+        es: cert.descriptionEs,
+        pt: cert.descriptionPt,
       };
     }
   }
@@ -646,10 +652,16 @@ const ExamList = () => {
                         <h3 className="font-semibold text-lg leading-snug">{exam.title}</h3>
                         {/* 설명: 데스크탑에서만 표시, 확장 시 숨김 */}
                         <p className={`text-sm text-muted-foreground mt-1 line-clamp-2 ${isExpanded ? 'hidden' : 'hidden md:block'}`}>
-                          {isKo
-                            ? (EXAM_DESC_MAP[exam.id]?.ko ?? exam.description)
-                            : (EXAM_DESC_MAP[exam.id]?.en ?? exam.description)
-                          }
+                          {(() => {
+                            const desc = EXAM_DESC_MAP[exam.id];
+                            if (!desc) return exam.description;
+                            const lang = i18n.language;
+                            if (lang === 'ko') return desc.ko;
+                            if (lang === 'ja') return desc.ja ?? desc.en;
+                            if (lang === 'es') return desc.es ?? desc.en;
+                            if (lang === 'pt') return desc.pt ?? desc.en;
+                            return desc.en;
+                          })()}
                         </p>
                       </div>
 
