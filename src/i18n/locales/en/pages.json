@@ -312,10 +312,10 @@
     }
   },
   "board": {
-    "title": "Announcements & Info",
+    "title": "Announcements",
     "subtitle": "Stay updated on exam changes, study tips, and useful resources.",
     "empty": "No posts yet.",
-    "backToList": "← Back to Board",
+    "backToList": "Back to Board",
     "categories": {
       "all": "All",
       "notice": "Notice",
