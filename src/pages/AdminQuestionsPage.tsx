@@ -100,9 +100,35 @@ interface QFormProps {
 
 const OPTION_LABELS = ['A', 'B', 'C', 'D'] as const;
 
+const LANGS = [
+  { key: 'en', label: 'EN' },
+  { key: 'pt', label: 'PT' },
+  { key: 'es', label: 'ES' },
+  { key: 'ja', label: 'JA' },
+] as const;
+type LangKey = typeof LANGS[number]['key'];
+
 const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps) => {
-  const empty = { text: '', text_en: '', a: '', b: '', c: '', d: '', a_en: '', b_en: '', c_en: '', d_en: '', a_exp: '', b_exp: '', c_exp: '', d_exp: '', correct: 'a' as 'a'|'b'|'c'|'d', explanation: '', explanation_en: '', tags: '', keyPoints: '', keyPoints_en: '', refLinks: [] as { name: string; url: string }[] };
+  const empty = {
+    text: '', text_en: '', text_pt: '', text_es: '', text_ja: '',
+    a: '', b: '', c: '', d: '',
+    a_en: '', b_en: '', c_en: '', d_en: '',
+    a_pt: '', b_pt: '', c_pt: '', d_pt: '',
+    a_es: '', b_es: '', c_es: '', d_es: '',
+    a_ja: '', b_ja: '', c_ja: '', d_ja: '',
+    a_exp: '', b_exp: '', c_exp: '', d_exp: '',
+    a_exp_en: '', b_exp_en: '', c_exp_en: '', d_exp_en: '',
+    a_exp_pt: '', b_exp_pt: '', c_exp_pt: '', d_exp_pt: '',
+    a_exp_es: '', b_exp_es: '', c_exp_es: '', d_exp_es: '',
+    a_exp_ja: '', b_exp_ja: '', c_exp_ja: '', d_exp_ja: '',
+    correct: 'a' as 'a'|'b'|'c'|'d',
+    explanation: '', explanation_en: '', explanation_pt: '', explanation_es: '', explanation_ja: '',
+    tags: '',
+    keyPoints: '', keyPoints_en: '', keyPoints_pt: '', keyPoints_es: '', keyPoints_ja: '',
+    refLinks: [] as { name: string; url: string }[],
+  };
   const [form, setForm] = useState(empty);
+  const [langTab, setLangTab] = useState<LangKey>('en');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -110,20 +136,54 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
     if (edit) {
       const opts: Record<string, string> = {};
       const opts_en: Record<string, string> = {};
+      const opts_pt: Record<string, string> = {};
+      const opts_es: Record<string, string> = {};
+      const opts_ja: Record<string, string> = {};
       const exps: Record<string, string> = {};
-      edit.options.forEach(o => { opts[o.id] = o.text; opts_en[o.id] = o.textEn ?? ''; exps[o.id] = o.explanation ?? ''; });
+      const exps_en: Record<string, string> = {};
+      const exps_pt: Record<string, string> = {};
+      const exps_es: Record<string, string> = {};
+      const exps_ja: Record<string, string> = {};
+      edit.options.forEach(o => {
+        opts[o.id] = o.text;
+        opts_en[o.id] = o.textEn ?? '';
+        opts_pt[o.id] = o.textPt ?? '';
+        opts_es[o.id] = o.textEs ?? '';
+        opts_ja[o.id] = o.textJa ?? '';
+        exps[o.id] = o.explanation ?? '';
+        exps_en[o.id] = o.explanationEn ?? '';
+        exps_pt[o.id] = o.explanationPt ?? '';
+        exps_es[o.id] = o.explanationEs ?? '';
+        exps_ja[o.id] = o.explanationJa ?? '';
+      });
       setForm({
         text: edit.text,
         text_en: edit.textEn ?? '',
+        text_pt: edit.textPt ?? '',
+        text_es: edit.textEs ?? '',
+        text_ja: edit.textJa ?? '',
         a: opts['a'] ?? '', b: opts['b'] ?? '', c: opts['c'] ?? '', d: opts['d'] ?? '',
         a_en: opts_en['a'] ?? '', b_en: opts_en['b'] ?? '', c_en: opts_en['c'] ?? '', d_en: opts_en['d'] ?? '',
+        a_pt: opts_pt['a'] ?? '', b_pt: opts_pt['b'] ?? '', c_pt: opts_pt['c'] ?? '', d_pt: opts_pt['d'] ?? '',
+        a_es: opts_es['a'] ?? '', b_es: opts_es['b'] ?? '', c_es: opts_es['c'] ?? '', d_es: opts_es['d'] ?? '',
+        a_ja: opts_ja['a'] ?? '', b_ja: opts_ja['b'] ?? '', c_ja: opts_ja['c'] ?? '', d_ja: opts_ja['d'] ?? '',
         a_exp: exps['a'] ?? '', b_exp: exps['b'] ?? '', c_exp: exps['c'] ?? '', d_exp: exps['d'] ?? '',
+        a_exp_en: exps_en['a'] ?? '', b_exp_en: exps_en['b'] ?? '', c_exp_en: exps_en['c'] ?? '', d_exp_en: exps_en['d'] ?? '',
+        a_exp_pt: exps_pt['a'] ?? '', b_exp_pt: exps_pt['b'] ?? '', c_exp_pt: exps_pt['c'] ?? '', d_exp_pt: exps_pt['d'] ?? '',
+        a_exp_es: exps_es['a'] ?? '', b_exp_es: exps_es['b'] ?? '', c_exp_es: exps_es['c'] ?? '', d_exp_es: exps_es['d'] ?? '',
+        a_exp_ja: exps_ja['a'] ?? '', b_exp_ja: exps_ja['b'] ?? '', c_exp_ja: exps_ja['c'] ?? '', d_exp_ja: exps_ja['d'] ?? '',
         correct: edit.correctOptionId as 'a'|'b'|'c'|'d',
         explanation: edit.explanation,
         explanation_en: edit.explanationEn ?? '',
+        explanation_pt: edit.explanationPt ?? '',
+        explanation_es: edit.explanationEs ?? '',
+        explanation_ja: edit.explanationJa ?? '',
         tags: edit.tags.join(', '),
         keyPoints: edit.keyPoints ?? '',
         keyPoints_en: edit.keyPointsEn ?? '',
+        keyPoints_pt: edit.keyPointsPt ?? '',
+        keyPoints_es: edit.keyPointsEs ?? '',
+        keyPoints_ja: edit.keyPointsJa ?? '',
         refLinks: Array.isArray(edit.refLinks) ? edit.refLinks : [],
       });
     } else {
@@ -145,18 +205,27 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
       const input: Omit<QuestionInput, 'examId'> = {
         text: form.text.trim(),
         textEn: form.text_en.trim() || undefined,
+        textPt: form.text_pt.trim() || undefined,
+        textEs: form.text_es.trim() || undefined,
+        textJa: form.text_ja.trim() || undefined,
         options: ([
-          { id: 'a' as const, text: form.a.trim(), textEn: form.a_en.trim() || undefined, explanation: form.a_exp.trim() || undefined },
-          { id: 'b' as const, text: form.b.trim(), textEn: form.b_en.trim() || undefined, explanation: form.b_exp.trim() || undefined },
-          { id: 'c' as const, text: form.c.trim(), textEn: form.c_en.trim() || undefined, explanation: form.c_exp.trim() || undefined },
-          { id: 'd' as const, text: form.d.trim(), textEn: form.d_en.trim() || undefined, explanation: form.d_exp.trim() || undefined },
-        ] as { id: 'a'|'b'|'c'|'d'; text: string; textEn?: string; explanation?: string }[]).filter(o => o.text),
+          { id: 'a' as const, text: form.a.trim(), textEn: form.a_en.trim() || undefined, textPt: form.a_pt.trim() || undefined, textEs: form.a_es.trim() || undefined, textJa: form.a_ja.trim() || undefined, explanation: form.a_exp.trim() || undefined, explanationEn: form.a_exp_en.trim() || undefined, explanationPt: form.a_exp_pt.trim() || undefined, explanationEs: form.a_exp_es.trim() || undefined, explanationJa: form.a_exp_ja.trim() || undefined },
+          { id: 'b' as const, text: form.b.trim(), textEn: form.b_en.trim() || undefined, textPt: form.b_pt.trim() || undefined, textEs: form.b_es.trim() || undefined, textJa: form.b_ja.trim() || undefined, explanation: form.b_exp.trim() || undefined, explanationEn: form.b_exp_en.trim() || undefined, explanationPt: form.b_exp_pt.trim() || undefined, explanationEs: form.b_exp_es.trim() || undefined, explanationJa: form.b_exp_ja.trim() || undefined },
+          { id: 'c' as const, text: form.c.trim(), textEn: form.c_en.trim() || undefined, textPt: form.c_pt.trim() || undefined, textEs: form.c_es.trim() || undefined, textJa: form.c_ja.trim() || undefined, explanation: form.c_exp.trim() || undefined, explanationEn: form.c_exp_en.trim() || undefined, explanationPt: form.c_exp_pt.trim() || undefined, explanationEs: form.c_exp_es.trim() || undefined, explanationJa: form.c_exp_ja.trim() || undefined },
+          { id: 'd' as const, text: form.d.trim(), textEn: form.d_en.trim() || undefined, textPt: form.d_pt.trim() || undefined, textEs: form.d_es.trim() || undefined, textJa: form.d_ja.trim() || undefined, explanation: form.d_exp.trim() || undefined, explanationEn: form.d_exp_en.trim() || undefined, explanationPt: form.d_exp_pt.trim() || undefined, explanationEs: form.d_exp_es.trim() || undefined, explanationJa: form.d_exp_ja.trim() || undefined },
+        ]).filter(o => o.text),
         correctOptionId: form.correct,
         explanation: form.explanation.trim(),
         explanationEn: form.explanation_en.trim() || undefined,
+        explanationPt: form.explanation_pt.trim() || undefined,
+        explanationEs: form.explanation_es.trim() || undefined,
+        explanationJa: form.explanation_ja.trim() || undefined,
         tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
         keyPoints: form.keyPoints.trim() || undefined,
         keyPointsEn: form.keyPoints_en.trim() || undefined,
+        keyPointsPt: form.keyPoints_pt.trim() || undefined,
+        keyPointsEs: form.keyPoints_es.trim() || undefined,
+        keyPointsJa: form.keyPoints_ja.trim() || undefined,
         refLinks: form.refLinks.filter(r => r.name.trim() && r.url.trim()),
       };
       if (edit) {
@@ -181,6 +250,25 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
         </DialogHeader>
 
         <div className="space-y-4 py-2">
+          {/* Language tab selector */}
+          <div className="flex items-center gap-1 border rounded-lg p-1 bg-muted/30 w-fit">
+            <span className="text-xs text-muted-foreground px-2">번역 언어:</span>
+            {LANGS.map(l => (
+              <button
+                key={l.key}
+                type="button"
+                onClick={() => setLangTab(l.key)}
+                className={`px-3 py-1 rounded text-xs font-medium transition-all ${
+                  langTab === l.key
+                    ? 'bg-accent text-accent-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {l.label}
+              </button>
+            ))}
+          </div>
+
           {/* Question text */}
           <div>
             <label className="text-sm font-medium mb-1.5 block">문제 텍스트 *</label>
@@ -191,10 +279,10 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
               onChange={e => set('text', e.target.value)}
             />
             <Textarea
-              placeholder="English question text (optional)"
+              placeholder={`${langTab.toUpperCase()} question text (optional)`}
               rows={2}
-              value={form.text_en}
-              onChange={e => set('text_en', e.target.value)}
+              value={form[`text_${langTab}` as keyof typeof form] as string}
+              onChange={e => set(`text_${langTab}`, e.target.value)}
               className="mt-1.5 text-sm"
             />
           </div>
@@ -225,18 +313,24 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
                   </div>
                   <div className="ml-9">
                     <Input
-                      placeholder={`Option ${OPTION_LABELS[i]} in English (optional)`}
-                      value={form[`${id}_en` as keyof typeof form] as string}
-                      onChange={e => set(`${id}_en`, e.target.value)}
+                      placeholder={`Option ${OPTION_LABELS[i]} in ${langTab.toUpperCase()} (optional)`}
+                      value={form[`${id}_${langTab}` as keyof typeof form] as string}
+                      onChange={e => set(`${id}_${langTab}`, e.target.value)}
                       className="text-xs h-8"
                     />
                   </div>
                   {form[id].trim() && (
-                    <div className="ml-9">
+                    <div className="ml-9 space-y-1">
                       <Input
-                        placeholder={`보기 ${OPTION_LABELS[i]} 설명 (선택) — 왜 이 보기가 맞거나 틀린지`}
+                        placeholder={`보기 ${OPTION_LABELS[i]} 설명 (KO) — 왜 이 보기가 맞거나 틀린지`}
                         value={form[`${id}_exp` as keyof typeof form] as string}
                         onChange={e => set(`${id}_exp`, e.target.value)}
+                        className="text-xs h-8"
+                      />
+                      <Input
+                        placeholder={`보기 ${OPTION_LABELS[i]} 설명 (${langTab.toUpperCase()}) — optional`}
+                        value={form[`${id}_exp_${langTab}` as keyof typeof form] as string}
+                        onChange={e => set(`${id}_exp_${langTab}`, e.target.value)}
                         className="text-xs h-8"
                       />
                     </div>
@@ -257,10 +351,10 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
               onChange={e => set('explanation', e.target.value)}
             />
             <Textarea
-              placeholder="English explanation (optional)"
+              placeholder={`${langTab.toUpperCase()} explanation (optional)`}
               rows={2}
-              value={form.explanation_en}
-              onChange={e => set('explanation_en', e.target.value)}
+              value={form[`explanation_${langTab}` as keyof typeof form] as string}
+              onChange={e => set(`explanation_${langTab}`, e.target.value)}
               className="mt-1.5 text-sm"
             />
           </div>
@@ -285,10 +379,10 @@ const QuestionFormDialog = ({ examId, edit, open, onClose, onSaved }: QFormProps
               onChange={e => set('keyPoints', e.target.value)}
             />
             <Textarea
-              placeholder="Key points in English (optional)"
+              placeholder={`Key points in ${langTab.toUpperCase()} (optional)`}
               rows={2}
-              value={form.keyPoints_en}
-              onChange={e => set('keyPoints_en', e.target.value)}
+              value={form[`keyPoints_${langTab}` as keyof typeof form] as string}
+              onChange={e => set(`keyPoints_${langTab}`, e.target.value)}
               className="mt-1.5 text-sm"
             />
           </div>
