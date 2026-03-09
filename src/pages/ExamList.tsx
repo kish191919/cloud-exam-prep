@@ -29,10 +29,10 @@ const MODES_INTRO_KEY = 'cloudmaster_exam_modes_seen';
 const certColors: Record<string, string> = {
   AWS: 'bg-accent text-accent-foreground',
   GCP: 'bg-primary text-primary-foreground',
-  Azure: 'bg-primary text-primary-foreground',
+  AZURE: 'bg-primary text-primary-foreground',
 };
 
-const PROVIDER_ORDER: Record<string, number> = { 'AWS': 0, 'Azure': 1, 'GCP': 2 };
+const PROVIDER_ORDER: Record<string, number> = { 'AWS': 0, 'AZURE': 1, 'GCP': 2 };
 
 // certifications.ts의 description(한국어) / descriptionEn(영어) 데이터를 examId 기준으로 매핑
 const EXAM_DESC_MAP: Record<string, { ko: string; en: string }> = {
@@ -64,7 +64,7 @@ const FILTER_PROVIDERS = [
   { value: 'all', label: '전체' },
   { value: 'AWS', label: 'AWS' },
   { value: 'GCP', label: 'GCP' },
-  { value: 'Azure', label: 'Azure' },
+  { value: 'AZURE', label: 'AZURE' },
 ];
 
 const MODE_OPTIONS: ModeOption[] = [

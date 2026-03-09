@@ -8,7 +8,7 @@ export interface Domain {
 
 export interface CertLandingMeta {
   examId: string;
-  provider: 'AWS' | 'Azure' | 'GCP';
+  provider: 'AWS' | 'AZURE' | 'GCP';
   code: string;
   fullName: string;
   fullNameEn: string;
@@ -223,10 +223,10 @@ export const CERT_LANDING_DATA: Record<string, CertLandingMeta> = {
   },
   'azure-az-900': {
     examId: 'azure-az-900',
-    provider: 'Azure',
+    provider: 'AZURE',
     code: 'AZ-900',
-    fullName: 'Microsoft Azure Fundamentals',
-    fullNameEn: 'Microsoft Azure Fundamentals',
+    fullName: 'Microsoft AZURE Fundamentals',
+    fullNameEn: 'Microsoft AZURE Fundamentals',
     level: '기초',
     levelEn: 'Fundamentals',
     durationMin: 60,
@@ -235,8 +235,8 @@ export const CERT_LANDING_DATA: Record<string, CertLandingMeta> = {
     renewalYears: 0,
     officialUrl: 'https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/',
     dbCountApprox: 190,
-    metaDescription: 'Microsoft Azure Fundamentals(AZ-900) 한국어 모의고사 190개 이상. 도메인별 출제 비율, 합격 전략 확인 후 무료로 연습하세요.',
-    metaDescriptionEn: 'Microsoft Azure Fundamentals (AZ-900) Korean practice exam with 190+ questions. Check domain breakdown and start practicing for free.',
+    metaDescription: 'Microsoft AZURE Fundamentals(AZ-900) 한국어 모의고사 190개 이상. 도메인별 출제 비율, 합격 전략 확인 후 무료로 연습하세요.',
+    metaDescriptionEn: 'Microsoft AZURE Fundamentals (AZ-900) Korean practice exam with 190+ questions. Check domain breakdown and start practicing for free.',
     domains: [
       {
         name: '클라우드 개념 설명',
@@ -246,18 +246,18 @@ export const CERT_LANDING_DATA: Record<string, CertLandingMeta> = {
         topicsEn: ['Cloud Service Benefits', 'Cloud Service Types', 'Shared Responsibility Model', 'IaaS/PaaS/SaaS'],
       },
       {
-        name: 'Azure 아키텍처 및 서비스 설명',
-        nameEn: 'Describe Azure architecture and services',
+        name: 'AZURE 아키텍처 및 서비스 설명',
+        nameEn: 'Describe AZURE architecture and services',
         percent: 37,
-        topics: ['Azure 지역·가용성 영역', 'Azure VM', 'Azure Storage', 'Azure 네트워킹', 'Azure AI 서비스'],
-        topicsEn: ['Azure Regions & AZs', 'Azure VM', 'Azure Storage', 'Azure Networking', 'Azure AI Services'],
+        topics: ['AZURE 지역·가용성 영역', 'AZURE VM', 'AZURE Storage', 'AZURE 네트워킹', 'AZURE AI 서비스'],
+        topicsEn: ['AZURE Regions & AZs', 'AZURE VM', 'AZURE Storage', 'AZURE Networking', 'AZURE AI Services'],
       },
       {
-        name: 'Azure 관리 및 거버넌스 설명',
-        nameEn: 'Describe Azure management and governance',
+        name: 'AZURE 관리 및 거버넌스 설명',
+        nameEn: 'Describe AZURE management and governance',
         percent: 35,
-        topics: ['Azure Cost Management', 'Azure Policy', 'Azure RBAC', 'Azure Monitor', 'Microsoft Defender'],
-        topicsEn: ['Azure Cost Management', 'Azure Policy', 'Azure RBAC', 'Azure Monitor', 'Microsoft Defender'],
+        topics: ['AZURE Cost Management', 'AZURE Policy', 'AZURE RBAC', 'AZURE Monitor', 'Microsoft Defender'],
+        topicsEn: ['AZURE Cost Management', 'AZURE Policy', 'AZURE RBAC', 'AZURE Monitor', 'Microsoft Defender'],
       },
     ],
   },

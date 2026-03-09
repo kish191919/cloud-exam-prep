@@ -2352,7 +2352,7 @@ const AnnouncementManager = ({ exams }: AnnouncementManagerProps) => {
 // ─── Blog Form Dialog ─────────────────────────────────────────────────────────
 const PROVIDER_OPTIONS: BlogProvider[] = ['aws', 'gcp', 'azure', 'general'];
 const PROVIDER_LABELS: Record<BlogProvider, string> = {
-  aws: 'AWS', gcp: 'GCP', azure: 'Azure', general: '일반',
+  aws: 'AWS', gcp: 'GCP', azure: 'AZURE', general: '일반',
 };
 
 interface BlogFormDialogProps {

@@ -164,7 +164,7 @@
         {
           "icon": "Database",
           "title": "The Engine Behind Big Data & ML",
-          "desc": "Data pipelines, ML model deployment, real-time analytics — all built on AWS, GCP, or Azure. A cloud certification is non-negotiable for any data career."
+          "desc": "Data pipelines, ML model deployment, real-time analytics — all built on AWS, GCP, or AZURE. A cloud certification is non-negotiable for any data career."
         },
         {
           "icon": "TrendingUp",
@@ -247,7 +247,7 @@
       "questions": [
         {
           "q": "What are AWS, GCP and AZURE — and why do I need them?",
-          "a": "AWS (Amazon), GCP (Google), and Azure (Microsoft) are the three cloud platforms that power over 70% of the world's digital infrastructure. ChatGPT, Netflix, and countless everyday services run on them. Since 90%+ of AI and big data work is cloud-based, these certifications are essential for anyone in or entering the tech industry."
+          "a": "AWS (Amazon), GCP (Google), and AZURE (Microsoft) are the three cloud platforms that power over 70% of the world's digital infrastructure. ChatGPT, Netflix, and countless everyday services run on them. Since 90%+ of AI and big data work is cloud-based, these certifications are essential for anyone in or entering the tech industry."
         },
         {
           "q": "Can non-IT backgrounds take these exams?",
@@ -417,13 +417,13 @@
   "blog": {
     "title": "Study Resources",
     "subtitle": "Free study notes, service comparisons, and cheatsheets to help you pass AWS, GCP and AZURE certifications.",
-    "seoTitle": "AWS·GCP·Azure Certification Study Resources | CloudMaster",
+    "seoTitle": "AWS·GCP·AZURE Certification Study Resources | CloudMaster",
     "seoDesc": "Free study notes, service comparison tables, and cheatsheets for AWS, GCP and AZURE certifications.",
     "tabs": {
       "all": "All",
       "aws": "AWS",
       "gcp": "GCP",
-      "azure": "Azure"
+      "azure": "AZURE"
     },
     "readTime": "{{min}} min read",
     "publishedOn": "{{date}}",

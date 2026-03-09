@@ -1,4 +1,4 @@
-1. A developer at Tailspin Toys needs clarification. Contoso Ltd. wants to run code in response to incoming orders without managing servers. Which Azure compute option should they choose?
+1. A developer at Tailspin Toys needs clarification. Contoso Ltd. wants to run code in response to incoming orders without managing servers. Which AZURE compute option should they choose?
 
 
 2. A security engineer at a hospital needs help. For deep application performance insights such as request rates and response times, you should use:
@@ -7,19 +7,19 @@
 3. A company wants to allow external partner organizations to access certain applications. Which capability should they use?
 
 
-4. The finance department at Litware needs help. You need to collect metrics, logs, and telemetry from applications and resources in Azure. Which tool should you use?
+4. The finance department at Litware needs help. You need to collect metrics, logs, and telemetry from applications and resources in AZURE. Which tool should you use?
 
 
-5. A developer at Tailspin Toys needs help. Azure Arc is primarily used to:
+5. A developer at Tailspin Toys needs help. AZURE Arc is primarily used to:
 
 
-6. A startup founder needs help. Why should you apply tags to your Azure resources?
+6. A startup founder needs help. Why should you apply tags to your AZURE resources?
 
 
 7. A security engineer at a hospital needs help. Which directory service provides managed domain services (such as domain join, group policy, LDAP) without deploying domain controllers?
 
 
-8. A security engineer at a hospital needs help. What is Azure Advisor designed to do?
+8. A security engineer at a hospital needs help. What is AZURE Advisor designed to do?
 
 
 9. An organization needs to deploy a custom application without worrying about managing servers or middleware. Which cloud model is most appropriate?
@@ -28,16 +28,16 @@
 10. A developer at Tailspin Toys needs help. To enforce that all resources in a subscription must have a specific tag, you should use:
 
 
-11. A developer at Tailspin Toys needs help. Which Azure concept groups resources together for unified management and life‑cycle control?
+11. A developer at Tailspin Toys needs help. Which AZURE concept groups resources together for unified management and life‑cycle control?
 
 
 12. A developer at Tailspin Toys needs clarification. Your team wants to run event‑driven code without managing any servers and only pay when code runs. Which option is best?
 
 
-13. An enterprise architect at a global organization needs help. You need to synchronize on‑premises files with Azure Files for distributed access. Which tool should you use?
+13. An enterprise architect at a global organization needs help. You need to synchronize on‑premises files with AZURE Files for distributed access. Which tool should you use?
 
 
 14. A security engineer at a hospital needs help. Which term describes the ability of cloud services to maintain operation despite failures and automatically recover?
 
 
-15. The IT team at Fabrikam needs help. What is the primary purpose of an Azure region pair?
+15. The IT team at Fabrikam needs help. What is the primary purpose of an AZURE region pair?

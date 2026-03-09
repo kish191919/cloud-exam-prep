@@ -1,12 +1,12 @@
 interface ExamBadgeProps {
-  provider: 'AWS' | 'Azure' | 'GCP';
+  provider: 'AWS' | 'AZURE' | 'GCP';
   code: string;
   size?: number;
 }
 
 const PROVIDER_CONFIG = {
   AWS:   { accent: '#FF9900', label: 'AWS' },
-  Azure: { accent: '#0078D4', label: 'Azure' },
+  AZURE: { accent: '#0078D4', label: 'AZURE' },
   GCP:   { accent: '#4285F4', label: 'GCP' },
 };
 

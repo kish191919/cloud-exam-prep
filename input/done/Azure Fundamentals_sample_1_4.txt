@@ -1,60 +1,60 @@
-46. An IT administrator wants to prevent anyone — including subscription owners — from accidentally deleting a critical production resource group in Azure. Which feature should they apply?
+46. An IT administrator wants to prevent anyone — including subscription owners — from accidentally deleting a critical production resource group in AZURE. Which feature should they apply?
 
 
 
-47. A company requires that all employees use multi-factor authentication (MFA) when accessing Azure resources from outside the corporate network. Which Azure AD feature enforces this?
+47. A company requires that all employees use multi-factor authentication (MFA) when accessing AZURE resources from outside the corporate network. Which AZURE AD feature enforces this?
 
 
 
-48. Which Azure service provides a single identity platform for employees to sign into Azure, Microsoft 365, and third-party SaaS applications using a single set of credentials?
+48. Which AZURE service provides a single identity platform for employees to sign into AZURE, Microsoft 365, and third-party SaaS applications using a single set of credentials?
 
 
 
-49. A multinational company needs to verify that their Azure deployments meet ISO 27001, GDPR, and SOC 2 compliance standards. Where can they find official documentation and audit reports for Azure compliance?
+49. A multinational company needs to verify that their AZURE deployments meet ISO 27001, GDPR, and SOC 2 compliance standards. Where can they find official documentation and audit reports for AZURE compliance?
 
 
 
-50. A security architect wants to implement a "zero trust" security model in Azure where no user or device is trusted by default, even inside the corporate network. Which Azure AD feature is central to this approach?
+50. A security architect wants to implement a "zero trust" security model in AZURE where no user or device is trusted by default, even inside the corporate network. Which AZURE AD feature is central to this approach?
 
 
 
-51. A company wants to estimate the monthly cost of running Azure Virtual Machines, Azure SQL Database, and Azure Blob Storage before actually deploying any resources. Which tool should they use?
-
-
-
-
-52. A CFO wants to understand how much money the company could save by migrating from their on-premises data center to Azure over a 3-year period. Which tool provides this analysis?
+51. A company wants to estimate the monthly cost of running AZURE Virtual Machines, AZURE SQL Database, and AZURE Blob Storage before actually deploying any resources. Which tool should they use?
 
 
 
 
-53. A company has predictable, steady-state workloads that will run 24/7 for at least one year. They want to reduce VM costs significantly compared to pay-as-you-go pricing. Which Azure pricing option should they choose?
+52. A CFO wants to understand how much money the company could save by migrating from their on-premises data center to AZURE over a 3-year period. Which tool provides this analysis?
 
 
 
 
-54. A data science team runs large-scale, interruptible batch processing jobs on Azure VMs. They can tolerate the VMs being evicted with short notice. Which pricing option offers the lowest cost for this scenario?
+53. A company has predictable, steady-state workloads that will run 24/7 for at least one year. They want to reduce VM costs significantly compared to pay-as-you-go pricing. Which AZURE pricing option should they choose?
 
 
 
-55. A company has existing Windows Server licenses with Software Assurance. They want to reuse these licenses in Azure to reduce the cost of their Azure Virtual Machines. Which program allows this?
+
+54. A data science team runs large-scale, interruptible batch processing jobs on AZURE VMs. They can tolerate the VMs being evicted with short notice. Which pricing option offers the lowest cost for this scenario?
 
 
 
-56. An Azure Service Level Agreement (SLA) for Azure Virtual Machines states 99.9% uptime for a single VM with Premium SSD. Approximately how many hours of downtime per month does this SLA allow?
+55. A company has existing Windows Server licenses with Software Assurance. They want to reuse these licenses in AZURE to reduce the cost of their AZURE Virtual Machines. Which program allows this?
 
 
 
-57. A company wants to increase the SLA of their application beyond what a single Azure VM provides. Which approach would improve the availability SLA to 99.99%?
+56. An AZURE Service Level Agreement (SLA) for AZURE Virtual Machines states 99.9% uptime for a single VM with Premium SSD. Approximately how many hours of downtime per month does this SLA allow?
 
 
 
-58. Which Azure feature allows administrators to track and analyze Azure spending, set budgets, and create cost alerts when spending exceeds defined thresholds?
+57. A company wants to increase the SLA of their application beyond what a single AZURE VM provides. Which approach would improve the availability SLA to 99.99%?
 
 
 
-59. A team is planning a new Azure deployment and wants to understand which Azure services are currently in public preview versus generally available (GA). Why is this distinction important?
+58. Which AZURE feature allows administrators to track and analyze AZURE spending, set budgets, and create cost alerts when spending exceeds defined thresholds?
 
 
 
-60. A company is reviewing Azure's service lifecycle. Their application currently uses an Azure service that has been announced for retirement in 6 months. What should the company do?
+59. A team is planning a new AZURE deployment and wants to understand which AZURE services are currently in public preview versus generally available (GA). Why is this distinction important?
+
+
+
+60. A company is reviewing AZURE's service lifecycle. Their application currently uses an AZURE service that has been announced for retirement in 6 months. What should the company do?

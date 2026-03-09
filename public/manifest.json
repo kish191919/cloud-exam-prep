@@ -1,7 +1,7 @@
 {
   "name": "CloudMaster - 클라우드 자격증 시험",
   "short_name": "CloudMaster",
-  "description": "AWS, GCP, Azure 클라우드 자격증 모의시험 플랫폼",
+  "description": "AWS, GCP, AZURE 클라우드 자격증 모의시험 플랫폼",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",

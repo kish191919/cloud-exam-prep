@@ -164,7 +164,7 @@
         {
           "icon": "Database",
           "title": "ビッグデータ・MLを支えるエンジン",
-          "desc": "データパイプライン、MLモデルのデプロイ、リアルタイム分析 — すべてAWS、GCP、Azureで構築されています。データキャリアにクラウド資格は必須です。"
+          "desc": "データパイプライン、MLモデルのデプロイ、リアルタイム分析 — すべてAWS、GCP、AZUREで構築されています。データキャリアにクラウド資格は必須です。"
         },
         {
           "icon": "TrendingUp",
@@ -247,7 +247,7 @@
       "questions": [
         {
           "q": "AWS、GCP、AZUREとは何ですか？なぜ必要なのですか？",
-          "a": "AWS（Amazon）、GCP（Google）、Azure（Microsoft）は世界のデジタルインフラの70%以上を支える3大クラウドプラットフォームです。ChatGPT、Netflixをはじめ多くのサービスがこれらで動いています。AIやビッグデータの業務の90%以上がクラウドベースであるため、これらの資格はIT業界で働く、または目指すすべての方に必須です。"
+          "a": "AWS（Amazon）、GCP（Google）、AZURE（Microsoft）は世界のデジタルインフラの70%以上を支える3大クラウドプラットフォームです。ChatGPT、Netflixをはじめ多くのサービスがこれらで動いています。AIやビッグデータの業務の90%以上がクラウドベースであるため、これらの資格はIT業界で働く、または目指すすべての方に必須です。"
         },
         {
           "q": "IT以外のバックグラウンドでも受験できますか？",
@@ -417,13 +417,13 @@
   "blog": {
     "title": "学習資料",
     "subtitle": "AWS、GCP、AZURE資格合格をサポートする無料の学習ノート、サービス比較、チートシート。",
-    "seoTitle": "AWS・GCP・Azure資格学習資料 | CloudMaster",
+    "seoTitle": "AWS・GCP・AZURE資格学習資料 | CloudMaster",
     "seoDesc": "AWS、GCP、AZURE資格のための無料学習ノート、サービス比較表、チートシート。",
     "tabs": {
       "all": "すべて",
       "aws": "AWS",
       "gcp": "GCP",
-      "azure": "Azure"
+      "azure": "AZURE"
     },
     "readTime": "{{min}}分で読める",
     "publishedOn": "{{date}}",

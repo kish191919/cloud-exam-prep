@@ -16,7 +16,7 @@ import { getBlogPostBySlug, getRelatedPosts } from '@/services/blogService';
 import type { BlogPost } from '@/services/blogService';
 
 const PROVIDER_LABEL: Record<string, string> = {
-  aws: 'AWS', gcp: 'GCP', azure: 'Azure', general: '일반',
+  aws: 'AWS', gcp: 'GCP', azure: 'AZURE', general: '일반',
 };
 
 const PROVIDER_COLORS: Record<string, string> = {

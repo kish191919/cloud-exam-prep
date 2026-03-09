@@ -1,7 +1,7 @@
-# Azure AZ-900 영문 번역 가이드
+# AZURE AZ-900 영문 번역 가이드
 
-이 파일은 한국어로 재설계된 AZ-900 문제를 Microsoft Azure 자격증 시험 공식 문체의 영문으로 번역할 때 사용한다.
-**일반 번역이 아닌 실제 Microsoft Azure 시험 스타일을 그대로 재현하는 것이 목표다.**
+이 파일은 한국어로 재설계된 AZ-900 문제를 Microsoft AZURE 자격증 시험 공식 문체의 영문으로 번역할 때 사용한다.
+**일반 번역이 아닌 실제 Microsoft AZURE 시험 스타일을 그대로 재현하는 것이 목표다.**
 
 ---
 
@@ -9,14 +9,14 @@
 
 ### 도입부 (첫 문장)
 ```
-A company is migrating its [workload] to Azure...
+A company is migrating its [workload] to AZURE...
 A company wants to [목표]...
 An organization needs to [요구사항]...
 A cloud administrator is responsible for [역할]...
 A solutions architect is designing a [system/solution]...
 A company has [N] servers in an on-premises data center...
-A startup is planning to deploy its application on Azure...
-Your company is evaluating Azure services for [use case]...
+A startup is planning to deploy its application on AZURE...
+Your company is evaluating AZURE services for [use case]...
 ```
 
 ### 조건/제약 문장
@@ -27,7 +27,7 @@ The solution must be highly available.
 The company wants to reduce costs compared to its on-premises infrastructure.
 The team has no prior cloud experience.
 The workload has unpredictable traffic patterns.
-The company needs a dedicated connection to Azure.
+The company needs a dedicated connection to AZURE.
 The application must remain available during a datacenter failure.
 The company must comply with data residency requirements.
 The solution must scale automatically based on demand.
@@ -35,22 +35,22 @@ The solution must scale automatically based on demand.
 
 ### 질문 문장 (항상 마지막, 빈 줄로 분리)
 ```
-Which Azure service BEST meets these requirements?
+Which AZURE service BEST meets these requirements?
 Which solution MOST cost-effectively meets these requirements?
-Which Azure feature should the administrator configure?
-Which Azure service should the company use?
+Which AZURE feature should the administrator configure?
+Which AZURE service should the company use?
 Which action should the administrator take?
-What is the MOST appropriate Azure service for this scenario?
-Which combination of Azure services meets these requirements?
-Which Azure tool provides this capability?
+What is the MOST appropriate AZURE service for this scenario?
+Which combination of AZURE services meets these requirements?
+Which AZURE tool provides this capability?
 ```
 
 ---
 
 ## 2. 보기(옵션) 문체 규칙
 
-- Azure 서비스명 단독: `Azure Virtual Machines` / `Azure Functions` / `Azure Blob Storage`
-- 조합: `Azure Blob Storage + Azure File Sync`
+- AZURE 서비스명 단독: `AZURE Virtual Machines` / `AZURE Functions` / `AZURE Blob Storage`
+- 조합: `AZURE Blob Storage + AZURE File Sync`
 - 기능/옵션명: `availability zone` / `resource group` / `management group` / `role assignment`
 - 중복성 옵션: `Locally redundant storage (LRS)` / `Zone-redundant storage (ZRS)` / `Geo-redundant storage (GRS)`
 - **절대 금지**: 서비스명 번역, 파이프(`|`) 구분, 3개 이상 서비스 나열
@@ -95,7 +95,7 @@ Although [Service] provides [관련 기능], it [왜 부적합한지].
 
 예시:
 ```
-Azure Storage Redundancy Options
+AZURE Storage Redundancy Options
 • LRS (Locally Redundant Storage): 3 copies within a single datacenter — lowest cost
 • ZRS (Zone-Redundant Storage): 3 copies across availability zones in the same region
 • GRS (Geo-Redundant Storage): 6 copies across two paired regions — protects against regional outage
@@ -132,7 +132,7 @@ Azure Storage Redundancy Options
 | 온프레미스 | on-premises |
 | 총소유비용 | Total Cost of Ownership (TCO) |
 
-### Azure 핵심 아키텍처
+### AZURE 핵심 아키텍처
 | 한국어 | 영문 공식 표현 |
 |--------|--------------|
 | 리전 | region |
@@ -205,7 +205,7 @@ Azure Storage Redundancy Options
 | 예산 | budget |
 | 태그 | tag |
 | 비용 배분 | cost allocation |
-| 프리 계정 | Azure free account |
+| 프리 계정 | AZURE free account |
 | 사용한 만큼 지불 | pay-as-you-go |
 
 ### 거버넌스 및 규정 준수
@@ -239,49 +239,49 @@ Azure Storage Redundancy Options
 
 ---
 
-## 6. AZ-900 주요 Azure 서비스 (번역 없이 그대로 사용)
+## 6. AZ-900 주요 AZURE 서비스 (번역 없이 그대로 사용)
 
 ```
 # 컴퓨팅
-Azure Virtual Machines                Azure Virtual Machine Scale Sets
-Azure Virtual Desktop                 Azure Container Instances
-Azure Kubernetes Service (AKS)        Azure Functions
-Azure App Service                     Azure Batch
+AZURE Virtual Machines                AZURE Virtual Machine Scale Sets
+AZURE Virtual Desktop                 AZURE Container Instances
+AZURE Kubernetes Service (AKS)        AZURE Functions
+AZURE App Service                     AZURE Batch
 
 # 스토리지
-Azure Blob Storage                    Azure Files
-Azure Disks                           Azure Queues
-Azure Tables                          AzCopy
-Azure Storage Explorer                Azure File Sync
-Azure Migrate                         Azure Data Box
+AZURE Blob Storage                    AZURE Files
+AZURE Disks                           AZURE Queues
+AZURE Tables                          AzCopy
+AZURE Storage Explorer                AZURE File Sync
+AZURE Migrate                         AZURE Data Box
 
 # 네트워킹
-Azure Virtual Network                 Azure VPN Gateway
-Azure ExpressRoute                    Azure DNS
-Azure Load Balancer                   Azure Application Gateway
-Azure Front Door                      Azure Content Delivery Network (CDN)
-Azure Firewall                        Azure DDoS Protection
+AZURE Virtual Network                 AZURE VPN Gateway
+AZURE ExpressRoute                    AZURE DNS
+AZURE Load Balancer                   AZURE Application Gateway
+AZURE Front Door                      AZURE Content Delivery Network (CDN)
+AZURE Firewall                        AZURE DDoS Protection
 
 # ID 및 보안
 Microsoft Entra ID                    Microsoft Entra Domain Services
-Microsoft Defender for Cloud          Azure Key Vault
+Microsoft Defender for Cloud          AZURE Key Vault
 Microsoft Sentinel
 
 # 관리 및 거버넌스
-Azure Portal                          Azure Cloud Shell
-Azure CLI                             Azure PowerShell
-Azure Resource Manager (ARM)          Azure Arc
-Azure Policy                          Microsoft Purview
-Azure Blueprints
+AZURE Portal                          AZURE Cloud Shell
+AZURE CLI                             AZURE PowerShell
+AZURE Resource Manager (ARM)          AZURE Arc
+AZURE Policy                          Microsoft Purview
+AZURE Blueprints
 
 # 모니터링
-Azure Advisor                         Azure Service Health
-Azure Monitor                         Log Analytics
+AZURE Advisor                         AZURE Service Health
+AZURE Monitor                         Log Analytics
 Application Insights
 
 # 비용 관리
-Azure Cost Management                 Azure Pricing Calculator
-Azure Budgets
+AZURE Cost Management                 AZURE Pricing Calculator
+AZURE Budgets
 ```
 
 ---
@@ -291,44 +291,44 @@ Azure Budgets
 ### 공유 책임 모델 관련
 ```
 Which responsibility belongs to Microsoft under the shared responsibility model?
-Which of the following is the customer's responsibility when using Azure IaaS?
+Which of the following is the customer's responsibility when using AZURE IaaS?
 Under the shared responsibility model, Microsoft is responsible for [security OF the cloud infrastructure], while the customer is responsible for [security IN the cloud].
 ```
 
 ### 비용 최적화 관련
 ```
-Which action will MOST reduce the company's Azure costs?
-Which Azure tool allows the company to estimate costs before deploying resources?
-Which Azure feature allows the company to set spending limits and receive alerts?
-Which Azure pricing model charges only for resources that are consumed?
+Which action will MOST reduce the company's AZURE costs?
+Which AZURE tool allows the company to estimate costs before deploying resources?
+Which AZURE feature allows the company to set spending limits and receive alerts?
+Which AZURE pricing model charges only for resources that are consumed?
 ```
 
 ### 아키텍처 / 고가용성 관련
 ```
-Which Azure feature ensures the application remains available during a datacenter failure?
-Which Azure architectural component allows the company to distribute its resources across multiple physical locations within a region?
-Which Azure service provides a dedicated, private connection between on-premises infrastructure and Azure?
-The company wants to avoid a single point of failure. Which Azure feature should the architect use?
+Which AZURE feature ensures the application remains available during a datacenter failure?
+Which AZURE architectural component allows the company to distribute its resources across multiple physical locations within a region?
+Which AZURE service provides a dedicated, private connection between on-premises infrastructure and AZURE?
+The company wants to avoid a single point of failure. Which AZURE feature should the architect use?
 ```
 
 ### ID / 보안 관련
 ```
-Which Azure service allows the administrator to enforce MFA without changing application code?
-Which Azure feature allows the company to define and enforce organizational standards across all Azure resources?
-Which Azure service provides centralized identity management and single sign-on?
-Which Azure security principle ensures that users have only the permissions required to perform their job?
+Which AZURE service allows the administrator to enforce MFA without changing application code?
+Which AZURE feature allows the company to define and enforce organizational standards across all AZURE resources?
+Which AZURE service provides centralized identity management and single sign-on?
+Which AZURE security principle ensures that users have only the permissions required to perform their job?
 ```
 
 ### 거버넌스 관련
 ```
-Which Azure feature prevents administrators from accidentally deleting a critical resource?
-Which Azure service allows the company to define compliance policies and audit resource configurations?
-Which Azure tool provides recommendations to improve security, reliability, and cost efficiency?
+Which AZURE feature prevents administrators from accidentally deleting a critical resource?
+Which AZURE service allows the company to define compliance policies and audit resource configurations?
+Which AZURE tool provides recommendations to improve security, reliability, and cost efficiency?
 ```
 
 ### 모니터링 관련
 ```
-Which Azure service notifies the company of planned maintenance events that might affect its resources?
-Which Azure service allows the administrator to query and analyze log data from multiple Azure resources?
-Which Azure service provides personalized recommendations to optimize Azure usage?
+Which AZURE service notifies the company of planned maintenance events that might affect its resources?
+Which AZURE service allows the administrator to query and analyze log data from multiple AZURE resources?
+Which AZURE service provides personalized recommendations to optimize AZURE usage?
 ```

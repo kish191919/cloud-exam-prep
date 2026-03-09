@@ -1,18 +1,18 @@
 
 
-16. What can you use to find information about planned maintenance for Azure services that are critical to your organization?
+16. What can you use to find information about planned maintenance for AZURE services that are critical to your organization?
 
 
 
-17. What is an Azure Storage account named storage001 an example of?
+17. What is an AZURE Storage account named storage001 an example of?
 
 
 
-18. For which resource does Azure generate separate billing reports and invoices by default?
+18. For which resource does AZURE generate separate billing reports and invoices by default?
 
 
 
-19. Which Azure component allows you to replicate resources across a geography to ensure business continuity during a natural disaster at the primary site?
+19. Which AZURE component allows you to replicate resources across a geography to ensure business continuity during a natural disaster at the primary site?
 
 
 
@@ -20,11 +20,11 @@
 
 
 
-21. Which  Azure resources can make use of availability zones? Each correct answer presents a complete solution?
+21. Which  AZURE resources can make use of availability zones? Each correct answer presents a complete solution?
 
 
 
-22. Which Azure resource is a software emulation of a physical computer that includes a virtual processor, memory, storage, and networking resources?
+22. Which AZURE resource is a software emulation of a physical computer that includes a virtual processor, memory, storage, and networking resources?
 
 
 
@@ -32,7 +32,7 @@
 
 
 
-24. You need to allow resources on two different Azure virtual networks to communicate with each other. What should you configure?
+24. You need to allow resources on two different AZURE virtual networks to communicate with each other. What should you configure?
 
 
 
@@ -40,14 +40,14 @@
 
 
 
-26. Which Azure Blob storage tier stores data offline and offers the lowest storage costs and the highest costs to access data?
+26. Which AZURE Blob storage tier stores data offline and offers the lowest storage costs and the highest costs to access data?
 
 
 
 27. Which storage service offers fully managed file shares in the cloud that are accessible by using Server Message Block (SMB) protocol?
 
 
-28. Which scenarios are common use cases for Azure Blob storage? Each correct answer presents a complete solution?
+28. Which scenarios are common use cases for AZURE Blob storage? Each correct answer presents a complete solution?
 
 
 29. What is the purpose of defense in depth?

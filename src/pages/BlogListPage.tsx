@@ -24,9 +24,9 @@ const EXAM_NAMES: Record<string, string> = {
   'aws-mls-c01': 'Machine Learning Specialty',
   'gcp-ace':     'Associate Cloud Engineer',
   'gcp-pde':     'Professional Data Engineer',
-  'az-900':      'Azure Fundamentals',
-  'az-104':      'Azure Administrator',
-  'az-204':      'Azure Developer',
+  'az-900':      'AZURE Fundamentals',
+  'az-104':      'AZURE Administrator',
+  'az-204':      'AZURE Developer',
 };
 
 function getExamLabel(examId: string): string {
@@ -39,7 +39,7 @@ const PROVIDER_CONFIG: Record<BlogProvider | 'all', {
   all:     { label: '전체',   color: 'text-foreground',            bg: 'bg-muted',                    border: 'border-muted-foreground/30' },
   aws:     { label: 'AWS',    color: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-950/30', border: 'border-orange-300 dark:border-orange-700' },
   gcp:     { label: 'GCP',    color: 'text-blue-600 dark:text-blue-400',    bg: 'bg-blue-50 dark:bg-blue-950/30',     border: 'border-blue-300 dark:border-blue-700' },
-  azure:   { label: 'Azure',  color: 'text-sky-600 dark:text-sky-400',      bg: 'bg-sky-50 dark:bg-sky-950/30',       border: 'border-sky-300 dark:border-sky-700' },
+  azure:   { label: 'AZURE',  color: 'text-sky-600 dark:text-sky-400',      bg: 'bg-sky-50 dark:bg-sky-950/30',       border: 'border-sky-300 dark:border-sky-700' },
   general: { label: '일반',   color: 'text-purple-600 dark:text-purple-400',bg: 'bg-purple-50 dark:bg-purple-950/30', border: 'border-purple-300 dark:border-purple-700' },
 };
 
@@ -223,8 +223,8 @@ const BlogListPage = () => {
         <script type="application/ld+json">{JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'CollectionPage',
-          name: 'CloudMaster 블로그 - AWS·GCP·Azure 학습 자료',
-          description: 'AWS, GCP, Azure 클라우드 자격증 학습을 위한 도메인 가이드, 서비스 비교, 시험 전략 아티클',
+          name: 'CloudMaster 블로그 - AWS·GCP·AZURE 학습 자료',
+          description: 'AWS, GCP, AZURE 클라우드 자격증 학습을 위한 도메인 가이드, 서비스 비교, 시험 전략 아티클',
           url: 'https://cloudmasterit.com/blog',
           publisher: { '@type': 'Organization', name: 'CloudMaster', url: 'https://cloudmasterit.com' },
         })}</script>
@@ -371,8 +371,8 @@ const BlogListPage = () => {
                 </p>
                 <p className="text-xs text-muted-foreground">
                   {isKo
-                    ? 'AWS·GCP·Azure 한국어 해설 문제 500개 이상 무료 제공'
-                    : '500+ Korean-explained practice questions for AWS, GCP & Azure — free'}
+                    ? 'AWS·GCP·AZURE 한국어 해설 문제 500개 이상 무료 제공'
+                    : '500+ Korean-explained practice questions for AWS, GCP & AZURE — free'}
                 </p>
               </div>
               <Link to="/exams" className="shrink-0">

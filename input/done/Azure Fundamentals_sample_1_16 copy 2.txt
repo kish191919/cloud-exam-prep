@@ -47,7 +47,7 @@
 
 
 
-44. Which cloud service model is used by Azure SQL Database?
+44. Which cloud service model is used by AZURE SQL Database?
 
 
 

@@ -6,14 +6,14 @@ const TAG_EN: Record<string, string> = {
   '책임 있는 AI에 대한 가이드라인': 'Guidelines for Responsible AI',
   'AI 솔루션의 보안, 규정 준수 및 거버넌스':
     'Security, Compliance, and Governance for AI Solutions',
-  // AWS CLF-C02 & Azure AZ-900 (shared)
+  // AWS CLF-C02 & AZURE AZ-900 (shared)
   '클라우드 개념': 'Cloud Concepts',
   // AWS CLF-C02
   '보안 및 규정 준수': 'Security and Compliance',
   '클라우드 기술 및 서비스': 'Cloud Technology and Services',
   '청구, 가격 책정 및 지원': 'Billing, Pricing, and Support',
-  // Azure AZ-900
-  'Azure 핵심 아키텍처': 'Azure Core Architecture',
+  // AZURE AZ-900
+  'AZURE 핵심 아키텍처': 'AZURE Core Architecture',
   '컴퓨팅 및 네트워킹': 'Compute and Networking',
   '스토리지 서비스': 'Storage Services',
   'ID, 접근 및 보안': 'Identity, Access, and Security',

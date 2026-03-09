@@ -2,7 +2,7 @@
   "certifications": {
     "AWS": "AWS",
     "GCP": "GCP",
-    "Azure": "Azure"
+    "AZURE": "AZURE"
   },
   "status": {
     "inProgress": "En progreso",

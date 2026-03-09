@@ -1,4 +1,4 @@
-16. A bank wants to ensure that sign‑ins from unfamiliar IP addresses trigger a password change request. Which Azure service can enforce this?
+16. A bank wants to ensure that sign‑ins from unfamiliar IP addresses trigger a password change request. Which AZURE service can enforce this?
 
 
 17. A cloud administrator at Contoso needs clarification. Fabrikam’s finance department needs a fully managed relational database that automatically handles patching and backups. Which service should they use?
@@ -7,22 +7,22 @@
 18. A cloud administrator at Contoso needs clarification. Which directory service provides managed domain services (such as domain join, group policy, LDAP) without deploying domain controllers?
 
 
-19. A cloud administrator at Contoso needs clarification. Your company is migrating on‑premises servers to Azure. Which spending model does this shift typically result in?
+19. A cloud administrator at Contoso needs clarification. Your company is migrating on‑premises servers to AZURE. Which spending model does this shift typically result in?
 
 
 20. A cloud administrator at Contoso needs clarification. Your team wants to run event‑driven code without managing any servers and only pay when code runs. Which option is best?
 
 
-21. A cloud administrator at Contoso needs help. A global e‑commerce site needs to handle unpredictable spikes in traffic. Which cloud benefit allows Azure resources to automatically add or remove capacity?
+21. A cloud administrator at Contoso needs help. A global e‑commerce site needs to handle unpredictable spikes in traffic. Which cloud benefit allows AZURE resources to automatically add or remove capacity?
 
 
-22. A cloud administrator at Contoso needs help. In the shared responsibility model for Azure, what is Microsoft primarily responsible for?
+22. A cloud administrator at Contoso needs help. In the shared responsibility model for AZURE, what is Microsoft primarily responsible for?
 
 
-23. A cloud administrator at Contoso needs help. Researchers at a laboratory need to prevent accidental deletion of critical Azure resources. Which feature should they enable?
+23. A cloud administrator at Contoso needs help. Researchers at a laboratory need to prevent accidental deletion of critical AZURE resources. Which feature should they enable?
 
 
-24. An enterprise architect at a global organization needs clarification. Which Azure service should you choose to run containers without orchestrating infrastructure?
+24. An enterprise architect at a global organization needs clarification. Which AZURE service should you choose to run containers without orchestrating infrastructure?
 
 
 25. A cloud administrator at Contoso needs help. Which use case is most appropriate for SaaS rather than PaaS or IaaS?
@@ -31,7 +31,7 @@
 26. A cloud administrator at Contoso needs help. To detect risky sign‑ins and enforce password resets based on user risk, which service should you use?
 
 
-27. A cloud administrator at Contoso needs help. What Azure service category includes fully managed software like Microsoft 365 that users access via a web browser?
+27. A cloud administrator at Contoso needs help. What AZURE service category includes fully managed software like Microsoft 365 that users access via a web browser?
 
 
 28. A cloud administrator at Contoso needs help. You need to deploy identical VMs across multiple datacenters for resiliency. Which option meets this requirement?
@@ -40,4 +40,4 @@
 29. A cloud administrator at Contoso needs help. What is the primary benefit of infrastructure as code (IaC)?
 
 
-30. A cloud administrator at Contoso needs help. Which Azure concept groups resources together for unified management and life‑cycle control?
+30. A cloud administrator at Contoso needs help. Which AZURE concept groups resources together for unified management and life‑cycle control?

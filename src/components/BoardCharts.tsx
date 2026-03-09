@@ -101,7 +101,7 @@ export function SalaryBarChart() {
 // ─── Market Share Pie Chart ────────────────────────────────────────────────────
 const marketData = [
   { name: 'AWS',   value: 31, color: '#f97316' },
-  { name: 'Azure', value: 22, color: '#3b82f6' },
+  { name: 'AZURE', value: 22, color: '#3b82f6' },
   { name: 'GCP',   value: 11, color: '#22c55e' },
   { name: 'Other', value: 36, color: '#94a3b8' },
 ];

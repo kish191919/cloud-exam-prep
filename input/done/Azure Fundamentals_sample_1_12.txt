@@ -1,10 +1,10 @@
-1. The operations team at a manufacturing firm needs help. Which cloud deployment model is ideal for companies that must keep sensitive workloads on‑premises but want to burst into Azure for extra capacity?
+1. The operations team at a manufacturing firm needs help. Which cloud deployment model is ideal for companies that must keep sensitive workloads on‑premises but want to burst into AZURE for extra capacity?
 
 
-2. A developer at Tailspin Toys needs help. Which service connects on‑premises networks to Azure over the public internet using a secure tunnel?
+2. A developer at Tailspin Toys needs help. Which service connects on‑premises networks to AZURE over the public internet using a secure tunnel?
 
 
-3. The IT team at Fabrikam needs help. Which factor has the greatest impact on the cost of a virtual machine in Azure?
+3. The IT team at Fabrikam needs help. Which factor has the greatest impact on the cost of a virtual machine in AZURE?
 
 
 4. A security engineer at a hospital needs help. Which use case is most appropriate for SaaS rather than PaaS or IaaS?
@@ -19,25 +19,25 @@
 7. The finance department at a multinational company needs clarification. Your team wants to run event‑driven code without managing any servers and only pay when code runs. Which option is best?
 
 
-8. The IT team at Fabrikam needs help. You plan to host a website using .NET in Azure with built‑in scaling and a managed runtime. Which option is best?
+8. The IT team at Fabrikam needs help. You plan to host a website using .NET in AZURE with built‑in scaling and a managed runtime. Which option is best?
 
 
-9. A cloud administrator at Contoso needs help. Which Azure concept groups resources together for unified management and life‑cycle control?
+9. A cloud administrator at Contoso needs help. Which AZURE concept groups resources together for unified management and life‑cycle control?
 
 
-10. A startup founder needs help. What Azure service category includes fully managed software like Microsoft 365 that users access via a web browser?
+10. A startup founder needs help. What AZURE service category includes fully managed software like Microsoft 365 that users access via a web browser?
 
 
 11. A security engineer at a hospital needs help. What distinguishes capital expenditure (CapEx) from operational expenditure (OpEx) when comparing on‑premises vs cloud?
 
 
-12. The operations team at a manufacturing firm needs help. Which Azure service should you choose to run containers without orchestrating infrastructure?
+12. The operations team at a manufacturing firm needs help. Which AZURE service should you choose to run containers without orchestrating infrastructure?
 
 
-13. The operations team at a manufacturing firm needs help. You need to collect metrics, logs, and telemetry from applications and resources in Azure. Which tool should you use?
+13. The operations team at a manufacturing firm needs help. You need to collect metrics, logs, and telemetry from applications and resources in AZURE. Which tool should you use?
 
 
-14. A network architect at a bank needs help. Which Azure feature allows you to set thresholds and be notified when your spending approaches or exceeds a specified amount?
+14. A network architect at a bank needs help. Which AZURE feature allows you to set thresholds and be notified when your spending approaches or exceeds a specified amount?
 
 
 15. The operations team at a manufacturing firm needs help. To detect risky sign‑ins and enforce password resets based on user risk, which service should you use?

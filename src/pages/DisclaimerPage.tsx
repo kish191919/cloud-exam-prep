@@ -28,7 +28,7 @@ const DisclaimerKo = () => (
         </p>
         <ul className="list-disc pl-5 space-y-1">
           <li>본 웹사이트는 Amazon Web Services(AWS), Microsoft, Google Cloud와 제휴·후원·승인·인증 관계가 없습니다.</li>
-          <li>AWS, Amazon Web Services, Microsoft, Azure, Google Cloud 및 관련 상표는 각 소유자의 재산입니다.</li>
+          <li>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud 및 관련 상표는 각 소유자의 재산입니다.</li>
           <li>본 웹사이트의 모든 연습 문제와 학습 자료는 교육 및 시험 준비 목적으로 독자적으로 제작되었습니다. 이 문제들은 실제 자격증 시험 문제가 아니며, 어떠한 공식 시험에서도 발췌하지 않았습니다.</li>
           <li>공식적이고 권위 있는 정보를 위해 AWS, Microsoft, Google Cloud의 공식 문서 및 교육 자료를 반드시 참고하시기 바랍니다.</li>
         </ul>
@@ -40,7 +40,7 @@ const DisclaimerKo = () => (
         <ul className="list-disc pl-5 space-y-1">
           <li>사전 서면 허가 없이 본 웹사이트의 콘텐츠를 무단으로 복제, 재배포 또는 재발행하는 것은 엄격히 금지됩니다.</li>
           <li>
-            AWS, Amazon Web Services, Microsoft, Azure, Google Cloud 및 관련 상표는 각 소유자의 재산이며,
+            AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud 및 관련 상표는 각 소유자의 재산이며,
             CloudMaster와 무관합니다. 해당 명칭은 식별 목적으로만 사용됩니다.
           </li>
         </ul>
@@ -69,7 +69,7 @@ const DisclaimerEn = () => (
         </p>
         <ul className="list-disc pl-5 space-y-1">
           <li>This website is not affiliated with, endorsed by, or sponsored by Amazon Web Services (AWS), Microsoft, or Google Cloud.</li>
-          <li>AWS, Amazon Web Services, Microsoft, Azure, Google Cloud, and all related trademarks are the property of their respective owners.</li>
+          <li>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud, and all related trademarks are the property of their respective owners.</li>
           <li>All practice questions and study materials on this website are created independently for educational and exam preparation purposes only. They are not actual exam questions and are not taken from any official certification exams.</li>
           <li>Users should rely on official documentation and training provided by AWS, Microsoft, and Google Cloud for authoritative information.</li>
         </ul>
@@ -81,7 +81,7 @@ const DisclaimerEn = () => (
         <ul className="list-disc pl-5 space-y-1">
           <li>Unauthorized copying, redistribution, or reproduction of any content from this website is strictly prohibited without prior written permission.</li>
           <li>
-            AWS, Amazon Web Services, Microsoft, Azure, Google Cloud, and related trademarks are the property of
+            AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud, and related trademarks are the property of
             their respective owners and are used for identification purposes only. Their use does not imply any
             affiliation with or endorsement by CloudMaster.
           </li>

@@ -23,7 +23,7 @@ const TermsKo = () => (
       <p className="text-sm text-muted-foreground mb-8">최종 업데이트: 2026년 2월</p>
 
       <Section title="1. 서비스 소개">
-        <p>CloudMaster(이하 "서비스")는 AWS, GCP, Azure 클라우드 자격증 시험을 준비하는 사용자를 위한 독립적인 온라인 교육 플랫폼입니다. 본 약관은 서비스 이용에 관한 이용자와 CloudMaster 간의 권리·의무를 규정합니다.</p>
+        <p>CloudMaster(이하 "서비스")는 AWS, GCP, AZURE 클라우드 자격증 시험을 준비하는 사용자를 위한 독립적인 온라인 교육 플랫폼입니다. 본 약관은 서비스 이용에 관한 이용자와 CloudMaster 간의 권리·의무를 규정합니다.</p>
         <p>본 서비스는 Amazon Web Services(AWS), Microsoft, Google Cloud와 제휴·후원·승인 관계가 없는 독립 교육 플랫폼입니다.</p>
       </Section>
 
@@ -58,7 +58,7 @@ const TermsKo = () => (
 
       <Section title="5. 지식재산권">
         <p>서비스 내 모든 콘텐츠(문제, 해설, UI 등)의 저작권은 CloudMaster에 귀속됩니다. 이용자는 개인 학습 목적으로만 서비스를 이용할 수 있으며, 상업적 이용은 금지됩니다.</p>
-        <p>AWS, Amazon Web Services, Microsoft, Azure, Google Cloud 및 관련 상표는 각 소유자의 재산이며, CloudMaster와 무관합니다. 해당 명칭은 식별 목적으로만 사용됩니다.</p>
+        <p>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud 및 관련 상표는 각 소유자의 재산이며, CloudMaster와 무관합니다. 해당 명칭은 식별 목적으로만 사용됩니다.</p>
         <p>이용자는 사전 서면 허가 없이 서비스 내 콘텐츠를 복제, 재배포 또는 판매할 수 없습니다.</p>
       </Section>
 
@@ -135,7 +135,7 @@ const TermsEn = () => (
 
       <Section title="5. Intellectual Property">
         <p>All content within the Service (questions, explanations, UI, etc.) is owned by CloudMaster. Users may use the Service for personal study purposes only. Commercial use is prohibited.</p>
-        <p>AWS, Amazon Web Services, Microsoft, Azure, Google Cloud, and related trademarks are the property of their respective owners and are not affiliated with CloudMaster. These names are used for identification purposes only.</p>
+        <p>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud, and related trademarks are the property of their respective owners and are not affiliated with CloudMaster. These names are used for identification purposes only.</p>
         <p>Users may not copy, reproduce, distribute, or republish any content from this website without prior written permission.</p>
       </Section>
 

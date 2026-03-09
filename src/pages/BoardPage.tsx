@@ -276,8 +276,8 @@ const BoardPage = () => {
                 </p>
                 <p className="text-xs text-muted-foreground">
                   {isKo
-                    ? 'AWS·GCP·Azure 한국어 해설 문제 500개 이상 무료 제공'
-                    : '500+ Korean-explained practice questions for AWS, GCP & Azure — free'}
+                    ? 'AWS·GCP·AZURE 한국어 해설 문제 500개 이상 무료 제공'
+                    : '500+ Korean-explained practice questions for AWS, GCP & AZURE — free'}
                 </p>
               </div>
               <Link to="/exams" className="shrink-0">

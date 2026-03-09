@@ -35,7 +35,7 @@ export interface ExamConfig {
   id: string;
   title: string;
   code: string;
-  certification: 'AWS' | 'GCP' | 'Azure';
+  certification: 'AWS' | 'GCP' | 'AZURE';
   description: string;
   timeLimitMinutes: number;
   passingScore: number;

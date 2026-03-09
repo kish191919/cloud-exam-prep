@@ -1,6 +1,6 @@
 # /blog-write 스킬
 
-`input/` 폴더의 txt 파일을 기반으로 AWS/GCP/Azure 자격증 학습 블로그 포스트를
+`input/` 폴더의 txt 파일을 기반으로 AWS/GCP/AZURE 자격증 학습 블로그 포스트를
 SEO 최적화하여 자동 생성하고 Supabase `blog_posts` 테이블에 삽입합니다.
 
 ## 트리거
@@ -71,6 +71,6 @@ Blog Writer Agent가 각 포스트에 대해 자동으로 최적화합니다:
 ## 주의사항
 
 - 기본 `is_published=false` (초안 저장) — 사용자 선택으로 즉시 게시 가능
-- `exam_id` 없는 경우 GCP/Azure 등 비AWS 자격증으로 처리 (blog_posts.exam_id = null)
+- `exam_id` 없는 경우 GCP/AZURE 등 비AWS 자격증으로 처리 (blog_posts.exam_id = null)
 - 생성 결과: `output/draft_blog_posts.json`
 - 처리 완료 파일: `input/done/{filename}` 이동

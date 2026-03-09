@@ -12,7 +12,7 @@ SELECT * FROM (VALUES
   'notice'::text,
   'CloudMaster에 오신 것을 환영합니다 🎉',
   'Welcome to CloudMaster 🎉',
-  $KO$안녕하세요! AWS·GCP·Azure 자격증 준비를 돕는 CloudMaster입니다.
+  $KO$안녕하세요! AWS·GCP·AZURE 자격증 준비를 돕는 CloudMaster입니다.
 
 이 게시판(공지·정보)에서는 다음과 같은 내용을 정기적으로 업데이트합니다.
 
@@ -138,13 +138,13 @@ CloudMaster provides Korean-explained practice questions aligned with this roadm
   'info'::text,
   'Google Cloud 자격증, 지금이 취득 적기인 이유 (2026)',
   'Google Cloud Certifications: Why Now Is the Best Time to Get Certified (2026)',
-  $KO$Google Cloud Platform(GCP)은 시장 점유율 약 11%로 AWS, Azure에 이어 3위이지만, AI·ML 분야에서의 강세와 국내 기업 도입 확대로 인해 자격증 보유자의 몸값이 빠르게 오르고 있습니다.
+  $KO$Google Cloud Platform(GCP)은 시장 점유율 약 11%로 AWS, AZURE에 이어 3위이지만, AI·ML 분야에서의 강세와 국내 기업 도입 확대로 인해 자격증 보유자의 몸값이 빠르게 오르고 있습니다.
 
 
 ━━ GCP 자격증 시장 현황 ━━
 
   • AI/ML 경쟁력: Google의 Vertex AI, BigQuery ML, Gemini API 등 AI 서비스가 기업 채택 1순위로 부상하면서, GCP 전문가 수요가 2024~2025년 사이 47% 급증 (IDC, 2025)
-  • 희소성 프리미엄: AWS·Azure에 비해 GCP 자격증 보유자가 상대적으로 적어, 동일 경력 기준 연봉 협상력이 더 높은 경향
+  • 희소성 프리미엄: AWS·AZURE에 비해 GCP 자격증 보유자가 상대적으로 적어, 동일 경력 기준 연봉 협상력이 더 높은 경향
   • 국내 도입 사례: LG, 롯데, 교보생명 등 대기업과 스타트업 생태계 전반에서 GCP 채택 증가
   • 데이터·ML 직군 핵심: 데이터 엔지니어, ML 엔지니어 구인공고에서 GCP Professional Data Engineer·ML Engineer 자격증 인용 증가
 
@@ -176,13 +176,13 @@ CloudMaster provides Korean-explained practice questions aligned with this roadm
   3. 성장하는 시장: 기업의 멀티클라우드 전략 채택이 늘면서 GCP 전문가 수요는 지속 확대 전망
 
 CloudMaster에서 GCP 시험도 준비해보세요. 한국어 해설로 개념을 먼저 완벽히 이해하고 실전에 도전하세요.$KO$,
-  $EN$Google Cloud Platform (GCP) holds approximately 11% of the global cloud market — third behind AWS and Azure — but its strength in AI/ML and growing adoption among Korean enterprises is rapidly increasing the market value of GCP-certified professionals.
+  $EN$Google Cloud Platform (GCP) holds approximately 11% of the global cloud market — third behind AWS and AZURE — but its strength in AI/ML and growing adoption among Korean enterprises is rapidly increasing the market value of GCP-certified professionals.
 
 
 ━━ GCP Certification Market Overview ━━
 
   • AI/ML leadership: Google's Vertex AI, BigQuery ML, and Gemini API have become the top AI service choices for enterprises, driving a 47% surge in demand for GCP specialists from 2024 to 2025 (IDC, 2025)
-  • Scarcity premium: GCP certificate holders are relatively fewer than AWS or Azure counterparts, giving them stronger negotiating power at equivalent experience levels
+  • Scarcity premium: GCP certificate holders are relatively fewer than AWS or AZURE counterparts, giving them stronger negotiating power at equivalent experience levels
   • Korean enterprise adoption: Large corporations including LG, Lotte, and Kyobo Life, as well as the broader startup ecosystem, are increasingly adopting GCP
   • Data/ML role demand: Job postings for Data Engineers and ML Engineers increasingly cite GCP Professional Data Engineer and ML Engineer certifications
 
@@ -219,86 +219,86 @@ Start preparing for GCP exams on CloudMaster. Understand the concepts deeply in 
 ),
 
 -- ─────────────────────────────────────────────────────────────────────────────
--- [4] info: Azure 자격증 취업 현황
+-- [4] info: AZURE 자격증 취업 현황
 -- ─────────────────────────────────────────────────────────────────────────────
 (
   'info'::text,
-  'Microsoft Azure 자격증이 대기업·공공기관에서 주목받는 이유',
-  'Why Microsoft Azure Certifications Are in High Demand at Enterprises and Government',
-  $KO$Microsoft Azure는 시장 점유율 약 22%로 세계 2위 클라우드 플랫폼입니다. 특히 Microsoft 365, Teams, Active Directory와의 깊은 연동성 덕분에 대기업, 금융기관, 공공기관에서 Azure를 선택하는 경우가 많아, 이 분야의 자격증 보유자 수요가 안정적으로 높습니다.
+  'Microsoft AZURE 자격증이 대기업·공공기관에서 주목받는 이유',
+  'Why Microsoft AZURE Certifications Are in High Demand at Enterprises and Government',
+  $KO$Microsoft AZURE는 시장 점유율 약 22%로 세계 2위 클라우드 플랫폼입니다. 특히 Microsoft 365, Teams, Active Directory와의 깊은 연동성 덕분에 대기업, 금융기관, 공공기관에서 AZURE를 선택하는 경우가 많아, 이 분야의 자격증 보유자 수요가 안정적으로 높습니다.
 
 
-━━ Azure 자격증 시장 현황 ━━
+━━ AZURE 자격증 시장 현황 ━━
 
-  • 대기업·공공기관 강세: Microsoft 제품군(M365, Teams, Azure AD)과 연동성이 높아 국내 은행·보험사·공공기관의 Azure 채택 비율이 2025년 기준 61%로 조사됨 (Gartner, 2025)
-  • 안정적인 수요: 글로벌 Fortune 500 기업의 95% 이상이 Azure를 사용 중 (Microsoft, 2025)
-  • 연봉 현황: Azure 자격증 보유자의 국내 평균 연봉은 클라우드 미자격증 개발자 대비 약 22% 높음
+  • 대기업·공공기관 강세: Microsoft 제품군(M365, Teams, AZURE AD)과 연동성이 높아 국내 은행·보험사·공공기관의 AZURE 채택 비율이 2025년 기준 61%로 조사됨 (Gartner, 2025)
+  • 안정적인 수요: 글로벌 Fortune 500 기업의 95% 이상이 AZURE를 사용 중 (Microsoft, 2025)
+  • 연봉 현황: AZURE 자격증 보유자의 국내 평균 연봉은 클라우드 미자격증 개발자 대비 약 22% 높음
   • DevOps·보안 직군 핵심: AZ-400(DevOps), SC-900(보안) 계열 자격증에 대한 기업 수요가 특히 높음
 
 
-━━ Azure 자격증 로드맵 ━━
+━━ AZURE 자격증 로드맵 ━━
 
   [입문 단계 — 비개발 직군 포함]
-  → AZ-900: Microsoft Azure Fundamentals
-  Azure 서비스 전반의 개념을 검증하는 입문 자격증. IT 직군이 아니어도 취득 가능하며, '클라우드 기초 소양'으로 인정받습니다.
+  → AZ-900: Microsoft AZURE Fundamentals
+  AZURE 서비스 전반의 개념을 검증하는 입문 자격증. IT 직군이 아니어도 취득 가능하며, '클라우드 기초 소양'으로 인정받습니다.
 
   [어소시에이트 단계 — 실무 역량 검증]
-  → AZ-104: Microsoft Azure Administrator
+  → AZ-104: Microsoft AZURE Administrator
     시스템 관리자, 인프라 운영 직군의 필수 자격증
-  → AZ-204: Developing Solutions for Microsoft Azure
-    Azure 기반 애플리케이션 개발 역량 검증. 백엔드·풀스택 개발자에게 추천
-  → AZ-305: Designing Azure Infrastructure Solutions
+  → AZ-204: Developing Solutions for Microsoft AZURE
+    AZURE 기반 애플리케이션 개발 역량 검증. 백엔드·풀스택 개발자에게 추천
+  → AZ-305: Designing AZURE Infrastructure Solutions
     아키텍처 설계 역량 검증. Solutions Architect 직군 핵심
 
   [전문가 단계]
-  → AZ-400: Azure DevOps Engineer Expert
+  → AZ-400: AZURE DevOps Engineer Expert
     CI/CD, 자동화, 모니터링 역량. DevOps 직군 최고 자격증
   → SC-300: Identity and Access Administrator
     보안·IAM 전문가 취업에 필수
 
 
-━━ Azure를 선택해야 하는 3가지 이유 ━━
+━━ AZURE를 선택해야 하는 3가지 이유 ━━
 
-  1. 대기업·금융·공공 취업 시 강점: Azure를 선택한 조직의 특성상 Azure 자격증이 직접적인 우대 조건
+  1. 대기업·금융·공공 취업 시 강점: AZURE를 선택한 조직의 특성상 AZURE 자격증이 직접적인 우대 조건
   2. Microsoft 생태계 연동: M365, Teams, Power Platform 등 Microsoft 제품을 이미 사용 중인 조직에서의 채용 기회 다수
   3. 자격증 유지 용이: Microsoft는 매년 자격증 갱신 비용을 무료로 제공하는 정책 운영 중 (온라인 평가만으로 갱신 가능)
 
 CloudMaster에서 AZ-900부터 차근차근 준비하고, 목표 직군에 맞는 자격증으로 나아가세요.$KO$,
-  $EN$Microsoft Azure is the world's second-largest cloud platform with approximately 22% market share. Its deep integration with Microsoft 365, Teams, and Active Directory makes it the preferred choice for large enterprises, financial institutions, and government agencies — creating stable, high demand for Azure-certified professionals.
+  $EN$Microsoft AZURE is the world's second-largest cloud platform with approximately 22% market share. Its deep integration with Microsoft 365, Teams, and Active Directory makes it the preferred choice for large enterprises, financial institutions, and government agencies — creating stable, high demand for AZURE-certified professionals.
 
 
-━━ Azure Certification Market Overview ━━
+━━ AZURE Certification Market Overview ━━
 
-  • Enterprise and public sector strength: Due to strong Microsoft ecosystem integration, 61% of Korean banks, insurance companies, and government agencies have adopted Azure as of 2025 (Gartner, 2025)
-  • Stable demand: Over 95% of Fortune 500 companies use Azure (Microsoft, 2025)
-  • Salary data: Azure-certified professionals in Korea earn approximately 22% more than non-certified cloud developers
+  • Enterprise and public sector strength: Due to strong Microsoft ecosystem integration, 61% of Korean banks, insurance companies, and government agencies have adopted AZURE as of 2025 (Gartner, 2025)
+  • Stable demand: Over 95% of Fortune 500 companies use AZURE (Microsoft, 2025)
+  • Salary data: AZURE-certified professionals in Korea earn approximately 22% more than non-certified cloud developers
   • DevOps and security demand: Enterprise demand is especially high for AZ-400 (DevOps) and SC-900 (Security) track certifications
 
 
-━━ Azure Certification Roadmap ━━
+━━ AZURE Certification Roadmap ━━
 
   [Fundamentals — including non-technical roles]
-  → AZ-900: Microsoft Azure Fundamentals
-  The entry-level cert covering broad Azure service concepts. Achievable without a technical background; recognized as foundational cloud literacy.
+  → AZ-900: Microsoft AZURE Fundamentals
+  The entry-level cert covering broad AZURE service concepts. Achievable without a technical background; recognized as foundational cloud literacy.
 
   [Associate — validating hands-on skills]
-  → AZ-104: Microsoft Azure Administrator
+  → AZ-104: Microsoft AZURE Administrator
     Essential for system administrators and infrastructure operations roles
-  → AZ-204: Developing Solutions for Microsoft Azure
-    Validates Azure-based application development; recommended for backend and full-stack developers
-  → AZ-305: Designing Azure Infrastructure Solutions
+  → AZ-204: Developing Solutions for Microsoft AZURE
+    Validates AZURE-based application development; recommended for backend and full-stack developers
+  → AZ-305: Designing AZURE Infrastructure Solutions
     Validates architectural design skills; core cert for Solutions Architect roles
 
   [Expert level]
-  → AZ-400: Azure DevOps Engineer Expert
-    CI/CD, automation, monitoring skills — the top DevOps certification on Azure
+  → AZ-400: AZURE DevOps Engineer Expert
+    CI/CD, automation, monitoring skills — the top DevOps certification on AZURE
   → SC-300: Identity and Access Administrator
     Essential for security and IAM specialist roles
 
 
-━━ 3 Reasons to Choose Azure ━━
+━━ 3 Reasons to Choose AZURE ━━
 
-  1. Enterprise/finance/government career advantage: Organizations that choose Azure make Azure certification a direct preferred qualification
+  1. Enterprise/finance/government career advantage: Organizations that choose AZURE make AZURE certification a direct preferred qualification
   2. Microsoft ecosystem integration: Many hiring opportunities at organizations already using M365, Teams, and Power Platform
   3. Easy renewal: Microsoft offers free annual certification renewal through an online assessment only — no re-exam fee
 
@@ -312,9 +312,9 @@ Start with AZ-900 on CloudMaster and progress toward the certification that fits
 -- ─────────────────────────────────────────────────────────────────────────────
 (
   'tip'::text,
-  '2026 클라우드 자격증별 연봉 비교 — AWS vs GCP vs Azure',
-  '2026 Cloud Cert Salary Comparison — AWS vs GCP vs Azure',
-  $KO$클라우드 자격증을 취득하면 연봉이 실제로 얼마나 오를까요? 국내외 채용 데이터와 연봉 조사를 바탕으로 AWS·GCP·Azure 자격증 보유자의 평균 연봉 현황을 정리했습니다.
+  '2026 클라우드 자격증별 연봉 비교 — AWS vs GCP vs AZURE',
+  '2026 Cloud Cert Salary Comparison — AWS vs GCP vs AZURE',
+  $KO$클라우드 자격증을 취득하면 연봉이 실제로 얼마나 오를까요? 국내외 채용 데이터와 연봉 조사를 바탕으로 AWS·GCP·AZURE 자격증 보유자의 평균 연봉 현황을 정리했습니다.
 
 
 ━━ 국내 클라우드 자격증별 평균 연봉 (2025~2026 기준) ━━
@@ -339,12 +339,12 @@ Start with AZ-900 on CloudMaster and progress toward the certification that fits
   경력 3~7년: 약 7,500만 ~ 1억 1,000만 원
   (AI 수요 폭증으로 가장 가파른 상승세)
 
-  [Azure Solutions Architect Expert (AZ-305)]
+  [AZURE Solutions Architect Expert (AZ-305)]
   경력 1~3년: 약 4,800만 ~ 6,500만 원
   경력 3~7년: 약 6,500만 ~ 9,000만 원
   (대기업·금융권 취업 시 추가 프리미엄 가능)
 
-  [Azure DevOps Engineer Expert (AZ-400)]
+  [AZURE DevOps Engineer Expert (AZ-400)]
   경력 1~3년: 약 5,000만 ~ 6,800만 원
   경력 3~7년: 약 6,800만 ~ 9,500만 원
 
@@ -353,7 +353,7 @@ Start with AZ-900 on CloudMaster and progress toward the certification that fits
 
   AWS Solutions Architect – Associate: $130,000 ~ $160,000
   GCP Professional Cloud Architect:    $135,000 ~ $170,000
-  Azure Solutions Architect Expert:    $128,000 ~ $158,000
+  AZURE Solutions Architect Expert:    $128,000 ~ $158,000
   GCP Professional ML Engineer:        $145,000 ~ $185,000
   AWS AI Practitioner:                 $120,000 ~ $150,000
 
@@ -367,7 +367,7 @@ Start with AZ-900 on CloudMaster and progress toward the certification that fits
     → 국내외 AI 수요 폭발로 가장 높은 연봉 상승 효과
 
   🥈 아키텍처·설계 직군:
-    AWS SAA + Azure Solutions Architect Expert
+    AWS SAA + AZURE Solutions Architect Expert
     → 멀티클라우드 전문가로 포지셔닝, 프리미엄 연봉 협상 가능
 
   🥉 신입·커리어 전환자:
@@ -405,12 +405,12 @@ CloudMaster에서 지금 바로 학습을 시작하고, 연봉 상승의 첫 발
   3–7 years exp: ₩75M ~ ₩110M
   (Steepest salary growth trajectory, driven by surging AI demand)
 
-  [Azure Solutions Architect Expert (AZ-305)]
+  [AZURE Solutions Architect Expert (AZ-305)]
   1–3 years exp: ₩48M ~ ₩65M
   3–7 years exp: ₩65M ~ ₩90M
   (Additional premium possible at large enterprises and financial firms)
 
-  [Azure DevOps Engineer Expert (AZ-400)]
+  [AZURE DevOps Engineer Expert (AZ-400)]
   1–3 years exp: ₩50M ~ ₩68M
   3–7 years exp: ₩68M ~ ₩95M
 
@@ -419,7 +419,7 @@ CloudMaster에서 지금 바로 학습을 시작하고, 연봉 상승의 첫 발
 
   AWS Solutions Architect – Associate: $130,000 ~ $160,000
   GCP Professional Cloud Architect:    $135,000 ~ $170,000
-  Azure Solutions Architect Expert:    $128,000 ~ $158,000
+  AZURE Solutions Architect Expert:    $128,000 ~ $158,000
   GCP Professional ML Engineer:        $145,000 ~ $185,000
   AWS AI Practitioner:                 $120,000 ~ $150,000
 
@@ -433,7 +433,7 @@ CloudMaster에서 지금 바로 학습을 시작하고, 연봉 상승의 첫 발
     → Highest salary uplift, driven by exploding AI/ML demand
 
   🥈 Architecture and design roles:
-    AWS SAA + Azure Solutions Architect Expert
+    AWS SAA + AZURE Solutions Architect Expert
     → Position yourself as a multi-cloud specialist for premium salary negotiation
 
   🥉 Career changers and new graduates:
@@ -455,8 +455,8 @@ Start learning on CloudMaster today and take your first step toward a higher sal
 -- ─────────────────────────────────────────────────────────────────────────────
 (
   'update'::text,
-  '2025~2026 AWS·GCP·Azure 시험 출제 범위 주요 변경사항 총정리',
-  '2025–2026 Key Exam Scope Changes: AWS, GCP & Azure',
+  '2025~2026 AWS·GCP·AZURE 시험 출제 범위 주요 변경사항 총정리',
+  '2025–2026 Key Exam Scope Changes: AWS, GCP & AZURE',
   $KO$클라우드 자격증 시험은 빠르게 진화하는 클라우드 기술을 반영해 출제 범위가 자주 업데이트됩니다. 2025~2026년에 발표된 주요 변경사항을 정리했습니다. 학습 전 반드시 확인하세요.
 
 
@@ -497,23 +497,23 @@ Start learning on CloudMaster today and take your first step toward a higher sal
   ✓ MLOps 성숙도 모델 심화
 
 
-━━ Microsoft Azure 주요 변경사항 ━━
+━━ Microsoft AZURE 주요 변경사항 ━━
 
-  [AZ-900: Azure Fundamentals]
-  ✓ Azure OpenAI Service, Copilot Studio 개념 추가
+  [AZ-900: AZURE Fundamentals]
+  ✓ AZURE OpenAI Service, Copilot Studio 개념 추가
   ✓ 책임 있는 AI 원칙 (Responsible AI) 문항 추가
 
-  [AZ-104: Azure Administrator]
-  ✓ Azure Arc, Azure Stack 관련 하이브리드 시나리오 증가
-  ✓ Microsoft Entra ID (구 Azure AD) 기반 문항으로 전면 전환
+  [AZ-104: AZURE Administrator]
+  ✓ AZURE Arc, AZURE Stack 관련 하이브리드 시나리오 증가
+  ✓ Microsoft Entra ID (구 AZURE AD) 기반 문항으로 전면 전환
 
-  [AZ-204: Azure Developer]
-  ✓ Azure Container Apps, Azure Functions Flex Consumption 관련 신규 출제
-  ✓ Azure OpenAI API 활용 패턴 문항 추가
+  [AZ-204: AZURE Developer]
+  ✓ AZURE Container Apps, AZURE Functions Flex Consumption 관련 신규 출제
+  ✓ AZURE OpenAI API 활용 패턴 문항 추가
 
-  [AZ-305: Azure Solutions Architect]
+  [AZ-305: AZURE Solutions Architect]
   ✓ AI workload 배포·보안 아키텍처 문항 추가
-  ✓ Azure Landing Zones 모범 사례 심화
+  ✓ AZURE Landing Zones 모범 사례 심화
 
 
 ━━ 학습 전 체크리스트 ━━
@@ -564,23 +564,23 @@ Start learning on CloudMaster today and take your first step toward a higher sal
   ✓ Deeper MLOps maturity model coverage
 
 
-━━ Microsoft Azure Key Changes ━━
+━━ Microsoft AZURE Key Changes ━━
 
-  [AZ-900: Azure Fundamentals]
-  ✓ New Azure OpenAI Service and Copilot Studio concepts added
+  [AZ-900: AZURE Fundamentals]
+  ✓ New AZURE OpenAI Service and Copilot Studio concepts added
   ✓ New Responsible AI principles questions
 
-  [AZ-104: Azure Administrator]
-  ✓ More hybrid scenarios involving Azure Arc and Azure Stack
-  ✓ Full migration to Microsoft Entra ID (formerly Azure AD) terminology
+  [AZ-104: AZURE Administrator]
+  ✓ More hybrid scenarios involving AZURE Arc and AZURE Stack
+  ✓ Full migration to Microsoft Entra ID (formerly AZURE AD) terminology
 
-  [AZ-204: Azure Developer]
-  ✓ New questions on Azure Container Apps and Azure Functions Flex Consumption
-  ✓ New Azure OpenAI API usage pattern questions
+  [AZ-204: AZURE Developer]
+  ✓ New questions on AZURE Container Apps and AZURE Functions Flex Consumption
+  ✓ New AZURE OpenAI API usage pattern questions
 
-  [AZ-305: Azure Solutions Architect]
+  [AZ-305: AZURE Solutions Architect]
   ✓ New AI workload deployment and security architecture questions
-  ✓ Deeper Azure Landing Zones best practices coverage
+  ✓ Deeper AZURE Landing Zones best practices coverage
 
 
 ━━ Pre-Study Checklist ━━
@@ -624,11 +624,11 @@ UPDATE announcements SET
 WHERE title = 'Google Cloud 자격증, 지금이 취득 적기인 이유 (2026)'
   AND cover_image_url IS NULL;
 
--- [4] Azure 자격증 취업 현황
+-- [4] AZURE 자격증 취업 현황
 UPDATE announcements SET
   cover_image_url = 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1200&q=80&auto=format&fit=crop',
-  ref_links = '[{"name":"Gartner Cloud Market Share Q4 2025","url":"https://www.gartner.com/en/newsroom/press-releases/2025-06-cloud-market-share"},{"name":"Microsoft Azure Customer Stories","url":"https://customers.microsoft.com/en-us/home"}]'
-WHERE title = 'Microsoft Azure 자격증이 대기업·공공기관에서 주목받는 이유'
+  ref_links = '[{"name":"Gartner Cloud Market Share Q4 2025","url":"https://www.gartner.com/en/newsroom/press-releases/2025-06-cloud-market-share"},{"name":"Microsoft AZURE Customer Stories","url":"https://customers.microsoft.com/en-us/home"}]'
+WHERE title = 'Microsoft AZURE 자격증이 대기업·공공기관에서 주목받는 이유'
   AND cover_image_url IS NULL;
 
 -- [5] 연봉 비교 — 커버 이미지 + ref_links + {{chart:salary}} 마커 삽입
@@ -645,12 +645,12 @@ UPDATE announcements SET
     '━━ Global Average Salaries (USD, US Market) ━━',
     E'{{chart:salary}}\n\n━━ Global Average Salaries (USD, US Market) ━━'
   )
-WHERE title = '2026 클라우드 자격증별 연봉 비교 — AWS vs GCP vs Azure'
+WHERE title = '2026 클라우드 자격증별 연봉 비교 — AWS vs GCP vs AZURE'
   AND cover_image_url IS NULL;
 
 -- [6] 시험 출제 범위 변경
 UPDATE announcements SET
   cover_image_url = 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&q=80&auto=format&fit=crop',
   ref_links = '[{"name":"AWS Certified Solutions Architect Exam Guide","url":"https://d1.awsstatic.com/training-and-certification/docs-sa-assoc/AWS-Certified-Solutions-Architect-Associate_Exam-Guide.pdf"},{"name":"Google Cloud Certification Exams","url":"https://cloud.google.com/learn/certification"},{"name":"Microsoft Learn Certifications","url":"https://learn.microsoft.com/en-us/credentials/browse/"}]'
-WHERE title = '2025~2026 AWS·GCP·Azure 시험 출제 범위 주요 변경사항 총정리'
+WHERE title = '2025~2026 AWS·GCP·AZURE 시험 출제 범위 주요 변경사항 총정리'
   AND cover_image_url IS NULL;

@@ -164,7 +164,7 @@
         {
           "icon": "Database",
           "title": "El Motor detrás del Big Data y ML",
-          "desc": "Pipelines de datos, despliegue de modelos ML, analítica en tiempo real — todo construido en AWS, GCP o Azure. Una certificación cloud es indispensable para cualquier carrera en datos."
+          "desc": "Pipelines de datos, despliegue de modelos ML, analítica en tiempo real — todo construido en AWS, GCP o AZURE. Una certificación cloud es indispensable para cualquier carrera en datos."
         },
         {
           "icon": "TrendingUp",
@@ -247,7 +247,7 @@
       "questions": [
         {
           "q": "¿Qué son AWS, GCP y AZURE — y por qué los necesito?",
-          "a": "AWS (Amazon), GCP (Google) y Azure (Microsoft) son las tres plataformas cloud que impulsan más del 70% de la infraestructura digital del mundo. ChatGPT, Netflix y muchos servicios cotidianos funcionan en ellas. Como más del 90% del trabajo con IA y big data es basado en cloud, estas certificaciones son esenciales para cualquier persona en el sector tecnológico."
+          "a": "AWS (Amazon), GCP (Google) y AZURE (Microsoft) son las tres plataformas cloud que impulsan más del 70% de la infraestructura digital del mundo. ChatGPT, Netflix y muchos servicios cotidianos funcionan en ellas. Como más del 90% del trabajo con IA y big data es basado en cloud, estas certificaciones son esenciales para cualquier persona en el sector tecnológico."
         },
         {
           "q": "¿Pueden personas sin formación en TI tomar estos exámenes?",
@@ -417,13 +417,13 @@
   "blog": {
     "title": "Material de Estudio",
     "subtitle": "Apuntes gratuitos, comparaciones de servicios y resúmenes para ayudarte a aprobar las certificaciones AWS, GCP y AZURE.",
-    "seoTitle": "Material de Estudio para Certificaciones AWS·GCP·Azure | CloudMaster",
+    "seoTitle": "Material de Estudio para Certificaciones AWS·GCP·AZURE | CloudMaster",
     "seoDesc": "Apuntes gratuitos, tablas de comparación de servicios y resúmenes para certificaciones AWS, GCP y AZURE.",
     "tabs": {
       "all": "Todos",
       "aws": "AWS",
       "gcp": "GCP",
-      "azure": "Azure"
+      "azure": "AZURE"
     },
     "readTime": "{{min}} min de lectura",
     "publishedOn": "{{date}}",

@@ -20,7 +20,7 @@ export interface LevelMeta {
 }
 
 export interface ProviderConfig {
-  id: 'AWS' | 'GCP' | 'Azure';
+  id: 'AWS' | 'GCP' | 'AZURE';
   name: string;
   tagline: string;      // 한국어
   taglineEn: string;    // 영어
@@ -284,37 +284,37 @@ const gcpCertifications: Certification[] = [
 ];
 
 // ────────────────────────────────────────────────────────────────────────────
-// Azure
+// AZURE
 // ────────────────────────────────────────────────────────────────────────────
 const azureCertifications: Certification[] = [
   // Fundamentals
   {
     id: 'az-900',
-    name: 'Azure Fundamentals',
+    name: 'AZURE Fundamentals',
     code: 'AZ-900',
     level: 'fundamentals',
     careerPaths: ['all'],
-    description: 'Azure 클라우드 기초 개념, 서비스, 요금제를 다루는 입문 자격증. 기술 배경 없이도 응시 가능.',
-    descriptionEn: 'Entry-level certification covering Azure cloud basics, services, and pricing. No technical background required.',
+    description: 'AZURE 클라우드 기초 개념, 서비스, 요금제를 다루는 입문 자격증. 기술 배경 없이도 응시 가능.',
+    descriptionEn: 'Entry-level certification covering AZURE cloud basics, services, and pricing. No technical background required.',
     examId: 'azure-az-900',
   },
   {
     id: 'ai-900',
-    name: 'Azure AI Fundamentals',
+    name: 'AZURE AI Fundamentals',
     code: 'AI-900',
     level: 'fundamentals',
     careerPaths: ['data-ml'],
-    description: 'Azure AI 서비스와 머신러닝 개념을 다루는 AI 입문 자격증. AI-102 취득 전 권장.',
-    descriptionEn: 'AI entry-level certification covering Azure AI services and machine learning concepts. Recommended before AI-102.',
+    description: 'AZURE AI 서비스와 머신러닝 개념을 다루는 AI 입문 자격증. AI-102 취득 전 권장.',
+    descriptionEn: 'AI entry-level certification covering AZURE AI services and machine learning concepts. Recommended before AI-102.',
   },
   {
     id: 'dp-900',
-    name: 'Azure Data Fundamentals',
+    name: 'AZURE Data Fundamentals',
     code: 'DP-900',
     level: 'fundamentals',
     careerPaths: ['data-ml'],
     description: '관계형·비관계형 데이터, 분석 워크로드 개념을 다루는 데이터 입문 자격증.',
-    descriptionEn: 'Data entry-level certification covering relational/non-relational data concepts and analytical workloads on Azure.',
+    descriptionEn: 'Data entry-level certification covering relational/non-relational data concepts and analytical workloads on AZURE.',
   },
   {
     id: 'sc-900',
@@ -328,44 +328,44 @@ const azureCertifications: Certification[] = [
   // Associate
   {
     id: 'az-104',
-    name: 'Azure Administrator',
+    name: 'AZURE Administrator',
     code: 'AZ-104',
     level: 'associate',
     careerPaths: ['devops'],
-    description: 'Azure 구독, 가상 네트워크, 스토리지, VM 관리 역량을 검증. Azure 운영의 핵심 자격증.',
-    descriptionEn: 'Validates skills in managing Azure subscriptions, virtual networks, storage, and VMs. A core Azure operations certification.',
+    description: 'AZURE 구독, 가상 네트워크, 스토리지, VM 관리 역량을 검증. AZURE 운영의 핵심 자격증.',
+    descriptionEn: 'Validates skills in managing AZURE subscriptions, virtual networks, storage, and VMs. A core AZURE operations certification.',
   },
   {
     id: 'az-204',
-    name: 'Azure Developer',
+    name: 'AZURE Developer',
     code: 'AZ-204',
     level: 'associate',
     careerPaths: ['developer'],
-    description: 'Azure 클라우드 솔루션 개발·구현 역량 검증. App Service, Functions, Storage 등 포함.',
-    descriptionEn: 'Validates skills in developing and implementing Azure cloud solutions. Covers App Service, Functions, and Storage.',
+    description: 'AZURE 클라우드 솔루션 개발·구현 역량 검증. App Service, Functions, Storage 등 포함.',
+    descriptionEn: 'Validates skills in developing and implementing AZURE cloud solutions. Covers App Service, Functions, and Storage.',
   },
   {
     id: 'ai-102',
-    name: 'Azure AI Engineer Associate',
+    name: 'AZURE AI Engineer Associate',
     code: 'AI-102',
     level: 'associate',
     careerPaths: ['data-ml'],
-    description: 'Azure AI 서비스를 활용한 AI 솔루션 설계·구현 역량 검증. Azure OpenAI 포함.',
-    descriptionEn: 'Validates skills in designing and implementing AI solutions using Azure AI services, including Azure OpenAI.',
+    description: 'AZURE AI 서비스를 활용한 AI 솔루션 설계·구현 역량 검증. AZURE OpenAI 포함.',
+    descriptionEn: 'Validates skills in designing and implementing AI solutions using AZURE AI services, including AZURE OpenAI.',
   },
   // Expert
   {
     id: 'az-305',
-    name: 'Azure Solutions Architect Expert',
+    name: 'AZURE Solutions Architect Expert',
     code: 'AZ-305',
     level: 'expert',
     careerPaths: ['cloud-architect'],
-    description: 'Azure 기반 엔터프라이즈 솔루션 설계 역량을 검증하는 최고급 아키텍처 자격증.',
-    descriptionEn: "Azure's top-tier architecture certification validating skills in designing enterprise solutions on Azure.",
+    description: 'AZURE 기반 엔터프라이즈 솔루션 설계 역량을 검증하는 최고급 아키텍처 자격증.',
+    descriptionEn: "AZURE's top-tier architecture certification validating skills in designing enterprise solutions on AZURE.",
   },
   {
     id: 'az-400',
-    name: 'Azure DevOps Engineer Expert',
+    name: 'AZURE DevOps Engineer Expert',
     code: 'AZ-400',
     level: 'expert',
     careerPaths: ['devops'],
@@ -397,8 +397,8 @@ export const PROVIDERS: ProviderConfig[] = [
     certifications: gcpCertifications,
   },
   {
-    id: 'Azure',
-    name: 'Microsoft Azure',
+    id: 'AZURE',
+    name: 'Microsoft AZURE',
     tagline: '엔터프라이즈 친화적 마이크로소프트 클라우드',
     taglineEn: 'Enterprise-friendly Microsoft cloud platform',
     color: '#0078D4',

@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS exams (
   id TEXT PRIMARY KEY,
   title TEXT NOT NULL,
   code TEXT NOT NULL UNIQUE,
-  certification TEXT NOT NULL CHECK (certification IN ('AWS', 'GCP', 'Azure')),
+  certification TEXT NOT NULL CHECK (certification IN ('AWS', 'GCP', 'AZURE')),
   description TEXT NOT NULL,
   time_limit_minutes INTEGER NOT NULL,
   passing_score INTEGER NOT NULL,

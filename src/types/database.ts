@@ -14,7 +14,7 @@ export interface Database {
           id: string
           title: string
           code: string
-          certification: 'AWS' | 'GCP' | 'Azure'
+          certification: 'AWS' | 'GCP' | 'AZURE'
           description: string
           time_limit_minutes: number
           passing_score: number
@@ -26,7 +26,7 @@ export interface Database {
           id: string
           title: string
           code: string
-          certification: 'AWS' | 'GCP' | 'Azure'
+          certification: 'AWS' | 'GCP' | 'AZURE'
           description: string
           time_limit_minutes: number
           passing_score: number
@@ -38,7 +38,7 @@ export interface Database {
           id?: string
           title?: string
           code?: string
-          certification?: 'AWS' | 'GCP' | 'Azure'
+          certification?: 'AWS' | 'GCP' | 'AZURE'
           description?: string
           time_limit_minutes?: number
           passing_score?: number
@@ -429,7 +429,7 @@ export interface Database {
           id: string
           title: string
           code: string
-          certification: 'AWS' | 'GCP' | 'Azure'
+          certification: 'AWS' | 'GCP' | 'AZURE'
           description: string
           time_limit_minutes: number
           passing_score: number

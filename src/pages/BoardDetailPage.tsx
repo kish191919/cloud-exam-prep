@@ -538,8 +538,8 @@ const BoardDetailPage = () => {
             </p>
             <p className="text-xs text-muted-foreground mb-4">
               {isKo
-                ? '한국어 해설과 함께 AWS·GCP·Azure CBT 환경을 무료로 체험해보세요.'
-                : 'Try our free CBT practice for AWS, GCP & Azure with Korean explanations.'}
+                ? '한국어 해설과 함께 AWS·GCP·AZURE CBT 환경을 무료로 체험해보세요.'
+                : 'Try our free CBT practice for AWS, GCP & AZURE with Korean explanations.'}
             </p>
             <Link to="/exams">
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 text-sm gap-1.5">

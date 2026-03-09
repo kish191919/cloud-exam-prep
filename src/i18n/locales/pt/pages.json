@@ -164,7 +164,7 @@
         {
           "icon": "Database",
           "title": "O Motor por Trás do Big Data & ML",
-          "desc": "Pipelines de dados, implantação de modelos de ML, analytics em tempo real — tudo construído em AWS, GCP ou Azure. Uma certificação cloud é indispensável para qualquer carreira em dados."
+          "desc": "Pipelines de dados, implantação de modelos de ML, analytics em tempo real — tudo construído em AWS, GCP ou AZURE. Uma certificação cloud é indispensável para qualquer carreira em dados."
         },
         {
           "icon": "TrendingUp",
@@ -247,7 +247,7 @@
       "questions": [
         {
           "q": "O que são AWS, GCP e AZURE — e por que preciso deles?",
-          "a": "AWS (Amazon), GCP (Google) e Azure (Microsoft) são as três plataformas cloud que alimentam mais de 70% da infraestrutura digital do mundo. ChatGPT, Netflix e inúmeros serviços do dia a dia rodam nelas. Como mais de 90% do trabalho com IA e big data é baseado em cloud, essas certificações são essenciais para qualquer pessoa na área de tecnologia."
+          "a": "AWS (Amazon), GCP (Google) e AZURE (Microsoft) são as três plataformas cloud que alimentam mais de 70% da infraestrutura digital do mundo. ChatGPT, Netflix e inúmeros serviços do dia a dia rodam nelas. Como mais de 90% do trabalho com IA e big data é baseado em cloud, essas certificações são essenciais para qualquer pessoa na área de tecnologia."
         },
         {
           "q": "Pessoas sem formação em TI podem fazer esses exames?",
@@ -417,13 +417,13 @@
   "blog": {
     "title": "Material de Estudo",
     "subtitle": "Anotações de estudo gratuitas, comparações de serviços e resumos para te ajudar a passar nas certificações AWS, GCP e AZURE.",
-    "seoTitle": "Material de Estudo para Certificações AWS·GCP·Azure | CloudMaster",
+    "seoTitle": "Material de Estudo para Certificações AWS·GCP·AZURE | CloudMaster",
     "seoDesc": "Anotações de estudo gratuitas, tabelas de comparação de serviços e resumos para certificações AWS, GCP e AZURE.",
     "tabs": {
       "all": "Todos",
       "aws": "AWS",
       "gcp": "GCP",
-      "azure": "Azure"
+      "azure": "AZURE"
     },
     "readTime": "{{min}} min de leitura",
     "publishedOn": "{{date}}",
