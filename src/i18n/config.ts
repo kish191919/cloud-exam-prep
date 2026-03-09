@@ -81,4 +81,12 @@ i18n
     },
   });
 
+// HTML lang 속성 동기화 — CSS :lang() 선택자 활성화
+i18n.on('initialized', () => {
+  document.documentElement.lang = i18n.language;
+});
+i18n.on('languageChanged', (lng) => {
+  document.documentElement.lang = lng;
+});
+
 export default i18n;

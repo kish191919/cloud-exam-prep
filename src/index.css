@@ -143,6 +143,12 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
+
+  /* 일본어: keep-all 대신 normal로 자연스러운 글자 단위 줄바꿈 */
+  html[lang="ja"] .break-keep {
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
 }
 
 /* ── 커스텀 애니메이션 키프레임 ── */
