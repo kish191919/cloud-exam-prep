@@ -3,10 +3,13 @@ import { useTranslation } from 'react-i18next';
 
 const TermsPage = () => {
   const { i18n } = useTranslation();
-  const isKo = i18n.language === 'ko';
+  const lang = i18n.language;
 
-  if (!isKo) return <TermsEn />;
-  return <TermsKo />;
+  if (lang === 'ko') return <TermsKo />;
+  if (lang === 'es') return <TermsEs />;
+  if (lang === 'pt') return <TermsPt />;
+  if (lang === 'ja') return <TermsJa />;
+  return <TermsEn />;
 };
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
@@ -165,6 +168,237 @@ const TermsEn = () => (
       <Section title="10. Contact">
         <p>For inquiries about these Terms: cloudmasterit.service@gmail.com</p>
         <p>Copyright infringement reports: cloudmasterit.service@gmail.com</p>
+      </Section>
+    </div>
+  </AppLayout>
+);
+
+const TermsEs = () => (
+  <AppLayout>
+    <div className="max-w-3xl mx-auto py-4">
+      <h1 className="text-2xl font-bold mb-2">Términos de Servicio</h1>
+      <p className="text-sm text-muted-foreground mb-8">Última actualización: febrero de 2026</p>
+
+      <Section title="1. Acerca del servicio">
+        <p>CloudMaster ("Servicio") es una plataforma educativa en línea independiente para usuarios que se preparan para las certificaciones en la nube de AWS, GCP y AZURE. Estos Términos rigen la relación entre los usuarios y CloudMaster con respecto al uso del Servicio.</p>
+        <p>Este sitio web no tiene afiliación, respaldo ni patrocinio de Amazon Web Services (AWS), Microsoft ni Google Cloud.</p>
+      </Section>
+
+      <Section title="2. Requisitos de elegibilidad">
+        <ul className="list-disc pl-5 space-y-1">
+          <li>Debe tener al menos 14 años para utilizar este Servicio.</li>
+          <li>Debe proporcionar información precisa al registrarse.</li>
+          <li>Usted es responsable de mantener la seguridad de su cuenta.</li>
+          <li>Cada usuario puede crear únicamente una cuenta.</li>
+        </ul>
+      </Section>
+
+      <Section title="3. Funciones gratuitas y de pago">
+        <p>CloudMaster ofrece algunas funciones de forma gratuita y funciones adicionales mediante una suscripción de pago.</p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li><strong>Gratuito:</strong> Preguntas de muestra y conjuntos de exámenes limitados</li>
+          <li><strong>De pago:</strong> Banco de preguntas completo, exámenes ilimitados, análisis detallados y más</li>
+        </ul>
+        <p>Los precios y la oferta están sujetos a cambios con previo aviso.</p>
+      </Section>
+
+      <Section title="4. Actividades prohibidas">
+        <p>Queda prohibido:</p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li>Copiar, distribuir o vender cualquier contenido (preguntas, explicaciones, interfaz) sin autorización</li>
+          <li>Usar herramientas automatizadas (bots, scrapers) para recopilar datos</li>
+          <li>Suplantar la identidad de otros o intentar accesos no autorizados</li>
+          <li>Interferir con el funcionamiento normal del Servicio</li>
+          <li>Realizar cualquier actividad que infrinja las leyes aplicables</li>
+        </ul>
+      </Section>
+
+      <Section title="5. Propiedad intelectual">
+        <p>Todo el contenido del Servicio (preguntas, explicaciones, interfaz, etc.) es propiedad de CloudMaster. Los usuarios pueden utilizar el Servicio únicamente para fines de estudio personal. El uso comercial está prohibido.</p>
+        <p>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud y las marcas comerciales relacionadas son propiedad de sus respectivos dueños y no tienen afiliación con CloudMaster. Estos nombres se utilizan únicamente con fines de identificación.</p>
+        <p>Los usuarios no pueden copiar, reproducir, distribuir ni republicar ningún contenido de este sitio web sin permiso previo por escrito.</p>
+      </Section>
+
+      <Section title="6. Cambios en el servicio">
+        <p>CloudMaster puede modificar o interrumpir el Servicio total o parcialmente por motivos de mejora, mantenimiento o razones comerciales. Los cambios significativos o la terminación del servicio se anunciarán con anticipación.</p>
+      </Section>
+
+      <Section title="7. Exenciones de responsabilidad">
+        <ul className="list-disc pl-5 space-y-1">
+          <li>Nos esforzamos por la precisión, pero no garantizamos que todo el contenido esté libre de errores.</li>
+          <li>Todas las preguntas de práctica de este sitio web son creadas de forma independiente con fines educativos y no son preguntas reales de exámenes de certificación.</li>
+          <li>No garantizamos aprobar ningún examen de certificación.</li>
+          <li>Este sitio web no tiene afiliación, respaldo ni patrocinio de AWS, Microsoft ni Google Cloud.</li>
+          <li>No somos responsables de interrupciones del servicio causadas por fuerza mayor o fallas de servidor.</li>
+          <li>El Servicio se proporciona "tal cual" sin garantías de ningún tipo.</li>
+        </ul>
+      </Section>
+
+      <Section title="8. Terminación de cuenta">
+        <p>Puede eliminar su cuenta en cualquier momento. CloudMaster se reserva el derecho de restringir o cancelar cuentas que infrinjan estos Términos sin previo aviso.</p>
+      </Section>
+
+      <Section title="9. Cambios en los términos">
+        <p>Estos Términos pueden actualizarse según sea necesario. Notificaremos a los usuarios mediante avisos dentro del servicio o por correo electrónico. El uso continuado del Servicio tras los cambios constituye la aceptación de los Términos actualizados.</p>
+      </Section>
+
+      <Section title="10. Contacto">
+        <p>Para consultas sobre estos Términos: cloudmasterit.service@gmail.com</p>
+        <p>Informes de infracción de derechos de autor: cloudmasterit.service@gmail.com</p>
+      </Section>
+    </div>
+  </AppLayout>
+);
+
+const TermsPt = () => (
+  <AppLayout>
+    <div className="max-w-3xl mx-auto py-4">
+      <h1 className="text-2xl font-bold mb-2">Termos de Serviço</h1>
+      <p className="text-sm text-muted-foreground mb-8">Última atualização: fevereiro de 2026</p>
+
+      <Section title="1. Sobre o serviço">
+        <p>O CloudMaster ("Serviço") é uma plataforma educacional online independente para usuários que se preparam para as certificações em nuvem AWS, GCP e AZURE. Estes Termos regem a relação entre os usuários e o CloudMaster no que diz respeito ao uso do Serviço.</p>
+        <p>Este site não é afiliado, endossado nem patrocinado pela Amazon Web Services (AWS), Microsoft ou Google Cloud.</p>
+      </Section>
+
+      <Section title="2. Requisitos de elegibilidade">
+        <ul className="list-disc pl-5 space-y-1">
+          <li>Você deve ter pelo menos 14 anos para usar este Serviço.</li>
+          <li>Você deve fornecer informações precisas ao se registrar.</li>
+          <li>Você é responsável por manter a segurança de sua conta.</li>
+          <li>Cada usuário pode criar apenas uma conta.</li>
+        </ul>
+      </Section>
+
+      <Section title="3. Recursos gratuitos e pagos">
+        <p>O CloudMaster oferece alguns recursos gratuitamente e recursos adicionais por meio de uma assinatura paga.</p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li><strong>Gratuito:</strong> Questões de amostra e conjuntos de exames limitados</li>
+          <li><strong>Pago:</strong> Banco de questões completo, exames ilimitados, análises detalhadas e mais</li>
+        </ul>
+        <p>Os preços e ofertas estão sujeitos a alterações mediante aviso prévio.</p>
+      </Section>
+
+      <Section title="4. Atividades proibidas">
+        <p>É proibido:</p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li>Copiar, distribuir ou vender qualquer conteúdo (questões, explicações, interface) sem autorização</li>
+          <li>Usar ferramentas automatizadas (bots, scrapers) para coletar dados</li>
+          <li>Representar outras pessoas ou tentar acessos não autorizados</li>
+          <li>Interferir no funcionamento normal do Serviço</li>
+          <li>Realizar qualquer atividade que viole as leis aplicáveis</li>
+        </ul>
+      </Section>
+
+      <Section title="5. Propriedade intelectual">
+        <p>Todo o conteúdo do Serviço (questões, explicações, interface, etc.) é de propriedade do CloudMaster. Os usuários podem usar o Serviço apenas para fins de estudo pessoal. O uso comercial é proibido.</p>
+        <p>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud e marcas relacionadas são propriedade de seus respectivos donos e não são afiliadas ao CloudMaster. Esses nomes são usados apenas para fins de identificação.</p>
+        <p>Os usuários não podem copiar, reproduzir, distribuir ou republicar qualquer conteúdo deste site sem permissão prévia por escrito.</p>
+      </Section>
+
+      <Section title="6. Alterações no serviço">
+        <p>O CloudMaster pode modificar ou descontinuar o Serviço total ou parcialmente por razões de melhoria, manutenção ou negócios. Alterações significativas ou encerramento do serviço serão anunciados com antecedência.</p>
+      </Section>
+
+      <Section title="7. Isenções de responsabilidade">
+        <ul className="list-disc pl-5 space-y-1">
+          <li>Nos esforçamos pela precisão, mas não garantimos que todo o conteúdo esteja livre de erros.</li>
+          <li>Todas as questões de prática deste site são criadas de forma independente para fins educacionais e não são questões reais de exames de certificação.</li>
+          <li>Não garantimos a aprovação em nenhum exame de certificação.</li>
+          <li>Este site não é afiliado, endossado nem patrocinado pela AWS, Microsoft ou Google Cloud.</li>
+          <li>Não somos responsáveis por interrupções do serviço causadas por força maior ou falhas de servidor.</li>
+          <li>O Serviço é fornecido "no estado em que se encontra", sem garantias de qualquer tipo.</li>
+        </ul>
+      </Section>
+
+      <Section title="8. Encerramento de conta">
+        <p>Você pode excluir sua conta a qualquer momento. O CloudMaster se reserva o direito de restringir ou encerrar contas que violem estes Termos sem aviso prévio.</p>
+      </Section>
+
+      <Section title="9. Alterações nos termos">
+        <p>Estes Termos podem ser atualizados conforme necessário. Notificaremos os usuários por meio de avisos dentro do serviço ou por e-mail. O uso continuado do Serviço após as alterações constitui aceitação dos Termos atualizados.</p>
+      </Section>
+
+      <Section title="10. Contato">
+        <p>Para dúvidas sobre estes Termos: cloudmasterit.service@gmail.com</p>
+        <p>Relatos de violação de direitos autorais: cloudmasterit.service@gmail.com</p>
+      </Section>
+    </div>
+  </AppLayout>
+);
+
+const TermsJa = () => (
+  <AppLayout>
+    <div className="max-w-3xl mx-auto py-4">
+      <h1 className="text-2xl font-bold mb-2">利用規約</h1>
+      <p className="text-sm text-muted-foreground mb-8">最終更新: 2026年2月</p>
+
+      <Section title="1. サービスについて">
+        <p>CloudMaster（以下「サービス」）は、AWS、GCP、AZUREのクラウド認定試験を準備するユーザー向けの独立したオンライン教育プラットフォームです。本規約は、サービスの利用に関するユーザーとCloudMasterの間の権利・義務を定めるものです。</p>
+        <p>本サービスは、Amazon Web Services（AWS）、Microsoft、Google Cloudとの提携・後援・承認関係のない独立した教育プラットフォームです。</p>
+      </Section>
+
+      <Section title="2. 利用資格">
+        <ul className="list-disc pl-5 space-y-1">
+          <li>本サービスをご利用いただくには、14歳以上である必要があります。</li>
+          <li>登録時に正確な情報を提供する必要があります。</li>
+          <li>アカウントのセキュリティ（パスワード等）の維持はユーザー本人の責任です。</li>
+          <li>各ユーザーは1つのアカウントのみ作成できます。</li>
+        </ul>
+      </Section>
+
+      <Section title="3. 無料・有料機能">
+        <p>CloudMasterは一部の機能を無料で提供し、追加機能は有料サブスクリプションでご利用いただけます。</p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li><strong>無料:</strong> サンプル問題および限定的な試験セット</li>
+          <li><strong>有料:</strong> 全問題バンク、無制限の試験、詳細な分析など</li>
+        </ul>
+        <p>料金および提供内容は事前通知のうえ変更される場合があります。</p>
+      </Section>
+
+      <Section title="4. 禁止行為">
+        <p>以下の行為を禁止します。</p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li>サービス内の問題・解説等のコンテンツの無断複製、配布、販売</li>
+          <li>自動化ツール（ボット、スクレイパー等）を使用したデータ収集</li>
+          <li>他人のアカウントの不正使用または不正アクセスの試み</li>
+          <li>サービスの正常な運営を妨げる行為</li>
+          <li>関連法令に違反する行為</li>
+        </ul>
+      </Section>
+
+      <Section title="5. 知的財産権">
+        <p>サービス内のすべてのコンテンツ（問題、解説、UIなど）の著作権はCloudMasterに帰属します。ユーザーは個人学習目的のみサービスを利用できます。商業的利用は禁止されています。</p>
+        <p>AWS、Amazon Web Services、Microsoft、AZURE、Google Cloudおよび関連商標は各所有者の財産であり、CloudMasterとは無関係です。これらの名称は識別目的のみに使用されています。</p>
+        <p>ユーザーは事前の書面による許可なく、本サービスのコンテンツを複製、再配布、販売することはできません。</p>
+      </Section>
+
+      <Section title="6. サービスの変更・中断">
+        <p>CloudMasterはサービスの改善、メンテナンス、事業上の理由により、サービスの一部または全部を変更または中断することがあります。重要な変更またはサービス終了の際は事前にお知らせします。</p>
+      </Section>
+
+      <Section title="7. 免責事項">
+        <ul className="list-disc pl-5 space-y-1">
+          <li>正確性の確保に努めますが、すべてのコンテンツが誤りなく提供されることを保証するものではありません。</li>
+          <li>本サービスのすべての練習問題は教育目的のために独自に作成されたものであり、実際の認定試験の問題ではありません。</li>
+          <li>認定試験の合格を保証するものではありません。</li>
+          <li>本サービスはAWS、Microsoft、Google Cloudとの公式提携関係はなく、これらの企業による承認も受けていません。</li>
+          <li>不可抗力またはサーバー障害によるサービス中断については責任を負いません。</li>
+          <li>本サービスはいかなる種類の保証もなく「現状のまま」提供されます。</li>
+        </ul>
+      </Section>
+
+      <Section title="8. アカウントの解約">
+        <p>ユーザーはいつでもアカウントを削除できます。CloudMasterは規約違反があった場合、事前通知なしにサービスの利用を制限またはアカウントを停止する権利を有します。</p>
+      </Section>
+
+      <Section title="9. 規約の変更">
+        <p>本規約は必要に応じて変更される場合があります。変更時はサービス内のお知らせまたはメールを通じてご案内します。変更後もサービスを継続して利用した場合、変更された規約に同意したものとみなされます。</p>
+      </Section>
+
+      <Section title="10. お問い合わせ">
+        <p>本規約に関するお問い合わせ: cloudmasterit.service@gmail.com</p>
+        <p>著作権侵害の申告: cloudmasterit.service@gmail.com</p>
       </Section>
     </div>
   </AppLayout>
