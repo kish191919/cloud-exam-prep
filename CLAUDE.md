@@ -927,9 +927,15 @@ for idx, batch in enumerate(batches):
 
 에스컬레이션 발생 시: `/convert` 에스컬레이션 처리와 동일 방식으로 사용자에게 전달.
 
-**[B-6] 결과 취합**
+**[B-6] 결과 취합 + 중복 제거**
 
 각 배치 결과의 `inserted_ids`, `failures`, `skipped`를 수집·합산한다.
+
+중복 제거 (삽입 전 최종 검증):
+- 각 배치가 반환한 redesigned 결과를 `original_question_number` 기준으로 인덱싱
+- 동일 `question_number`가 두 배치에서 나타나면 첫 번째 성공 결과만 유지하고 나머지는 SKIP 로그
+- 중복 제거 후 결과만 `insert_supabase.py`에 전달
+- **참고**: `insert_supabase.py`는 동일 ID가 `questions` 테이블에 이미 존재하면 `[SKIP]`으로 처리하므로, 혹시 중복이 삽입 단계까지 도달해도 DB에 중복 삽입되지 않음
 
 **[B-7] 파일 이동 + 커서 업데이트**
 

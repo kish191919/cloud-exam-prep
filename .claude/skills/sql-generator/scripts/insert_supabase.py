@@ -50,6 +50,24 @@ def load_env(env_path: Path) -> dict:
 
 # ── Supabase REST API 호출 ────────────────────────────────────────────────────
 
+def supabase_get(url: str, key: str, table: str, params: str) -> tuple[int, list]:
+    """GET {url}/rest/v1/{table}?{params} — 존재 확인용."""
+    endpoint = f"{url}/rest/v1/{table}?{params}"
+    req = urllib.request.Request(
+        endpoint,
+        headers={
+            'apikey': key,
+            'Authorization': f'Bearer {key}',
+            'Content-Type': 'application/json',
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, context=_ssl_context()) as resp:
+            return resp.status, json.loads(resp.read().decode('utf-8'))
+    except urllib.error.HTTPError as e:
+        return e.code, []
+
+
 def supabase_post(url: str, key: str, table: str, body) -> tuple[int, str]:
     """
     POST {url}/rest/v1/{table}
@@ -85,6 +103,12 @@ def insert_question(q: dict, set_id: str, sort_order: int, supabase_url: str, su
     """
     qid = q['id']
     errors = []
+
+    # 중복 삽입 방지: questions 테이블에 이미 같은 ID가 있으면 SKIP
+    _, existing = supabase_get(supabase_url, supabase_key, 'questions', f'id=eq.{qid}&select=id')
+    if existing:
+        print(f'[SKIP] {qid} — 이미 존재합니다 (중복 삽입 방지)')
+        return []
 
     # 1. questions
     ref_links_raw = q.get('ref_links', [])
