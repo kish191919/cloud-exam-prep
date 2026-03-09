@@ -1,0 +1,568 @@
+{
+  "index": {
+    "betaBanner": {
+      "badge": "Período Beta Aberto",
+      "messagePrefix": "Todas as ",
+      "messageHighlight": "questões AWS · GCP · AZURE",
+      "messageSuffix": " são completamente gratuitas agora."
+    },
+    "hero": {
+      "badge": "A Certificação Essencial para a Era da IA & Cloud",
+      "title": "A IA Roda na Cloud.",
+      "titleAccent": "Sua Carreira Também Deveria.",
+      "subtitle": "ChatGPT, Netflix, todos os grandes produtos de tecnologia rodam em infraestrutura cloud. As certificações AWS, GCP e AZURE são a chave para as carreiras que mais crescem na era da IA. Estude de forma mais inteligente com questões realistas e explicações detalhadas.",
+      "ctaPrimary": "Comece Grátis Agora",
+      "ctaSecondary": "Veja Como Funciona",
+      "stats": {
+        "questions": {
+          "value": "500+",
+          "label": "Questões Práticas"
+        },
+        "passRate": {
+          "value": "95%",
+          "label": "Taxa de Aprovação"
+        },
+        "providers": {
+          "value": "30 min",
+          "label": "Tempo Médio Diário de Estudo"
+        }
+      }
+    },
+    "featuresSection": {
+      "title": "Por que Qualquer Um Pode Passar com o CloudMaster",
+      "subtitle": "Máxima eficiência no menor tempo. Explicações detalhadas, prática CBT realista — tudo que você precisa para passar."
+    },
+    "features": [
+      {
+        "icon": "Shield",
+        "title": "3 Modos de Estudo para Cada Fase",
+        "desc": "Modo Prática para criar hábitos, Modo Estudo para fixar conceitos com explicações imediatas, Modo Exame para simular a prova real. Alterne os modos conforme seu objetivo."
+      },
+      {
+        "icon": "BookOpen",
+        "title": "Explicações + Pontos-Chave",
+        "desc": "Cada questão inclui uma explicação detalhada e um resumo dos pontos-chave para revisão de última hora — para que você entenda os conceitos, não apenas as respostas."
+      },
+      {
+        "icon": "BarChart3",
+        "title": "Foque nos Seus Pontos Fracos",
+        "desc": "A análise de desempenho por tópico mostra exatamente onde você está fraco, para que você possa praticar apenas o que importa."
+      },
+      {
+        "icon": "Clock",
+        "title": "Sessões de 30 Minutos",
+        "desc": "30 minutos por dia ou uma hora nos fins de semana — sessões curtas e consistentes que se transformam em habilidades reais de prova."
+      },
+      {
+        "icon": "Target",
+        "title": "Trilha de Certificação & Domínios",
+        "desc": "Explore a trilha de certificações AWS, GCP e AZURE para definir seu objetivo. Veja os pesos dos domínios e os tópicos antes mesmo de começar a estudar."
+      },
+      {
+        "icon": "Smartphone",
+        "title": "Estude em Qualquer Lugar",
+        "desc": "Celular, tablet ou PC — continue de onde parou. Instale como PWA para velocidade de app em qualquer lugar."
+      }
+    ],
+    "howItWorks": {
+      "title": "Seu Caminho de 3 Passos para Passar"
+    },
+    "steps": [
+      {
+        "num": "01",
+        "title": "Escolha Sua Certificação Alvo",
+        "desc": "Explore a trilha de certificações AWS, GCP e AZURE para escolher seu objetivo. Revise os domínios e níveis de dificuldade antes de começar."
+      },
+      {
+        "num": "02",
+        "title": "Estude em 3 Modos",
+        "desc": "Use o Modo Prática para ganhar fluência, o Modo Estudo para dominar conceitos e o Modo Exame para aguçar seus instintos no dia da prova."
+      },
+      {
+        "num": "03",
+        "title": "Foque nos Pontos Fracos com Analytics",
+        "desc": "Seu relatório de analytics mostra exatamente onde você está fraco por domínio. Pratique as questões erradas até transformar pontos fracos em forças — e então vá fazer a prova."
+      }
+    ],
+    "routine": {
+      "title": "A Rotina de 30 Min para Passar na Prova",
+      "subtitle": "Siga essa rotina diariamente e estará pronto para passar em 2–3 meses.",
+      "badge": "Rotina de Estudo Comprovada",
+      "steps": [
+        {
+          "time": "Começar a Estudar",
+          "duration": "15 min",
+          "title": "Modo Prática: Resolva Questões CBT",
+          "desc": "Abra o Modo Prática e resolva 10–20 questões com o temporizador ativado. A pressão realista mantém seus instintos de prova afiados.",
+          "icon": "Target"
+        },
+        {
+          "time": "+15 min",
+          "duration": "10 min",
+          "title": "Modo Estudo: Domine as Questões Erradas",
+          "desc": "Mude para o Modo Estudo para ler explicações detalhadas e pontos-chave de cada erro. Entender o 'porquê' evita que você repita o mesmo erro.",
+          "icon": "BookOpen"
+        },
+        {
+          "time": "+25 min",
+          "duration": "5 min",
+          "title": "Analytics: Defina o Foco de Amanhã",
+          "desc": "Verifique seu relatório de analytics para ver os pontos fracos de hoje. À medida que os dados acumulam, seu plano de estudo fica mais inteligente.",
+          "icon": "BarChart3"
+        }
+      ],
+      "totalTime": "30 min/dia",
+      "totalTimeDesc": "feitos com consistência"
+    },
+    "testimonials": {
+      "title": "Histórias de Aprovação",
+      "subtitle": "Resultados reais de profissionais que fizeram acontecer.",
+      "badge": "Histórias Reais de Aprovação",
+      "items": [
+        {
+          "name": "Kim Minjun",
+          "role": "Engenheiro SI com 5 anos",
+          "cert": "AWS SAA-C03 Aprovado",
+          "score": "820 pts",
+          "quote": "Passei em dois meses e meio estudando 30 minutos depois do trabalho. As explicações detalhadas tornaram cada resposta errada uma oportunidade de aprendizado, e estudar no celular no transporte tornou tudo sustentável.",
+          "period": "2,5 meses"
+        },
+        {
+          "name": "Lee Seoyeon",
+          "role": "Equipe de TI Financeira com 3 anos",
+          "cert": "AWS AIF-C01 Aprovado",
+          "score": "790 pts",
+          "quote": "A certificação de IA parecia intimidadora, mas fixar os conceitos com explicações detalhadas primeiro e depois praticar questões CBT fez tudo fazer sentido. Passei na primeira tentativa.",
+          "period": "1,5 meses"
+        },
+        {
+          "name": "Park Dohyun",
+          "role": "Líder de Engenharia em Startup",
+          "cert": "AWS DEA-C01 Aprovado",
+          "score": "850 pts",
+          "quote": "Reuniões, horas extras — de tudo. Mas o formato de sessões curtas me permitia sempre encaixar um tempo de estudo. As práticas de pontos fracos antes da prova me empurraram para além da linha.",
+          "period": "3 meses"
+        }
+      ]
+    },
+    "trustedBy": {
+      "title": "Confiado por Dezenas de Milhares de Empresas no Mundo",
+      "subtitle": "AWS · GCP · AZURE são o padrão global de infraestrutura de TI",
+      "disclaimer": "Baseado em clientes de referência públicos da AWS · GCP · AZURE",
+      "companiesRow1": ["Netflix", "Samsung", "Kakao", "Naver", "Hyundai", "LG Electronics", "Coupang", "SK Telecom", "LINE", "Airbnb", "Spotify", "Toyota", "BMW"],
+      "companiesRow2": ["NASA", "Slack", "Zoom", "Adobe", "Dropbox", "Reddit", "Pinterest", "Twitch", "McDonald's", "GE", "Pfizer", "Baemin", "Hyundai"]
+    },
+    "whyCloud": {
+      "title": "Por que Certificações Cloud?",
+      "subtitle": "Na era da IA, cloud não é mais opcional — é a base de tudo",
+      "items": [
+        {
+          "icon": "Brain",
+          "title": "A Espinha Dorsal de Todo Serviço de IA",
+          "desc": "ChatGPT, IA de geração de imagens, carros autônomos — todo serviço de IA roda em infraestrutura cloud. Entender cloud é o primeiro passo para realmente entender IA."
+        },
+        {
+          "icon": "Database",
+          "title": "O Motor por Trás do Big Data & ML",
+          "desc": "Pipelines de dados, implantação de modelos de ML, analytics em tempo real — tudo construído em AWS, GCP ou Azure. Uma certificação cloud é indispensável para qualquer carreira em dados."
+        },
+        {
+          "icon": "TrendingUp",
+          "title": "A Credencial de Carreira que Mais Cresce",
+          "desc": "As certificações AWS, GCP e AZURE estão consistentemente no Top 5 das credenciais de TI mais valorizadas no mundo. Uma certificação pode transformar seu salário, suas perspectivas de emprego e sua trajetória de carreira."
+        }
+      ]
+    },
+    "audience": {
+      "title": "Feito para Todo Tipo de Estudante",
+      "subtitle": "Objetivos diferentes, o mesmo caminho para passar",
+      "items": [
+        {
+          "icon": "Briefcase",
+          "title": "Profissionais em Atividade",
+          "desc": "30 minutos depois do trabalho ou durante o deslocamento é tudo que você precisa. Sessões curtas e eficientes permitem equilibrar uma agenda agitada sem sacrificar o progresso."
+        },
+        {
+          "icon": "GraduationCap",
+          "title": "Estudantes",
+          "desc": "Uma certificação cloud te diferencia em um mercado competitivo. Use prática baseada em cenários e explicações detalhadas para dominar conceitos rapidamente."
+        },
+        {
+          "icon": "Rocket",
+          "title": "Candidatos Dedicados",
+          "desc": "Com currículo estruturado e exercícios focados em domínios, mire em uma aprovação rápida. Analytics de respostas erradas ajudam a fechar lacunas rapidamente."
+        }
+      ]
+    },
+    "pricing": {
+      "title": "Preços Simples e Transparentes",
+      "subtitle": "Comece grátis, faça upgrade quando estiver pronto.",
+      "popularBadge": "Mais Popular",
+      "plans": [
+        {
+          "name": "Grátis",
+          "price": "R$0",
+          "period": "/para sempre",
+          "desc": "Experimente antes de assinar",
+          "features": [
+            "10 questões de amostra",
+            "1 simulado",
+            "Resultados básicos"
+          ],
+          "cta": "Começar"
+        },
+        {
+          "name": "Pro",
+          "price": "R$99",
+          "period": "/mês",
+          "desc": "Para quem estuda a sério",
+          "popular": true,
+          "features": [
+            "Banco completo de questões",
+            "Simulados ilimitados",
+            "Analytics detalhado",
+            "Prática de questões erradas",
+            "Marcadores & anotações"
+          ],
+          "cta": "Experimentar o Pro"
+        },
+        {
+          "name": "Equipe",
+          "price": "R$249",
+          "period": "/mês",
+          "desc": "Para equipes & bootcamps",
+          "features": [
+            "Tudo do Pro",
+            "Gestão de equipe",
+            "Acompanhamento de progresso",
+            "Licenciamento em massa",
+            "Suporte prioritário"
+          ],
+          "cta": "Falar com Vendas"
+        }
+      ]
+    },
+    "faq": {
+      "title": "Perguntas Frequentes",
+      "questions": [
+        {
+          "q": "O que são AWS, GCP e AZURE — e por que preciso deles?",
+          "a": "AWS (Amazon), GCP (Google) e Azure (Microsoft) são as três plataformas cloud que alimentam mais de 70% da infraestrutura digital do mundo. ChatGPT, Netflix e inúmeros serviços do dia a dia rodam nelas. Como mais de 90% do trabalho com IA e big data é baseado em cloud, essas certificações são essenciais para qualquer pessoa na área de tecnologia."
+        },
+        {
+          "q": "Pessoas sem formação em TI podem fazer esses exames?",
+          "a": "Com certeza. As certificações cloud de nível básico, como AWS CLF-C02, não exigem experiência com programação. O CloudMaster desmistifica cada conceito com explicações claras e detalhadas, para que qualquer pessoa possa estudar de forma sistemática e passar."
+        },
+        {
+          "q": "Quais exames AWS estão disponíveis?",
+          "a": "Atualmente oferecemos AIF-C01 (AI Practitioner), SAA-C03 (Solutions Architect Associate) e DEA-C01 (Data Engineer Associate). Mais certificações estão sendo adicionadas."
+        },
+        {
+          "q": "Posso estudar no celular durante o deslocamento?",
+          "a": "Com certeza. O CloudMaster é um PWA e pode ser instalado como um app no seu celular. Estude no metrô, ônibus ou durante o intervalo."
+        },
+        {
+          "q": "E se eu fechar o app no meio do exame?",
+          "a": "Sem problema. O progresso é salvo automaticamente após cada resposta. Você pode continuar exatamente de onde parou, mesmo após perder a conexão."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Comece a Aprender Hoje",
+      "subtitle": "Milhares de estudantes conquistaram certificações cloud com o CloudMaster. Você é o próximo.",
+      "button": "Comece Grátis Agora"
+    },
+    "footer": {
+      "privacy": "Política de Privacidade",
+      "terms": "Termos de Serviço",
+      "community": "Comunidade",
+      "board": "Quadro",
+      "copyright": "© 2026 CloudMaster. Todos os direitos reservados.",
+      "disclaimer": "Aviso Legal",
+      "nonAffiliation": "Este site não é afiliado à AWS, Microsoft ou Google Cloud. As questões são criadas apenas para fins educacionais.",
+      "contact": "Fale Conosco"
+    }
+  },
+  "board": {
+    "title": "Avisos & Informações",
+    "subtitle": "Fique por dentro das mudanças nos exames, dicas de estudo e recursos úteis.",
+    "empty": "Nenhuma postagem ainda.",
+    "backToList": "← Voltar ao Quadro",
+    "categories": {
+      "all": "Todos",
+      "notice": "Aviso",
+      "info": "Info",
+      "tip": "Dica",
+      "update": "Atualização"
+    },
+    "pinned": "Fixado",
+    "examBadge": "Exame Relacionado",
+    "notFound": "Postagem não encontrada.",
+    "postedOn": "Publicado em {{date}}",
+    "admin": {
+      "title": "Gerenciamento do Quadro",
+      "newPost": "Nova Postagem",
+      "editPost": "Editar Postagem",
+      "deleteConfirmTitle": "Excluir esta postagem?",
+      "deleteConfirmDesc": "Esta postagem será desativada.",
+      "fields": {
+        "category": "Categoria",
+        "title": "Título (Coreano)",
+        "titleEn": "Título (Inglês, opcional)",
+        "content": "Conteúdo (Coreano)",
+        "contentEn": "Conteúdo (Inglês, opcional)",
+        "relatedExam": "Exame Relacionado (opcional)",
+        "isPinned": "Fixar no topo",
+        "isActive": "Ativo (publicado)",
+        "noExam": "Nenhum exame relacionado"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Painel",
+    "welcome": "Bem-vindo de volta! Acompanhe seu progresso na certificação.",
+    "stats": {
+      "examsTaken": "Provas Realizadas",
+      "averageScore": "Pontuação Média",
+      "inProgress": "Em Andamento"
+    },
+    "quickActions": {
+      "title": "Ações Rápidas",
+      "startNewExam": "Iniciar Nova Prova",
+      "reviewWrongAnswers": "Revisar Questões Erradas"
+    },
+    "recentSessions": {
+      "title": "Sessões Recentes",
+      "noExams": "Nenhuma prova realizada ainda. Comece sua primeira prática!",
+      "inProgress": "Em Andamento"
+    }
+  },
+  "examList": {
+    "title": "Provas Práticas",
+    "subtitle": "Escolha um exame de certificação para praticar.",
+    "questions": "questões",
+    "minutes": "min",
+    "toPass": "para passar",
+    "startExam": "Iniciar Prova",
+    "resume": "Continuar",
+    "comingSoon": "Em Breve",
+    "selectSet": "Selecionar Conjunto de Provas",
+    "loadingSets": "Carregando conjuntos...",
+    "noSets": "Nenhum conjunto disponível.",
+    "sampleBadge": "Amostra",
+    "fullBadge": "Completo",
+    "starting": "Iniciando...",
+    "selectMode": "Selecionar Modo de Estudo"
+  },
+  "examSession": {
+    "questionOf": "Questão",
+    "of": "de",
+    "bookmark": "Marcar",
+    "bookmarked": "Marcado",
+    "sessionNotFound": "Sessão não encontrada",
+    "sessionExpired": "Esta sessão de exame pode ter expirado ou não existe.",
+    "backToExams": "Voltar às Provas",
+    "submit": "Enviar",
+    "prev": "Anterior",
+    "next": "Próximo",
+    "questionCounter": "{{current}} / {{total}}",
+    "submitDialog": {
+      "title": "Enviar Prova?",
+      "description": "Após enviar, você não poderá alterar suas respostas.",
+      "unansweredWarning": "{{count}} questão(ões) ainda não respondida(s).",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar Envio"
+    }
+  },
+  "examResults": {
+    "notFound": "Resultados não encontrados",
+    "passed": "APROVADO",
+    "failed": "NÃO APROVADO",
+    "score": "Pontuação",
+    "summary": "Resumo",
+    "correct": "Corretas",
+    "incorrect": "Incorretas",
+    "unanswered": "Não Respondidas",
+    "timeSpent": "Tempo Gasto",
+    "topicBreakdown": "Desempenho por Tópico",
+    "questionReview": "Revisão de Questões",
+    "correctOutOf": "{{correct}} corretas de {{total}} questões",
+    "questionNumber": "Q{{number}}.",
+    "explanation": "Explicação:",
+    "actions": {
+      "title": "Próximos Passos",
+      "retryAll": "Refazer Todas",
+      "retryWrong": "Refazer Só as Erradas",
+      "retakeExam": "Refazer Prova",
+      "reviewWrong": "Revisar Questões Erradas",
+      "backToDashboard": "Voltar ao Painel"
+    }
+  },
+  "review": {
+    "title": "Revisão",
+    "subtitle": "Estude suas questões erradas e marcadas.",
+    "wrongAnswers": "Questões Erradas",
+    "bookmarked": "Marcadas",
+    "noWrong": "Nenhuma questão errada ainda. Faça uma prova primeiro!",
+    "noBookmarked": "Nenhuma questão marcada ainda. Marque questões durante uma prova!",
+    "retryWrong": "Refazer",
+    "retryBookmarks": "Marcadores",
+    "clearWrong": "Limpar questões erradas"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Desculpe! Página não encontrada",
+    "returnHome": "Voltar ao Início"
+  },
+  "blog": {
+    "title": "Material de Estudo",
+    "subtitle": "Anotações de estudo gratuitas, comparações de serviços e resumos para te ajudar a passar nas certificações AWS, GCP e AZURE.",
+    "seoTitle": "Material de Estudo para Certificações AWS·GCP·Azure | CloudMaster",
+    "seoDesc": "Anotações de estudo gratuitas, tabelas de comparação de serviços e resumos para certificações AWS, GCP e AZURE.",
+    "tabs": {
+      "all": "Todos",
+      "aws": "AWS",
+      "gcp": "GCP",
+      "azure": "Azure"
+    },
+    "readTime": "{{min}} min de leitura",
+    "publishedOn": "{{date}}",
+    "noResults": "Nenhum material de estudo ainda. Volte em breve!",
+    "backToList": "← Voltar ao Material de Estudo",
+    "relatedQuestions": "Praticar Questões Relacionadas",
+    "relatedPosts": "Recursos Relacionados",
+    "practiceNow": "Praticar",
+    "tags": "Tags",
+    "filterByExam": "Filtrar por Exame",
+    "allExams": "Todos os Exames",
+    "pinned": "Fixado",
+    "admin": {
+      "title": "Gerenciamento do Blog",
+      "newPost": "Nova Postagem",
+      "editPost": "Editar Postagem",
+      "deleteConfirmTitle": "Excluir esta postagem?",
+      "deleteConfirmDesc": "A postagem será despublicada.",
+      "fields": {
+        "slug": "Slug (URL)",
+        "slugHelp": "Apenas letras minúsculas, números e hífens (ex: amazon-bedrock-intro)",
+        "provider": "Plataforma",
+        "exam": "Exame Relacionado (opcional)",
+        "noExam": "Nenhum exame relacionado",
+        "category": "Categoria (opcional)",
+        "tags": "Tags (separadas por vírgula)",
+        "title": "Título (Coreano)",
+        "titleEn": "Título (Inglês, opcional)",
+        "excerpt": "Resumo (SEO, máx 160 caracteres)",
+        "excerptEn": "Resumo (Inglês, opcional)",
+        "content": "Conteúdo (Coreano, Markdown)",
+        "contentEn": "Conteúdo (Inglês, opcional)",
+        "coverImage": "URL da Imagem de Capa (opcional)",
+        "isPinned": "Fixar no topo",
+        "isPublished": "Publicado (público)",
+        "preview": "Pré-visualização"
+      }
+    }
+  },
+  "profile": {
+    "providerLogin": "Conectado com {{provider}}",
+    "providers": { "google": "Google", "kakao": "Kakao", "naver": "Naver", "email": "E-mail" },
+    "defaultUser": "Usuário",
+    "saveName": "Salvar",
+    "cancelName": "Cancelar",
+    "editName": "Editar nome",
+    "subscription": {
+      "title": "Assinatura",
+      "premium": "Premium",
+      "free": "Grátis",
+      "expiresOn": "Expira em {{date}}",
+      "freeEvent": "Acesso gratuito ativo até {{date}}",
+      "upgradeDesc": "Faça upgrade para Premium para acessar todas as questões sem limites.",
+      "upgradeBtn": "Em Breve"
+    },
+    "stats": {
+      "title": "Estatísticas de Estudo",
+      "loading": "Carregando...",
+      "examsTaken": "Provas Realizadas",
+      "examsTakenUnit": "",
+      "averageScore": "Pontuação Média",
+      "bestScore": "Melhor Pontuação",
+      "inProgress": "Em Andamento",
+      "inProgressUnit": "",
+      "reviewBtn": "Revisar Questões Erradas",
+      "noExams": "Nenhuma prova concluída ainda. Comece sua primeira prática!",
+      "startPractice": "Iniciar Prática"
+    },
+    "settings": {
+      "title": "Preferências",
+      "themeLabel": "Tema",
+      "themes": { "light": "Claro", "sepia": "Sépia", "forest": "Floresta", "dark": "Escuro" },
+      "languageLabel": "Idioma",
+      "fontSizeLabel": "Tamanho da Fonte",
+      "fontSizes": { "sm": "Pequeno", "md": "Médio", "lg": "Grande" },
+      "fontFamilyLabel": "Fonte",
+      "fontFamilies": { "outfit": "Outfit (Padrão)", "inter": "Inter", "noto-sans-kr": "Noto Sans", "nanum-gothic": "Nanum Gothic", "roboto": "Roboto", "nunito": "Nunito" }
+    },
+    "account": {
+      "title": "Informações da Conta",
+      "joinedAt": "Membro desde",
+      "lastLogin": "Último login",
+      "loginMethod": "Método de login"
+    },
+    "quickNav": {
+      "title": "Links Rápidos",
+      "practice": "Provas Práticas",
+      "roadmap": "Trilha de Certificação",
+      "review": "Revisar Questões Erradas"
+    },
+    "contacts": {
+      "title": "Minhas Consultas",
+      "messageLabel": "Mensagem",
+      "adminReply": "Resposta do Admin",
+      "noReply": "Nenhuma resposta ainda."
+    },
+    "reports": {
+      "title": "Meus Relatórios",
+      "adminNote": "Nota do Admin"
+    }
+  },
+  "certifications": {
+    "hero": {
+      "badge": "Trilha de Certificação Cloud",
+      "title": "Por qual certificação",
+      "titleAccent": "você deve começar?",
+      "subtitle": "Explore a hierarquia de certificações AWS, GCP e AZURE, visualize sua trilha nível por nível e encontre a certificação perfeita para começar sua carreira."
+    },
+    "filterLabel": "Filtrar por área de atuação",
+    "certCount": "{{count}} certificações",
+    "available": "Disponível",
+    "comingSoon": "Em Breve",
+    "practiceBtn": "Praticar Agora",
+    "careers": {
+      "all":             { "label": "Todos" },
+      "cloud-architect": { "label": "Arquiteto Cloud" },
+      "devops":          { "label": "DevOps / SRE" },
+      "data-ml":         { "label": "Dados / ML" },
+      "security":        { "label": "Segurança" },
+      "developer":       { "label": "Desenvolvedor Cloud" }
+    },
+    "levels": {
+      "foundational": { "label": "Básico", "description": "Nível inicial de baixa barreira — recomendado para iniciantes em cloud" },
+      "fundamentals": { "label": "Fundamentos", "description": "Conceitos fundamentais — o primeiro passo para iniciantes" },
+      "associate":    { "label": "Associado",    "description": "Nível intermediário validando habilidades reais — ideal para 1–2 anos de experiência" },
+      "professional": { "label": "Profissional", "description": "Certificação avançada de expertise profunda — recomendada após Associado" },
+      "expert":       { "label": "Especialista",       "description": "Certificação profissional de nível mais alto" },
+      "specialty":    { "label": "Especialidade",    "description": "Certificação especializada em domínio específico para especialistas" }
+    },
+    "cta": {
+      "title": "Comece a praticar agora",
+      "subtitle": "Questões do AWS AI Practitioner estão prontas. Teste seus conhecimentos gratuitamente.",
+      "button": "Iniciar Prática"
+    },
+    "roadmapCta": {
+      "eyebrow": "Não sabe por onde começar?",
+      "title": "Trilha de Certificação AWS · GCP · AZURE",
+      "subtitle": "Veja as certificações nível por nível e os caminhos de carreira de relance.",
+      "button": "Ver Trilha de Certificação"
+    }
+  }
+}

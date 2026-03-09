@@ -3,6 +3,29 @@ import { useTranslation } from 'react-i18next';
 
 const GEO_CACHE_KEY = 'geo_lang_detected';
 
+const SUPPORTED_LANGS = ['ko', 'en', 'pt', 'es', 'ja'];
+
+const COUNTRY_LANG: Record<string, string> = {
+  KR: 'ko',
+  JP: 'ja',
+  // Portuguese-speaking countries
+  BR: 'pt', PT: 'pt', AO: 'pt', MZ: 'pt', CV: 'pt', GW: 'pt', ST: 'pt', TL: 'pt',
+  // Spanish-speaking countries
+  MX: 'es', ES: 'es', AR: 'es', CO: 'es', CL: 'es',
+  PE: 'es', VE: 'es', EC: 'es', UY: 'es', PY: 'es',
+  BO: 'es', DO: 'es', HN: 'es', SV: 'es', GT: 'es',
+  NI: 'es', CR: 'es', PA: 'es', CU: 'es', GQ: 'es',
+};
+
+function detectBrowserLang(lang: string): string | null {
+  if (!lang) return null;
+  if (lang.startsWith('ko')) return 'ko';
+  if (lang.startsWith('ja')) return 'ja';
+  if (lang.startsWith('pt')) return 'pt';
+  if (lang.startsWith('es')) return 'es';
+  return 'en';
+}
+
 /**
  * 첫 방문 시 브라우저 언어 또는 IP 국가 기반으로 언어를 자동 설정.
  * 우선순위: 1) localStorage 저장값 → 2) 브라우저 언어 → 3) IP 국가 감지
@@ -18,23 +41,16 @@ export function useGeoLanguage() {
 
     // localStorage에 사용자가 직접 선택한 언어가 있으면 스킵
     const savedLang = localStorage.getItem('i18nextLng');
-    if (savedLang === 'ko' || savedLang === 'en') {
+    if (savedLang && SUPPORTED_LANGS.includes(savedLang)) {
       localStorage.setItem(GEO_CACHE_KEY, 'cached');
       return;
     }
 
-    // 브라우저 언어가 명확히 한국어면 바로 적용
+    // 브라우저 언어로 감지
     const browserLang = navigator.language || '';
-    if (browserLang.startsWith('ko')) {
-      i18n.changeLanguage('ko');
-      localStorage.setItem(GEO_CACHE_KEY, 'browser');
-      return;
-    }
-
-    // 브라우저 언어가 명확히 다른 언어면 영어로 적용
-    // (단, 브라우저 언어가 없거나 불분명한 경우 geo-IP로 최종 판단)
-    if (browserLang && !browserLang.startsWith('ko')) {
-      i18n.changeLanguage('en');
+    const detected = detectBrowserLang(browserLang);
+    if (detected) {
+      i18n.changeLanguage(detected);
       localStorage.setItem(GEO_CACHE_KEY, 'browser');
       return;
     }
@@ -43,7 +59,7 @@ export function useGeoLanguage() {
     fetch('https://api.country.is/')
       .then(r => r.json())
       .then((data: { country?: string }) => {
-        const lang = data.country === 'KR' ? 'ko' : 'en';
+        const lang = data.country ? (COUNTRY_LANG[data.country] ?? 'en') : 'en';
         i18n.changeLanguage(lang);
         localStorage.setItem(GEO_CACHE_KEY, 'geo');
       })

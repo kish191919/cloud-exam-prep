@@ -1,39 +1,52 @@
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { GEO_LANG_CACHE_KEY } from '@/hooks/useGeoLanguage';
 
-const languages = [
+const LANGUAGES = [
   { code: 'ko', name: '한국어', flag: '🇰🇷' },
   { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'pt', name: 'Português', flag: '🇧🇷' },
+  { code: 'es', name: 'Español', flag: '🇪🇸' },
+  { code: 'ja', name: '日本語', flag: '🇯🇵' },
 ];
 
 const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
 
-  const currentLang = languages.find(lang => lang.code === i18n.language) || languages[0];
-  const nextLang = languages.find(lang => lang.code !== i18n.language) || languages[0];
+  const currentLang = LANGUAGES.find(lang => lang.code === i18n.language) ?? LANGUAGES[0];
 
-  const label = i18n.language === 'ko' ? 'Switch to English' : '한국어로 전환';
-
-  const handleChange = () => {
-    // 사용자가 직접 전환하면 geo 감지가 다시 실행되지 않도록 마킹
+  const handleChange = (code: string) => {
     localStorage.setItem(GEO_LANG_CACHE_KEY, 'user');
-    i18n.changeLanguage(nextLang.code);
+    i18n.changeLanguage(code);
   };
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2" onClick={handleChange}>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="sm" className="gap-1.5">
           <span className="text-lg">{currentLang.flag}</span>
           <span className="hidden sm:inline">{currentLang.name}</span>
         </Button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>{label}</p>
-      </TooltipContent>
-    </Tooltip>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[140px]">
+        {LANGUAGES.map(lang => (
+          <DropdownMenuItem
+            key={lang.code}
+            onClick={() => handleChange(lang.code)}
+            className={lang.code === currentLang.code ? 'bg-accent font-medium' : ''}
+          >
+            <span className="mr-2 text-base">{lang.flag}</span>
+            {lang.name}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

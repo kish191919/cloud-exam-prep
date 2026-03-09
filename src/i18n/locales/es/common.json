@@ -1,0 +1,69 @@
+{
+  "brand": "CloudMaster",
+  "navigation": {
+    "features": "Funciones",
+    "pricing": "Precios",
+    "faq": "Preguntas",
+    "signIn": "Iniciar sesión",
+    "dashboard": "Panel",
+    "home": "Inicio",
+    "exams": "Exámenes",
+    "review": "Repaso",
+    "startFree": "Empezar a Estudiar",
+    "roadmap": "Hoja de ruta",
+    "board": "Tablero",
+    "blog": "Material"
+  },
+  "buttons": {
+    "start": "Iniciar",
+    "resume": "Continuar",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "learnMore": "Saber más",
+    "backToHome": "Volver al inicio",
+    "backToExams": "Volver a exámenes",
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "floating": {
+    "study": "Estudiar",
+    "studyAria": "Estudiar — Preguntas de práctica",
+    "contact": "Contáctanos",
+    "contactLogin": "Inicia sesión para contactarnos",
+    "contactAria": "Soporte al cliente"
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "loginRequired": "Debes iniciar sesión para enviar un comentario.",
+    "signIn": "Iniciar sesión",
+    "successTitle": "¡Comentario enviado!",
+    "successMessage": "Gracias por tu comentario. Te responderemos pronto.",
+    "close": "Cerrar",
+    "typeLabel": "Tipo",
+    "subjectLabel": "Asunto",
+    "subjectPlaceholder": "Escribe un asunto",
+    "messageLabel": "Mensaje",
+    "messagePlaceholder": "Comparte tus comentarios, sugerencias o preguntas.",
+    "accountInfo": "Enviado desde <bold>{{email}}</bold>. Puedes ver las respuestas en Mi cuenta.",
+    "cancel": "Cancelar",
+    "send": "Enviar comentario",
+    "sending": "Enviando...",
+    "errorEmpty": "Por favor, ingresa un asunto y un mensaje.",
+    "errorSend": "Ocurrió un error. Inténtalo de nuevo más tarde.",
+    "categories": {
+      "complaint": "Queja",
+      "suggestion": "Sugerencia",
+      "inquiry": "Consulta",
+      "other": "Otro"
+    }
+  },
+  "loading": "Cargando...",
+  "error": "Ocurrió un error",
+  "footer": {
+    "privacy": "Política de privacidad",
+    "terms": "Términos de servicio",
+    "community": "Comunidad",
+    "copyright": "© 2026 CloudMaster. Todos los derechos reservados."
+  }
+}

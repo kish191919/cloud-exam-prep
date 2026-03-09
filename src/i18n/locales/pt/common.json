@@ -1,0 +1,69 @@
+{
+  "brand": "CloudMaster",
+  "navigation": {
+    "features": "Recursos",
+    "pricing": "Preços",
+    "faq": "FAQ",
+    "signIn": "Entrar",
+    "dashboard": "Painel",
+    "home": "Início",
+    "exams": "Provas",
+    "review": "Revisão",
+    "startFree": "Começar a Estudar",
+    "roadmap": "Trilha",
+    "board": "Quadro",
+    "blog": "Material"
+  },
+  "buttons": {
+    "start": "Iniciar",
+    "resume": "Continuar",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "learnMore": "Saiba Mais",
+    "backToHome": "Voltar ao Início",
+    "backToExams": "Voltar às Provas",
+    "previous": "Anterior",
+    "next": "Próximo"
+  },
+  "floating": {
+    "study": "Estudar",
+    "studyAria": "Estudar — Questões Práticas",
+    "contact": "Fale Conosco",
+    "contactLogin": "Entre para Entrar em Contato",
+    "contactAria": "Suporte ao Cliente"
+  },
+  "contact": {
+    "title": "Fale Conosco",
+    "loginRequired": "Você precisa estar logado para enviar um feedback.",
+    "signIn": "Entrar",
+    "successTitle": "Feedback enviado!",
+    "successMessage": "Obrigado pelo seu feedback. Em breve retornaremos.",
+    "close": "Fechar",
+    "typeLabel": "Tipo",
+    "subjectLabel": "Assunto",
+    "subjectPlaceholder": "Digite um assunto",
+    "messageLabel": "Mensagem",
+    "messagePlaceholder": "Compartilhe seu feedback, sugestões ou dúvidas.",
+    "accountInfo": "Enviado de <bold>{{email}}</bold>. Você pode ver as respostas na Minha Conta.",
+    "cancel": "Cancelar",
+    "send": "Enviar Feedback",
+    "sending": "Enviando...",
+    "errorEmpty": "Por favor, insira um assunto e uma mensagem.",
+    "errorSend": "Ocorreu um erro. Tente novamente mais tarde.",
+    "categories": {
+      "complaint": "Reclamação",
+      "suggestion": "Sugestão",
+      "inquiry": "Dúvida",
+      "other": "Outro"
+    }
+  },
+  "loading": "Carregando...",
+  "error": "Ocorreu um erro",
+  "footer": {
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Serviço",
+    "community": "Comunidade",
+    "copyright": "© 2026 CloudMaster. Todos os direitos reservados."
+  }
+}

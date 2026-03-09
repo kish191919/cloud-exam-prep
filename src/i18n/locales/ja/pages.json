@@ -1,0 +1,568 @@
+{
+  "index": {
+    "betaBanner": {
+      "badge": "ベータ公開期間",
+      "messagePrefix": "全ての",
+      "messageHighlight": "AWS・GCP・AZURE問題",
+      "messageSuffix": "が今すぐ無料でご利用いただけます。"
+    },
+    "hero": {
+      "badge": "AI・クラウド時代に必須の資格",
+      "title": "AIはクラウドで動く。",
+      "titleAccent": "あなたのキャリアも、そうあるべきです。",
+      "subtitle": "ChatGPT、Netflix、あらゆる主要テクノロジー製品はクラウドインフラで動作しています。AWS、GCP、AZUREの資格はAI時代で最も成長しているキャリアへの鍵です。リアルな問題と詳しい解説でより賢く学習しましょう。",
+      "ctaPrimary": "無料で始める",
+      "ctaSecondary": "使い方を見る",
+      "stats": {
+        "questions": {
+          "value": "500問以上",
+          "label": "練習問題数"
+        },
+        "passRate": {
+          "value": "95%",
+          "label": "合格率"
+        },
+        "providers": {
+          "value": "30分",
+          "label": "1日平均学習時間"
+        }
+      }
+    },
+    "featuresSection": {
+      "title": "CloudMasterで誰でも合格できる理由",
+      "subtitle": "最短時間で最大の効率を。詳しい解説とリアルなCBT練習 — 合格に必要なすべてが揃っています。"
+    },
+    "features": [
+      {
+        "icon": "Shield",
+        "title": "各段階に対応した3つの学習モード",
+        "desc": "習慣づくりのための練習モード、即時解説で概念を定着させる学習モード、本番を再現する試験モード。目標に合わせてモードを切り替えて学習できます。"
+      },
+      {
+        "icon": "BookOpen",
+        "title": "解説 + キーポイント",
+        "desc": "全問題に詳しい解説と、直前見直し用のキーポイントまとめが付属。答えだけでなく、概念をしっかり理解できます。"
+      },
+      {
+        "icon": "BarChart3",
+        "title": "弱点を的確に把握",
+        "desc": "トピック別のスコア分析で弱点を正確に特定。本当に重要な部分だけを集中的に練習できます。"
+      },
+      {
+        "icon": "Clock",
+        "title": "30分セッション設計",
+        "desc": "1日30分、または週末に1時間。短く、継続的なセッションが積み重なり、本番力が身につきます。"
+      },
+      {
+        "icon": "Target",
+        "title": "資格ロードマップとドメイン",
+        "desc": "AWS、GCP、AZUREの資格ロードマップを確認して目標を設定。学習開始前にドメインの配点やトピックを把握できます。"
+      },
+      {
+        "icon": "Smartphone",
+        "title": "いつでもどこでも学習",
+        "desc": "スマートフォン、タブレット、PC — どこでも続きから学習できます。PWAとしてインストールすれば、アプリのような快適さを実現。"
+      }
+    ],
+    "howItWorks": {
+      "title": "合格への3ステップ"
+    },
+    "steps": [
+      {
+        "num": "01",
+        "title": "目標資格を選ぶ",
+        "desc": "AWS、GCP、AZUREの資格ロードマップを確認して目標を決めましょう。学習開始前にドメイン構成や難易度を把握できます。"
+      },
+      {
+        "num": "02",
+        "title": "3つのモードで学習する",
+        "desc": "練習モードで問題に慣れ、学習モードで概念を深め、試験モードで本番感覚を磨く。3つを組み合わせて効率よく合格力を高めます。"
+      },
+      {
+        "num": "03",
+        "title": "分析で弱点を克服する",
+        "desc": "分析レポートでドメイン別の弱点を把握。間違えた問題を繰り返し解いて弱点を強みに変え、本番に臨みましょう。"
+      }
+    ],
+    "routine": {
+      "title": "30分で合格する学習ルーティン",
+      "subtitle": "毎日このルーティンを続ければ、2〜3ヶ月で合格の準備が整います。",
+      "badge": "実証済み学習ルーティン",
+      "steps": [
+        {
+          "time": "学習開始",
+          "duration": "15分",
+          "title": "練習モード：CBT問題を解く",
+          "desc": "練習モードを開き、タイマーをかけながら10〜20問に取り組みます。本番に近い緊張感が試験感覚を研ぎ澄ませます。",
+          "icon": "Target"
+        },
+        {
+          "time": "+15分",
+          "duration": "10分",
+          "title": "学習モード：間違えた問題を徹底理解",
+          "desc": "学習モードに切り替え、間違えた問題の詳しい解説とキーポイントを読み込みます。「なぜ」を理解することで同じミスを防げます。",
+          "icon": "BookOpen"
+        },
+        {
+          "time": "+25分",
+          "duration": "5分",
+          "title": "分析：明日の学習ポイントを把握",
+          "desc": "ドメイン分析レポートで今日の弱点を確認。データが蓄積されるほど学習計画が精度を増し、弱点が素早く解消されます。",
+          "icon": "BarChart3"
+        }
+      ],
+      "totalTime": "30分/日",
+      "totalTimeDesc": "継続することで効果を発揮"
+    },
+    "testimonials": {
+      "title": "合格体験談",
+      "subtitle": "実際に時間を作って成果を出した社会人の声。",
+      "badge": "リアルな合格体験談",
+      "items": [
+        {
+          "name": "金 ミンジュン",
+          "role": "SIエンジニア（経験5年）",
+          "cert": "AWS SAA-C03 合格",
+          "score": "820点",
+          "quote": "仕事後の30分を2ヶ月半続けて合格しました。詳しい解説のおかげで間違えるたびに学びがあり、通勤中のスマホ学習で継続できました。",
+          "period": "2.5ヶ月"
+        },
+        {
+          "name": "イ ソヨン",
+          "role": "金融系IT担当（経験3年）",
+          "cert": "AWS AIF-C01 合格",
+          "score": "790点",
+          "quote": "AI資格は難しそうでしたが、まず解説で概念をしっかり理解してからCBT問題を解くことで理解が深まりました。一発合格できました。",
+          "period": "1.5ヶ月"
+        },
+        {
+          "name": "朴 ドヒョン",
+          "role": "スタートアップエンジニアリングリード",
+          "cert": "AWS DEA-C01 合格",
+          "score": "850点",
+          "quote": "会議や残業の連続でも、短いセッション設計のおかげで毎日学習時間を確保できました。試験直前の弱点ドリルが合格を後押しました。",
+          "period": "3ヶ月"
+        }
+      ]
+    },
+    "trustedBy": {
+      "title": "世界中の数万社が信頼",
+      "subtitle": "AWS・GCP・AZUREはITインフラのグローバルスタンダード",
+      "disclaimer": "AWS・GCP・AZUREの公開参照顧客に基づく",
+      "companiesRow1": ["Netflix", "Samsung", "Kakao", "Naver", "Hyundai", "LG Electronics", "Coupang", "SK Telecom", "LINE", "Airbnb", "Spotify", "Toyota", "BMW"],
+      "companiesRow2": ["NASA", "Slack", "Zoom", "Adobe", "Dropbox", "Reddit", "Pinterest", "Twitch", "McDonald's", "GE", "Pfizer", "Baemin", "Hyundai"]
+    },
+    "whyCloud": {
+      "title": "なぜクラウド資格なのか？",
+      "subtitle": "AI時代において、クラウドはもはや選択肢ではなく、すべての基盤です",
+      "items": [
+        {
+          "icon": "Brain",
+          "title": "すべてのAIサービスの基盤",
+          "desc": "ChatGPT、画像生成AI、自動運転車 — あらゆるAIサービスはクラウドインフラで動作しています。クラウドを理解することがAIを真に理解する第一歩です。"
+        },
+        {
+          "icon": "Database",
+          "title": "ビッグデータ・MLを支えるエンジン",
+          "desc": "データパイプライン、MLモデルのデプロイ、リアルタイム分析 — すべてAWS、GCP、Azureで構築されています。データキャリアにクラウド資格は必須です。"
+        },
+        {
+          "icon": "TrendingUp",
+          "title": "最も成長しているキャリア資格",
+          "desc": "AWS、GCP、AZUREの資格は世界で最も価値あるIT資格Top5に常にランクインしています。1つの資格があなたの給与、就職機会、キャリアの軌跡を変える可能性があります。"
+        }
+      ]
+    },
+    "audience": {
+      "title": "あらゆる学習者のために設計",
+      "subtitle": "目標は違っても、合格への道は同じ",
+      "items": [
+        {
+          "icon": "Briefcase",
+          "title": "社会人の方",
+          "desc": "仕事後の30分や通勤時間だけで十分です。短く効率的なセッションで、忙しいスケジュールでも学習を継続できます。"
+        },
+        {
+          "icon": "GraduationCap",
+          "title": "学生の方",
+          "desc": "クラウド資格は競争の激しい就職市場で差別化の武器になります。シナリオベースの練習と詳しい解説で概念を素早くマスターしましょう。"
+        },
+        {
+          "icon": "Rocket",
+          "title": "集中して取り組む方",
+          "desc": "体系的なカリキュラムとドメイン別ドリルで速攻合格を目指せます。間違い分析で弱点をすばやく解消できます。"
+        }
+      ]
+    },
+    "pricing": {
+      "title": "シンプルで明確な料金",
+      "subtitle": "まず無料で始めて、準備ができたらアップグレード。",
+      "popularBadge": "最人気",
+      "plans": [
+        {
+          "name": "無料",
+          "price": "¥0",
+          "period": "/永久",
+          "desc": "まずお試しください",
+          "features": [
+            "サンプル問題10問",
+            "模擬試験1回",
+            "基本的な結果表示"
+          ],
+          "cta": "始める"
+        },
+        {
+          "name": "Pro",
+          "price": "¥2,800",
+          "period": "/月",
+          "desc": "本気で合格を目指す方へ",
+          "popular": true,
+          "features": [
+            "全問題バンク",
+            "無制限の模擬試験",
+            "詳細な分析",
+            "間違い問題ドリル",
+            "ブックマーク＆メモ"
+          ],
+          "cta": "Proを試す"
+        },
+        {
+          "name": "チーム",
+          "price": "¥7,200",
+          "period": "/月",
+          "desc": "チーム・ブートキャンプ向け",
+          "features": [
+            "Proの全機能",
+            "チーム管理",
+            "進捗トラッキング",
+            "一括ライセンス",
+            "優先サポート"
+          ],
+          "cta": "営業に問い合わせる"
+        }
+      ]
+    },
+    "faq": {
+      "title": "よくある質問",
+      "questions": [
+        {
+          "q": "AWS、GCP、AZUREとは何ですか？なぜ必要なのですか？",
+          "a": "AWS（Amazon）、GCP（Google）、Azure（Microsoft）は世界のデジタルインフラの70%以上を支える3大クラウドプラットフォームです。ChatGPT、Netflixをはじめ多くのサービスがこれらで動いています。AIやビッグデータの業務の90%以上がクラウドベースであるため、これらの資格はIT業界で働く、または目指すすべての方に必須です。"
+        },
+        {
+          "q": "IT以外のバックグラウンドでも受験できますか？",
+          "a": "はい、できます。AWS CLF-C02などの入門レベルの資格はプログラミング経験不要です。CloudMasterでは各概念を分かりやすく丁寧に解説しているため、誰でも体系的に学習して合格を目指せます。"
+        },
+        {
+          "q": "どのAWS試験が利用できますか？",
+          "a": "現在、AIF-C01（AI Practitioner）、SAA-C03（Solutions Architect Associate）、DEA-C01（Data Engineer Associate）を提供しています。随時追加予定です。"
+        },
+        {
+          "q": "通勤中にスマートフォンで学習できますか？",
+          "a": "はい。CloudMasterはPWAとしてスマートフォンにインストールできます。電車やバス、昼休みでも快適に学習できます。"
+        },
+        {
+          "q": "試験の途中でアプリを閉じてしまったら？",
+          "a": "ご心配なく。回答するたびに自動で進捗が保存されます。接続が切れた後でも、再開したところから続けられます。"
+        }
+      ]
+    },
+    "cta": {
+      "title": "今日から学習を始めましょう",
+      "subtitle": "CloudMasterで多くの方がクラウド資格を取得しています。次はあなたの番です。",
+      "button": "無料で始める"
+    },
+    "footer": {
+      "privacy": "プライバシーポリシー",
+      "terms": "利用規約",
+      "community": "コミュニティ",
+      "board": "お知らせ",
+      "copyright": "© 2026 CloudMaster. All rights reserved.",
+      "disclaimer": "免責事項",
+      "nonAffiliation": "当サイトはAWS、Microsoft、Google Cloudとは無関係です。問題は教育目的のみで作成されています。",
+      "contact": "お問い合わせ"
+    }
+  },
+  "board": {
+    "title": "お知らせ・情報",
+    "subtitle": "試験の変更点、学習のコツ、役立つリソースをお届けします。",
+    "empty": "まだ投稿がありません。",
+    "backToList": "← お知らせ一覧に戻る",
+    "categories": {
+      "all": "すべて",
+      "notice": "お知らせ",
+      "info": "情報",
+      "tip": "ヒント",
+      "update": "更新"
+    },
+    "pinned": "固定",
+    "examBadge": "関連試験",
+    "notFound": "投稿が見つかりません。",
+    "postedOn": "{{date}}に投稿",
+    "admin": {
+      "title": "お知らせ管理",
+      "newPost": "新規投稿",
+      "editPost": "投稿を編集",
+      "deleteConfirmTitle": "この投稿を削除しますか？",
+      "deleteConfirmDesc": "この投稿は非アクティブになります。",
+      "fields": {
+        "category": "カテゴリ",
+        "title": "タイトル（韓国語）",
+        "titleEn": "タイトル（英語、任意）",
+        "content": "内容（韓国語）",
+        "contentEn": "内容（英語、任意）",
+        "relatedExam": "関連試験（任意）",
+        "isPinned": "上部に固定",
+        "isActive": "アクティブ（公開中）",
+        "noExam": "関連試験なし"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "ダッシュボード",
+    "welcome": "おかえりなさい！資格取得の進捗を確認しましょう。",
+    "stats": {
+      "examsTaken": "受験回数",
+      "averageScore": "平均スコア",
+      "inProgress": "受験中"
+    },
+    "quickActions": {
+      "title": "クイックアクション",
+      "startNewExam": "新しい試験を始める",
+      "reviewWrongAnswers": "間違い問題を復習する"
+    },
+    "recentSessions": {
+      "title": "最近のセッション",
+      "noExams": "まだ試験を受けていません。最初の練習を始めましょう！",
+      "inProgress": "受験中"
+    }
+  },
+  "examList": {
+    "title": "模擬試験",
+    "subtitle": "練習する資格試験を選んでください。",
+    "questions": "問",
+    "minutes": "分",
+    "toPass": "合格ライン",
+    "startExam": "試験を開始",
+    "resume": "再開する",
+    "comingSoon": "近日公開",
+    "selectSet": "試験セットを選択",
+    "loadingSets": "セットを読み込み中...",
+    "noSets": "利用可能なセットがありません。",
+    "sampleBadge": "サンプル",
+    "fullBadge": "フル",
+    "starting": "開始中...",
+    "selectMode": "学習モードを選択"
+  },
+  "examSession": {
+    "questionOf": "問題",
+    "of": "/",
+    "bookmark": "ブックマーク",
+    "bookmarked": "ブックマーク済み",
+    "sessionNotFound": "セッションが見つかりません",
+    "sessionExpired": "この試験セッションは期限切れか存在しない可能性があります。",
+    "backToExams": "試験一覧へ戻る",
+    "submit": "提出する",
+    "prev": "前へ",
+    "next": "次へ",
+    "questionCounter": "{{current}} / {{total}}",
+    "submitDialog": {
+      "title": "試験を提出しますか？",
+      "description": "提出後は解答を変更できません。",
+      "unansweredWarning": "{{count}}問まだ解答していません。",
+      "cancel": "キャンセル",
+      "confirm": "提出する"
+    }
+  },
+  "examResults": {
+    "notFound": "結果が見つかりません",
+    "passed": "合格",
+    "failed": "不合格",
+    "score": "スコア",
+    "summary": "サマリー",
+    "correct": "正解",
+    "incorrect": "不正解",
+    "unanswered": "未解答",
+    "timeSpent": "所要時間",
+    "topicBreakdown": "トピック別成績",
+    "questionReview": "問題の見直し",
+    "correctOutOf": "{{total}}問中{{correct}}問正解",
+    "questionNumber": "Q{{number}}.",
+    "explanation": "解説：",
+    "actions": {
+      "title": "次のステップ",
+      "retryAll": "全問再挑戦",
+      "retryWrong": "間違いのみ再挑戦",
+      "retakeExam": "試験を再受験",
+      "reviewWrong": "間違い問題を復習",
+      "backToDashboard": "ダッシュボードへ戻る"
+    }
+  },
+  "review": {
+    "title": "復習",
+    "subtitle": "間違えた問題とブックマークした問題を学習しましょう。",
+    "wrongAnswers": "間違い問題",
+    "bookmarked": "ブックマーク",
+    "noWrong": "まだ間違い問題がありません。先に試験を受けてみましょう！",
+    "noBookmarked": "まだブックマークした問題がありません。試験中に問題をブックマークしましょう！",
+    "retryWrong": "再挑戦",
+    "retryBookmarks": "ブックマーク",
+    "clearWrong": "間違い問題をクリア"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "申し訳ありません。ページが見つかりません",
+    "returnHome": "ホームへ戻る"
+  },
+  "blog": {
+    "title": "学習資料",
+    "subtitle": "AWS、GCP、AZURE資格合格をサポートする無料の学習ノート、サービス比較、チートシート。",
+    "seoTitle": "AWS・GCP・Azure資格学習資料 | CloudMaster",
+    "seoDesc": "AWS、GCP、AZURE資格のための無料学習ノート、サービス比較表、チートシート。",
+    "tabs": {
+      "all": "すべて",
+      "aws": "AWS",
+      "gcp": "GCP",
+      "azure": "Azure"
+    },
+    "readTime": "{{min}}分で読める",
+    "publishedOn": "{{date}}",
+    "noResults": "まだ学習資料がありません。近日公開予定です！",
+    "backToList": "← 学習資料一覧へ戻る",
+    "relatedQuestions": "関連問題を練習する",
+    "relatedPosts": "関連資料",
+    "practiceNow": "練習する",
+    "tags": "タグ",
+    "filterByExam": "試験で絞り込む",
+    "allExams": "全試験",
+    "pinned": "固定",
+    "admin": {
+      "title": "ブログ管理",
+      "newPost": "新規投稿",
+      "editPost": "投稿を編集",
+      "deleteConfirmTitle": "この投稿を削除しますか？",
+      "deleteConfirmDesc": "投稿が非公開になります。",
+      "fields": {
+        "slug": "スラッグ（URL）",
+        "slugHelp": "小文字の英数字とハイフンのみ（例：amazon-bedrock-intro）",
+        "provider": "プラットフォーム",
+        "exam": "関連試験（任意）",
+        "noExam": "関連試験なし",
+        "category": "カテゴリ（任意）",
+        "tags": "タグ（カンマ区切り）",
+        "title": "タイトル（韓国語）",
+        "titleEn": "タイトル（英語、任意）",
+        "excerpt": "概要（SEO、最大160文字）",
+        "excerptEn": "概要（英語、任意）",
+        "content": "内容（韓国語、Markdown）",
+        "contentEn": "内容（英語、任意）",
+        "coverImage": "カバー画像URL（任意）",
+        "isPinned": "上部に固定",
+        "isPublished": "公開（一般公開）",
+        "preview": "プレビュー"
+      }
+    }
+  },
+  "profile": {
+    "providerLogin": "{{provider}}でログイン中",
+    "providers": { "google": "Google", "kakao": "Kakao", "naver": "Naver", "email": "メール" },
+    "defaultUser": "ユーザー",
+    "saveName": "保存",
+    "cancelName": "キャンセル",
+    "editName": "名前を編集",
+    "subscription": {
+      "title": "サブスクリプション",
+      "premium": "プレミアム",
+      "free": "無料",
+      "expiresOn": "{{date}}に期限切れ",
+      "freeEvent": "{{date}}まで無料アクセス有効",
+      "upgradeDesc": "プレミアムにアップグレードして、すべての問題に無制限でアクセスしましょう。",
+      "upgradeBtn": "近日公開"
+    },
+    "stats": {
+      "title": "学習統計",
+      "loading": "読み込み中...",
+      "examsTaken": "受験回数",
+      "examsTakenUnit": "回",
+      "averageScore": "平均スコア",
+      "bestScore": "最高スコア",
+      "inProgress": "受験中",
+      "inProgressUnit": "件",
+      "reviewBtn": "間違い問題を復習する",
+      "noExams": "まだ試験を完了していません。最初の練習を始めましょう！",
+      "startPractice": "練習を始める"
+    },
+    "settings": {
+      "title": "設定",
+      "themeLabel": "テーマ",
+      "themes": { "light": "ライト", "sepia": "セピア", "forest": "フォレスト", "dark": "ダーク" },
+      "languageLabel": "言語",
+      "fontSizeLabel": "フォントサイズ",
+      "fontSizes": { "sm": "小", "md": "中", "lg": "大" },
+      "fontFamilyLabel": "フォント",
+      "fontFamilies": { "outfit": "Outfit（デフォルト）", "inter": "Inter", "noto-sans-kr": "Noto Sans", "nanum-gothic": "Nanum Gothic", "roboto": "Roboto", "nunito": "Nunito" }
+    },
+    "account": {
+      "title": "アカウント情報",
+      "joinedAt": "登録日",
+      "lastLogin": "最終ログイン",
+      "loginMethod": "ログイン方法"
+    },
+    "quickNav": {
+      "title": "クイックリンク",
+      "practice": "模擬試験",
+      "roadmap": "資格ロードマップ",
+      "review": "間違い問題を復習する"
+    },
+    "contacts": {
+      "title": "お問い合わせ履歴",
+      "messageLabel": "メッセージ",
+      "adminReply": "管理者の返信",
+      "noReply": "まだ返信がありません。"
+    },
+    "reports": {
+      "title": "レポート",
+      "adminNote": "管理者メモ"
+    }
+  },
+  "certifications": {
+    "hero": {
+      "badge": "クラウド資格ロードマップ",
+      "title": "どの資格から",
+      "titleAccent": "始めればいいですか？",
+      "subtitle": "AWS、GCP、AZUREの資格体系を確認し、レベル別ロードマップを可視化して、キャリアに最適な最初の資格を見つけましょう。"
+    },
+    "filterLabel": "キャリアパスで絞り込む",
+    "certCount": "{{count}}の資格",
+    "available": "利用可能",
+    "comingSoon": "近日公開",
+    "practiceBtn": "今すぐ練習",
+    "careers": {
+      "all":             { "label": "すべて" },
+      "cloud-architect": { "label": "クラウドアーキテクト" },
+      "devops":          { "label": "DevOps / SRE" },
+      "data-ml":         { "label": "データ / ML" },
+      "security":        { "label": "セキュリティ" },
+      "developer":       { "label": "クラウド開発者" }
+    },
+    "levels": {
+      "foundational": { "label": "基礎", "description": "入門レベル — クラウド初心者に推奨" },
+      "fundamentals": { "label": "ファンダメンタルズ", "description": "基本概念の習得 — 初めて学ぶ方の第一歩" },
+      "associate":    { "label": "アソシエイト",    "description": "実務スキルを証明する中級レベル — 1〜2年の経験者に最適" },
+      "professional": { "label": "プロフェッショナル", "description": "高度な専門知識を証明する上級資格 — アソシエイト取得後に推奨" },
+      "expert":       { "label": "エキスパート",       "description": "最高レベルのプロフェッショナル資格" },
+      "specialty":    { "label": "スペシャリティ",    "description": "特定分野の専門家向け資格" }
+    },
+    "cta": {
+      "title": "今すぐ練習を始めましょう",
+      "subtitle": "AWS AI Practitionerの問題が利用可能です。無料で実力を試してみてください。",
+      "button": "練習を始める"
+    },
+    "roadmapCta": {
+      "eyebrow": "どこから始めるか迷っていますか？",
+      "title": "AWS・GCP・AZURE 資格ロードマップ",
+      "subtitle": "レベル別の資格とキャリアパスを一目で確認できます。",
+      "button": "資格ロードマップを見る"
+    }
+  }
+}
