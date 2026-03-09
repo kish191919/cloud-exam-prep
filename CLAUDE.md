@@ -1074,6 +1074,13 @@ for idx in range(3):
 - 포르투갈어(브라질): "Uma empresa está...", "Qual serviço AWS MELHOR atende a esses requisitos?"
 - 스페인어(라틴아메리카): "Una empresa está...", "¿Qué servicio de AWS MEJOR cumple con estos requisitos?"
 - 일본어: "ある企業は...しています。", "この要件を最も適切に満たすAWSサービスはどれですか？"
+- **언어 순수성 (절대 규칙)**:
+  - `_ja` 접미사 필드 → 반드시 **일본어(日本語)**로만 작성. 한국어 절대 금지
+  - `_pt` 접미사 필드 → 반드시 **포르투갈어(Português)**로만 작성. 한국어 절대 금지
+  - `_es` 접미사 필드 → 반드시 **스페인어(Español)**로만 작성. 한국어 절대 금지
+  - `_en` 접미사 필드 → 반드시 **영어(English)**로만 작성. 한국어 절대 금지
+  - 접미사 없는 필드(`text`, `explanation`, `key_points`, `options[].text`, `options[].explanation`) → 반드시 **한국어**로만 작성. 일본어 절대 금지
+- **번역 후 자기검증**: `text_ja`에 한글(ㄱ-ㅎ, 가-힣)이 있으면 일본어로 재번역, `text`(한국어)에 일본어 문자(ひ, カ 등)가 있으면 한국어로 재작성
 
 ━━ STEP P-3: Supabase 즉시 삽입 ━━
 번역 완료 후 임시 파일 저장 없이 Python subprocess로 즉시 삽입:
