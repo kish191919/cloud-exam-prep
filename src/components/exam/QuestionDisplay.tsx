@@ -46,9 +46,8 @@ const QuestionDisplay = ({
   isRestrictedSet = false,
   onRequestUpgrade,
 }: QuestionDisplayProps) => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation('exam');
   const lang = i18n.language;
-  const isEn = lang === 'en';
   const loc = (ko: string, en?: string, pt?: string, es?: string, ja?: string): string => {
     if (lang === 'en' && en) return en;
     if (lang === 'pt' && pt) return pt;
@@ -213,7 +212,7 @@ const QuestionDisplay = ({
             {/* Tags */}
             {question.tags.map(tag => (
               <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
-                {translateTag(tag, isEn)}
+                {translateTag(tag, lang)}
               </span>
             ))}
           </div>
@@ -225,17 +224,17 @@ const QuestionDisplay = ({
               className={`px-2 sm:px-3 ${isBookmarked ? 'text-accent' : 'text-muted-foreground'}`}
             >
               {isBookmarked ? <BookmarkCheck className="h-4 w-4 sm:mr-1" /> : <Bookmark className="h-4 w-4 sm:mr-1" />}
-              <span className="hidden sm:inline">{isEn ? (isBookmarked ? 'Saved' : 'Bookmark') : '북마크'}</span>
+              <span className="hidden sm:inline">{isBookmarked ? t('questionDisplay.saved') : t('questionDisplay.bookmark')}</span>
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={handleReportClick}
-              title={isEn ? (alreadyReported ? 'Reported' : 'Report') : (alreadyReported ? '신고한 문제' : '문제 신고')}
+              title={alreadyReported ? t('questionDisplay.reported') : t('questionDisplay.report')}
               className={`px-2 sm:px-3 ${alreadyReported ? 'text-orange-500' : 'text-muted-foreground'}`}
             >
               <Megaphone className="h-4 w-4 sm:mr-1" />
-              <span className="hidden sm:inline">{isEn ? 'Report' : '문제 신고'}</span>
+              <span className="hidden sm:inline">{t('questionDisplay.report')}</span>
             </Button>
           </div>
         </div>
@@ -287,7 +286,7 @@ const QuestionDisplay = ({
                           onClick={(e) => { e.stopPropagation(); onRequestUpgrade?.(); }}
                         >
                           <Lock className="h-3 w-3 shrink-0" />
-                          <span>{isEn ? 'Subscribe to see explanation' : '구독하면 해설 확인 가능'}</span>
+                          <span>{t('questionDisplay.subscribeToSeeExplanation')}</span>
                         </div>
                       ) : (
                         <p className={`text-xs mt-2 leading-relaxed ${
@@ -316,13 +315,12 @@ const QuestionDisplay = ({
         <PremiumGate
           locked={isRestrictedSet}
           onUpgrade={onRequestUpgrade ?? (() => {})}
-          isKo={!isEn}
         >
           <div className="mt-6 rounded-xl border border-blue-200 dark:border-blue-800/50 bg-blue-50/60 dark:bg-blue-950/20 p-4">
             <div className="flex items-center gap-2 mb-3">
               <BookOpen className="h-4 w-4 text-blue-500 shrink-0" />
               <span className="text-sm font-semibold text-blue-700 dark:text-blue-400">
-                {isEn ? 'Explanation' : '해설'}
+                {t('questionDisplay.explanation')}
               </span>
             </div>
             <p className="text-sm leading-relaxed text-foreground whitespace-pre-line">
@@ -340,13 +338,12 @@ const QuestionDisplay = ({
             <PremiumGate
               locked={isRestrictedSet}
               onUpgrade={onRequestUpgrade ?? (() => {})}
-              isKo={!isEn}
-            >
+                >
               <div className="rounded-xl border border-amber-200 dark:border-amber-800/50 bg-amber-50/60 dark:bg-amber-950/20 p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <Lightbulb className="h-4 w-4 text-amber-500 shrink-0" />
                   <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">
-                    {isEn ? 'Key Points' : '핵심 암기사항'}
+                    {t('questionDisplay.keyPoints')}
                   </span>
                 </div>
                 <p className="text-sm leading-relaxed text-foreground whitespace-pre-line">
@@ -361,7 +358,7 @@ const QuestionDisplay = ({
             <div className="rounded-xl border border-border bg-muted/30 p-4">
               <div className="flex items-center gap-2 mb-2">
                 <ExternalLink className="h-4 w-4 text-blue-500 shrink-0" />
-                <span className="text-sm font-semibold">{isEn ? 'References' : '참고자료'}</span>
+                <span className="text-sm font-semibold">{t('questionDisplay.references')}</span>
               </div>
               <ul className="space-y-1.5">
                 {question.refLinks.map((link, idx) => (
@@ -391,12 +388,12 @@ const QuestionDisplay = ({
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Megaphone className="h-4 w-4 text-orange-500" />
-              {isEn ? 'Report Issue' : '문제 신고'}
+              {t('questionDisplay.reportIssue')}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
-            <p className="text-sm text-muted-foreground">{isEn ? 'What is the issue?' : '어떤 문제가 있나요?'}</p>
+            <p className="text-sm text-muted-foreground">{t('questionDisplay.whatIsTheIssue')}</p>
             <div className="space-y-2">
               {(Object.keys(REASON_LABELS) as ReportReason[]).map(reason => (
                 <label
@@ -415,15 +412,15 @@ const QuestionDisplay = ({
                     onChange={() => setReportReason(reason)}
                     className="accent-accent"
                   />
-                  <span className="text-sm">{isEn ? REASON_LABELS_EN[reason] : REASON_LABELS[reason]}</span>
+                  <span className="text-sm">{lang === 'ko' ? REASON_LABELS[reason] : REASON_LABELS_EN[reason]}</span>
                 </label>
               ))}
             </div>
 
             <div>
-              <p className="text-sm font-medium mb-1.5">{isEn ? 'Details (optional)' : '상세 설명 (선택)'}</p>
+              <p className="text-sm font-medium mb-1.5">{t('questionDisplay.details')}</p>
               <Textarea
-                placeholder={isEn ? 'Please describe the issue...' : '구체적인 내용을 입력해주세요...'}
+                placeholder={t('questionDisplay.detailsPlaceholder')}
                 value={reportComment}
                 onChange={e => setReportComment(e.target.value)}
                 rows={3}
@@ -434,7 +431,7 @@ const QuestionDisplay = ({
 
           <DialogFooter className="gap-2">
             <Button variant="outline" size="sm" onClick={() => setReportOpen(false)}>
-              {isEn ? 'Cancel' : '취소'}
+              {t('questionDisplay.cancel')}
             </Button>
             <Button
               size="sm"
@@ -442,7 +439,7 @@ const QuestionDisplay = ({
               disabled={reportSubmitting}
               className="bg-accent text-accent-foreground hover:bg-accent/90"
             >
-              {isEn ? (reportSubmitting ? 'Submitting...' : 'Submit Report') : (reportSubmitting ? '제출 중...' : '신고 제출')}
+              {reportSubmitting ? t('questionDisplay.submitting') : t('questionDisplay.submitReport')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -26,10 +26,15 @@ function formatTime(ms: number): string {
 }
 
 const ExamResults = () => {
-  const { i18n } = useTranslation('pages');
+  const { i18n, t } = useTranslation('exam');
   const lang = i18n.language;
-  const isKo = lang === 'ko';
-  const isEn = lang === 'en';
+  const loc = (ko: string, en?: string, pt?: string, es?: string, ja?: string): string => {
+    if (lang === 'en' && en) return en;
+    if (lang === 'pt' && pt) return pt;
+    if (lang === 'es' && es) return es;
+    if (lang === 'ja' && ja) return ja;
+    return ko;
+  };
   const { sessionId } = useParams();
   const navigate = useNavigate();
   const { user, hasFullAccess, openAuthModal } = useAuth();
@@ -73,8 +78,8 @@ const ExamResults = () => {
     return (
       <AppLayout>
         <div className="text-center py-20">
-          <p className="text-muted-foreground">{isKo ? '결과를 찾을 수 없습니다.' : 'Results not found.'}</p>
-          <Link to="/exams"><Button className="mt-4">{isKo ? '시험 목록으로' : 'Back to Exams'}</Button></Link>
+          <p className="text-muted-foreground">{t('examResults.resultsNotFound')}</p>
+          <Link to="/exams"><Button className="mt-4">{t('examResults.backToExams')}</Button></Link>
         </div>
       </AppLayout>
     );
@@ -130,7 +135,7 @@ const ExamResults = () => {
     try {
       const id = await createSession(
         session.examId,
-        `${session.examTitle} - ${isKo ? '오답' : 'Wrong Answers'}`,
+        `${session.examTitle} - ${t('examResults.wrongAnswers')}`,
         wrongQs,
         Math.ceil(wrongQs.length * 2),
         'practice',
@@ -151,7 +156,7 @@ const ExamResults = () => {
     try {
       const id = await createSession(
         session.examId,
-        `${tag} - ${isKo ? '연습' : 'Practice'}`,
+        `${tag} - ${t('examResults.practice')}`,
         tagQuestions,
         Math.ceil(tagQuestions.length * 2),
         'practice',
@@ -192,10 +197,10 @@ const ExamResults = () => {
   };
 
   const FILTERS: { key: FilterType; label: string; count: number }[] = [
-    { key: 'all',        label: isKo ? '전체'   : 'All',        count: total },
-    { key: 'wrong',      label: isKo ? '오답'   : 'Wrong',      count: wrongQs.length },
-    { key: 'correct',    label: isKo ? '정답'   : 'Correct',    count: correctQs.length },
-    { key: 'unanswered', label: isKo ? '미응답' : 'Unanswered', count: skippedQs.length },
+    { key: 'all',        label: t('examResults.filterAll'),     count: total },
+    { key: 'wrong',      label: t('examResults.filterWrong'),   count: wrongQs.length },
+    { key: 'correct',    label: t('examResults.filterCorrect'), count: correctQs.length },
+    { key: 'unanswered', label: t('examResults.filterSkipped'), count: skippedQs.length },
   ];
 
   return (
@@ -217,10 +222,10 @@ const ExamResults = () => {
                 </div>
                 <span className="text-4xl font-extrabold">{score}%</span>
                 <span className={`text-sm font-semibold mt-1 ${passed ? 'text-green-500' : 'text-destructive'}`}>
-                  {passed ? (isKo ? '합격' : 'PASSED') : (isKo ? '불합격' : 'FAILED')}
+                  {passed ? t('examResults.passed') : t('examResults.failed')}
                 </span>
                 <span className="text-xs text-muted-foreground mt-0.5">
-                  {isKo ? '합격 기준 70%' : 'Passing score: 70%'}
+                  {t('examResults.passingScore')}
                 </span>
               </div>
 
@@ -229,10 +234,10 @@ const ExamResults = () => {
                 <p className="text-sm font-medium text-muted-foreground mb-3 truncate">{session.examTitle}</p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
                   {[
-                    { label: isKo ? '총 문제' : 'Total',     value: total,              color: 'text-foreground' },
-                    { label: isKo ? '정답'   : 'Correct',   value: correctQs.length,   color: 'text-green-600' },
-                    { label: isKo ? '오답'   : 'Wrong',     value: wrongQs.length,     color: 'text-destructive' },
-                    { label: isKo ? '미응답' : 'Skipped',   value: skippedQs.length,   color: 'text-muted-foreground' },
+                    { label: t('examResults.total'),         value: total,              color: 'text-foreground' },
+                    { label: t('examResults.correct'),      value: correctQs.length,   color: 'text-green-600' },
+                    { label: t('examResults.filterWrong'),  value: wrongQs.length,     color: 'text-destructive' },
+                    { label: t('examResults.filterSkipped'),value: skippedQs.length,   color: 'text-muted-foreground' },
                   ].map(s => (
                     <div key={s.label} className="bg-muted/50 rounded-lg p-3 text-center">
                       <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
@@ -246,13 +251,13 @@ const ExamResults = () => {
                   {timeTaken && (
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Clock className="h-4 w-4" />
-                      <span>{isKo ? '소요 시간' : 'Time'}: {timeTaken}</span>
+                      <span>{t('examResults.time')}: {timeTaken}</span>
                     </div>
                   )}
                   <div>
                     <div className="flex justify-between text-xs text-muted-foreground mb-1">
                       <span>0%</span>
-                      <span className="text-yellow-600 font-medium">70% {isKo ? '합격선' : 'pass'}</span>
+                      <span className="text-yellow-600 font-medium">70% {t('examResults.pass')}</span>
                       <span>100%</span>
                     </div>
                     <div className="relative h-3 bg-muted rounded-full overflow-hidden">
@@ -273,30 +278,30 @@ const ExamResults = () => {
               {wrongQs.length > 0 && (
                 <Button onClick={handlePracticeWrong} disabled={creating} className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
                   <PenTool className="h-4 w-4 mr-1.5" />
-                  {isKo ? `오답 테스트 (${wrongQs.length}문제)` : `Wrong Test (${wrongQs.length})`}
+                  {t('examResults.wrongAnswerTest')} ({wrongQs.length})
                 </Button>
               )}
               {isFilteredSession ? (
                 <Button onClick={() => handleRetryAll('exam')} disabled={creating} variant="outline" className="w-full">
                   <RotateCcw className="h-4 w-4 mr-1.5" />
-                  {isKo ? '전체 시험 보기' : 'Full Exam'}
+                  {t('examResults.fullExam')}
                 </Button>
               ) : (
                 <div className="grid grid-cols-2 gap-2">
                   <Button onClick={() => handleRetryAll('exam')} disabled={creating} variant="outline" className="w-full">
                     <RotateCcw className="h-4 w-4 mr-1.5 shrink-0" />
-                    {isKo ? '실전 재시도' : 'Retry (Exam)'}
+                    {t('examResults.retryExam')}
                   </Button>
                   <Button onClick={() => handleRetryAll('practice')} disabled={creating} variant="outline" className="w-full">
                     <RotateCcw className="h-4 w-4 mr-1.5 shrink-0" />
-                    {isKo ? '연습 재시도' : 'Retry (Practice)'}
+                    {t('examResults.retryPractice')}
                   </Button>
                 </div>
               )}
               <Link to="/review" className="block">
                 <Button variant="ghost" className="w-full text-muted-foreground">
                   <ArrowLeft className="h-4 w-4 mr-1.5" />
-                  {isKo ? '복습 페이지' : 'Review Page'}
+                  {t('examResults.reviewPage')}
                 </Button>
               </Link>
             </div>
@@ -308,7 +313,7 @@ const ExamResults = () => {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-base">
-                {isKo ? '도메인별 성적' : 'Score by Domain'}
+                {t('examResults.scoreByDomain')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -347,7 +352,7 @@ const ExamResults = () => {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-base">
-              {isKo ? '문제 검토' : 'Question Review'}
+              {t('examResults.questionReview')}
             </CardTitle>
             {/* Filter tabs */}
             <div className="flex flex-wrap gap-1.5 pt-2">
@@ -376,10 +381,10 @@ const ExamResults = () => {
                     onValueChange={(val) => setTagFilter(val === '__all__' ? null : val)}
                   >
                     <SelectTrigger className="h-7 w-auto min-w-[120px] max-w-[200px] text-xs rounded-full px-3 border-0 bg-muted text-muted-foreground">
-                      <SelectValue placeholder={isKo ? '도메인 선택' : 'Domain'} />
+                      <SelectValue placeholder={t('examResults.selectDomain')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="__all__">{isKo ? '전체 도메인' : 'All Domains'}</SelectItem>
+                      <SelectItem value="__all__">{t('examResults.allDomains')}</SelectItem>
                       {tagEntries.map(([tag]) => (
                         <SelectItem key={tag} value={tag}>{translateTag(tag, lang)}</SelectItem>
                       ))}
@@ -393,7 +398,7 @@ const ExamResults = () => {
           <CardContent className="space-y-3 pt-0">
             {filteredQuestions.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-6">
-                {isKo ? '해당하는 문제가 없습니다.' : 'No questions match this filter.'}
+                {t('examResults.noQuestionsMatch')}
               </p>
             ) : (
               filteredQuestions.map((q) => {
@@ -418,7 +423,7 @@ const ExamResults = () => {
                       <div className="flex-1 min-w-0">
                         <span className="text-xs text-muted-foreground">Q{globalIdx}</span>
                         <p className={`text-sm leading-relaxed mt-0.5 ${!isExpanded ? 'line-clamp-2' : 'whitespace-pre-line'}`}>
-                          {isEn ? (q.textEn || q.text) : q.text}
+                          {loc(q.text, q.textEn, q.textPt, q.textEs, q.textJa)}
                         </p>
                       </div>
                       <div className="shrink-0 ml-2 mt-0.5">
@@ -452,16 +457,16 @@ const ExamResults = () => {
                                       isAnswer   ? 'text-green-800 dark:text-green-300 font-medium' :
                                       isUserPick ? 'text-red-700 dark:text-red-400' : ''
                                     }>
-                                      {isEn ? (opt.textEn || opt.text) : opt.text}
+                                      {loc(opt.text, opt.textEn, opt.textPt, opt.textEs, opt.textJa)}
                                     </span>
                                     {isAnswer && (
                                       <span className="ml-2 text-xs text-green-600 dark:text-green-400 font-medium">
-                                        ✓ {isKo ? '정답' : 'Correct'}
+                                        ✓ {t('examResults.correct')}
                                       </span>
                                     )}
                                     {isUserPick && !isAnswer && (
                                       <span className="ml-2 text-xs text-red-500 font-medium">
-                                        ✗ {isKo ? '내 선택' : 'Your pick'}
+                                        ✗ {t('examResults.yourPick')}
                                       </span>
                                     )}
                                     {(opt.explanation || opt.explanationEn) && (
@@ -471,11 +476,11 @@ const ExamResults = () => {
                                           onClick={(e) => { e.stopPropagation(); handleUpgrade(); }}
                                         >
                                           <Lock className="h-3 w-3 shrink-0" />
-                                          <span>{isKo ? '구독하면 해설 확인 가능' : 'Subscribe to see explanation'}</span>
+                                          <span>{t('examResults.subscribeToSeeExplanation')}</span>
                                         </div>
                                       ) : (
                                         <p className="text-xs mt-1 text-muted-foreground italic">
-                                          {isEn ? (opt.explanationEn || opt.explanation) : opt.explanation}
+                                          {loc(opt.explanation ?? '', opt.explanationEn, opt.explanationPt, opt.explanationEs, opt.explanationJa)}
                                         </p>
                                       )
                                     )}
@@ -491,14 +496,13 @@ const ExamResults = () => {
                           <PremiumGate
                             locked={isRestrictedSet}
                             onUpgrade={handleUpgrade}
-                            isKo={isKo}
                           >
                             <div className="pl-3 border-l-2 border-l-border">
                               <p className="text-xs font-semibold text-muted-foreground mb-1">
-                                {isKo ? '해설' : 'Explanation'}
+                                {t('examResults.explanation')}
                               </p>
                               <p className="text-xs text-foreground/80 leading-relaxed">
-                                {isEn ? (q.explanationEn || q.explanation) : q.explanation}
+                                {loc(q.explanation, q.explanationEn, q.explanationPt, q.explanationEs, q.explanationJa)}
                               </p>
                             </div>
                           </PremiumGate>
@@ -509,17 +513,16 @@ const ExamResults = () => {
                           <PremiumGate
                             locked={isRestrictedSet}
                             onUpgrade={handleUpgrade}
-                            isKo={isKo}
                           >
                             <div className="pl-3 border-l-2 border-l-accent/60">
                               <div className="flex items-center gap-1.5 mb-1">
                                 <Lightbulb className="h-3 w-3 text-accent" />
                                 <p className="text-xs font-semibold text-accent">
-                                  {isKo ? '핵심 암기사항' : 'Key Points'}
+                                  {t('examResults.keyPoints')}
                                 </p>
                               </div>
                               <p className="text-xs text-foreground/80 leading-relaxed whitespace-pre-line">
-                                {isEn ? (q.keyPointsEn || q.keyPoints) : q.keyPoints}
+                                {loc(q.keyPoints ?? '', q.keyPointsEn, q.keyPointsPt, q.keyPointsEs, q.keyPointsJa)}
                               </p>
                             </div>
                           </PremiumGate>
