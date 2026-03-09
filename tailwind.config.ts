@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Outfit Variable", "Outfit", "system-ui", "sans-serif"],
+        sans: ["Outfit Variable", "Outfit", "Noto Sans JP", "Noto Sans KR", "Nanum Gothic", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
