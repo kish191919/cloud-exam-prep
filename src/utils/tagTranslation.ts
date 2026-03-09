@@ -1,11 +1,23 @@
 const TAG_EN: Record<string, string> = {
-  // AWS AIF-C01
+  // AWS AIF-C01 (구버전 5태그 — backward compatibility)
   'AI 및 ML의 기초': 'Fundamentals of AI and ML',
   'GenAI의 기초': 'Fundamentals of GenAI',
   '파운데이션 모델의 적용': 'Applications of Foundation Models',
   '책임 있는 AI에 대한 가이드라인': 'Guidelines for Responsible AI',
   'AI 솔루션의 보안, 규정 준수 및 거버넌스':
     'Security, Compliance, and Governance for AI Solutions',
+  // AWS AIF-C01 (신버전 11태그)
+  'AI·ML 개념과 알고리즘': 'AI and ML Concepts and Algorithms',
+  'AI 실용 사례와 서비스 선택': 'AI Use Cases and Service Selection',
+  'ML 개발 수명 주기': 'ML Development Lifecycle',
+  '생성형 AI 개념과 구조': 'Generative AI Concepts and Architecture',
+  '생성형 AI 역량과 한계': 'Generative AI Capabilities and Limitations',
+  'AWS GenAI 인프라와 서비스': 'AWS GenAI Infrastructure and Services',
+  'FM 애플리케이션 설계와 RAG': 'FM Application Design and RAG',
+  '프롬프트 엔지니어링과 보안': 'Prompt Engineering and Security',
+  'FM 훈련·파인튜닝·평가': 'FM Training, Fine-tuning, and Evaluation',
+  '책임 있는 AI와 공정성': 'Responsible AI and Fairness',
+  'AI 투명성·설명 가능성·거버넌스': 'AI Transparency, Explainability, and Governance',
   // AWS CLF-C02 & AZURE AZ-900 (shared)
   '클라우드 개념': 'Cloud Concepts',
   // AWS CLF-C02
@@ -34,13 +46,25 @@ const TAG_EN: Record<string, string> = {
 };
 
 const TAG_JA: Record<string, string> = {
-  // AWS AIF-C01
+  // AWS AIF-C01 (구버전 5태그 — backward compatibility)
   'AI 및 ML의 기초': 'AIとMLの基礎',
   'GenAI의 기초': '生成AIの基礎',
   '파운데이션 모델의 적용': 'ファウンデーションモデルの活用',
   '책임 있는 AI에 대한 가이드라인': '責任あるAIのガイドライン',
   'AI 솔루션의 보안, 규정 준수 및 거버넌스':
     'AIソリューションのセキュリティ・コンプライアンス・ガバナンス',
+  // AWS AIF-C01 (신버전 11태그)
+  'AI·ML 개념과 알고리즘': 'AIとMLの概念とアルゴリズム',
+  'AI 실용 사례와 서비스 선택': 'AIのユースケースとサービス選択',
+  'ML 개발 수명 주기': 'ML開発ライフサイクル',
+  '생성형 AI 개념과 구조': '生成AIの概念とアーキテクチャ',
+  '생성형 AI 역량과 한계': '生成AIの能力と限界',
+  'AWS GenAI 인프라와 서비스': 'AWSのGenAIインフラとサービス',
+  'FM 애플리케이션 설계와 RAG': 'FMアプリケーション設計とRAG',
+  '프롬프트 엔지니어링과 보안': 'プロンプトエンジニアリングとセキュリティ',
+  'FM 훈련·파인튜닝·평가': 'FMのトレーニング・ファインチューニング・評価',
+  '책임 있는 AI와 공정성': '責任あるAIと公平性',
+  'AI 투명성·설명 가능성·거버넌스': 'AIの透明性・説明可能性・ガバナンス',
   // AWS CLF-C02 & AZURE AZ-900 (shared)
   '클라우드 개념': 'クラウドの概念',
   // AWS CLF-C02
@@ -69,13 +93,25 @@ const TAG_JA: Record<string, string> = {
 };
 
 const TAG_ES: Record<string, string> = {
-  // AWS AIF-C01
+  // AWS AIF-C01 (구버전 5태그 — backward compatibility)
   'AI 및 ML의 기초': 'Fundamentos de IA y ML',
   'GenAI의 기초': 'Fundamentos de IA Generativa',
   '파운데이션 모델의 적용': 'Aplicaciones de Modelos Fundacionales',
   '책임 있는 AI에 대한 가이드라인': 'Directrices para IA Responsable',
   'AI 솔루션의 보안, 규정 준수 및 거버넌스':
     'Seguridad, Cumplimiento y Gobernanza para IA',
+  // AWS AIF-C01 (신버전 11태그)
+  'AI·ML 개념과 알고리즘': 'Conceptos y Algoritmos de IA y ML',
+  'AI 실용 사례와 서비스 선택': 'Casos de Uso de IA y Selección de Servicios',
+  'ML 개발 수명 주기': 'Ciclo de Vida del Desarrollo de ML',
+  '생성형 AI 개념과 구조': 'Conceptos y Arquitectura de IA Generativa',
+  '생성형 AI 역량과 한계': 'Capacidades y Limitaciones de la IA Generativa',
+  'AWS GenAI 인프라와 서비스': 'Infraestructura y Servicios de GenAI de AWS',
+  'FM 애플리케이션 설계와 RAG': 'Diseño de Aplicaciones FM y RAG',
+  '프롬프트 엔지니어링과 보안': 'Ingeniería de Prompts y Seguridad',
+  'FM 훈련·파인튜닝·평가': 'Entrenamiento, Fine-tuning y Evaluación de FM',
+  '책임 있는 AI와 공정성': 'IA Responsable y Equidad',
+  'AI 투명성·설명 가능성·거버넌스': 'Transparencia, Explicabilidad y Gobernanza de IA',
   // AWS CLF-C02 & AZURE AZ-900 (shared)
   '클라우드 개념': 'Conceptos de la Nube',
   // AWS CLF-C02
@@ -104,13 +140,25 @@ const TAG_ES: Record<string, string> = {
 };
 
 const TAG_PT: Record<string, string> = {
-  // AWS AIF-C01
+  // AWS AIF-C01 (구버전 5태그 — backward compatibility)
   'AI 및 ML의 기초': 'Fundamentos de IA e ML',
   'GenAI의 기초': 'Fundamentos de IA Generativa',
   '파운데이션 모델의 적용': 'Aplicações de Modelos Fundamentais',
   '책임 있는 AI에 대한 가이드라인': 'Diretrizes para IA Responsável',
   'AI 솔루션의 보안, 규정 준수 및 거버넌스':
     'Segurança, Conformidade e Governança para IA',
+  // AWS AIF-C01 (신버전 11태그)
+  'AI·ML 개념과 알고리즘': 'Conceitos e Algoritmos de IA e ML',
+  'AI 실용 사례와 서비스 선택': 'Casos de Uso de IA e Seleção de Serviços',
+  'ML 개발 수명 주기': 'Ciclo de Vida do Desenvolvimento de ML',
+  '생성형 AI 개념과 구조': 'Conceitos e Arquitetura de IA Generativa',
+  '생성형 AI 역량과 한계': 'Capacidades e Limitações da IA Generativa',
+  'AWS GenAI 인프라와 서비스': 'Infraestrutura e Serviços de GenAI da AWS',
+  'FM 애플리케이션 설계와 RAG': 'Design de Aplicações FM e RAG',
+  '프롬프트 엔지니어링과 보안': 'Engenharia de Prompt e Segurança',
+  'FM 훈련·파인튜닝·평가': 'Treinamento, Fine-tuning e Avaliação de FM',
+  '책임 있는 AI와 공정성': 'IA Responsável e Equidade',
+  'AI 투명성·설명 가능성·거버넌스': 'Transparência, Explicabilidade e Governança de IA',
   // AWS CLF-C02 & AZURE AZ-900 (shared)
   '클라우드 개념': 'Conceitos de Nuvem',
   // AWS CLF-C02
