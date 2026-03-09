@@ -145,7 +145,7 @@ const CertLandingPage = () => {
               onClick={handleStartClick}
               className="bg-accent text-accent-foreground hover:bg-accent/90 font-bold px-8 py-6 text-base rounded-xl shadow-2xl hover:shadow-accent/50 transition-all hover:scale-105 accent-glow"
             >
-              {isKo ? '무료로 연습 시작하기' : 'Start Practicing for Free'}
+              {t('certLanding.startFree')}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <a href={data.officialUrl} target="_blank" rel="noopener noreferrer">
@@ -155,7 +155,7 @@ const CertLandingPage = () => {
                 className="border-2 border-primary-foreground/50 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground font-semibold px-6 py-6 text-base rounded-xl backdrop-blur-sm transition-all hover:scale-105"
               >
                 <ExternalLink className="mr-2 h-4 w-4" />
-                {isKo ? '공식 시험 안내' : 'Official Exam Guide'}
+                {t('certLanding.officialGuide')}
               </Button>
             </a>
           </div>
@@ -170,9 +170,7 @@ const CertLandingPage = () => {
           </p>
           {data.renewalYears > 0 && (
             <p className="text-sm text-muted-foreground mt-3">
-              {isKo
-                ? `유효 기간: 취득 후 ${data.renewalYears}년 (재인증 필요)`
-                : `Validity: ${data.renewalYears} years after passing (renewal required)`}
+              {t('certLanding.validity', { years: data.renewalYears })}
             </p>
           )}
         </div>
@@ -182,12 +180,10 @@ const CertLandingPage = () => {
       <section className="py-14 px-4">
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-xl md:text-3xl font-bold mb-2 break-keep">
-            {isKo ? '도메인별 출제 비율' : 'Exam Domain Breakdown'}
+            {t('certLanding.domainTitle')}
           </h2>
           <p className="text-sm text-muted-foreground mb-8 break-keep">
-            {isKo
-              ? `총 ${data.examQuestions}문항 · ${data.durationMin}분 · 합격 점수 ${data.passingScore}점`
-              : `${data.examQuestions} questions · ${data.durationMin} min · Passing score ${data.passingScore}`}
+            {t('certLanding.domainSubtitle', { questions: data.examQuestions, duration: data.durationMin, score: data.passingScore })}
           </p>
           <div className="space-y-4">
             {data.domains.map((domain, i) => (
@@ -221,36 +217,30 @@ const CertLandingPage = () => {
       <section className="py-14 px-4 section-alt">
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-xl md:text-3xl font-bold mb-2 text-center break-keep">
-            {isKo ? '3가지 학습 모드' : '3 Study Modes'}
+            {t('certLanding.studyModesTitle')}
           </h2>
           <p className="text-sm text-muted-foreground text-center mb-8 break-keep">
-            {isKo ? '학습 목적에 맞게 모드를 선택하세요.' : 'Choose the mode that fits your learning style.'}
+            {t('certLanding.studyModesSubtitle')}
           </p>
           <div className="grid sm:grid-cols-3 gap-4">
             {[
               {
                 color: 'border-green-400 bg-green-50 dark:bg-green-950/40',
                 textColor: 'text-green-700 dark:text-green-400',
-                title: isKo ? '연습 모드' : 'Practice Mode',
-                desc: isKo
-                  ? '문제를 풀면 즉시 정답과 해설을 확인합니다. 틀린 문제 복습에 최적.'
-                  : 'Get instant feedback after each question. Best for reviewing wrong answers.',
+                title: t('certLanding.practiceMode.title'),
+                desc: t('certLanding.practiceMode.desc'),
               },
               {
                 color: 'border-blue-400 bg-blue-50 dark:bg-blue-950/40',
                 textColor: 'text-blue-700 dark:text-blue-400',
-                title: isKo ? '해설 모드' : 'Study Mode',
-                desc: isKo
-                  ? '정답·해설을 처음부터 보며 개념을 학습합니다. 처음 공부하는 분께 추천.'
-                  : 'Study with answers shown from the start. Recommended for beginners.',
+                title: t('certLanding.studyMode.title'),
+                desc: t('certLanding.studyMode.desc'),
               },
               {
                 color: 'border-orange-400 bg-orange-50 dark:bg-orange-950/40',
                 textColor: 'text-orange-700 dark:text-orange-400',
-                title: isKo ? '실전 모드' : 'Exam Mode',
-                desc: isKo
-                  ? `실제 시험과 동일한 ${data.durationMin}분 제한 환경. 실전 감각을 극대화합니다.`
-                  : `Timed ${data.durationMin}-minute environment matching real exam conditions.`,
+                title: t('certLanding.examMode.title'),
+                desc: t('certLanding.examMode.desc', { duration: data.durationMin }),
               },
             ].map((mode, i) => (
               <div key={i} className={`rounded-xl border-2 p-5 ${mode.color}`}>
@@ -267,21 +257,17 @@ const CertLandingPage = () => {
         <div className="absolute inset-0 hero-dots pointer-events-none" />
         <div className="container mx-auto text-center max-w-2xl relative z-10">
           <h2 className="text-2xl md:text-3xl font-bold mb-3 break-keep">
-            {isKo
-              ? `${data.code} 합격을 향해 지금 시작하세요`
-              : `Start your ${data.code} journey today`}
+            {t('certLanding.ctaTitle', { code: data.code })}
           </h2>
           <p className="text-primary-foreground/70 mb-7 break-keep">
-            {isKo
-              ? `${data.dbCountApprox.toLocaleString()}개 이상의 한국어 문제로 실전 감각을 키우세요. 무료로 시작할 수 있습니다.`
-              : `Practice with ${data.dbCountApprox.toLocaleString()}+ Korean questions. Start for free.`}
+            {t('certLanding.ctaSubtitle', { count: data.dbCountApprox.toLocaleString() })}
           </p>
           <Button
             size="lg"
             onClick={handleStartClick}
             className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-10 py-6 accent-glow"
           >
-            {isKo ? '무료로 연습 시작하기' : 'Start Practicing for Free'}
+            {t('certLanding.startFree')}
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
