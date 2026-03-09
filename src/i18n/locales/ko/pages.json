@@ -149,8 +149,36 @@
       "title": "전 세계 수만 개의 기업이 선택한 클라우드 플랫폼",
       "subtitle": "AWS · GCP · AZURE는 글로벌 IT 인프라의 표준입니다",
       "disclaimer": "공개된 AWS · GCP · AZURE 레퍼런스 기준",
-      "companiesRow1": ["Netflix", "삼성전자", "Kakao", "Naver", "현대자동차", "LG전자", "쿠팡", "SK텔레콤", "LINE", "Airbnb", "Spotify", "Toyota", "BMW"],
-      "companiesRow2": ["NASA", "Slack", "Zoom", "Adobe", "Dropbox", "Reddit", "Pinterest", "Twitch", "McDonald's", "GE", "Pfizer", "배달의민족", "Hyundai"]
+      "companiesRow1": [
+        "Netflix",
+        "삼성전자",
+        "Kakao",
+        "Naver",
+        "현대자동차",
+        "LG전자",
+        "쿠팡",
+        "SK텔레콤",
+        "LINE",
+        "Airbnb",
+        "Spotify",
+        "Toyota",
+        "BMW"
+      ],
+      "companiesRow2": [
+        "NASA",
+        "Slack",
+        "Zoom",
+        "Adobe",
+        "Dropbox",
+        "Reddit",
+        "Pinterest",
+        "Twitch",
+        "McDonald's",
+        "GE",
+        "Pfizer",
+        "배달의민족",
+        "Hyundai"
+      ]
     },
     "whyCloud": {
       "title": "왜 클라우드 자격증인가?",
@@ -352,7 +380,25 @@
     "sampleBadge": "샘플",
     "fullBadge": "전체",
     "starting": "시작 중...",
-    "selectMode": "학습 모드 선택"
+    "selectMode": "학습 모드 선택",
+    "all": "전체",
+    "practiceMode": "연습모드",
+    "studyMode": "해설모드",
+    "examMode": "실전모드",
+    "randomize": "보기 순서 랜덤화",
+    "modesIntroTitle": "시험 모드 안내",
+    "modesIntroDesc": "원하는 학습 방식에 맞는 모드를 선택하세요.",
+    "practiceModeName": "연습모드",
+    "practiceModeDesc": "문제를 풀면 즉시 정답과 해설을 확인할 수 있습니다.",
+    "studyModeName": "해설모드",
+    "studyModeDesc": "정답과 해설을 처음부터 함께 보며 학습합니다.",
+    "examModeName": "실전모드",
+    "examModeDesc": "시간 제한 내에 모든 문제를 풀고 제출하는 실전 시험 환경입니다.",
+    "headerGuide": "화면 상단 버튼 안내",
+    "darkLightToggle": "🌙 / ☀️ — 다크/라이트 모드 전환",
+    "langToggle": "🇰🇷 / 🌐 — 언어 전환",
+    "gotIt": "알겠습니다",
+    "comingSoonMsg": "{{provider}} 자격증이 아직 준비 중입니다."
   },
   "examSession": {
     "questionOf": "문제",
@@ -465,7 +511,12 @@
   },
   "profile": {
     "providerLogin": "{{provider}} 로그인",
-    "providers": { "google": "Google", "kakao": "카카오", "naver": "네이버", "email": "이메일" },
+    "providers": {
+      "google": "Google",
+      "kakao": "카카오",
+      "naver": "네이버",
+      "email": "이메일"
+    },
     "defaultUser": "사용자",
     "saveName": "저장",
     "cancelName": "취소",
@@ -495,12 +546,28 @@
     "settings": {
       "title": "환경 설정",
       "themeLabel": "화면 모드",
-      "themes": { "light": "라이트", "sepia": "세피아", "forest": "포레스트", "dark": "다크" },
+      "themes": {
+        "light": "라이트",
+        "sepia": "세피아",
+        "forest": "포레스트",
+        "dark": "다크"
+      },
       "languageLabel": "언어",
       "fontSizeLabel": "글씨 크기",
-      "fontSizes": { "sm": "소", "md": "중", "lg": "대" },
+      "fontSizes": {
+        "sm": "소",
+        "md": "중",
+        "lg": "대"
+      },
       "fontFamilyLabel": "서체",
-      "fontFamilies": { "outfit": "Outfit (기본)", "inter": "Inter", "noto-sans-kr": "Noto Sans", "nanum-gothic": "나눔고딕", "roboto": "Roboto", "nunito": "Nunito" }
+      "fontFamilies": {
+        "outfit": "Outfit (기본)",
+        "inter": "Inter",
+        "noto-sans-kr": "Noto Sans",
+        "nanum-gothic": "나눔고딕",
+        "roboto": "Roboto",
+        "nunito": "Nunito"
+      }
     },
     "account": {
       "title": "계정 정보",
@@ -539,20 +606,50 @@
     "practiceBtn": "실습하기",
     "learnMore": "자세히 보기",
     "careers": {
-      "all":             { "label": "전체" },
-      "cloud-architect": { "label": "클라우드 아키텍트" },
-      "devops":          { "label": "DevOps / SRE" },
-      "data-ml":         { "label": "데이터 / ML" },
-      "security":        { "label": "보안" },
-      "developer":       { "label": "클라우드 개발자" }
+      "all": {
+        "label": "전체"
+      },
+      "cloud-architect": {
+        "label": "클라우드 아키텍트"
+      },
+      "devops": {
+        "label": "DevOps / SRE"
+      },
+      "data-ml": {
+        "label": "데이터 / ML"
+      },
+      "security": {
+        "label": "보안"
+      },
+      "developer": {
+        "label": "클라우드 개발자"
+      }
     },
     "levels": {
-      "foundational": { "label": "Foundational", "description": "진입 장벽이 낮은 기초 자격증 — 클라우드를 처음 접하는 분께 추천" },
-      "fundamentals": { "label": "Fundamentals", "description": "핵심 개념을 다루는 기초 자격증 — 입문자를 위한 첫 걸음" },
-      "associate":    { "label": "Associate",    "description": "실무 역량을 검증하는 중급 자격증 — 1~2년 경력자에게 적합" },
-      "professional": { "label": "Professional", "description": "심화 전문성을 검증하는 고급 자격증 — Associate 취득 후 도전 권장" },
-      "expert":       { "label": "Expert",       "description": "최고 수준의 전문성을 인증하는 자격증" },
-      "specialty":    { "label": "Specialty",    "description": "특정 도메인에 특화된 전문 자격증 — 분야 전문가를 위한 심화 인증" }
+      "foundational": {
+        "label": "Foundational",
+        "description": "진입 장벽이 낮은 기초 자격증 — 클라우드를 처음 접하는 분께 추천"
+      },
+      "fundamentals": {
+        "label": "Fundamentals",
+        "description": "핵심 개념을 다루는 기초 자격증 — 입문자를 위한 첫 걸음"
+      },
+      "associate": {
+        "label": "Associate",
+        "description": "실무 역량을 검증하는 중급 자격증 — 1~2년 경력자에게 적합"
+      },
+      "professional": {
+        "label": "Professional",
+        "description": "심화 전문성을 검증하는 고급 자격증 — Associate 취득 후 도전 권장"
+      },
+      "expert": {
+        "label": "Expert",
+        "description": "최고 수준의 전문성을 인증하는 자격증"
+      },
+      "specialty": {
+        "label": "Specialty",
+        "description": "특정 도메인에 특화된 전문 자격증 — 분야 전문가를 위한 심화 인증"
+      }
     },
     "cta": {
       "title": "지금 바로 시작하세요",

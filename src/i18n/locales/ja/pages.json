@@ -149,8 +149,36 @@
       "title": "世界中の数万社が信頼",
       "subtitle": "AWS・GCP・AZUREはITインフラのグローバルスタンダード",
       "disclaimer": "AWS・GCP・AZUREの公開参照顧客に基づく",
-      "companiesRow1": ["Netflix", "Samsung", "Kakao", "Naver", "Hyundai", "LG Electronics", "Coupang", "SK Telecom", "LINE", "Airbnb", "Spotify", "Toyota", "BMW"],
-      "companiesRow2": ["NASA", "Slack", "Zoom", "Adobe", "Dropbox", "Reddit", "Pinterest", "Twitch", "McDonald's", "GE", "Pfizer", "Baemin", "Hyundai"]
+      "companiesRow1": [
+        "Netflix",
+        "Samsung",
+        "Kakao",
+        "Naver",
+        "Hyundai",
+        "LG Electronics",
+        "Coupang",
+        "SK Telecom",
+        "LINE",
+        "Airbnb",
+        "Spotify",
+        "Toyota",
+        "BMW"
+      ],
+      "companiesRow2": [
+        "NASA",
+        "Slack",
+        "Zoom",
+        "Adobe",
+        "Dropbox",
+        "Reddit",
+        "Pinterest",
+        "Twitch",
+        "McDonald's",
+        "GE",
+        "Pfizer",
+        "Baemin",
+        "Hyundai"
+      ]
     },
     "whyCloud": {
       "title": "なぜクラウド資格なのか？",
@@ -352,7 +380,25 @@
     "sampleBadge": "サンプル",
     "fullBadge": "フル",
     "starting": "開始中...",
-    "selectMode": "学習モードを選択"
+    "selectMode": "学習モードを選択",
+    "all": "すべて",
+    "practiceMode": "練習",
+    "studyMode": "学習",
+    "examMode": "試験",
+    "randomize": "選択肢をシャッフル",
+    "modesIntroTitle": "試験モードガイド",
+    "modesIntroDesc": "学習スタイルに合ったモードを選択してください。",
+    "practiceModeName": "練習モード",
+    "practiceModeDesc": "各問題の後に即座にフィードバックと解説を得られます。",
+    "studyModeName": "学習モード",
+    "studyModeDesc": "最初から回答と解説を見ながら学習します。",
+    "examModeName": "試験モード",
+    "examModeDesc": "制限時間内にすべての問題を解いて一括提出する本番試験環境です。",
+    "headerGuide": "ヘッダーボタンガイド",
+    "darkLightToggle": "🌙 / ☀️ — ダーク/ライトモード切替",
+    "langToggle": "🌐 — 言語切替",
+    "gotIt": "了解",
+    "comingSoonMsg": "{{provider}} 認定試験は近日公開予定です。"
   },
   "examSession": {
     "questionOf": "問題",
@@ -465,7 +511,12 @@
   },
   "profile": {
     "providerLogin": "{{provider}}でログイン中",
-    "providers": { "google": "Google", "kakao": "Kakao", "naver": "Naver", "email": "メール" },
+    "providers": {
+      "google": "Google",
+      "kakao": "Kakao",
+      "naver": "Naver",
+      "email": "メール"
+    },
     "defaultUser": "ユーザー",
     "saveName": "保存",
     "cancelName": "キャンセル",
@@ -495,12 +546,28 @@
     "settings": {
       "title": "設定",
       "themeLabel": "テーマ",
-      "themes": { "light": "ライト", "sepia": "セピア", "forest": "フォレスト", "dark": "ダーク" },
+      "themes": {
+        "light": "ライト",
+        "sepia": "セピア",
+        "forest": "フォレスト",
+        "dark": "ダーク"
+      },
       "languageLabel": "言語",
       "fontSizeLabel": "フォントサイズ",
-      "fontSizes": { "sm": "小", "md": "中", "lg": "大" },
+      "fontSizes": {
+        "sm": "小",
+        "md": "中",
+        "lg": "大"
+      },
       "fontFamilyLabel": "フォント",
-      "fontFamilies": { "outfit": "Outfit（デフォルト）", "inter": "Inter", "noto-sans-kr": "Noto Sans", "nanum-gothic": "Nanum Gothic", "roboto": "Roboto", "nunito": "Nunito" }
+      "fontFamilies": {
+        "outfit": "Outfit（デフォルト）",
+        "inter": "Inter",
+        "noto-sans-kr": "Noto Sans",
+        "nanum-gothic": "Nanum Gothic",
+        "roboto": "Roboto",
+        "nunito": "Nunito"
+      }
     },
     "account": {
       "title": "アカウント情報",
@@ -539,20 +606,50 @@
     "practiceBtn": "今すぐ練習",
     "learnMore": "詳細を見る",
     "careers": {
-      "all":             { "label": "すべて" },
-      "cloud-architect": { "label": "クラウドアーキテクト" },
-      "devops":          { "label": "DevOps / SRE" },
-      "data-ml":         { "label": "データ / ML" },
-      "security":        { "label": "セキュリティ" },
-      "developer":       { "label": "クラウド開発者" }
+      "all": {
+        "label": "すべて"
+      },
+      "cloud-architect": {
+        "label": "クラウドアーキテクト"
+      },
+      "devops": {
+        "label": "DevOps / SRE"
+      },
+      "data-ml": {
+        "label": "データ / ML"
+      },
+      "security": {
+        "label": "セキュリティ"
+      },
+      "developer": {
+        "label": "クラウド開発者"
+      }
     },
     "levels": {
-      "foundational": { "label": "基礎", "description": "入門レベル — クラウド初心者に推奨" },
-      "fundamentals": { "label": "ファンダメンタルズ", "description": "基本概念の習得 — 初めて学ぶ方の第一歩" },
-      "associate":    { "label": "アソシエイト",    "description": "実務スキルを証明する中級レベル — 1〜2年の経験者に最適" },
-      "professional": { "label": "プロフェッショナル", "description": "高度な専門知識を証明する上級資格 — アソシエイト取得後に推奨" },
-      "expert":       { "label": "エキスパート",       "description": "最高レベルのプロフェッショナル資格" },
-      "specialty":    { "label": "スペシャリティ",    "description": "特定分野の専門家向け資格" }
+      "foundational": {
+        "label": "基礎",
+        "description": "入門レベル — クラウド初心者に推奨"
+      },
+      "fundamentals": {
+        "label": "ファンダメンタルズ",
+        "description": "基本概念の習得 — 初めて学ぶ方の第一歩"
+      },
+      "associate": {
+        "label": "アソシエイト",
+        "description": "実務スキルを証明する中級レベル — 1〜2年の経験者に最適"
+      },
+      "professional": {
+        "label": "プロフェッショナル",
+        "description": "高度な専門知識を証明する上級資格 — アソシエイト取得後に推奨"
+      },
+      "expert": {
+        "label": "エキスパート",
+        "description": "最高レベルのプロフェッショナル資格"
+      },
+      "specialty": {
+        "label": "スペシャリティ",
+        "description": "特定分野の専門家向け資格"
+      }
     },
     "cta": {
       "title": "今すぐ練習を始めましょう",

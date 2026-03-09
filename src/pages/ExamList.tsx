@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import AppLayout from '@/components/AppLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -55,37 +55,30 @@ for (const provider of PROVIDERS) {
 type ModeOption = {
   id: ExamMode;
   labelKo: string;
-  labelEn: string;
+  modeKey: string;
   Icon: React.ElementType;
   activeClass: string;
 };
-
-const FILTER_PROVIDERS = [
-  { value: 'all', label: '전체' },
-  { value: 'AWS', label: 'AWS' },
-  { value: 'GCP', label: 'GCP' },
-  { value: 'AZURE', label: 'AZURE' },
-];
 
 const MODE_OPTIONS: ModeOption[] = [
   {
     id: 'practice',
     labelKo: '연습모드',
-    labelEn: 'Practice',
+    modeKey: 'examList.practiceMode',
     Icon: Pencil,
     activeClass: 'text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-950/40 border-green-400 dark:border-green-500',
   },
   {
     id: 'study',
     labelKo: '해설모드',
-    labelEn: 'Study',
+    modeKey: 'examList.studyMode',
     Icon: Eye,
     activeClass: 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 border-blue-400 dark:border-blue-500',
   },
   {
     id: 'exam',
     labelKo: '실전모드',
-    labelEn: 'Exam',
+    modeKey: 'examList.examMode',
     Icon: Timer,
     activeClass: 'text-orange-700 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/40 border-orange-400 dark:border-orange-500',
   },
@@ -112,6 +105,13 @@ const ExamList = () => {
   const [tappedId, setTappedId] = useState<string | null>(null);
   const [filterProvider, setFilterProvider] = useState<string>('all');
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const filterProviders = useMemo(() => [
+    { value: 'all', label: t('examList.all') },
+    { value: 'AWS', label: 'AWS' },
+    { value: 'GCP', label: 'GCP' },
+    { value: 'AZURE', label: 'AZURE' },
+  ], [t]);
 
   useEffect(() => {
     async function loadExams() {
@@ -314,7 +314,7 @@ const ExamList = () => {
             className={`flex items-center gap-2 w-full px-3 py-2 rounded-xl border-2 text-sm font-semibold transition-all ${modeOption.activeClass}`}
           >
             <modeOption.Icon className="h-3.5 w-3.5 shrink-0" />
-            <span>{isKo ? modeOption.labelKo : modeOption.labelEn}</span>
+            <span>{isKo ? modeOption.labelKo : t(modeOption.modeKey)}</span>
             <X className="h-3.5 w-3.5 ml-auto shrink-0" />
           </button>
 
@@ -367,7 +367,7 @@ const ExamList = () => {
                 className="h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent"
               />
               <Shuffle className="h-3.5 w-3.5 text-muted-foreground" />
-              <span className="text-sm">{isKo ? '보기 순서 랜덤화' : 'Randomize Options'}</span>
+              <span className="text-sm">{t('examList.randomize')}</span>
             </label>
             <Button
               size="default"
@@ -409,7 +409,7 @@ const ExamList = () => {
           style={{ minWidth: '52px' }}
         >
           <modeOption.Icon className="h-3.5 w-3.5 shrink-0" />
-          <span className="text-center leading-tight text-[11px]">{isKo ? modeOption.labelKo : modeOption.labelEn}</span>
+          <span className="text-center leading-tight text-[11px]">{isKo ? modeOption.labelKo : t(modeOption.modeKey)}</span>
           <X className="h-3 w-3 shrink-0" />
         </button>
 
@@ -467,7 +467,7 @@ const ExamList = () => {
               className="h-3.5 w-3.5 rounded border-gray-300 text-accent focus:ring-accent"
             />
             <Shuffle className="h-3 w-3 text-muted-foreground shrink-0" />
-            <span className="text-xs leading-tight">{isKo ? '보기 순서 랜덤화' : 'Randomize'}</span>
+            <span className="text-xs leading-tight">{t('examList.randomize')}</span>
           </label>
           <Button
             size="sm"
@@ -502,9 +502,9 @@ const ExamList = () => {
       <Dialog open={showModesIntro} onOpenChange={(open) => { if (!open) dismissModesIntro(); }}>
         <DialogContent className="max-w-sm sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>{isKo ? '시험 모드 안내' : 'Exam Modes Guide'}</DialogTitle>
+            <DialogTitle>{t('examList.modesIntroTitle')}</DialogTitle>
             <DialogDescription>
-              {isKo ? '원하는 학습 방식에 맞는 모드를 선택하세요.' : 'Choose the mode that fits your learning style.'}
+              {t('examList.modesIntroDesc')}
             </DialogDescription>
           </DialogHeader>
 
@@ -513,12 +513,10 @@ const ExamList = () => {
               <Pencil className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 shrink-0" />
               <div>
                 <p className="font-semibold text-green-700 dark:text-green-400 text-sm">
-                  {isKo ? '연습모드' : 'Practice Mode'}
+                  {t('examList.practiceModeName')}
                 </p>
                 <p className="text-sm text-muted-foreground mt-0.5">
-                  {isKo
-                    ? '문제를 풀면 즉시 정답과 해설을 확인할 수 있습니다.'
-                    : 'Get immediate feedback with answers and explanations after each question.'}
+                  {t('examList.practiceModeDesc')}
                 </p>
               </div>
             </div>
@@ -527,12 +525,10 @@ const ExamList = () => {
               <Eye className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
               <div>
                 <p className="font-semibold text-blue-700 dark:text-blue-400 text-sm">
-                  {isKo ? '해설모드' : 'Study Mode'}
+                  {t('examList.studyModeName')}
                 </p>
                 <p className="text-sm text-muted-foreground mt-0.5">
-                  {isKo
-                    ? '정답과 해설을 처음부터 함께 보며 학습합니다.'
-                    : 'Study with answers and explanations shown from the start.'}
+                  {t('examList.studyModeDesc')}
                 </p>
               </div>
             </div>
@@ -541,12 +537,10 @@ const ExamList = () => {
               <Timer className="h-5 w-5 text-orange-600 dark:text-orange-400 mt-0.5 shrink-0" />
               <div>
                 <p className="font-semibold text-orange-700 dark:text-orange-400 text-sm">
-                  {isKo ? '실전모드' : 'Exam Mode'}
+                  {t('examList.examModeName')}
                 </p>
                 <p className="text-sm text-muted-foreground mt-0.5">
-                  {isKo
-                    ? '시간 제한 내에 모든 문제를 풀고 제출하는 실전 시험 환경입니다.'
-                    : 'A timed exam environment where you submit all answers at once.'}
+                  {t('examList.examModeDesc')}
                 </p>
               </div>
             </div>
@@ -554,16 +548,16 @@ const ExamList = () => {
 
           <div className="border-t pt-3 mt-1">
             <p className="text-xs text-muted-foreground font-medium mb-1.5">
-              {isKo ? '화면 상단 버튼 안내' : 'Header Button Guide'}
+              {t('examList.headerGuide')}
             </p>
             <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-              <span>{isKo ? '🌙 / ☀️ — 다크/라이트 모드 전환' : '🌙 / ☀️ — Toggle dark/light mode'}</span>
-              <span>{isKo ? '🇰🇷 / 🇺🇸 — 한국어/English 전환' : '🇰🇷 / 🇺🇸 — Switch Korean/English'}</span>
+              <span>{t('examList.darkLightToggle')}</span>
+              <span>{t('examList.langToggle')}</span>
             </div>
           </div>
 
           <Button onClick={dismissModesIntro} className="w-full mt-2">
-            {isKo ? '알겠습니다' : 'Got it'}
+            {t('examList.gotIt')}
           </Button>
         </DialogContent>
       </Dialog>
@@ -573,7 +567,7 @@ const ExamList = () => {
           <h1 className="text-2xl font-bold mb-2">{t('examList.title')}</h1>
           <p className="text-muted-foreground">{t('examList.subtitle')}</p>
           <div className="flex items-center gap-2 mt-4 flex-wrap">
-            {FILTER_PROVIDERS.map(p => (
+            {filterProviders.map(p => (
               <button
                 key={p.value}
                 onClick={() => handleFilterChange(p.value)}
@@ -597,7 +591,7 @@ const ExamList = () => {
           <div className="space-y-4">
             {filteredExams.length === 0 && !loading && (
               <div className="text-center py-12 text-muted-foreground">
-                {filterProvider} {isKo ? '자격증이 아직 준비 중입니다.' : 'certifications are coming soon.'}
+                {t('examList.comingSoonMsg', { provider: filterProvider })}
               </div>
             )}
             {filteredExams.map(exam => {
@@ -708,7 +702,7 @@ const ExamList = () => {
                                     <span className="hidden md:inline font-semibold text-xs">{m.labelKo}</span>
                                   </>
                                 ) : (
-                                  <span className="font-semibold text-xs text-center">{m.labelEn}</span>
+                                  <span className="font-semibold text-xs text-center">{t(m.modeKey)}</span>
                                 )}
                               </button>
                             ))}

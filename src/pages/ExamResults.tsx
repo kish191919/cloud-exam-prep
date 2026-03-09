@@ -27,8 +27,9 @@ function formatTime(ms: number): string {
 
 const ExamResults = () => {
   const { i18n } = useTranslation('pages');
-  const isKo = i18n.language === 'ko';
-  const isEn = !isKo;
+  const lang = i18n.language;
+  const isKo = lang === 'ko';
+  const isEn = lang === 'en';
   const { sessionId } = useParams();
   const navigate = useNavigate();
   const { user, hasFullAccess, openAuthModal } = useAuth();
@@ -322,7 +323,7 @@ const ExamResults = () => {
                     >
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-xs text-muted-foreground flex-1 mr-3 truncate group-hover:text-foreground transition-colors">
-                          {translateTag(tag, isEn)}
+                          {translateTag(tag, lang)}
                         </span>
                         <span className="text-xs font-semibold shrink-0 text-green-600">
                           {correct}/{tagTotal} ({pct}%)
@@ -380,7 +381,7 @@ const ExamResults = () => {
                     <SelectContent>
                       <SelectItem value="__all__">{isKo ? '전체 도메인' : 'All Domains'}</SelectItem>
                       {tagEntries.map(([tag]) => (
-                        <SelectItem key={tag} value={tag}>{translateTag(tag, isEn)}</SelectItem>
+                        <SelectItem key={tag} value={tag}>{translateTag(tag, lang)}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>

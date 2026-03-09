@@ -149,8 +149,36 @@
       "title": "La Confianza de Decenas de Miles de Empresas en el Mundo",
       "subtitle": "AWS · GCP · AZURE son el estándar global de infraestructura de TI",
       "disclaimer": "Basado en clientes de referencia públicos de AWS · GCP · AZURE",
-      "companiesRow1": ["Netflix", "Samsung", "Kakao", "Naver", "Hyundai", "LG Electronics", "Coupang", "SK Telecom", "LINE", "Airbnb", "Spotify", "Toyota", "BMW"],
-      "companiesRow2": ["NASA", "Slack", "Zoom", "Adobe", "Dropbox", "Reddit", "Pinterest", "Twitch", "McDonald's", "GE", "Pfizer", "Baemin", "Hyundai"]
+      "companiesRow1": [
+        "Netflix",
+        "Samsung",
+        "Kakao",
+        "Naver",
+        "Hyundai",
+        "LG Electronics",
+        "Coupang",
+        "SK Telecom",
+        "LINE",
+        "Airbnb",
+        "Spotify",
+        "Toyota",
+        "BMW"
+      ],
+      "companiesRow2": [
+        "NASA",
+        "Slack",
+        "Zoom",
+        "Adobe",
+        "Dropbox",
+        "Reddit",
+        "Pinterest",
+        "Twitch",
+        "McDonald's",
+        "GE",
+        "Pfizer",
+        "Baemin",
+        "Hyundai"
+      ]
     },
     "whyCloud": {
       "title": "¿Por Qué las Certificaciones Cloud?",
@@ -352,7 +380,25 @@
     "sampleBadge": "Muestra",
     "fullBadge": "Completo",
     "starting": "Iniciando...",
-    "selectMode": "Seleccionar Modo de Estudio"
+    "selectMode": "Seleccionar Modo de Estudio",
+    "all": "Todos",
+    "practiceMode": "Práctica",
+    "studyMode": "Estudio",
+    "examMode": "Examen",
+    "randomize": "Aleatorizar opciones",
+    "modesIntroTitle": "Guía de Modos de Examen",
+    "modesIntroDesc": "Elige el modo que se adapte a tu estilo de aprendizaje.",
+    "practiceModeName": "Modo Práctica",
+    "practiceModeDesc": "Obtén retroalimentación inmediata con respuestas y explicaciones después de cada pregunta.",
+    "studyModeName": "Modo Estudio",
+    "studyModeDesc": "Estudia con respuestas y explicaciones visibles desde el principio.",
+    "examModeName": "Modo Examen",
+    "examModeDesc": "Un entorno de examen cronometrado donde envías todas las respuestas a la vez.",
+    "headerGuide": "Guía de Botones del Encabezado",
+    "darkLightToggle": "🌙 / ☀️ — Cambiar modo oscuro/claro",
+    "langToggle": "🌐 — Cambiar idioma",
+    "gotIt": "Entendido",
+    "comingSoonMsg": "Las certificaciones de {{provider}} estarán disponibles próximamente."
   },
   "examSession": {
     "questionOf": "Pregunta",
@@ -465,7 +511,12 @@
   },
   "profile": {
     "providerLogin": "Conectado con {{provider}}",
-    "providers": { "google": "Google", "kakao": "Kakao", "naver": "Naver", "email": "Correo" },
+    "providers": {
+      "google": "Google",
+      "kakao": "Kakao",
+      "naver": "Naver",
+      "email": "Correo"
+    },
     "defaultUser": "Usuario",
     "saveName": "Guardar",
     "cancelName": "Cancelar",
@@ -495,12 +546,28 @@
     "settings": {
       "title": "Preferencias",
       "themeLabel": "Tema",
-      "themes": { "light": "Claro", "sepia": "Sepia", "forest": "Bosque", "dark": "Oscuro" },
+      "themes": {
+        "light": "Claro",
+        "sepia": "Sepia",
+        "forest": "Bosque",
+        "dark": "Oscuro"
+      },
       "languageLabel": "Idioma",
       "fontSizeLabel": "Tamaño de Fuente",
-      "fontSizes": { "sm": "Pequeño", "md": "Mediano", "lg": "Grande" },
+      "fontSizes": {
+        "sm": "Pequeño",
+        "md": "Mediano",
+        "lg": "Grande"
+      },
       "fontFamilyLabel": "Fuente",
-      "fontFamilies": { "outfit": "Outfit (Por defecto)", "inter": "Inter", "noto-sans-kr": "Noto Sans", "nanum-gothic": "Nanum Gothic", "roboto": "Roboto", "nunito": "Nunito" }
+      "fontFamilies": {
+        "outfit": "Outfit (Por defecto)",
+        "inter": "Inter",
+        "noto-sans-kr": "Noto Sans",
+        "nanum-gothic": "Nanum Gothic",
+        "roboto": "Roboto",
+        "nunito": "Nunito"
+      }
     },
     "account": {
       "title": "Información de Cuenta",
@@ -539,20 +606,50 @@
     "practiceBtn": "Practicar Ahora",
     "learnMore": "Ver Más",
     "careers": {
-      "all":             { "label": "Todos" },
-      "cloud-architect": { "label": "Arquitecto Cloud" },
-      "devops":          { "label": "DevOps / SRE" },
-      "data-ml":         { "label": "Datos / ML" },
-      "security":        { "label": "Seguridad" },
-      "developer":       { "label": "Desarrollador Cloud" }
+      "all": {
+        "label": "Todos"
+      },
+      "cloud-architect": {
+        "label": "Arquitecto Cloud"
+      },
+      "devops": {
+        "label": "DevOps / SRE"
+      },
+      "data-ml": {
+        "label": "Datos / ML"
+      },
+      "security": {
+        "label": "Seguridad"
+      },
+      "developer": {
+        "label": "Desarrollador Cloud"
+      }
     },
     "levels": {
-      "foundational": { "label": "Básico", "description": "Nivel inicial de baja barrera — recomendado para principiantes en cloud" },
-      "fundamentals": { "label": "Fundamentos", "description": "Conceptos fundamentales — el primer paso para nuevos usuarios" },
-      "associate":    { "label": "Asociado",    "description": "Nivel intermedio que valida habilidades reales — ideal para 1–2 años de experiencia" },
-      "professional": { "label": "Profesional", "description": "Certificación avanzada de expertise profunda — recomendada después de Asociado" },
-      "expert":       { "label": "Experto",       "description": "Certificación profesional de mayor nivel" },
-      "specialty":    { "label": "Especialidad",    "description": "Certificación especializada en dominio específico para especialistas" }
+      "foundational": {
+        "label": "Básico",
+        "description": "Nivel inicial de baja barrera — recomendado para principiantes en cloud"
+      },
+      "fundamentals": {
+        "label": "Fundamentos",
+        "description": "Conceptos fundamentales — el primer paso para nuevos usuarios"
+      },
+      "associate": {
+        "label": "Asociado",
+        "description": "Nivel intermedio que valida habilidades reales — ideal para 1–2 años de experiencia"
+      },
+      "professional": {
+        "label": "Profesional",
+        "description": "Certificación avanzada de expertise profunda — recomendada después de Asociado"
+      },
+      "expert": {
+        "label": "Experto",
+        "description": "Certificación profesional de mayor nivel"
+      },
+      "specialty": {
+        "label": "Especialidad",
+        "description": "Certificación especializada en dominio específico para especialistas"
+      }
     },
     "cta": {
       "title": "Empieza a practicar ahora",

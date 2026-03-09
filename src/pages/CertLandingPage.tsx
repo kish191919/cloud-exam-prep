@@ -14,7 +14,24 @@ const CertLandingPage = () => {
   const { examId } = useParams<{ examId: string }>();
   const { user, openAuthModal } = useAuth();
   const { t, i18n } = useTranslation('pages');
-  const isKo = i18n.language === 'ko';
+  const lang = i18n.language;
+  const isKo = lang === 'ko';
+
+  function getDomainName(domain: import('@/data/certLandingData').Domain): string {
+    if (lang === 'ko') return domain.name;
+    if (lang === 'ja') return domain.nameJa ?? domain.nameEn;
+    if (lang === 'es') return domain.nameEs ?? domain.nameEn;
+    if (lang === 'pt') return domain.namePt ?? domain.nameEn;
+    return domain.nameEn;
+  }
+
+  function getDomainTopics(domain: import('@/data/certLandingData').Domain): string[] {
+    if (lang === 'ko') return domain.topics;
+    if (lang === 'ja') return domain.topicsJa ?? domain.topicsEn ?? domain.topics;
+    if (lang === 'es') return domain.topicsEs ?? domain.topicsEn ?? domain.topics;
+    if (lang === 'pt') return domain.topicsPt ?? domain.topicsEn ?? domain.topics;
+    return domain.topicsEn ?? domain.topics;
+  }
 
   const data = examId ? CERT_LANDING_DATA[examId] : null;
   const cert = PROVIDERS.flatMap(p => p.certifications).find(c => c.examId === examId);
@@ -190,7 +207,7 @@ const CertLandingPage = () => {
               <div key={i} className="bg-card rounded-xl border p-5">
                 <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                   <h3 className="font-semibold text-base break-keep">
-                    {isKo ? domain.name : domain.nameEn}
+                    {getDomainName(domain)}
                   </h3>
                   <span className="text-accent font-black text-lg">{domain.percent}%</span>
                 </div>
@@ -201,9 +218,9 @@ const CertLandingPage = () => {
                   />
                 </div>
                 <div className="flex flex-wrap gap-1.5">
-                  {domain.topics.map((topic, ti) => (
+                  {getDomainTopics(domain).map((topic, ti) => (
                     <span key={ti} className="text-xs px-2.5 py-1 rounded-full bg-accent/10 text-accent font-medium">
-                      {isKo ? topic : (domain.topicsEn?.[ti] ?? topic)}
+                      {topic}
                     </span>
                   ))}
                 </div>
