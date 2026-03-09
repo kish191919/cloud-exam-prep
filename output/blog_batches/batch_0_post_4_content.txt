@@ -1,0 +1,154 @@
+# Mastering Amazon Q – Key Exam Points for AWS AI Practitioner (AIF-C01)
+
+> 💡 **Exam Tip:** Amazon Q falls under the "AWS Generative AI Services" domain in the AIF-C01 exam. The most critical skill is clearly distinguishing between Amazon Q Business and Amazon Q Developer.
+
+---
+
+## What is Amazon Q?
+
+Amazon Q is AWS's **generative AI-powered assistant** service, divided into two major offerings:
+
+| Service | Target User | Purpose |
+|---|---|---|
+| **Amazon Q Business** | General employees | Work automation using internal company data |
+| **Amazon Q Developer** | Developers / AWS admins | AWS development & account management |
+
+---
+
+## 1. Amazon Q Business
+
+### Core Concept
+
+Amazon Q Business is a **fully managed** generative AI assistant designed exclusively for enterprise employees. It operates entirely on the company's internal knowledge and data, providing **company-specific answers** that general foundation models cannot deliver.
+
+> 💡 **Exam Tip:** Amazon Q Business is built on Amazon Bedrock, but users have **no control over the underlying models**. Think of it as a higher-level abstraction above Bedrock.
+
+### 4 Key Capabilities
+
+**① Answer Questions**
+Retrieves information from internal documents and provides answers **with sources** — similar to RAG (Retrieval-Augmented Generation).
+
+**② Summarize**
+Extracts and summarizes information from company data.
+
+**③ Generate Content**
+Creates job postings, social media posts, reports, etc. based on company data.
+
+**④ Automate Tasks**
+Automates routine tasks such as submitting time-off requests, sending meeting invites, and creating support tickets.
+
+---
+
+### Data Connectors
+
+Amazon Q Business supports **40+ enterprise data sources** in a fully managed way.
+
+**AWS Services:** Amazon S3, Amazon RDS, Amazon Aurora, Amazon WorkDocs
+
+**Non-AWS Services:** Microsoft 365, SharePoint, Google Drive, Gmail, Salesforce, Slack, and more
+
+> 💡 **Exam Tip:** Data connectors automatically crawl sources without individual configuration — remember the keyword **"Fully Managed."**
+
+---
+
+### Plugins
+
+Plugins go beyond data retrieval to enable **real interaction with third-party services**.
+
+- **Pre-built Plugins:** Jira, ServiceNow, Zendesk, Salesforce
+- **Custom Plugins:** Connect to any third-party app via APIs
+
+Example: "Create a Jira issue" → Plugin automatically creates the ticket
+
+> 💡 **Exam Tip:** Data Connectors = **Read (search)**, Plugins = **Write (perform actions)**
+
+---
+
+### User Access & Authentication
+
+- Managed via **IAM Identity Center**
+- Supports external IdPs: Google Login, Microsoft Active Directory, company SSO
+- Users only receive answers from **documents they are authorized to access**
+
+---
+
+### Admin Controls
+
+Equivalent to **Bedrock Guardrails** functionality:
+
+- Block specific topics or words (e.g., questions about gaming consoles)
+- Configure whether to use only internal data or also external model knowledge
+- Apply restrictions at topic-level or globally
+
+> 💡 **Exam Tip:** Admin Controls ≈ Bedrock Guardrails
+
+---
+
+### Amazon Q Apps
+
+Build generative AI-powered apps **without any coding**, using only natural language.
+
+- Non-technical employees can build apps using company data and plugins
+- Use cases: HR tools (time-off requests), customer service, business process automation
+
+---
+
+## 2. Amazon Q Developer
+
+### Core Concept
+
+Amazon Q Developer is a specialized AI assistant for **AWS developers and account administrators** — think GitHub Copilot but AWS-native.
+
+---
+
+### Feature ① AWS Account Interaction
+
+**Resource Querying:**
+> "List all my Lambda functions" → Provides names, count, and region info
+
+**CLI Command Generation:**
+> "Change the timeout of Lambda function Test API1 in Singapore to 10 seconds" → Generates the exact CLI command
+
+**Cost Analysis & Troubleshooting:**
+> "What were my top 3 highest cost services in Q1?" → Analyzes spending patterns
+
+---
+
+### Feature ② AI Code Companion
+
+| Item | Details |
+|---|---|
+| **Languages** | Java, JavaScript, Python, TypeScript, C#, etc. |
+| **IDEs** | VSCode, JetBrains, Visual Studio |
+| **Key Features** | Real-time code suggestions, security vulnerability scanning, code completion |
+| **Software Agent** | Feature implementation, documentation generation, project bootstrapping |
+
+> 💡 **Exam Tip:** Amazon Q Developer = AWS-specific code assistant. Remember it includes **security vulnerability scanning**.
+
+---
+
+## Quick Comparison
+
+| | Amazon Q Business | Amazon Q Developer |
+|---|---|---|
+| Primary Users | General employees | Developers / Admins |
+| Main Purpose | Internal knowledge & task automation | AWS dev & account management |
+| Model Control | Not available (auto-selected) | N/A |
+| Authentication | IAM Identity Center | IAM / Console |
+| Similar To | Higher layer above Bedrock | GitHub Copilot (AWS-native) |
+
+---
+
+## Pre-Exam Checklist ✅
+
+- [ ] Amazon Q Business is **fully managed** — users cannot choose the underlying model.
+- [ ] Data connectors support 40+ sources and **auto-crawl** them.
+- [ ] Plugins enable **action execution** (e.g., creating Jira tickets), not just data retrieval.
+- [ ] IAM Identity Center controls user authentication and document-level access.
+- [ ] Admin Controls are equivalent to Bedrock Guardrails.
+- [ ] Amazon Q Apps enables **no-code** generative AI app development.
+- [ ] Amazon Q Developer supports CLI generation, cost analysis, and **code security scanning**.
+
+---
+
+*If this post was helpful, share it with fellow exam candidates! 🚀

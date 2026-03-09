@@ -1,0 +1,47 @@
+[
+  {
+    "idx": 0,
+    "id": "0e89feba-fcad-4b12-98d8-064ce8d675db",
+    "slug": "aws-aif-c01-exam-complete-guide",
+    "source_lang": "en",
+    "title": "AWS Certified AI Practitioner: Complete Exam Preparation Guide | AIF-C01",
+    "excerpt": "Learn about the AWS AIF-C01 exam that validates your knowledge of generative AI and machine learning. This guide covers exam structure, five key domains, essential AWS services, and proven strategies for success.",
+    "content_file": "output/blog_batches/batch_0_post_0_content.txt"
+  },
+  {
+    "idx": 1,
+    "id": "4d509857-c5d1-47bb-8969-82fabb441157",
+    "slug": "amazon-bedrock",
+    "source_lang": "ko",
+    "title": "Amazon Bedrock | AIF-C01",
+    "excerpt": "AWS의 생성형 AI 솔루션 Amazon Bedrock을 완벽히 이해하세요. 파운데이션 모델 선택, RAG, 파인튜닝, 에이전트까지 AIF-C01 시험 합격을 위한 필수 개념을 정리했습니다.",
+    "content_file": "output/blog_batches/batch_0_post_1_content.txt"
+  },
+  {
+    "idx": 2,
+    "id": "0eab020d-d92b-4b7f-87e3-5afe87589e97",
+    "slug": "gen-ai-fundamentals",
+    "source_lang": "en",
+    "title": "Complete Guide to Generative AI | Essential Concepts of LLMs and Foundation Models | AIF-C01",
+    "excerpt": "Complete generative AI guide for AWS AIF-C01 exam! Master foundation models, LLMs, and prompt engineering. Includes practical AWS service applications and exam-focused learning strategies for success.",
+    "content_file": "output/blog_batches/batch_0_post_2_content.txt"
+  },
+  {
+    "idx": 3,
+    "id": "f5c0636f-9990-400c-8d4d-a9010c909d76",
+    "slug": "emr",
+    "source_lang": "en",
+    "title": "Amazon EMR Deep Dive | DEA-C01",
+    "excerpt": "Hadoop·Spark 같은 빅데이터 프레임워크를 AWS에서 쉽게 실행할 수 있게 해주는 완전 관리형 서비스로, 시험에서는 클러스터 구조, 스토리지 옵션, 클러스터 유형이 자주 출제됩니다. 지금 바로 정리해볼게요! 🚀",
+    "content_file": "output/blog_batches/batch_0_post_3_content.txt"
+  },
+  {
+    "idx": 4,
+    "id": "43210d65-5805-4e41-ae93-57c898695253",
+    "slug": "amazon-q",
+    "source_lang": "en",
+    "title": "Amazon Q | AIF-C01",
+    "excerpt": "Master Amazon Q Business & Developer for the AWS AI Practitioner exam. Covers data connectors, plugins, admin controls, and key use cases with exam tips.",
+    "content_file": "output/blog_batches/batch_0_post_4_content.txt"
+  }
+]

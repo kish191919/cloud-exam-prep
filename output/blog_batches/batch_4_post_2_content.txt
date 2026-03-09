@@ -1,0 +1,209 @@
+# Mastering Amazon S3 — CLF-C02 Essential Guide
+
+> 💡 **Exam Tip:** Amazon S3 is heavily tested on the CLF-C02 exam. Focus on storage classes, security settings, versioning, and Snow Family!
+
+---
+
+## 1. What is Amazon S3?
+
+**Amazon S3 (Simple Storage Service)** is AWS's flagship **object storage** service. Files (objects) are stored in containers called buckets, with virtually unlimited capacity.
+
+### Key Use Cases
+
+Backup & storage, disaster recovery, archiving, static website hosting, data lakes, media hosting, big data analytics, software delivery.
+
+---
+
+## 2. Buckets & Objects
+
+### Bucket Rules
+
+| Rule | Detail |
+|------|--------|
+| **Name** | Must be **globally unique** across all accounts and regions |
+| **Region** | Buckets are created in a **specific region** (S3 looks global but buckets are regional) |
+| **Naming** | Lowercase/numbers, 3–63 chars, no underscores, no IP format |
+
+### Objects
+
+- Each object is identified by a **Key** = full path (e.g., `s3://my-bucket/folder/file.txt`)
+- **No real directory concept** in S3 — just long key names containing slashes (/)
+- **Max object size: 5 TB** (use multi-part upload for objects > 5 GB)
+- Objects can have metadata, tags (up to 10), and version IDs
+
+> 📝 **Exam Tip:** S3 appears global, but **buckets are created at the region level!**
+
+---
+
+## 3. S3 Security
+
+### Access Control Methods
+
+| Method | Description |
+|--------|-------------|
+| **IAM Policies** | Control which API calls a specific IAM user can make |
+| **Bucket Policies** | JSON-based, applied bucket-wide, supports cross-account access |
+| **Object ACL** | Fine-grained access control at the individual object level |
+| **Bucket ACL** | Bucket-level ACL (less common) |
+
+### Access Logic
+
+### Sample Bucket Policy (Public Read)
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Principal": "*",
+    "Action": ["s3:GetObject"],
+    "Resource": ["arn:aws:s3:::example-bucket/*"]
+  }]
+}
+```
+
+> 📝 **Exam Tip:** By default, **all public access is blocked** to prevent data leaks. A **403 Forbidden** error on a static website means the bucket policy isn't allowing public reads!
+
+---
+
+## 4. Key S3 Features
+
+### Versioning
+
+- Enabled at the **bucket level**
+- Overwrites increment the version number (1 → 2 → 3...)
+- Protects against **accidental deletes** and enables **rollback**
+- Files uploaded before enabling versioning have version ID = `null`
+- Disabling versioning **does not delete** existing versions
+
+### Static Website Hosting
+
+Host HTML/CSS/JS static sites directly from S3.
+
+- URL: `bucket-name.s3-website-region.amazonaws.com`
+- **403 error?** Check that your bucket policy allows public reads!
+
+### Access Logs
+
+- All S3 requests (allowed and denied) logged to **another S3 bucket**
+- Useful for auditing and detecting suspicious access patterns
+
+### Replication
+
+| Type | Description | Use Cases |
+|------|-------------|-----------|
+| **CRR** (Cross-Region Replication) | Replicate to a different region | Compliance, lower latency |
+| **SRR** (Same-Region Replication) | Replicate within same region | Log aggregation, test sync |
+
+> 📝 **Exam Tip:** Replication requires **versioning enabled on both source and destination buckets!**
+
+---
+
+## 5. S3 Storage Classes — Critical Exam Topic!
+
+### Durability & Availability
+
+- **Durability:** 11 nines (99.999999999%) — same for ALL storage classes
+- **Availability:** varies by storage class
+
+### Storage Class Comparison
+
+| Class | Availability | Key Characteristics | Best Use Cases |
+|-------|-------------|--------------------|-|
+| **S3 Standard** | 99.99% | Frequently accessed, low latency | Big data, mobile apps, content distribution |
+| **S3 Standard-IA** | 99.9% | Less frequent access, rapid retrieval when needed | Disaster recovery, backups |
+| **S3 One Zone-IA** | 99.5% | Single AZ only — data lost if AZ is destroyed | Recreatable secondary backups |
+| **S3 Glacier Instant** | 99.9% | Millisecond retrieval, ~quarterly access | Medical image archives |
+| **S3 Glacier Flexible** | 99.99% | Expedited (1–5 min), Standard (3–5 hrs), Bulk (5–12 hrs) | Long-term backup archives |
+| **S3 Glacier Deep Archive** | 99.99% | Standard (12 hrs), Bulk (48 hrs) — lowest cost | Regulatory retention (7–10 yrs) |
+| **S3 Intelligent-Tiering** | 99.9% | Auto-moves objects between tiers based on usage | Unpredictable access patterns |
+
+### Minimum Storage Duration
+
+| Class | Minimum Duration |
+|-------|-----------------|
+| Glacier Instant / Flexible | **90 days** |
+| Glacier Deep Archive | **180 days** |
+
+> 📝 **Exam Tips:**
+> - **Cheapest long-term storage:** Glacier Deep Archive
+> - **Automatic tier movement:** Intelligent-Tiering (no retrieval fees!)
+> - **One Zone-IA risk:** data is lost if the AZ is destroyed
+
+---
+
+## 6. S3 Object Lock & Glacier Vault Lock
+
+| Feature | Description | Model |
+|---------|-------------|-------|
+| **S3 Object Lock** | Blocks object version deletion for a set time | WORM |
+| **Glacier Vault Lock** | Locks policy — cannot be changed once set | WORM |
+
+> 📝 **Exam Tip:** **WORM = Write Once Read Many** — used for compliance and data retention where data must not be modified or deleted!
+
+---
+
+## 7. AWS Snow Family
+
+When network transfer takes too long, use **physical devices** to migrate data to/from AWS.
+
+### Real Network Transfer Times
+
+| Data Size | 100 Mbps | 1 Gbps | 10 Gbps |
+|-----------|----------|--------|---------|
+| 10 TB | 12 days | 30 hrs | 3 hrs |
+| 100 TB | 124 days | 12 days | 30 hrs |
+| 1 PB | 3 years | 124 days | 12 days |
+
+> 📝 **Exam Tip:** If transfer takes **more than a week**, use Snowball!
+
+### Snow Family Devices
+
+| Device | Storage | Migration Scale | Notes |
+|--------|---------|----------------|-------|
+| **Snowcone** | 8 TB | Up to 24 TB | Tiny (2.1 kg), works in harsh environments |
+| **Snowball Edge Storage Optimized** | 80 TB | Petabyte-scale | Block + S3-compatible storage |
+| **Snowball Edge Compute Optimized** | 42 TB | Petabyte-scale | 52 vCPUs, optional GPU |
+| **Snowmobile** | 100 PB/truck | Exabyte-scale | Better than Snowball for >10 PB |
+
+### Edge Computing with Snow Devices
+
+Snow devices can run **EC2 instances and Lambda functions** in locations with limited connectivity — trucks, ships, mining sites.
+
+### AWS OpsHub
+
+A **desktop GUI app** to manage Snow Family devices without needing the CLI.
+
+---
+
+## 8. AWS Storage Gateway (Hybrid Cloud)
+
+Bridges **on-premises storage with AWS S3** for hybrid cloud environments.
+
+- S3 is a proprietary protocol — Storage Gateway makes it accessible on-premises
+- Use cases: disaster recovery, backup, tiered storage
+- Types: File Gateway, Volume Gateway, Tape Gateway *(no need to memorize types for the exam)*
+
+---
+
+## 9. Shared Responsibility Model
+
+| AWS Responsibility | Customer Responsibility |
+|-------------------|------------------------|
+| Global infrastructure security | S3 versioning configuration |
+| Durability & availability | Bucket policies and access control |
+| Compliance validation | Replication setup |
+| Vulnerability analysis | Data encryption at rest and in transit |
+
+---
+
+## 🎯 Last-Minute Exam Checklist
+
+- [ ] Bucket name **globally unique**, bucket created in a **region**
+- [ ] Max object size **5 TB**, multi-part upload for objects > 5 GB
+- [ ] Versioning → protect against accidental deletes and enable rollback
+- [ ] CRR/SRR replication requires **versioning on both buckets**
+- [ ] Know all **7 storage classes** — characteristics and use cases
+- [ ] **WORM** = Object Lock / Glacier Vault Lock (compliance use)
+- [ ] Network transfer > 1 week → use **Snow Family**
+- [ ] Data > 10 PB → use **Snowmobile**
+- [ ] 403 error on S3 website → check **bucket policy public read** permission

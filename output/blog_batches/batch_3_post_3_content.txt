@@ -1,0 +1,137 @@
+# AWS AI Practitioner Exam Guide – GenAI Capabilities & Challenges Explained
+
+> 💡 **Exam Tip:** GenAI capabilities and challenges are core topics in the AWS AI Practitioner exam.  
+> Understand each challenge as a set: **definition → cause → mitigation strategy**!
+
+---
+
+## ✨ 7 Core Capabilities of Generative AI
+
+| Capability | Description |
+|------------|-------------|
+| **Adaptability** | Adjusts responses across tasks and domains |
+| **Responsiveness** | Generates outputs in real time |
+| **Simplicity** | Abstracts complex logic behind simple interfaces |
+| **Creativity** | Produces novel ideas, content, and solutions |
+| **Data Efficiency** | Learns effectively from smaller datasets |
+| **Personalization** | Tailors outputs to individual users |
+| **Scalability** | Serves millions of users simultaneously |
+
+---
+
+## ⚠️ Key Challenges of Generative AI
+```
+Regulatory violations → Legal risk
+Social risks         → Amplified bias / misinformation
+Data security        → Sensitive data leaks
+Toxicity             → Harmful / offensive outputs
+Hallucinations       → Confident but false information
+Interpretability     → Black-box problem
+Nondeterminism       → Same input, different outputs
+Plagiarism           → Ethical and legal risk
+```
+
+---
+
+## 🤢 Toxicity
+
+### Definition
+AI-generated content that is **offensive, disturbing, abusive, hateful, or inappropriate**.
+
+### Why It's Hard
+Defining "toxic" depends on cultural context, audience, and intent. The line between filtering toxicity and censorship is very thin.
+
+### Mitigation Strategies
+- **Training data curation:** Remove toxic phrases before training; balance datasets
+- **Guardrails & moderation models:** Automatically detect and block harmful content
+- **Human review (HITL):** Route ambiguous cases to human reviewers
+
+---
+
+## 🌀 Hallucinations
+
+### Definition
+When a model **generates confident-sounding but factually incorrect information**.
+
+### Why It Happens
+LLMs predict the next most likely word — they don't truly understand factual correctness.
+
+This leads to:
+- Inventing non-existent facts
+- Citing fake sources
+- Providing incorrect but plausible-sounding explanations
+
+### Mitigation Strategies
+
+| Strategy | Description |
+|----------|-------------|
+| **User education** | Inform users that AI output isn't guaranteed to be correct |
+| **Verification requirements** | Cross-check outputs against authoritative sources |
+| **Output labeling** | Clearly mark AI-generated content as unverified |
+| **Retrieval-based grounding** | Anchor responses with external knowledge sources (RAG) |
+
+> 💡 **Exam Tip:** The key solution for hallucinations is **RAG (Retrieval-Augmented Generation)** — grounding model responses with external knowledge sources!
+
+---
+
+## 📝 Plagiarism & Cheating
+
+- Growing concern about using AI to write college essays, job applications, etc.
+- Difficult to trace the source of specific LLM outputs
+- AI-detection tools are rapidly improving
+- Active social debate: should GenAI be accepted or prohibited in academic contexts?
+
+---
+
+## 🔓 Prompt Misuses
+
+> 💡 **Exam Tip:** Know all 5 types of prompt misuse — they appear in scenario-based questions!
+
+### 1. Poisoning
+- **Injecting malicious, biased, or misleading data into training datasets**
+- Result: Biased outputs, harmful content generation
+- Difficult to detect without careful data governance
+
+### 2. Hijacking & Prompt Injection
+- **Embedding hidden or manipulative instructions inside user prompts**
+- Goal: Override system instructions, alter model behavior
+- Can cause the model to generate misinformation or execute malicious code
+
+### 3. Exposure of Sensitive Information
+- **Risk of sensitive/confidential data entering the model** during training or inference
+- Model may reveal this data in outputs → data leaks, privacy violations
+
+### 4. Prompt Leaking
+- **Unintentional disclosure of prompts or inputs** used within a model
+- Can expose protected data or reveal how the model works internally
+
+### 5. Jailbreaking
+- **Circumventing the AI model's ethical and safety constraints**
+- Goal: Gain unauthorized access to restricted functionality or content
+
+---
+
+## 🛡️ Mitigation Strategy Summary
+```
+Toxicity        → Guardrails + data curation + human review
+Hallucinations  → RAG + verification + output labeling
+Plagiarism      → AI detection tools + policy enforcement
+Prompt misuse   → Input validation + guardrails + governance
+```
+
+> 💡 **Exam Tip:** **Guardrails for Amazon Bedrock** directly addresses these challenges — filtering toxic content, redacting PII, and blocking sensitive topics at inference time!
+
+---
+
+## 📝 Exam Checklist
+
+- [ ] Memorize the 7 core capabilities of Generative AI
+- [ ] Understand hallucination causes and mitigation strategies
+- [ ] Know toxicity definition and its cultural complexity
+- [ ] Distinguish all 5 types of prompt misuse (Poisoning, Injection, Sensitive Exposure, Prompt Leaking, Jailbreaking)
+- [ ] Understand how RAG mitigates hallucinations
+- [ ] Map Guardrails for Bedrock to the challenges it solves
+
+---
+
+> 🎯 **Final Tip:** Exam questions often give you a scenario and ask "what's the best approach to solve this problem?" Memorizing each challenge paired with its mitigation strategy lets you answer quickly and confidently!

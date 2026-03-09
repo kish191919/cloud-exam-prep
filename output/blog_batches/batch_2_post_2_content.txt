@@ -1,0 +1,192 @@
+# ML Project Lifecycle & Hyperparameter Tuning
+
+> 💡 **Exam Tip:** ML project lifecycle and hyperparameter questions often appear as **real-world business scenarios** in AIF-C01. Understand the purpose of each phase clearly.
+
+---
+
+## The 8-Phase ML Project Lifecycle
+
+ML projects are iterative and cyclical — not a straight line.
+
+---
+
+### Phase 1: Define Business Goals
+
+Identify the business problem, expected value, and success criteria. Set clear **KPIs** and align all stakeholders on goals, budget, and constraints.
+
+> 💡 **Exam Tip:** ML projects always start with **business goal definition** — business understanding comes before any technical work.
+
+---
+
+### Phase 2: Frame the ML Problem
+
+Convert the business problem into an ML task (classification, regression, etc.). Validate whether ML is the right solution. Requires collaboration between data scientists, engineers, ML architects, and domain experts (SMEs).
+
+---
+
+### Phase 3: Data Processing
+
+**GIGO (Garbage In, Garbage Out)** — data quality = model quality.
+
+- Collect, clean, and integrate data
+- Preprocessing: handle missing values, encoding, scaling
+- Visualize data to understand structure and trends
+- **Feature Engineering:** create, transform, and select input variables
+
+---
+
+### Phase 4: Exploratory Data Analysis (EDA)
+
+Explore patterns using charts, plots, and summaries. Create a **correlation matrix** to identify highly related features. Determines which features matter and which can be removed.
+
+---
+
+### Phase 5: Model Development
+
+Train multiple models, tune hyperparameters, and compare performance. Evaluate with appropriate metrics (Accuracy, F1, AUC, RMSE). **Iterative:** try new features → fix data issues → improve model.
+
+---
+
+### Phase 6: Retraining (Model Improvement)
+
+Revisit data quality, feature selection, and hyperparameters when performance drops. Add new data or features. Reduce bias and drift.
+
+---
+
+### Phase 7: Deployment
+
+Deploy when performance meets KPIs.
+
+**Deployment Strategies:** Real-time, Batch, Serverless, Asynchronous, On-premise
+
+---
+
+### Phase 8: Monitoring
+
+Track model performance, data quality, latency, and resource usage. Detect early signs of **model drift**. Enable logging, alerts, and diagnostics.
+
+### Continuous Iteration
+
+The ML lifecycle never truly ends — update models as new data arrives and business goals evolve.
+
+---
+
+## ML Lifecycle at a Glance
+
+```
+1. Define Business Goals
+        ↓
+2. Frame the ML Problem
+        ↓
+3. Data Processing
+        ↓
+4. EDA
+        ↓
+5. Model Development
+        ↓
+6. Retraining ←── (loop if performance drops)
+        ↓
+7. Deployment
+        ↓
+8. Monitoring ──→ (back to phase 6 if drift detected)
+```
+
+---
+
+## What are Hyperparameters?
+
+Settings that define **how a model learns and its structure** — set **before training begins** by the practitioner.
+
+> 💡 **Exam Tip:** Hyperparameters ≠ Parameters (weights). Hyperparameters are set before training; parameters are learned during training.
+
+---
+
+## Hyperparameter Tuning
+
+The process of finding the **best combination of hyperparameter values** to maximize model performance.
+
+**Benefits:** Improved accuracy, reduced overfitting, better generalization
+
+**Tuning Methods:**
+
+| Method | Description |
+|---|---|
+| Grid Search | Tries all possible combinations |
+| Random Search | Samples random combinations |
+| **Automated Tuning** | **AWS SageMaker Automatic Model Tuning (AMT)** |
+
+> 💡 **Exam Tip:** AWS provides automated hyperparameter tuning via **SageMaker Automatic Model Tuning (AMT)**.
+
+---
+
+## 4 Key Hyperparameters
+
+### 1. Learning Rate
+Controls the step size when updating model weights.
+
+| Setting | Effect |
+|---|---|
+| High | Faster, but may overshoot optimum (risk of divergence) |
+| Low | Slower, but stable and precise |
+
+### 2. Batch Size
+Number of samples processed before updating weights.
+
+| Setting | Effect |
+|---|---|
+| Small | More stable, slower |
+| Large | Faster, potentially less stable |
+
+### 3. Number of Epochs
+Total times the model trains over the entire dataset.
+
+| Setting | Result |
+|---|---|
+| Too few | Underfitting |
+| Too many | Overfitting |
+
+### 4. Regularization
+Balances model simplicity vs. complexity. Increasing regularization **reduces overfitting** by penalizing overly complex patterns.
+
+---
+
+## How to Reduce Overfitting
+
+> 💡 **Exam Tip:** Causes and solutions for overfitting are frequently tested. Memorize all 5 solutions.
+
+**Causes of Overfitting:**
+- Training data is too small or unrepresentative
+- Training too long on the same dataset
+- Model is too complex and learns from noise
+
+**5 Solutions:**
+
+| Solution | Description |
+|---|---|
+| Increase training data | More diverse, representative data |
+| Early Stopping | Stop training when validation performance degrades |
+| Data Augmentation | Create variations of existing data to increase diversity |
+| Adjust Hyperparameters | Tune learning rate, epochs, regularization |
+| Feature Reduction | Remove less important features |
+
+> ⚠️ **Note:** You can adjust hyperparameters, but you cannot "add" them.
+
+---
+
+## The ML Project Success Formula
+
+**Clear business goals** → **High-quality data** → **Right model choice** → **Hyperparameter tuning** → **Continuous monitoring**
+
+---
+
+## Pre-Exam Checklist ✅
+
+- [ ] Can recite the 8 ML project phases in order: Goals → Frame → Data → EDA → Develop → Retrain → Deploy → Monitor
+- [ ] Hyperparameters are set **before** training (distinct from learned weights/parameters)
+- [ ] AWS SageMaker AMT = automated hyperparameter tuning service
+- [ ] High learning rate → fast but risk of divergence; Low → slow but stable
+- [ ] Too few epochs → underfitting; Too many → overfitting
+- [ ] Higher regularization → reduces overfitting
+- [ ] Overfitting solutions: more data, early stopping, data augmentation, hyperparameter adjustment, feature reduction
+
+---

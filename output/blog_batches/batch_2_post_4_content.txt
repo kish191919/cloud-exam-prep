@@ -1,0 +1,252 @@
+# AWS Managed AI Services Quick Revision – Last-Minute Study Guide for AWS AI Practitioner (AIF-C01)
+
+> 💡 **Exam Tip:** This post is designed for **last-minute revision**. Focus on memorizing the key keyword and primary use case for each service so you can instantly recall service names from scenario questions.
+
+---
+
+## 📌 Amazon Comprehend
+
+**One-liner:** Fully managed NLP service that extracts meaning from text.
+
+**Key Points:**
+- Entity extraction, sentiment analysis, key phrase identification
+- Custom classification support
+- **Comprehend Medical** for medical text analysis
+
+**Main Use Case:** Customer interaction analysis, content organization, extracting insights from unstructured text.
+
+> 💡 **Exam Tip:** "Extract sentiment/entities/key phrases from text" → **Comprehend**. Medical text → **Comprehend Medical**
+
+---
+
+## 🌐 Amazon Translate
+
+**One-liner:** Deep learning-based language translation with automatic language detection.
+
+**Key Points:**
+- Automatic language detection
+- **Custom Terminology** — preserves brand names and proper nouns in translation
+
+**Main Use Case:** Website/app localization, multilingual content, international user experiences.
+
+> 💡 **Exam Tip:** If brand names must not be translated → **Custom Terminology**
+
+---
+
+## 🎙️ Amazon Transcribe
+
+**One-liner:** Converts speech to text using ASR (Automatic Speech Recognition).
+
+**Key Points:**
+- Real-time streaming support
+- Speaker identification (diarization)
+- PII redaction from transcripts
+- Custom vocabularies and language models
+- **Transcribe Medical** for medical dictation
+
+**Main Use Case:** Call center transcription, subtitling, medical dictation, converting audio/video to searchable text.
+
+> 💡 **Exam Tip:** Speech → Text = **Transcribe**. Multiple speakers in call recordings → **Speaker Identification**
+
+---
+
+## 🔊 Amazon Polly
+
+**One-liner:** Converts text into natural-sounding speech (TTS).
+
+**Key Points:**
+- Multiple voices and languages
+- **SSML** — fine-grained control over pronunciation, pace, emphasis
+- **Lexicons** — custom pronunciation for specific words
+
+**Main Use Case:** Voice-enabled apps, accessibility features, automated announcements, lifelike speech generation.
+
+> 💡 **Exam Tip:** Text → Speech = **Polly**. Fine pronunciation control → **SSML or Lexicons**
+
+---
+
+## 👁️ Amazon Rekognition
+
+**One-liner:** Image and video analysis service.
+
+**Key Points:**
+- Detects objects, people, faces, text, and scenes
+- **Custom Labels** training for domain-specific object recognition
+- Content moderation for inappropriate content detection
+
+**Main Use Case:** Facial recognition, content moderation, image labeling, celebrity detection, security and media video analysis.
+
+> 💡 **Exam Tip:** Find/analyze things in images/videos → **Rekognition**. Own custom objects → **Custom Labels**
+
+---
+
+## 💬 Amazon Lex
+
+**One-liner:** NLU engine for building conversational chatbots and voicebots.
+
+**Key Points:**
+- Conversation flow built with **Intents, Utterances, and Slots**
+- Integrates with **Lambda** for business logic
+- Same technology powering Amazon Alexa
+
+**Main Use Case:** Customer service chatbots, ordering systems, conversational applications.
+
+> 💡 **Exam Tip:** Build a chatbot/voicebot = **Lex**. Three core building blocks: **Intent + Utterance + Slot**
+
+---
+
+## 🎯 Amazon Personalize
+
+**One-liner:** Fully managed recommendation engine — same technology as Amazon.com.
+
+**Key Points:**
+- Real-time personalized recommendations via API
+- No ML expertise required
+
+**Main Use Case:** Personalized product recommendations, content ranking, customized marketing for retail and media.
+
+> 💡 **Exam Tip:** "Recommended for you" features → **Personalize**. "Amazon.com-level recommendations" = instant Personalize answer.
+
+---
+
+## 📃 Amazon Textract
+
+**One-liner:** Extracts text, handwriting, and structured data (forms, tables) from scanned documents.
+
+**Key Points:**
+- Goes beyond basic OCR — recognizes **forms and table structures**
+- **Synchronous** processing — real-time, small documents
+- **Asynchronous** processing — large-scale batch processing
+
+**Main Use Case:** Document digitization, form processing, invoice/receipt/ID/financial document data extraction.
+
+> 💡 **Exam Tip:** Extract data from scanned docs/forms/tables = **Textract**. Real-time = synchronous; large batch = asynchronous.
+
+---
+
+## 🔍 Amazon Kendra
+
+**One-liner:** ML-powered intelligent enterprise search that extracts answers from documents using natural language queries.
+
+**Key Points:**
+- Directly extracts answers from document collections using natural language queries
+- Learns from user interactions to continuously improve results
+- Connects to S3, Confluence, SharePoint, and more
+
+**Main Use Case:** Enterprise search, FAQ chatbots, accurate answers from document collections.
+
+> 💡 **Exam Tip:** Natural language search over internal documents = **Kendra**. Don't confuse with Amazon Q Business — Kendra is a search engine; Q Business is an AI assistant.
+
+---
+
+## 👥 Amazon Mechanical Turk (MTurk)
+
+**One-liner:** Managed human task outsourcing marketplace (crowdsourcing).
+
+**Key Points:**
+- Requesters post **HITs (Human Intelligence Tasks)**; Workers complete them for payment
+- Handles tasks that are difficult for ML models and require human intelligence
+
+**Main Use Case:** Data labeling, image classification, annotation tasks for ML training datasets.
+
+> 💡 **Exam Tip:** "Human-powered data labeling for ML" → **Mechanical Turk**. Key term: **HIT (Human Intelligence Task)**
+
+---
+
+## 🔄 Amazon Augmented AI (A2I)
+
+**One-liner:** Human-in-the-loop service for reviewing low-confidence ML predictions.
+
+**Key Points:**
+- Routes uncertain ML predictions to **human reviewers**
+- Native integration with **Textract, Rekognition, and SageMaker**
+
+**Main Use Case:** Quality assurance for ML predictions by routing low-confidence results to human reviewers.
+
+> 💡 **Exam Tip:** "Humans review when ML is uncertain" = **A2I**. Keyword: **Human-in-the-Loop**
+
+---
+
+## ⚡ AI Hardware: Trainium & Inferentia
+
+AWS-designed ML chips for cost-optimized training and inference at scale.
+
+| Chip | Purpose | Key Benefits | Instance |
+|---|---|---|---|
+| **Trainium** | Model **Training** | 100B+ parameter models, 50% cost reduction | Trn1 |
+| **Inferentia** | Model **Inference** | 4x throughput, 70% cost reduction | Inf1 / Inf2 |
+
+> 💡 **Exam Tip:**
+> - **Train**ium → **Train**ing
+> - **Infer**entia → **Infer**ence
+> - The names tell you exactly what they do!
+
+---
+
+## 🗂️ Full Service Quick-Reference Table
+
+| Service | Core Function | Exam Keywords |
+|---|---|---|
+| **Comprehend** | NLP, sentiment, entity recognition | Extract text meaning, Comprehend Medical |
+| **Translate** | Language translation | Custom Terminology, auto language detection |
+| **Transcribe** | Speech → Text (STT) | Speaker ID, PII Redaction, Transcribe Medical |
+| **Polly** | Text → Speech (TTS) | SSML, Lexicons |
+| **Rekognition** | Image/video analysis | Custom Labels, content moderation |
+| **Lex** | Chatbot/voicebot builder | Intent + Utterance + Slot, Alexa tech |
+| **Personalize** | Personalized recommendations | Amazon.com engine, real-time API |
+| **Textract** | Document OCR + structure extraction | Forms/tables, sync/async |
+| **Kendra** | Enterprise natural language search | Document collection search, FAQ |
+| **Mechanical Turk** | Crowdsourced human tasks | HIT, data labeling |
+| **A2I** | Human review loop | Human-in-the-Loop, low-confidence review |
+| **Trainium** | ML training chip | Trn1, 50% cost reduction |
+| **Inferentia** | ML inference chip | Inf1/Inf2, 70% cost reduction |
+
+---
+
+## Commonly Confused Service Pairs
+
+**Transcribe vs Polly**
+
+| | Transcribe | Polly |
+|---|---|---|
+| Direction | Speech → Text | Text → Speech |
+| Memory hook | **Listen** and write it down | **Speak** it out loud |
+
+**Textract vs Comprehend**
+
+| | Textract | Comprehend |
+|---|---|---|
+| Input | Scanned images, PDFs | Existing text |
+| Output | Text, tables, form data | Sentiment, entities, key phrases |
+| Purpose | **Extract** data from documents | **Analyze** meaning of text |
+
+**Kendra vs Amazon Q Business**
+
+| | Kendra | Amazon Q Business |
+|---|---|---|
+| Type | Search engine | AI assistant |
+| Purpose | Find answers in documents | Automate tasks + answer questions |
+
+**Mechanical Turk vs A2I**
+
+| | Mechanical Turk | A2I |
+|---|---|---|
+| Human role | Label data from scratch | Review/validate uncertain ML output |
+| Stage | Training data preparation | Inference / production stage |
+
+---
+
+## Pre-Exam Checklist ✅
+
+- [ ] Comprehend = NLP/sentiment/entities / Comprehend Medical = medical text
+- [ ] Translate = language translation / Custom Terminology = preserve brand names
+- [ ] Transcribe = Speech→Text / PII Redaction, Speaker ID, Transcribe Medical
+- [ ] Polly = Text→Speech / SSML = fine-grained pronunciation control
+- [ ] Rekognition = image/video analysis / Custom Labels = domain-specific objects
+- [ ] Lex = chatbot builder / Intent + Utterance + Slot
+- [ ] Personalize = real-time recommendations (Amazon.com same technology)
+- [ ] Textract = document structure extraction / sync (real-time) vs async (batch)
+- [ ] Kendra = enterprise natural language search
+- [ ] Mechanical Turk = HIT-based crowdsourced data labeling
+- [ ] A2I = Human-in-the-Loop / low-confidence ML prediction human review
+- [ ] Trainium (Trn1) = Training / Inferentia (Inf1·Inf2) = Inference

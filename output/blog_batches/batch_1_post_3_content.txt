@@ -1,0 +1,155 @@
+### Introduction
+
+Amazon Athena frequently appears across **Domain 1: Data Ingestion & Transformation (34%)** and **Domain 3: Data Operations & Support (22%)** in DEA-C01. Any time a question scenario mentions "query S3 data with SQL without managing infrastructure," the answer is Athena. Remember: it's serverless and you pay only for data scanned. 🚀
+
+---
+
+### 📌 Exam Point 1: What Is Amazon Athena?
+
+| Aspect | Detail |
+|--------|--------|
+| Definition | Serverless interactive query service for S3 data using standard SQL |
+| Infrastructure | ❌ None required (serverless) |
+| Pricing | **$5.00 per TB of data scanned** |
+| Query Engine | Apache Presto-based |
+| Metadata | AWS Glue Data Catalog integration |
+| Visualization | Amazon QuickSight |
+
+> ⭐ **Exam Tip**: "Serverless SQL analysis on S3" = **Amazon Athena**
+> Cost scales with **data scanned** — scan less, pay less!
+
+---
+
+### 📌 Exam Point 2: Supported Data Formats — Which Is Most Cost-Efficient?
+
+| Format | Type | Characteristics | Cost Efficiency |
+|--------|------|-----------------|----------------|
+| **CSV / TSV** | Row-based | Simple, widely used; inefficient for large datasets | ❌ Low |
+| **JSON** | Semi-structured | Supports nested data; ideal for logs | ❌ Low |
+| **Parquet** | Columnar | Column-only scanning, high compression | ✅ **High** |
+| **ORC** | Columnar | Similar to Parquet; splittable processing | ✅ **High** |
+| **Avro** | Row-based (splittable) | Schema evolution support; ideal for streaming | Medium |
+
+> ⭐ **Exam Tip**: "Reduce Athena query costs" → Use **Parquet or ORC**!
+> Columnar formats allow Athena to scan only needed columns → less data scanned → lower cost.
+
+---
+
+### 📌 Exam Point 3: 5 Cost Optimization Strategies
+
+| Strategy | Description |
+|----------|-------------|
+| **Use columnar formats** | Convert to Parquet/ORC → scan only required columns |
+| **Compress data** | Reduces data scanned per query |
+| **Partition data** | Partition by date/region in S3 → scan only relevant partitions |
+| **CTAS (Create Table As Select)** | Create new tables from query results; convert CSV → Parquet or create summary tables |
+| **Query result reuse** | Cache and reuse previous query results to avoid re-scanning identical data |
+
+> ⭐ **Exam Tip**: Lower Athena costs → **Partitioning + Parquet format + Compression**
+
+---
+
+### 📌 Exam Point 4: AWS Glue Integration
+
+```
+S3 Data
+    ↓
+AWS Glue Crawler (auto-discovers schema & metadata)
+    ↓
+AWS Glue Data Catalog (stores table definitions, locations, formats)
+    ↓
+Amazon Athena (runs SQL queries)
+```
+
+- Glue Crawlers auto-generate table schemas from S3 data
+- Athena uses Glue Data Catalog as its metadata repository
+- **MSCK REPAIR TABLE**: syncs Athena metadata when new partitions are added directly to S3
+
+```sql
+MSCK REPAIR TABLE my_table;
+```
+
+> ⭐ **Exam Tip**: Athena + Glue Data Catalog = the standard serverless data lake query pattern on AWS.
+
+---
+
+### 📌 Exam Point 5: Athena Workgroups — Cost Control & Access Management
+
+| Feature | Detail |
+|---------|--------|
+| Query history isolation | Separate query history by team or department |
+| Cost control | **Set per-workgroup data scan limits** → auto-stops queries when limit is reached |
+| Access management | IAM integration for per-workgroup user permissions |
+| Cost allocation | Track Athena costs per department |
+
+> ⭐ **Exam Tip**: Limit Athena costs per team → **Workgroup + data scan limit**
+
+---
+
+### 📌 Exam Point 6: Federated Queries — Query Multiple Sources with One SQL
+
+**Federated Queries** let you query data across multiple AWS data sources from a single SQL statement.
+
+Supported sources: Amazon RDS, Redshift, DynamoDB, S3, and more
+
+- Join and analyze multiple sources without ETL
+- Uses SQL and **PartiQL**
+- Implemented via Lambda-based data source connectors
+
+> ⭐ **Exam Tip**: "Analyze multiple databases with SQL, no complex ETL" → **Athena Federated Query**
+
+---
+
+### 📌 Exam Point 7: ACID Transactions & Apache Iceberg
+
+| Feature | Detail |
+|---------|--------|
+| ACID support | Ensures data consistency for INSERT, UPDATE, DELETE, MERGE |
+| Implementation | AWS Glue Data Catalog + **Apache Iceberg** table format |
+| Time Travel | Query data as it existed at a specific point in time |
+| Schema Evolution | Modify schema without interrupting ongoing queries |
+| Data Optimization | `OPTIMIZE` command merges small files → maintains performance |
+
+> ⭐ **Exam Tip**: UPDATE/DELETE in Athena → requires **Apache Iceberg table format**
+
+---
+
+### 📌 Exam Point 8: User Defined Functions (UDFs)
+
+- Create custom functions in AWS Lambda and invoke them in SQL queries
+- Encapsulates complex logic (e.g., geospatial indexing)
+- Extends Athena beyond standard SQL operations
+
+---
+
+### 📌 Common Use Cases
+
+| Use Case | Description |
+|----------|-------------|
+| **Log analysis** | Query VPC Flow Logs, ELB Logs, CloudTrail logs |
+| **Cost & usage analysis** | Query AWS Cost & Usage Reports directly from S3 |
+| **BI & reporting** | Integrate with QuickSight, Tableau, Power BI |
+| **Data lake exploration** | Ad-hoc queries on raw S3 data without predefined schema |
+
+---
+
+### 📌 Quick-Reference Cheat Sheet
+
+| Keyword | Concept |
+|---------|---------|
+| Serverless SQL | Direct S3 queries, no infrastructure needed |
+| $5/TB | Billed per data scanned |
+| Parquet / ORC | Columnar formats → core cost reduction strategy |
+| Partitioning | Scan only relevant partitions → performance + cost savings |
+| Glue Data Catalog | Athena's metadata repository |
+| MSCK REPAIR TABLE | Sync metadata for new S3 partitions |
+| Workgroups | Per-team cost control and access management |
+| Federated Query | Single SQL across multiple data sources |
+| Apache Iceberg | ACID transactions and time travel support |
+| UDF | Lambda-based custom functions in SQL |
+
+---
+
+### Wrap-Up
+
+Amazon Athena is a go-to service for **data lake queries** and **cost optimization scenarios** in DEA-C01. Lock in these core concepts: **Parquet/ORC + partitioning for cost reduction**, **Glue Data Catalog integration pattern**, **Federated Queries for multi-source analysis**, and **Apache Iceberg for ACID transactions**. You've got this! 💪

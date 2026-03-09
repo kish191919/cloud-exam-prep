@@ -1,0 +1,185 @@
+# Mastering AWS Containers & Serverless
+
+> 💡 **Exam Tip:** Focus on the differences between Lambda, ECS, and Fargate — and when to use each. Docker fundamentals are also fair game on the CLF-C02!
+
+---
+
+## 1. What is Docker?
+
+**Docker** packages applications into **containers** that run identically on any environment — any OS, any machine.
+
+### Docker Key Benefits
+
+| Benefit | Description |
+|---------|-------------|
+| **Portability** | Runs the same on any OS or machine |
+| **Fast startup** | Containers start in seconds |
+| **Lightweight** | Shares host OS kernel — lighter than VMs |
+| **Scalability** | Scale up/down in seconds |
+
+### Docker vs Virtual Machines (VMs)
+
+| | Docker Containers | Virtual Machines |
+|--|-----------------|-----------------|
+| **Size** | Lightweight (shared OS kernel) | Heavy (full OS included) |
+| **Startup** | Seconds | Minutes |
+| **Portability** | Very high | Lower |
+| **Best for** | Microservices, modern apps | Multiple OS environments |
+
+### Docker Image Storage
+
+- **Docker Hub** (`hub.docker.com`): Public image repository
+- **Amazon ECR** (Elastic Container Registry): AWS's **private** container image registry
+
+---
+
+## 2. Running Containers: ECS vs Fargate
+
+### Amazon ECS (Elastic Container Service)
+
+- **Fully managed container orchestration** service
+- Runs, starts, stops, and manages Docker containers on AWS
+- Integrates with IAM, VPC, ELB, and ECR
+- **Two launch modes:**
+
+| Mode | Description |
+|------|-------------|
+| **EC2 mode** | You provision and manage EC2 instances |
+| **Fargate mode** | Serverless — no EC2 instances to manage |
+
+### AWS Fargate
+
+- **Serverless** compute engine for containers
+- No EC2 instances to provision or manage
+- Pay only for the **vCPU and memory** your containers use
+- Works with both ECS and EKS
+
+> 📝 **Exam Tips:**
+> - **ECS + EC2**: You manage the servers (EC2)
+> - **ECS + Fargate**: **Serverless** — AWS manages the infrastructure
+> - **ECR**: Stores the Docker images that ECS/Fargate will run
+
+---
+
+## 3. What is Serverless?
+
+> "Serverless doesn't mean no servers — it means **you don't manage or see them**."
+
+### Serverless Characteristics
+
+- No server provisioning, scaling, or management needed
+- You just deploy code (functions) — AWS handles the rest
+- Optimized for **event-driven architectures**
+- Key services: **Lambda**, DynamoDB, S3, Fargate
+
+---
+
+## 4. AWS Lambda — The Serverless Powerhouse
+
+**Lambda** is AWS's **FaaS (Function as a Service)** — run code without managing any servers.
+
+### EC2 vs Lambda
+
+| | EC2 | Lambda |
+|--|-----|--------|
+| **Execution** | Always running | Triggered by events |
+| **Scaling** | Manual add/remove instances | **Automatic** |
+| **Billing** | All running time | **Only execution time** |
+| **Limit** | RAM/CPU constraints | Max **15 minutes** per execution |
+
+### Lambda Key Features
+
+- **Max execution time: 15 minutes** (ideal for short-lived functions)
+- **Free tier:** 1 million requests/month + 400,000 GB-seconds free
+- **Auto-scaling:** From a few requests/day to thousands/second
+- **RAM:** Up to 10 GB (increasing RAM also boosts CPU and network)
+
+### Supported Languages
+
+Node.js, Python, Ruby, Java, Go, .NET Core, custom runtimes
+
+### Common Lambda Use Cases
+
+- Auto-generate **thumbnails** when images are uploaded to S3
+- **Serverless cron jobs** (scheduled tasks)
+- Build **serverless REST APIs** with API Gateway
+
+### Lambda Pricing
+
+| | Free Tier | Beyond Free Tier |
+|--|-----------|-----------------|
+| Requests | 1M/month | $0.20 per million |
+| Duration | 400K GB-seconds/month | $1.00 per 600K GB-seconds |
+
+> 📝 **Exam Tip:** Lambda is perfect for **short-lived, event-driven tasks under 15 minutes**. Not suitable for long-running batch jobs.
+
+---
+
+## 5. Amazon API Gateway
+
+- Fully managed service to expose Lambda as **HTTP APIs**
+- Supports REST, HTTP, and WebSocket APIs
+- **Serverless and scalable**
+- Built-in security, authentication, throttling, and caching
+
+> 📝 **Exam Tip:** Lambda + API Gateway = **fully serverless API architecture**
+
+---
+
+## 6. AWS Batch — Large-Scale Batch Processing
+
+- Runs large-scale **batch jobs** as a fully managed service
+- Auto-provisions EC2 or **Spot Instances** based on job requirements
+- Batch jobs defined as **Docker images** and run on ECS
+- Use cases: machine learning, rendering, large-scale data processing
+
+### Lambda vs AWS Batch
+
+| | Lambda | AWS Batch |
+|--|--------|-----------|
+| **Architecture** | Event-driven | Batch processing |
+| **Max runtime** | **15 minutes** | Minutes to hours |
+| **Infrastructure** | Fully serverless | EC2 / Fargate |
+| **Storage** | Limited temporary disk | EBS / Instance Store |
+| **Best for** | Short, lightweight functions | Large-scale, long-running jobs |
+
+> 📝 **Exam Tip:** Under 15 minutes → Lambda / Long-running large-scale processing → **AWS Batch**
+
+---
+
+## 7. Amazon Lightsail — Simple Cloud for Beginners
+
+- Virtual servers, storage, databases, and networking at **low, predictable pricing**
+- Simplified alternative to EC2, RDS, ELB, EBS, Route 53
+- Great for users with **little cloud experience**
+- Use cases: WordPress, LAMP, Node.js simple web apps, dev/test environments
+- **Limitations:** Has high availability but **no auto-scaling**, limited AWS integration
+
+---
+
+## 8. Quick Reference Comparison Table
+
+| Service | Key Keywords | Best Use Case |
+|---------|-------------|--------------|
+| **Docker** | Containers, portability, fast start | Package and deploy apps consistently |
+| **ECR** | Private Docker image registry | Store images for ECS/Fargate |
+| **ECS** | Container orchestration | Run and manage Docker containers |
+| **Fargate** | Serverless containers | Run containers without managing EC2 |
+| **Lambda** | Serverless FaaS, max 15 min | Event-driven short-lived functions |
+| **API Gateway** | Serverless API | Expose Lambda as HTTP endpoints |
+| **AWS Batch** | Batch processing, long jobs | ML, rendering, large-scale ETL |
+| **Lightsail** | Low-cost, simple, beginner-friendly | WordPress, small web apps |
+
+---
+
+## 🎯 Last-Minute Exam Checklist
+
+- [ ] Docker = containers run identically anywhere
+- [ ] ECR = AWS's **private Docker image registry**
+- [ ] ECS = container orchestration (choose EC2 or Fargate mode)
+- [ ] Fargate = **serverless** containers (no EC2 to manage)
+- [ ] Lambda = serverless FaaS, max execution time **15 minutes**
+- [ ] Lambda free tier: **1 million requests/month free**
+- [ ] Lambda + API Gateway = fully serverless API
+- [ ] Jobs longer than 15 minutes → **AWS Batch**
+- [ ] Lightsail = beginner-friendly low-cost all-in-one (no auto-scaling)

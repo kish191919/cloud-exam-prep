@@ -1,0 +1,47 @@
+[
+  {
+    "idx": 0,
+    "id": "5ad91de9-0e48-4e60-a65a-1bc0a13863f5",
+    "slug": "iam-identity-access-management",
+    "source_lang": "en",
+    "title": "AWS IAM | CLF-C02",
+    "excerpt": "Master AWS IAM for the CLF-C02 exam — users, groups, roles, policies, MFA, CLI, and SDK explained simply with key exam tips you can't afford to miss.",
+    "content_file": "output/blog_batches/batch_4_post_0_content.txt"
+  },
+  {
+    "idx": 1,
+    "id": "23be82e5-f4dc-4e4d-8ee4-c8788812709e",
+    "slug": "elb-asg-load-balancing-auto-scaling",
+    "source_lang": "en",
+    "title": "Mastering AWS ELB & ASG — High Availability and Scalability | CLF-C02",
+    "excerpt": "Vertical vs horizontal scaling, 3 ELB types, and ASG strategies — master high availability and elasticity concepts essential for the CLF-C02 exam.",
+    "content_file": "output/blog_batches/batch_4_post_1_content.txt"
+  },
+  {
+    "idx": 2,
+    "id": "3cfa6b0e-c129-494f-b789-a18514f4f020",
+    "slug": "s3-storage",
+    "source_lang": "en",
+    "title": "Amazon S3 | CLF-C02",
+    "excerpt": "Buckets, storage classes, security policies, versioning, and Snow Family — everything you need to know about Amazon S3 for the CLF-C02 exam in one guide.",
+    "content_file": "output/blog_batches/batch_4_post_2_content.txt"
+  },
+  {
+    "idx": 3,
+    "id": "43d6c30c-64d0-41ba-b1cd-fbc44b725d73",
+    "slug": "databases",
+    "source_lang": "en",
+    "title": "Mastering AWS Databases & Analytics — RDS to Athena | CLF-C02",
+    "excerpt": "RDS, Aurora, DynamoDB, Redshift, Athena and more — master all AWS database and analytics services with key CLF-C02 exam tips and use case comparisons.",
+    "content_file": "output/blog_batches/batch_4_post_3_content.txt"
+  },
+  {
+    "idx": 4,
+    "id": "23b675c7-a570-4947-87e1-5caf06b41a1f",
+    "slug": "aws-containers-serverless",
+    "source_lang": "en",
+    "title": "Mastering AWS Containers & Serverless — Docker, Lambda, ECS & Fargate | CLF-C02",
+    "excerpt": "Docker, ECS, Fargate, Lambda, API Gateway and more — master AWS container and serverless services with clear comparisons and use cases for CLF-C02.",
+    "content_file": "output/blog_batches/batch_4_post_4_content.txt"
+  }
+]

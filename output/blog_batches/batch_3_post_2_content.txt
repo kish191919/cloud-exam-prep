@@ -1,0 +1,160 @@
+# Core Security Services at a Glance
+
+> 💡 **Exam Tip:** The AWS AI Practitioner exam focuses on **"what problem each service solves"** rather than deep technical details. Map each service to its core purpose!
+
+---
+
+## 🔐 IAM – Identity and Access Management
+
+IAM securely controls access to AWS resources.
+
+### Core Components
+
+| Component | Description |
+|-----------|-------------|
+| **Users** | Individual identities with unique credentials |
+| **Groups** | Collections of users with shared permissions |
+| **Roles** | Temporary permissions for AWS services/apps |
+| **Policies** | JSON documents defining allow/deny permissions |
+
+> 💡 **Exam Tip:** **Least Privilege Principle** — never give more permissions than a user needs!
+
+### IAM Policy Structure
+Key elements: **Version, Statement, Effect (Allow/Deny), Action, Resource, Condition**
+
+### IAM Roles for Services
+- EC2 instances access S3 without storing long-term credentials
+- Lambda functions interact with AWS services without hardcoded access keys
+
+---
+
+## 🪣 Amazon S3 – Simple Storage Service
+
+### S3 Storage Classes Comparison
+
+| Class | Key Feature | Use Case |
+|-------|-------------|----------|
+| **Standard** | 99.99% availability, low latency | Big data, content distribution |
+| **Standard-IA** | Lower cost, retrieval fee applies | Disaster recovery, backups |
+| **One Zone-IA** | Single AZ, 99.5% availability | Recreatable backup copies |
+| **Glacier Instant** | Millisecond retrieval, 90-day min | Quarterly access data |
+| **Glacier Flexible** | 1 min–12 hrs retrieval, 90-day min | Long-term backups |
+| **Glacier Deep Archive** | 12–48 hrs retrieval, 180-day min | Long-term compliance archives |
+| **Intelligent-Tiering** | Auto-moves between tiers | Unpredictable access patterns |
+
+> 💡 **Exam Tip:** S3 durability is **99.999999999% (11 9's)** — the same across ALL storage classes!
+
+---
+
+## 💻 Amazon EC2
+
+Virtual servers in the cloud with flexible sizing and pricing options.
+
+- **On-Demand:** Pay by the hour/second, no commitment
+- **Reserved:** 1–3 year commitment for significant discount
+- **Spot:** Bid for unused capacity at lower prices
+
+**EC2 User Data:** Bootstrap script that runs **once** at first boot — used for software installation, configuration setup, etc.
+
+---
+
+## ⚡ AWS Lambda
+
+Serverless compute — run code without managing servers.
+
+### EC2 vs Lambda
+
+| EC2 | Lambda |
+|-----|--------|
+| Virtual servers | No servers to manage |
+| RAM/CPU limits | Time limits (short executions) |
+| Continuously running | Runs on-demand |
+| Manual scaling | Automatic scaling |
+
+**Pricing:** First 1M requests/month free; first 400,000 GB-seconds free.
+
+> 💡 **Exam Tip:** Lambda is ideal for **event-driven architectures** (API calls, file uploads, etc.)!
+
+---
+
+## 🕵️ Security Monitoring Services
+
+### Amazon Macie
+Uses ML to **automatically discover and classify sensitive data (PII)** in S3. Sends alerts when data leaves protected zones or policies change.
+
+### AWS Config
+**Tracks resource configuration changes** and evaluates compliance.
+- Is there unrestricted SSH access to security groups?
+- Do S3 buckets have public access?
+- How has my ALB configuration changed over time?
+
+### Amazon Inspector
+**Automatically assesses security vulnerabilities** in EC2 instances, ECR container images, and Lambda functions. Assigns a **risk score** to all findings.
+
+### AWS CloudTrail
+**Records and monitors ALL API activity** in your AWS account.
+- Enabled by default!
+- Tracks who made calls, when, and from where
+- **Always check CloudTrail first** when investigating resource deletions
+
+> 💡 **Exam Tip:** CloudTrail logs may have up to **15 minutes delay** when delivering to S3.
+
+### AWS Artifact
+Provides access to AWS **compliance reports and agreements** (ISO, PCI, SOC, BAA, HIPAA).
+
+### AWS Audit Manager
+**Automates audit evidence collection** against frameworks: GDPR, HIPAA, PCI DSS, SOC 2, CIS Benchmark.
+
+### AWS Trusted Advisor
+Best-practice recommendations across: **cost optimization, performance, security, fault tolerance, service limits, operational excellence**.
+- **Free Tier:** Core checks only
+- **Business/Enterprise:** Full checks + API access
+
+---
+
+## 🌐 VPC – Virtual Private Cloud
+
+### Core Components
+
+| Component | Role |
+|-----------|------|
+| **VPC** | Isolated private network for AWS resources |
+| **Public Subnet** | Accessible from the internet |
+| **Private Subnet** | Not accessible from the internet |
+| **Internet Gateway (IGW)** | Connects VPC to the internet |
+| **NAT Gateway** | Allows private subnet → internet outbound (blocks inbound) |
+
+### VPC Endpoints & PrivateLink
+Connect to AWS services **without traversing the public internet**.
+- **S3 Gateway Endpoint:** Private access to Amazon S3 from a VPC
+- **Bedrock + PrivateLink:** Keeps Bedrock API traffic within your VPC
+
+---
+
+## 🤖 AWS Security Services for Amazon Bedrock
+
+| Service | Role with Bedrock |
+|---------|------------------|
+| **IAM** | Define access roles for Bedrock resources |
+| **Guardrails** | Filter harmful content, restrict topics |
+| **CloudTrail** | Audit all Bedrock API calls |
+| **Config** | Track Bedrock resource configuration changes |
+| **PrivateLink** | Keep Bedrock API traffic inside VPC |
+
+---
+
+## 📝 Exam Checklist
+
+- [ ] Understand IAM Users / Groups / Roles / Policies differences
+- [ ] Know the Least Privilege Principle
+- [ ] Differentiate S3 storage classes by use case
+- [ ] S3 durability (11 9's) is the same across all storage classes
+- [ ] Know EC2 vs Lambda trade-offs
+- [ ] Macie → PII detection, Config → config tracking, Inspector → vulnerability assessment
+- [ ] CloudTrail → API auditing (first place to check for resource deletions)
+- [ ] Understand VPC Endpoint / PrivateLink purpose
+- [ ] Know Trusted Advisor Free vs paid tier differences
+
+---
+
+> 🎯 **Final Tip:** Think of security services as a chain: **"Who accesses?" (IAM) → "What did they do?" (CloudTrail) → "Is config safe?" (Config) → "Are there vulnerabilities?" (Inspector)**. This mental model will help you answer scenario-based exam questions quickly!

@@ -1,0 +1,173 @@
+## Generative AI Overview
+
+**Generative AI** is a branch of deep learning that learns from existing data and creates new, similar data. It's a core topic in AWS Certified AI Practitioner (AIF-C01) certification and sits at the heart of modern AI technology.
+
+The mechanism of generative AI is intuitive. Just as a person learns to paint by observing thousands of paintings, an AI model can learn to generate new content by studying vast amounts of data and recognizing its patterns. Once trained, it can create entirely new content that follows the patterns it learned.
+
+### Differences from Traditional AI
+
+Traditional AI and generative AI pursue fundamentally different goals:
+
+| Category | Traditional AI | Generative AI |
+|----------|----------------|---------------|
+| Objective | Analyze and classify existing data | Generate new data |
+| Example | "Is this image a cat or a dog?" | "Generate a photo of a cat playing piano" |
+| Characteristic | Pattern recognition and classification | Creative content generation |
+
+> 💡 **Exam Pointer**: AIF-C01 frequently tests the distinction between traditional and generative AI. Develop the ability to categorize "classification problems" as traditional AI and "content generation" as generative AI.
+
+## Core Concepts Explained
+
+### Foundation Models (FM)
+
+The foundation of all generative AI is the **Foundation Model (FM)**. These are massive neural networks trained on large-scale data from diverse sources.
+
+Characteristics of Foundation Models:
+- **Extremely expensive to train**: Millions of dollars in computing resources required
+- **Applicable across multiple domains**: Can process various data types including text, images, audio, and video
+- **Pre-trained for reuse**: Organizations can purchase or license already-trained FMs
+
+Major FM Providers:
+
+| Provider | Representative Model | Characteristics |
+|----------|---------------------|----------------|
+| OpenAI | GPT-4o | Foundation of ChatGPT |
+| Amazon | Amazon Titan | For AWS AI services |
+| Google | PaLM, Gemini | Multimodal support |
+| Meta | Llama | Open-source, self-hostable |
+| Anthropic | Claude | Safety and honesty focused |
+
+### Large Language Models (LLM) 🤖
+
+**Large Language Models (LLM)** are specialized AI models that generate text resembling human-written content. ChatGPT is the most famous example.
+
+#### Parameters: What Makes LLMs "Large"
+
+An LLM's size is determined by its **parameters**:
+- **GPT-3**: 175 billion parameters
+- **GPT-4**: Not publicly disclosed (estimated to have more)
+- More parameters correlate with: better understanding, improved performance
+- Tradeoff: higher computational cost required
+
+Parameters function like adjustment "knobs" the model modifies during training.
+
+#### Key Capabilities of LLMs
+
+```mermaid
+flowchart TD
+    A["LLM Input\nPrompt"] --> B["Text Tokenization\nEmbedding Conversion"]
+    B --> C["Pattern Analysis\nNext Word Prediction"]
+    C --> D["Calculate\nMultiple Probabilities"]
+    D --> E["Generate Output\nWord by Word"]
+    E --> F["Final Response"]
+    
+    style A fill:#e1f5ff
+    style F fill:#c8e6c9
+    style C fill:#fff9c4
+```
+
+Tasks LLMs can perform:
+
+| Capability | Description | Example |
+|------------|-------------|---------|
+| Translation | Automatic language conversion | Korean ↔ English |
+| Summarization | Condensing lengthy documents | Paper → 3-sentence summary |
+| Question Answering | Responding within trained scope | Customer service chatbot |
+| Content Generation | Writing essays, emails, code | Marketing copy generation |
+| Classification | Categorizing text by type | Sentiment analysis |
+| Named Entity Recognition | Identifying persons, locations | Contract auto-analysis |
+
+> ⚠️ **Critical Limitation**: Always remember LLM constraints:
+> - **Hallucination**: May generate plausible but false information
+> - **Context Window Limit**: Restricted memory of text length per interaction
+> - **Knowledge Cutoff**: Only aware of information up to training date
+> - **No True Understanding**: Recognizes patterns without genuine semantic comprehension
+
+### How Generative Language Models Work
+
+Generative language models operate on the principle of **next-word prediction**.
+
+#### Tokenization and Embedding Process
+
+1. **Tokenization**: Break text into small units called tokens
+2. **Embedding**: Convert each token to numerical form (model-readable)
+3. **Pattern Analysis**: Examine previous tokens to predict the next one
+4. **Sequential Generation**: Build responses one word at a time
+
+#### Probability-Based Selection Example
+
+Given sentence: "After the storm passed, the village was..."
+
+| Next Word Candidate | Probability |
+|--------------------|-------------|
+| "destroyed" | 25% |
+| "flooded" | 18% |
+| "quiet" | 15% |
+| "empty" | 12% |
+| "rebuilt" | 8% |
+
+The model **randomly selects** from this probability distribution, which is why the same prompt can yield different results. This creates both the creativity and unpredictability of LLM responses.
+
+> 💡 **Exam Pointer**: Prompt engineering matters because it guides the model's probability calculations. Clearer prompts yield better probability distributions and superior outputs.
+
+## Related AWS Services
+
+AWS offers core services leveraging generative AI:
+
+- **Amazon Bedrock**: Fully managed service providing access to various foundation models. Access GPT, Claude, Llama, and others via API
+- **Amazon SageMaker**: Platform for fine-tuning and deploying foundation models, used by ML specialists for model customization
+- **Amazon SageMaker JumpStart**: Hub for rapidly deploying pre-trained foundation models
+
+The key differences between Amazon Bedrock and Amazon SageMaker will be covered in a separate post.
+
+## 🚀 Frequently Tested Scenarios
+
+### Scenario 1: Domain-Specific Knowledge Required
+- **Problem**: "Build a Q&A chatbot based on proprietary company technical documentation"
+- **Solution**: RAG (Retrieval-Augmented Generation) + fine-tuning
+- **Key Point**: General FM knowledge alone is insufficient → company-specific learning needed
+
+### Scenario 2: Image Generation Required
+- **Problem**: "Automatically generate product marketing images from text descriptions"
+- **Solution**: Leverage Diffusion Model-based image generation services
+- **Key Point**: LLM (text) and image generation models use different architectures
+
+### Scenario 3: Multi-Language Support Needed
+- **Problem**: "Multilingual customer support chatbot for global customers"
+- **Solution**: Consider multimodal LLM + Amazon Translate combination
+- **Key Point**: Must understand difference between simple translation and generative AI responses
+
+## Sample Questions
+
+**Q1**: Compared to traditional AI systems, what is the core difference of generative AI?
+
+A) Processing speed is faster  
+B) Can generate new data  
+C) Training costs are lower  
+D) Provides more accurate classification performance  
+
+> **Answer: B** — Generative AI's essence is creating new content based on learned patterns. Traditional AI focuses on analysis and classification, while generative AI focuses on creation.
+
+**Q2**: What is the most appropriate method to mitigate LLM hallucination issues?
+
+A) Use a model with more parameters  
+B) Reduce context window size  
+C) Leverage verified source data through RAG (Retrieval-Augmented Generation)  
+D) Only perform fine-tuning for specialized domain training  
+
+> **Answer: C** — RAG retrieves information from verified external databases to encourage fact-based responses during answer generation.
+
+## Learning Checklist
+
+Before completing your study, verify these items:
+
+- [ ] Can you explain the difference between generative AI and traditional AI?
+- [ ] Do you understand foundation models' definition and characteristics?
+- [ ] Can you explain what LLM parameters represent?
+- [ ] Can you describe the next-word prediction principle?
+- [ ] Do you know LLM's key limitations (hallucination, context window)?
+- [ ] Do you understand prompt engineering's importance?
+- [ ] Can you distinguish AWS AI services (Amazon Bedrock, Amazon SageMaker)?
+- [ ] Can you explain the difference between image generation AI (Diffusion Model) and LLM?
+
+> 💡 **AIF-C01 Success Tip**: This content covers the foundational domain and serves as the basis for all other generative AI topics. By clearly understanding the distinction between foundation models and LLMs, you'll find it much easier to learn advanced topics (RAG, fine-tuning, embeddings) later.

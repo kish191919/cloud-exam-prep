@@ -1,0 +1,145 @@
+# Reinforcement Learning, RLHF & Model Evaluation Metrics
+
+> 💡 **Exam Tip:** The **Confusion Matrix** and **metric selection criteria** are among the most frequently tested topics in AIF-C01. Know exactly which metric fits which scenario.
+
+---
+
+## Reinforcement Learning (RL)
+
+An ML paradigm where an **Agent learns to maximize cumulative Reward** by interacting with an Environment through trial and error.
+
+### Key Components
+
+| Element | Description | Example (Maze Robot) |
+|---|---|---|
+| Agent | Learner / decision maker | The robot |
+| Environment | External system agent interacts with | The maze |
+| Action | Choices made by the agent | Move up/down/left/right |
+| Reward | Feedback based on action | +score for reaching goal |
+| State | Current situation of the environment | Robot's current position |
+| Policy | Strategy to determine action from state | Move up if not a wall |
+
+### Learning Loop
+
+Observe state → Select action → Receive reward + new state → Update policy → Repeat
+
+### Applications
+Gaming (Chess, Go), Robotics, Finance (portfolio management), Healthcare, Autonomous Vehicles
+
+---
+
+## RLHF (Reinforcement Learning from Human Feedback)
+
+> 💡 **Exam Tip:** RLHF is the core technique behind how LLMs like ChatGPT became **aligned with human expectations**. Memorize the 4-step process.
+
+RLHF incorporates human feedback directly into the reward function to better align models with human goals, wants, and needs.
+
+**Step 1 – Data Collection:** Collect human prompts and create ideal human responses
+
+**Step 2 – Supervised Fine-tuning:** Fine-tune existing model; generate responses; compare mathematically to human answers
+
+**Step 3 – Build Reward Model:** Humans compare two model responses and indicate preference; reward model learns these preferences
+
+**Step 4 – RL Optimization:** Use reward model as reward function for fully automated RL training
+
+---
+
+## Model Fit
+
+| Condition | Training Performance | Evaluation Performance |
+|---|---|---|
+| **Overfitting** | Very good | Poor |
+| **Underfitting** | Poor | Poor |
+| **Balanced** | Good | Good |
+
+---
+
+## Bias and Variance
+
+> 💡 **Exam Tip:** High Bias = Underfitting; High Variance = Overfitting. Always link these pairs.
+
+**High Bias (Underfitting):** Model doesn't closely match training data → Use more complex model or add features
+
+**High Variance (Overfitting):** Model is overly sensitive to training data → Feature selection, cross-validation
+
+---
+
+## Confusion Matrix
+
+|  | Actual YES | Actual NO |
+|---|---|---|
+| **Predicted YES** | **TP** ✅ | **FP** ❌ |
+| **Predicted NO** | **FN** ❌ | **TN** ✅ |
+
+---
+
+## Key Classification Metrics
+
+> 💡 **Exam Tip:** Know which metric to use in which scenario — this is heavily tested.
+
+| Metric | Formula | Best Use Case |
+|---|---|---|
+| Accuracy | (TP+TN) / Total | Balanced datasets |
+| Recall | TP / (TP+FN) | Fraud detection (minimize FN) |
+| Precision | TP / (TP+FP) | Medical/drug testing (minimize FP) |
+| F1 Score | 2*(P*R)/(P+R) | Imbalanced datasets |
+| Specificity | TN / (TN+FP) | True negative rate |
+
+---
+
+## AUC-ROC
+
+**ROC Curve:** Plot of True Positive Rate vs. False Positive Rate at various thresholds
+
+**AUC:** 0.5 = useless classifier | 1.0 = perfect classifier
+
+The more "bent" toward the upper-left corner, the better.
+
+**Best for:** Comparing models, choosing thresholds, imbalanced datasets
+
+---
+
+## Regression Metrics
+
+| Metric | Description |
+|---|---|
+| MAE | Average absolute error magnitude |
+| MAPE | Error as percentage — scale-independent |
+| RMSE | Higher weight on large errors |
+| R² | Proportion of variance explained; closer to 1 = better |
+
+---
+
+## LLM Evaluation Metrics
+
+**Perplexity:** How well the model predicts the next word — lower is better
+
+**ROUGE:** Measures quality of machine-generated text
+
+| Variant | Description |
+|---|---|
+| ROUGE-N | N-gram overlap |
+| ROUGE-L | Longest Common Subsequence |
+| ROUGE-L-Sum | Summarization evaluation (considers word order) |
+
+### Inferencing Types
+
+**Real-Time:** Speed over accuracy (chatbots)
+
+**Batch:** Accuracy over speed (data analysis/reporting)
+
+**Edge:** SLM on low-power devices — ultra-low latency, offline capable
+
+---
+
+## Pre-Exam Checklist ✅
+
+- [ ] RL's 6 key components: Agent, Environment, Action, Reward, State, Policy
+- [ ] RLHF = human feedback integrated into reward function for LLM alignment
+- [ ] Overfitting = High Variance; Underfitting = High Bias
+- [ ] Recall → Fraud detection (minimize FN); Precision → Medical diagnosis (minimize FP)
+- [ ] F1 = harmonic mean of Precision and Recall; best for imbalanced datasets
+- [ ] AUC: 0.5 (useless), 1.0 (perfect); ROC plots TPR vs FPR
+- [ ] ROUGE = LLM text quality evaluation, especially for summarization
+
+---

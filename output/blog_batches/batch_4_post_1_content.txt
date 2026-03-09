@@ -1,0 +1,126 @@
+# Mastering AWS ELB & ASG — High Availability and Scalability
+
+> 💡 **Exam Tip:** The differences between Scalability, High Availability, and Elasticity — along with ELB types and ASG strategies — are frequent CLF-C02 exam topics!
+
+---
+
+## 1. Scalability vs High Availability — Don't Confuse Them!
+
+### Three Key Terms
+
+| Term | Definition | One-Line Summary |
+|------|------------|-----------------|
+| **Scalability** | Ability to increase or decrease capacity to handle varying loads | "Grow when needed" |
+| **Elasticity** | **Automatically** adjusts resources based on real-time load | "Grow automatically" |
+| **Agility** | Ability to quickly deploy and manage resources as demands change | "Move fast" |
+
+> 📝 **Exam Tip:** **Elasticity = automated scalability.** ASG is the prime example of elasticity in AWS!
+
+---
+
+## 2. Vertical vs Horizontal Scaling
+
+### Vertical Scaling — Scale Up/Down
+
+**Increase the size** of a single instance.
+
+- Example: `t2.micro` → `t2.large` → `u-12tb1.metal`
+- Best for **databases** or services that can't easily be distributed
+- Limited by hardware — **cannot scale infinitely**
+
+### Horizontal Scaling — Scale Out/In
+
+**Increase the number** of instances.
+
+- Example: 1 server → 10 servers
+- Achieved with **Auto Scaling Group (ASG)** + **Elastic Load Balancer (ELB)**
+- Ideal for distributed systems — **theoretically infinite scale**
+
+### High Availability
+
+- Deploy instances across **multiple Availability Zones (Multi-AZ)**
+- Automatic failover if one AZ goes down
+- Usually goes hand-in-hand with horizontal scaling
+
+> 📝 **Exam Tips:**
+> - Vertical = **Scale Up/Down** (change instance size)
+> - Horizontal = **Scale Out/In** (change number of instances)
+> - High Availability = **Multi-AZ** deployment
+
+---
+
+## 3. What is a Load Balancer?
+
+A load balancer **distributes incoming traffic** across multiple EC2 instances so no single server is overwhelmed.
+
+### Why Use a Load Balancer?
+
+- ✅ Prevents single server overload
+- ✅ **Automatically reroutes traffic** away from failed instances
+- ✅ Performs automatic **health checks**
+- ✅ Handles **SSL termination (HTTPS)**
+
+### Why Use AWS Elastic Load Balancer (ELB)?
+
+ELB is a **fully managed** load balancing service — AWS handles upgrades, maintenance, and availability for you.
+
+---
+
+## 4. Three Types of ELB — Memorize These!
+
+| Type | OSI Layer | Protocol | Key Characteristics |
+|------|-----------|----------|-------------------|
+| **ALB** (Application LB) | **Layer 7** (Application) | HTTP, HTTPS | URL/host-based routing, best for microservices |
+| **NLB** (Network LB) | **Layer 4** (Transport) | TCP, UDP | Ultra-high performance, millions of requests/sec |
+| **CLB** (Classic LB) | Layer 4 & 7 | HTTP, HTTPS, TCP | **Legacy** — not recommended for new workloads |
+
+> 📝 **Exam Tips:**
+> - **HTTP/HTTPS traffic → ALB** (Layer 7)
+> - **High-performance TCP/UDP → NLB** (Layer 4)
+> - CLB is being **phased out**
+
+---
+
+## 5. What is an Auto Scaling Group (ASG)?
+
+An ASG **automatically adjusts the number of EC2 instances** based on demand.
+
+### Core ASG Capabilities
+
+| Feature | Description |
+|---------|-------------|
+| **Scale Out** | Add instances when load increases |
+| **Scale In** | Remove instances when load decreases |
+| **Min/Max Limits** | Always maintain a defined instance count range |
+| **Auto-register with ELB** | New instances join the load balancer automatically |
+| **Replace unhealthy instances** | Auto-terminates and replaces failed instances |
+| **Cost optimization** | Run only what you need — avoid over-provisioning |
+
+### 4 ASG Scaling Strategies
+
+#### 1️⃣ Manual Scaling
+Manually set the desired number of instances.
+
+#### 2️⃣ Dynamic Scaling
+Responds to CloudWatch alarms automatically.
+
+- **Simple/Step Scaling:** CPU > 70% → add 2 instances / CPU < 30% → remove 1
+- **Target Tracking Scaling:** Keep average CPU at ~40% automatically
+
+#### 3️⃣ Scheduled Scaling
+Scale based on predictable usage patterns.
+
+- Example: Increase minimum capacity to 10 every Friday at 5 PM
+
+#### 4️⃣ Predictive Scaling
+Uses **machine learning (ML)** to forecast traffic and scale proactively.
+
+> 📝 **Exam Tips:**
+> - **Predictive Scaling = ML-based proactive scaling**
+> - ASG integrates with ELB to **automatically register new instances** to the load balancer!
+
+---
+
+## 6. ELB + ASG Together
+
+Combining ELB and ASG creates a **fully automated, highly available architecture**:

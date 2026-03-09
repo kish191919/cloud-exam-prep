@@ -1,0 +1,202 @@
+### Introduction
+
+Amazon Kinesis is the foundation of real-time streaming in **Domain 1: Data Ingestion & Transformation (34%)** for DEA-C01. Kinesis isn't a single service — it's a family of **four services**. The exam focuses heavily on the differences between services and the detailed architecture of Kinesis Data Streams (KDS). Let's break it all down! 🚀
+
+---
+
+### 📌 Exam Point 1: The 4 Kinesis Services
+
+| Service | Role | Keywords |
+|---------|------|----------|
+| **Kinesis Data Streams (KDS)** | Capture, process & store data streams | Real-time, shards, custom processing |
+| **Kinesis Data Firehose** | Load streaming data into AWS data stores | Auto-scale, S3/Redshift delivery |
+| **Kinesis Data Analytics** | Analyze streams with SQL or Apache Flink | Real-time SQL, Flink |
+| **Kinesis Video Streams** | Capture, process & store video streams | ML, video analytics |
+
+> ⭐ **Exam Tip**:
+> - **"Custom processing logic"** → KDS
+> - **"Auto-load into S3/Redshift"** → Firehose
+> - **"Real-time SQL analysis"** → Kinesis Data Analytics
+
+---
+
+### 📌 Exam Point 2: KDS Shard Architecture
+
+Everything in KDS is built around **shards**.
+
+| Aspect | Detail |
+|--------|--------|
+| Shard write throughput | **1 MB/sec** or 1,000 records/sec |
+| Shard read throughput | **2 MB/sec** (shared among all consumers) |
+| Max record size | **1 MB** |
+| Data retention | Default **24 hours**, max **7 days** |
+| Ordering guarantee | **Within a shard** (based on partition key) |
+| Partition key | Same key → same shard |
+
+> ⭐ **Exam Tip**: Total throughput = **shard count × 1 MB/sec (write)**. Need more → add shards.
+
+---
+
+### 📌 Exam Point 3: Service Modes — Provisioned vs On-Demand
+
+| Mode | Characteristics | Best For |
+|------|----------------|---------|
+| **Provisioned** | Define shard count upfront; manual management | **Predictable workloads** |
+| **On-Demand** | Automatically adjusts capacity based on volume | **Unpredictable workloads** |
+
+> ⭐ **Exam Tip**: Unknown or highly variable traffic → **On-Demand mode**
+
+---
+
+### 📌 Exam Point 4: Producers — 3 Ways to Write Data
+
+| Tool | Characteristics | Best For |
+|------|----------------|---------|
+| **AWS SDK** (PutRecord/PutRecords) | Direct API; PutRecords supports batching (up to 500 records or 5 MB) | General-purpose integration |
+| **KPL (Kinesis Producer Library)** | High-throughput batching, async processing, auto-retry; Java (C++ core) | **High-volume, high-throughput streaming** |
+| **Kinesis Agent** | Standalone Java app for Linux; monitors files → auto-sends to KDS | **Log files and metrics collection** |
+
+**Key KPL Parameter:**
+
+```
+RecordMaxBufferedTime: max time (ms) a record waits in buffer before transmission
+- Lower value → Lower latency (near real-time)
+- Higher value → Higher throughput (more batching per request)
+```
+
+> ⭐ **Exam Tip**: High-volume log streaming from Java apps → **KPL**
+> Auto-collect log files on Linux servers → **Kinesis Agent**
+
+---
+
+### 📌 Exam Point 5: Consumers — Reading Data
+
+#### GetRecords API (Standard Consumption)
+| Aspect | Detail |
+|--------|--------|
+| API call limit | **5 calls/sec/shard** |
+| Max data per call | 10 MB |
+| Throughput | **2 MB/sec shared** among all consumers on the shard |
+| Throttle error | `ProvisionedThroughputExceededException` |
+
+#### Enhanced Fan-Out
+- Provides **dedicated 2 MB/sec per shard per registered consumer**
+- No shared throughput — each consumer processes **independently**
+- Essential for low-latency, high-throughput, multi-consumer scenarios
+
+> ⭐ **Exam Tip**: Multiple apps consuming same stream independently at high speed → **Enhanced Fan-Out**
+
+---
+
+### 📌 Exam Point 6: KCL (Kinesis Client Library)
+
+| Feature | Detail |
+|---------|--------|
+| Distributed processing | Each shard processed in parallel by separate workers |
+| **Checkpointing** | Tracks processing progress → resumes from last checkpoint after failure |
+| Checkpoint storage | **Amazon DynamoDB** |
+| Load balancing | Auto-distributes shards across workers |
+
+**Checkpoint trade-off:**
+
+```
+Higher checkpoint frequency → More DynamoDB WCU → Higher cost
+Lower checkpoint frequency → More data reprocessed after failure
+→ Tune based on application needs
+```
+
+> ⭐ **Exam Tip**: KCL checkpoints stored in **DynamoDB**. More frequent checkpointing = higher DynamoDB WCU cost.
+
+---
+
+### 📌 Exam Point 7: Lambda + KDS Integration
+
+| Feature | Detail |
+|---------|--------|
+| Auto polling | Lambda automatically polls KDS for new records |
+| Scaling | Auto-scales **proportional to shard count** |
+| Parallelization Factor | Enables multiple concurrent processes **per shard** |
+| Event source mapping | KDS → Lambda auto-trigger configuration |
+| DLQ | Dead-Letter Queue handles unprocessed failed events |
+
+> ⭐ **Exam Tip**: Improve Lambda + KDS throughput → increase **Parallelization Factor** + enable **Enhanced Fan-Out**
+
+---
+
+### 📌 Exam Point 8: Shard Splitting and Merging
+
+| Operation | Effect | When to Use |
+|-----------|--------|------------|
+| **Splitting** | 1 shard → 2 shards; doubles throughput | Increased traffic |
+| **Merging** | 2 adjacent shards → 1 shard; reduces cost | Decreased traffic |
+
+**Ordering after split — critical rule:**
+
+```
+Must process ALL records from the PARENT shard FIRST
+           ↓
+Then process records from CHILD shards
+```
+
+> ⭐ **Exam Tip**: After shard split/merge → **process parent shard first** to preserve data ordering!
+
+---
+
+### 📌 Exam Point 9: Data Deduplication — Idempotency
+
+| Root Cause | Side |
+|------------|------|
+| Lost ACKs → producer retransmits already-received data | Producer side |
+| Processing retries after failure + incomplete checkpointing | Consumer side |
+
+**Mitigation strategies:**
+- **Idempotent writes**: assign unique identifiers per record
+- **Unique keys in target data stores**: automatically resolve duplicates
+
+---
+
+### 📌 Exam Point 10: Kinesis Video Streams
+
+| Aspect | Detail |
+|--------|--------|
+| Purpose | Secure video streaming from devices to AWS |
+| Retention | Default **24 hours**, max **7 days** |
+| Encryption | KMS (server-side encryption) |
+| Use Cases | Machine learning, video analytics |
+
+---
+
+### 📌 Hot Shard Prevention — Partition Key Design
+
+Good partition key = **evenly distributes records across all shards**
+
+```
+❌ Bad: date → data concentrates on current-day shard
+✅ Good: user ID, UUID → evenly distributed across shards
+```
+
+> ⭐ **Exam Tip**: **Hot shard** problem → switch to a **high-cardinality partition key**
+
+---
+
+### 📌 Quick-Reference Cheat Sheet
+
+| Keyword | Concept |
+|---------|---------|
+| 1 Shard | 1 MB/s in, 2 MB/s out |
+| Provisioned | Predictable workload, manual shard management |
+| On-Demand | Unpredictable workload, auto capacity |
+| KPL | High-throughput async batching |
+| Kinesis Agent | Linux log file auto-collection |
+| Enhanced Fan-Out | Dedicated 2 MB/s per consumer |
+| KCL | Distributed processing, DynamoDB checkpoints |
+| Parallelization Factor | Lambda concurrent processes per shard |
+| Splitting | More shards → more throughput |
+| Merging | Fewer shards → lower cost |
+| Hot Shard | Bad partition key → fix with high-cardinality key |
+
+---
+
+### Wrap-Up
+
+Amazon Kinesis is the cornerstone real-time streaming service in DEA-C01. Focus on: **the 4 Kinesis services and their distinct roles**, **shard throughput math**, **when to use KPL vs Kinesis Agent**, **Enhanced Fan-Out for multi-consumer scenarios**, **KCL checkpointing in DynamoDB**, and **partition key design to prevent hot shards**. You've got this! 💪

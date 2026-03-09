@@ -1,0 +1,129 @@
+### Introduction
+
+Amazon EMR (Elastic MapReduce) spans both **Domain 1: Data Ingestion & Transformation (34%)** and **Domain 2: Data Store Management (26%)** in DEA-C01. It's the go-to service for running Hadoop, Spark, and other big data frameworks on AWS at scale. The exam focuses on cluster architecture, storage options, and cluster types — let's nail them all! 🚀
+
+---
+
+### 📌 Exam Point 1: What Is Amazon EMR?
+
+| Aspect | Detail |
+|--------|--------|
+| Definition | Fully managed big data service based on Apache Hadoop |
+| Supported Frameworks | Hadoop, **Apache Spark**, HBase, **Presto**, Flink |
+| Common Use Cases | Log analysis, financial analytics, **ETL** |
+| Infrastructure | Amazon EC2 + Amazon S3 |
+| Access Methods | AWS Console, CLI, SDK, EMR API, **SSH** |
+
+> ⭐ **Exam Tip**: EMR runs on EC2 and allows **SSH access to the underlying OS** — unlike most fully managed AWS services.
+
+---
+
+### 📌 Exam Point 2: Cluster Node Types — Know All Three
+
+| Node Type | Role | Stores Data | Runs Tasks | Notes |
+|-----------|------|-------------|------------|-------|
+| **Master Node** | Orchestrates the entire cluster | ❌ | ❌ | Task assignment, failure recovery, health monitoring |
+| **Core Node** | Storage + computation | ✅ | ✅ | Handles data replication; essential for cluster operation |
+| **Task Node** | Computation only (optional) | ❌ | ✅ | Can use **Spot Instances** for cost savings |
+
+> ⭐ **Exam Tip**: Task Nodes **do not store data** — they only run tasks. Provisioning them as Spot Instances is a classic cost-optimization scenario on the exam.
+
+---
+
+### 📌 Exam Point 3: Three Storage Options — HDFS vs EMRFS vs Local
+
+| Storage | Description | Persistent? | Best For |
+|---------|-------------|-------------|----------|
+| **HDFS** | Distributed FS; splits data into 128 MB blocks, replicates across nodes | ❌ Ephemeral — lost on cluster termination | Intermediate / temporary data during processing |
+| **EMRFS** | Hadoop FS implementation backed by Amazon S3 | ✅ Durable — survives cluster termination | Input/output data, long-term storage |
+| **Local File System** | Local disk on EC2 instances | ❌ Ephemeral — lost on instance termination | Caching, temporary processing data |
+
+> ⭐ **Exam Tip**: "Data must survive cluster termination" → Use **EMRFS (S3)**.
+> HDFS data **disappears** when the cluster shuts down.
+
+---
+
+### 📌 Exam Point 4: External Metastore
+
+By default, Hive stores its metastore in a **local MySQL DB on the Master Node** — which is lost when the cluster terminates.
+
+#### Solution: Use an External Metastore
+
+| Option | Key Benefit |
+|--------|-------------|
+| **AWS Glue Data Catalog** | Fully managed; integrates with Athena & Redshift |
+| **Amazon RDS / Aurora** | High availability, durable, ideal for large metadata volumes |
+
+#### MSCK REPAIR TABLE
+
+When files are added directly to HDFS or S3 without going through Hive, Hive may not recognize new partitions.
+
+```sql
+MSCK REPAIR TABLE table_name;
+```
+
+- Scans the file system for new partitions and syncs them to the Hive metastore
+- Essential for batch processes that add files directly to S3/HDFS
+
+> ⭐ **Exam Tip**: New partitions added directly to S3 not visible in Hive? → Run **MSCK REPAIR TABLE**
+
+---
+
+### 📌 Exam Point 5: Cluster Types — Transient vs Long-Running
+
+| | Transient Cluster | Long-Running Cluster |
+|-|------------------|---------------------|
+| Lifespan | Auto-terminates after job completes | Stays active continuously |
+| Best For | Batch ETL, periodic processing jobs | Interactive analytics, always-on services |
+| Cost | Pay only for job duration → **cost-efficient** | Billed as long as cluster runs |
+
+> ⭐ **Exam Tip**: Periodic batch processing → **Transient cluster**. Continuous access needed → **Long-running cluster**.
+
+---
+
+### 📌 Exam Point 6: Amazon EMR Serverless
+
+**EMR Serverless** lets you run Spark and Hive applications without provisioning or managing clusters.
+
+- AWS automatically handles capacity provisioning, scaling, and optimization
+- Supports Apache Spark and Apache Hive
+- Zero infrastructure management — focus entirely on your analytics workloads
+
+> ⭐ **Exam Tip**: "Run Spark jobs without managing clusters" → **EMR Serverless**
+
+---
+
+### 📌 Exam Point 7: Graviton2 & Spark Memory Overhead
+
+#### AWS Graviton2 Instances
+- Custom ARM-based processors
+- Up to **40% better price-performance** vs. equivalent x86 EC2 instances
+- Particularly effective for data-intensive workloads like Spark and Hadoop
+
+#### Spark Memory Overhead
+- Spark adds approximately **10% memory overhead** to both drivers and executors
+- Used for shuffle operations, task execution, and other internal activities
+- Always account for this overhead in your configuration to prevent OOM errors
+
+---
+
+### 📌 Quick-Reference Cheat Sheet
+
+| Keyword | Concept |
+|---------|---------|
+| EMR + Spark | In-memory big data processing |
+| Master Node | Cluster management only (no storage, no compute) |
+| Core Node | Storage + compute (required) |
+| Task Node | Compute only (optional; use Spot Instances) |
+| HDFS | Ephemeral — lost on cluster termination |
+| EMRFS | S3-backed — persistent storage |
+| MSCK REPAIR TABLE | Sync Hive partition metadata |
+| Transient cluster | Batch ETL, cost-efficient |
+| EMR Serverless | No cluster management required |
+| Graviton2 | Up to 40% better price-performance vs x86 |
+
+---
+
+### Wrap-Up
+
+Amazon EMR is a cornerstone big data service in DEA-C01 scenarios. Focus on three things: **the roles of each node type**, **HDFS vs EMRFS persistence differences**, and **transient vs long-running cluster cost trade-offs**. Nail these and you'll handle any EMR question the exam throws at you! 💪

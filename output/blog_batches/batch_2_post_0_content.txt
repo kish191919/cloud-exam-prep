@@ -1,0 +1,184 @@
+# Mastering AI, ML & Deep Learning Basics
+
+> 💡 **Exam Tip:** The AI/ML foundations domain is the backbone of AIF-C01. You must clearly understand the **hierarchical relationship** between AI, ML, and DL, and distinguish between each learning paradigm.
+
+---
+
+## The AI Hierarchy
+
+```
+AI (Artificial Intelligence) — broadest concept
+ └─ ML (Machine Learning) — one approach within AI
+     └─ DL (Deep Learning) — subset of ML
+         └─ Generative AI — branch of Deep Learning
+```
+
+> 💡 **Exam Tip:** "AI contains ML, which contains DL." Memorize this — AI ≠ ML.
+
+---
+
+## What is AI?
+
+AI is a broad field focused on developing intelligent systems capable of performing tasks that typically require human intelligence. Core capabilities include Perception, Reasoning, Learning, Problem Solving, and Decision Making.
+
+**The 4 AI Component Layers:**
+
+| Layer | Role |
+|---|---|
+| Data Layer | Data collection and preparation |
+| ML Framework & Algorithm Layer | Strategy and algorithm design |
+| Model Layer | Model implementation and training |
+| Application Layer | Deployment and serving |
+
+---
+
+## What is Machine Learning?
+
+ML enables systems to **learn patterns from data without explicit programming**. It makes predictions on new, unseen data and improves with more and better data.
+
+---
+
+## What is Deep Learning?
+
+DL is a subset of ML inspired by the human brain. It uses multi-layer neural networks to process complex patterns and **automatically extracts features** without manual feature engineering.
+
+**3 Key Requirements:** Large Datasets + GPU Compute + Training Time
+
+---
+
+## How Neural Networks Work
+
+**Input Layer → Hidden Layers → Output Layer**
+
+| Layer | Role |
+|---|---|
+| Input Layer | Receives raw data; each neuron = one feature |
+| Hidden Layers | Computes and extracts features at increasing abstraction |
+| Output Layer | Regression: single neuron; Classification: probability outputs |
+
+---
+
+## What is Generative AI?
+
+A branch of deep learning where models are trained on existing data and learn to **generate new data that looks similar** to the training data.
+
+---
+
+## The Transformer Model (LLM)
+
+> 💡 **Exam Tip:** Transformers process entire sequences **at once (in parallel)** — not word-by-word like RNNs. This is the key differentiator.
+
+- Assigns relative importance to specific words (attention mechanism)
+- Scales well to large datasets
+- Examples: Google BERT (bidirectional), OpenAI ChatGPT
+- Modern transformers can have **billions of parameters**
+
+---
+
+## Diffusion Models
+
+Used to generate complex data like images and audio.
+
+- **Forward Diffusion:** Gradually adds noise to data until it becomes pure noise
+- **Reverse Diffusion:** Starts from pure noise and iteratively removes it to generate new data resembling the original
+
+---
+
+## Multi-Modal Models
+
+Process and generate **multiple types of data simultaneously** (text, image, audio, video).
+
+---
+
+## Key ML Model Terms
+
+| Term | Description |
+|---|---|
+| GPT | Text/code generation from prompts |
+| BERT | Bidirectional text understanding |
+| RNN | Sequential data (time-series, speech recognition) |
+| ResNet | Deep CNN for image recognition |
+| GAN | Synthetic data generation, data augmentation |
+| XGBoost | Gradient boosting implementation |
+
+---
+
+## Training Data Types
+
+> 💡 **Exam Tip:** Know the two axes: **labeled vs. unlabeled** (for learning type) and **structured vs. unstructured** (for data format).
+
+**Labeled:** Has input features + output labels → Supervised Learning
+
+**Unlabeled:** Has only input features → Unsupervised Learning
+
+**Structured:** Rows and columns (spreadsheets, time-series)
+
+**Unstructured:** Text, images, audio, video
+
+---
+
+## Learning Paradigms
+
+### Supervised Learning
+Learns input→output mappings from labeled data. Expensive to label at scale.
+
+**Regression:** Predict continuous values (house prices, stock prices)
+
+**Classification Types:**
+- Binary: Spam/Not spam, Fraud/Not fraud
+- Multiclass: Animal types, digit recognition (0–9)
+- Multi-label: Movie tagged as both "Action" and "Comedy"
+
+**Data Split:**
+
+| Dataset | Split | Purpose |
+|---|---|---|
+| Training Set | 60–80% | Model learning |
+| Validation Set | 10–20% | Hyperparameter tuning, prevent overfitting |
+| Test Set | 10–20% | Final evaluation (never seen during training) |
+
+---
+
+### Unsupervised Learning
+Discovers hidden patterns in unlabeled data.
+
+- **Clustering:** Customer segmentation (K-means)
+- **Association Rule Learning:** Market basket analysis (Apriori)
+- **Anomaly Detection:** Fraud detection (Isolation Forest)
+
+---
+
+### Semi-Supervised Learning
+Small labeled data + large unlabeled data. The partially trained model labels the unlabeled data — called **pseudo-labeling**.
+
+---
+
+### Self-Supervised Learning
+
+> 💡 **Exam Tip:** This is how GPT and BERT were trained without massive labeled datasets. Key difference from unsupervised: it **generates its own labels** for supervised-style tasks.
+
+Model generates pseudo-labels from unlabeled data itself. Widely used in NLP and image recognition.
+
+---
+
+## Feature Engineering
+
+Transforms raw data into meaningful features to improve model performance.
+
+**Structured data:** Feature creation, feature selection, normalization/scaling
+
+**Unstructured data:** Text → TF-IDF or embeddings; Images → CNNs, edge detection
+
+---
+
+## Pre-Exam Checklist ✅
+
+- [ ] AI ⊃ ML ⊃ DL ⊃ Generative AI (hierarchical containment)
+- [ ] Transformers process sequences **in parallel**, not sequentially
+- [ ] Labeled data → Supervised; Unlabeled data → Unsupervised
+- [ ] Training / Validation / Test split: 60–80% / 10–20% / 10–20%
+- [ ] Self-supervised learning powers GPT and BERT
+- [ ] GAN = synthetic data generation; XGBoost = gradient boosting
+- [ ] Diffusion models: Forward (add noise) → Reverse (remove noise)
+
+---

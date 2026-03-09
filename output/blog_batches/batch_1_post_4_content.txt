@@ -1,0 +1,170 @@
+### Introduction
+
+AWS Glue is the centerpiece of **Domain 1: Data Ingestion & Transformation (34%)** in DEA-C01. As a fully managed serverless ETL service, it automates the entire extract-transform-load lifecycle. Exam questions frequently test your ability to match the right Glue component to a given scenario. Let's break it all down! 🚀
+
+---
+
+### 📌 Exam Point 1: AWS Glue at a Glance
+
+| Aspect | Detail |
+|--------|--------|
+| Definition | Fully managed serverless ETL service |
+| Engine | Apache Spark (distributed computing) |
+| ETL Code | Auto-generates Python (PySpark) or Scala; fully customizable |
+| Infrastructure | ❌ None required (serverless) |
+| Billing Unit | **DPU (Data Processing Unit)** |
+| Key Integrations | S3, Redshift, RDS, Athena, EMR |
+
+> ⭐ **Exam Tip**: "Need serverless ETL" = **AWS Glue**
+
+---
+
+### 📌 Exam Point 2: DPU (Data Processing Unit)
+
+| Aspect | Detail |
+|--------|--------|
+| 1 DPU | **4 vCPUs + 16 GB memory** |
+| Billing | DPU count × processing time |
+| Scaling | Auto-managed; manual specification also available |
+| Monitoring | Use **Job Run Monitoring** in the Glue console to right-size DPU allocation |
+
+> ⭐ **Exam Tip**: Job is under-provisioned → increase the `maximum capacity` parameter to add more DPUs.
+
+---
+
+### 📌 Exam Point 3: DynamicFrames vs Spark DataFrames
+
+| | Spark DataFrame | AWS Glue DynamicFrames |
+|-|----------------|------------------------|
+| Schema | Must be predefined | **Auto-managed** — no predefined schema needed |
+| Semi-structured data | Difficult to handle | Handles JSON, XML, CSV natively |
+| Nested structures | Manual flattening required | Auto-handles nested structures and arrays |
+| Best for | Structured data | **Data lakes with evolving schemas** |
+
+> ⭐ **Exam Tip**: Schema unknown or frequently changing → use **DynamicFrames**
+
+---
+
+### 📌 Exam Point 4: Job Bookmarks — Prevent Reprocessing
+
+**Job Bookmarks** track ETL job state between executions.
+
+- Only **new or changed data** is processed (incremental loads)
+- Prevents reprocessing already-handled data → reduces cost and runtime
+- Checkpoints are stored and referenced on the next job run
+
+> ⭐ **Exam Tip**: "Process only new data, skip already-processed records" = **Job Bookmarks**
+
+---
+
+### 📌 Exam Point 5: AWS Glue Crawlers
+
+Crawlers automatically scan data sources, infer schemas, and keep the Glue Data Catalog current.
+
+| Feature | Detail |
+|---------|--------|
+| Auto schema discovery | Scans S3, RDS, etc.; auto-creates/updates tables in the catalog |
+| Supported formats | CSV, JSON, Parquet, ORC, and more |
+| Partition detection | Auto-detects partitions → improves query performance |
+| Scheduling | Run on a schedule to keep the catalog up-to-date |
+| Access control | IAM policies for fine-grained metadata operation control |
+
+**Critical access control distinction:**
+
+```
+Glue Data Catalog policy → Controls access to METADATA (schema, table definitions)
+S3 bucket policy         → Controls access to the actual DATA CONTENT
+```
+
+> ⭐ **Exam Tip**: Glue policy = metadata access. S3 policy = data access. **These are two separate layers!**
+
+---
+
+### 📌 Exam Point 6: Schema Registry — Streaming Schema Consistency
+
+Ensures schema consistency for streaming data (Kinesis, Kafka).
+
+- Version control for schema definitions
+- Validates each new record against the registered schema before adding to the stream
+- Rejects or transforms non-conforming records
+- Integrates with KPL (Kinesis Producer Library) and KCL (Kinesis Client Library)
+
+> ⭐ **Exam Tip**: "Ensure schema consistency for Kinesis/Kafka streaming data" → **Glue Schema Registry**
+
+---
+
+### 📌 Exam Point 7: Key Transformation Features
+
+| Feature | Description |
+|---------|-------------|
+| **ResolveChoice** | Handles ambiguous/mixed data types in a column (e.g., string + integer in the same column) |
+| **FindMatches ML** | ML-powered deduplication — identifies matching records without a common key |
+| **Pivot** | Converts rows into columns for optimized analytical queries |
+| **CTAS** | Creates new tables from SELECT results (e.g., convert CSV → Parquet) |
+
+> ⭐ **Exam Tip**: "Detect and merge duplicate records using ML" → **FindMatches ML Transform**
+
+---
+
+### 📌 Exam Point 8: Execution Environment Comparison
+
+| Environment | Characteristics | Best For |
+|-------------|----------------|---------|
+| **Spark** | Distributed computing, large-scale processing | Large ETL jobs, complex transformations |
+| **Python Shell** | Lightweight scripting | Simple transforms, AWS service integrations |
+| **Ray** | Parallel Python processing | ML/AI workloads, Python scale-out |
+| **Streaming ETL** | Real-time stream processing | Kinesis/Kafka real-time data |
+
+> ⭐ **Exam Tip**: Lightweight Python ETL → **Python Shell**. ML workloads at scale in Python → **Ray**
+
+---
+
+### 📌 Exam Point 9: Performance Optimization Strategies
+
+| Strategy | Description |
+|----------|-------------|
+| **Data partitioning** | Partition by date/region → faster queries |
+| **Partition indexes** | GetPartitions API retrieves only matching partitions directly → faster for large partitioned datasets |
+| **Broadcast joins** | Broadcasts smaller dataset to all nodes → minimizes shuffle for large joins |
+| **Consolidate small files** | Many small files degrade Spark performance → merge into larger files |
+| **Server-side filtering** | Filter data at the partition level during DynamicFrame creation → reduces data loaded into memory |
+
+---
+
+### 📌 Exam Point 10: AWS Glue DataBrew
+
+**DataBrew** is a visual, code-free data preparation tool.
+
+| Feature | Detail |
+|---------|--------|
+| Code-free transforms | 250+ pre-built transformations via drag-and-drop |
+| Data profiling | Automated per-column statistics; detects missing values, duplicates, outliers |
+| Custom quality rules | Define validation rules for business requirements |
+| PII detection & masking | ML-based detection; mask or anonymize sensitive data |
+| Serverless | No infrastructure management |
+
+> ⭐ **Exam Tip**: "Clean and profile data without writing code" → **AWS Glue DataBrew**
+> "Detect and mask PII data" → **DataBrew** or **Glue Sensitive Data Detection**
+
+---
+
+### 📌 Quick-Reference Cheat Sheet
+
+| Keyword | Concept |
+|---------|---------|
+| 1 DPU | 4 vCPUs + 16 GB memory |
+| DynamicFrames | Flexible schema for semi-structured data lake ETL |
+| Job Bookmarks | Incremental loads — no reprocessing |
+| Crawlers | Auto schema discovery, Data Catalog updates |
+| Schema Registry | Streaming schema version control |
+| ResolveChoice | Fix mixed data types in a column |
+| FindMatches | ML-based duplicate record detection |
+| Broadcast Join | Minimize shuffle for large joins |
+| Partition Indexes | Fast partition retrieval for large datasets |
+| DataBrew | Code-free visual data preparation |
+
+---
+
+### Wrap-Up
+
+AWS Glue is the cornerstone ETL service for **Domain 1** in DEA-C01. Focus on: **DynamicFrames vs DataFrames**, **Job Bookmarks for incremental loads**, **the separation of Glue catalog policy (metadata) vs S3 policy (data)**, and **DataBrew for code-free data prep**. Master these and Glue questions will be straightforward! 💪

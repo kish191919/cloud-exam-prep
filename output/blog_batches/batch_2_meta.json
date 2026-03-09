@@ -1,0 +1,47 @@
+[
+  {
+    "idx": 0,
+    "id": "11275abd-3ece-4437-95f8-fa00083ee407",
+    "slug": "ai-ml-dl-basics",
+    "source_lang": "en",
+    "title": "Mastering AI, ML & Deep Learning Basics | AIF-C01",
+    "excerpt": "rom AI vs ML vs DL to supervised/unsupervised learning, Transformers, and diffusion models — everything you need for the AWS AI Practitioner foundations exam do",
+    "content_file": "output/blog_batches/batch_2_post_0_content.txt"
+  },
+  {
+    "idx": 1,
+    "id": "78b60686-2286-4f42-b9d7-6c5676a7312c",
+    "slug": "reinforcement-learning-model",
+    "source_lang": "en",
+    "title": "Reinforcement Learning, RLHF & Model Evaluation Metrics | AIF-C01",
+    "excerpt": "Covers RL, RLHF, model fit (overfitting/underfitting), confusion matrix, Precision/Recall/F1/AUC-ROC, and LLM metrics (ROUGE, Perplexity) — all in one exam-focu",
+    "content_file": "output/blog_batches/batch_2_post_1_content.txt"
+  },
+  {
+    "idx": 2,
+    "id": "8aa3e4e3-1df8-4058-bc99-9745be9ec915",
+    "slug": "ml-project-lifecycle",
+    "source_lang": "en",
+    "title": "ML Project Lifecycle & Hyperparameter Tuning | AIF-C01",
+    "excerpt": "omplete guide to the 8-phase ML project lifecycle, key hyperparameters (learning rate, batch size, epochs, regularization), and overfitting solutions",
+    "content_file": "output/blog_batches/batch_2_post_2_content.txt"
+  },
+  {
+    "idx": 3,
+    "id": "899e273b-8aab-4a21-9d22-e64f365a9b76",
+    "slug": "aws-managed-ai-services-overview",
+    "source_lang": "en",
+    "title": "AWS Managed AI Services Complete Guide – Must-Know for AWS AI Practitioner | AIF-C01",
+    "excerpt": "From Amazon Bedrock to SageMaker, all AWS Managed AI Services organized by category with exam tips. Master the purpose of each service to ace the AIF-C01 exam!",
+    "content_file": "output/blog_batches/batch_2_post_3_content.txt"
+  },
+  {
+    "idx": 4,
+    "id": "b85af851-2685-45f5-bccb-4092208bf076",
+    "slug": "aws-managed-ai-services-quick-revision",
+    "source_lang": "en",
+    "title": "AWS Managed AI Services Quick Revision – Last-Minute Study Guide for AWS AI Practitioner | AIF-C01",
+    "excerpt": "Quick revision of 11 AWS Managed AI Services — from Comprehend to Trainium/Inferentia — with key points and use cases. Perfect for last-minute review!",
+    "content_file": "output/blog_batches/batch_2_post_4_content.txt"
+  }
+]

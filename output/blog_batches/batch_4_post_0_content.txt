@@ -1,0 +1,180 @@
+# Mastering AWS IAM
+
+> 💡 **Exam Tip:** IAM appears in almost every CLF-C02 exam. After reading this guide, you'll tackle IAM questions with confidence!
+
+---
+
+## 1. What Is IAM?
+
+**IAM (Identity and Access Management)** is the AWS service that securely controls access to AWS resources. Think of it as the gatekeeper that decides *"who can do what in AWS."*
+
+IAM manages:
+- **Users:** Individual identities interacting with AWS services
+- **Groups:** Collections of users sharing common permissions
+- **Roles:** Temporary permissions assigned to AWS services or applications
+
+> 🌟 **Free to use!** IAM itself has no additional cost.
+
+---
+
+## 2. Users & Groups
+
+| | Description |
+|--|--|
+| **IAM User** | Unique identity with credentials (username/password, access keys) |
+| **IAM Group** | Logical grouping of users for simplified permission management |
+
+> 📝 **Exam Tips:**
+> - Users **don't have to belong** to a group
+> - A user **can belong to multiple groups**
+> - Groups **cannot contain other groups** (no nesting)
+
+---
+
+## 3. Permissions & Policies
+
+Permissions are defined using **JSON policy documents** that specify what actions are Allowed or Denied.
+
+### Policy Structure
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::example-bucket"
+    }
+  ]
+}
+```
+
+| Element | Description |
+|---------|-------------|
+| `Version` | Policy language version (always `2012-10-17`) |
+| `Effect` | `Allow` or `Deny` |
+| `Action` | AWS service action to allow/deny |
+| `Resource` | Target AWS resource (ARN) |
+
+> 📝 **Exam Tip:** Always follow the **Principle of Least Privilege** — grant only the permissions required!
+
+### Policy Types
+
+| Type | Description |
+|------|-------------|
+| **AWS Managed Policies** | Pre-built reusable policies provided by AWS |
+| **Customer Managed Policies** | Custom policies created and maintained by you |
+| **Inline Policies** | Policies directly embedded in a single user/group/role |
+
+---
+
+## 4. IAM Roles
+
+IAM Roles allow **AWS services to access other AWS services** without storing long-term credentials in code.
+
+**Common use cases:**
+- EC2 instance → access S3 buckets
+- Lambda function → read/write DynamoDB
+
+> 📝 **Exam Tip:** For applications, always use **IAM Roles instead of IAM Users** to avoid exposing long-term credentials!
+
+---
+
+## 5. MFA (Multi-Factor Authentication)
+
+MFA adds a second layer of security on top of a password.
+
+> 🔑 **Key Point:** Even if a password is stolen, MFA prevents unauthorized access!
+
+### MFA Devices in AWS
+
+| Type | Description |
+|------|-------------|
+| **Virtual MFA** | Smartphone apps like Google Authenticator or Authy (TOTP) |
+| **Hardware MFA** | Physical token devices (e.g., Gemalto) |
+| **U2F Security Key** | USB-based security keys |
+
+> 📝 **Exam Tip:** Always **enable MFA on the root account and privileged IAM users!**
+
+---
+
+## 6. Password Policy
+
+Configurable IAM password rules include:
+- Minimum password length
+- Required character types (uppercase, lowercase, numbers, symbols)
+- Password reuse prevention
+- Expiration period (e.g., every 90 days)
+
+---
+
+## 7. Three Ways to Access AWS
+
+| Method | Description |
+|--------|-------------|
+| **AWS Management Console** | Web-based GUI — great for beginners |
+| **AWS CLI** | Terminal commands for automation |
+| **AWS SDK** | Programmatic access via languages like Python, JavaScript |
+
+### CLI Example
+```bash
+aws s3 ls
+aws ec2 describe-instances --region us-west-2
+```
+
+### SDK Example (Python boto3)
+```python
+import boto3
+s3 = boto3.client('s3')
+response = s3.list_buckets()
+print([bucket['Name'] for bucket in response['Buckets']])
+```
+
+> 📝 **Exam Tip:** CLI and SDK require **Access Keys (Access Key ID + Secret Access Key)**. Never hardcode them in your code!
+
+---
+
+## 8. IAM Security Tools
+
+| Tool | Purpose |
+|------|---------|
+| **IAM Credential Report** | Lists all IAM users and their credential status (for auditing) |
+| **IAM Access Advisor** | Shows last used service permissions → helps remove unnecessary access |
+| **IAM Policy Simulator** | Test and validate policies before applying them |
+
+---
+
+## 9. Shared Responsibility Model
+
+| AWS Responsibility | Customer Responsibility |
+|-------------------|------------------------|
+| Protect IAM service infrastructure | Manage users, groups, and roles |
+| Ensure service availability | Set strong password policies and enable MFA |
+| Provide AWS managed policies | Apply least privilege and conduct regular audits |
+
+---
+
+## 10. IAM Best Practices Summary
+
+1. ✅ **Minimize root account usage**
+2. ✅ Apply **Principle of Least Privilege**
+3. ✅ **Enable MFA** (especially for root and admin accounts)
+4. ✅ Use **IAM Roles for applications** (no hardcoded access keys)
+5. ✅ **Rotate access keys regularly**
+6. ✅ Audit with **Credential Report** and **Access Advisor**
+
+---
+
+## 🎯 Last-Minute Key Points for the Exam
+
+- **IAM is a global service** — no region selection needed
+- **Policy = JSON document** — remember Effect, Action, Resource!
+- **No group nesting** allowed
+- **MFA = last line of defense** if password is stolen
+- **IAM Role = safe way to grant permissions to services**
+- **Credential Report = auditing tool**
+- **Access Advisor = find unused permissions**
+
+---
+
+Good luck on your CLF-C02 exam! 🍀

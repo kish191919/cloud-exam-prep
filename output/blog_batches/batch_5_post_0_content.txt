@@ -1,0 +1,97 @@
+### Introduction
+
+In the AWS Certified Data Engineer - Associate (DEA-C01) exam, **Domain 1: Data Ingestion and Transformation** carries the highest weight at **34%**. A top recurring question type: picking the right AWS ingestion service for a given scenario. Let's break down every exam-critical detail! 🚀
+
+---
+
+### 📌 Exam Point 1: Delivery Semantics
+
+Understanding how reliably each service delivers messages is fundamental.
+
+| Semantic | Description | When to Use |
+|----------|-------------|-------------|
+| **At Most Once** | Never duplicated, but can be lost | Low-value or time-sensitive data |
+| **At Least Once** | Never lost, but may duplicate | Most streaming services; use checkpoints |
+| **Exactly Once** | No loss, no duplication | Idempotency + At Least Once combination |
+
+> ⭐ **Exam Tip**: **SQS FIFO** and **DynamoDB Streams** = Exactly Once. Most others (Kinesis, MSK) = At Least Once.
+
+---
+
+### 📌 Exam Point 2: Service Comparison Table
+
+| Service | Delivery | Ordering | Retention | Parallel Consumers | Max Size |
+|---------|----------|----------|-----------|--------------------|----------|
+| DynamoDB Streams | Exactly Once | ✅ | 24 hrs | ✅ | 400 KB |
+| **Kinesis Data Streams** | At Least Once | ✅ | 24 hrs (default) | ✅ | 1 MB |
+| **Kinesis Firehose** | At Least Once | ❌ | N/A | ❌ | Dest. size |
+| Amazon MSK | At Least Once | ✅ | Configurable | ✅ | Varies |
+| SQS Standard | At Least Once | ❌ | Up to 14 days | ❌ | 256 KB |
+| **SQS FIFO** | Exactly Once | ✅ | 4 days default (max 14) | ❌ | 256 KB |
+
+> ⭐ **Exam Tip**: **Kinesis Firehose** has no ordering guarantee and no parallel consumption, but it **auto-scales** and is optimized for loading data into S3, Redshift, and OpenSearch.
+
+---
+
+### 📌 Exam Point 3: Kinesis Streams vs. Firehose
+
+```
+Need real-time processing with custom consumers? → Kinesis Data Streams
+Need automated loading into a data lake/store? → Kinesis Firehose
+```
+
+**Kinesis Data Streams**
+- Shard-based scaling: 1 shard = 1 MB/s in + 2 MB/s out
+- Manual shard management — fine-grained control
+- Cost: per shard-hour + per PUT payload unit
+
+**Kinesis Data Firehose**
+- Fully managed, zero manual scaling
+- Additional cost for data format conversion
+- Direct connectors: S3, Redshift, OpenSearch, Splunk
+
+---
+
+### 📌 Exam Point 4: AWS Glue vs. AWS DMS
+
+| | AWS Glue | AWS DMS |
+|-|----------|---------|
+| Primary Use | ETL / data transformation & loading | Database migration |
+| Scaling | Specify number of DPUs | Resize replication EC2 instance |
+| Fault Tolerance | 3 retries by default + SNS notifications | Multi-AZ option |
+| Cost | Per-second billing for crawlers + ETL jobs | Instance + storage + data transfer |
+
+> ⭐ **Exam Tip**: "Moving a database to AWS" → **DMS**. "Transforming & loading S3/RDS data" → **Glue**.
+
+---
+
+### 📌 Exam Point 5: Amazon MSK vs. Apache Kafka on EC2
+
+| | Amazon MSK | Apache Kafka on EC2 |
+|-|------------|---------------------|
+| Managed | ✅ Fully managed | ❌ Self-managed |
+| Max Brokers | 30 (limit increase available) | Unlimited |
+| Multi-AZ | Configurable | Configurable |
+| Cost | Low | Low + ops overhead |
+
+> ⭐ **Exam Tip**: Need minimal ops overhead → MSK. Need full control → Kafka on EC2.
+
+---
+
+### 📌 Quick-Reference Cheat Sheet
+
+| Service | Keywords |
+|---------|----------|
+| Kinesis Data Streams | Real-time, shards, At Least Once, 1 MB |
+| Kinesis Firehose | Auto-scale, data lake loading, no ordering |
+| SQS Standard | Queue, At Least Once, no ordering, 256 KB |
+| SQS FIFO | Queue, Exactly Once, ordered, 300 TPS |
+| Amazon MSK | Managed Kafka, At Least Once, up to 30 brokers |
+| AWS Glue | ETL, DPU scaling, Spark, 3 retries |
+| AWS DMS | DB migration, EC2-based, Multi-AZ |
+
+---
+
+### Wrap-Up
+
+For DEA-C01, mastering the **differences between ingestion services** is key — especially delivery semantics, ordering guarantees, and retention periods. These show up frequently in scenario-based questions. Stay tuned for the next post covering **Domain 2: Data Store Management (26%)**! 💪

@@ -1,0 +1,29 @@
+[
+  {
+    "idx": 0,
+    "id": "ee0f2476-cc4f-4c69-ad84-2abb56b0caf3",
+    "slug": "data-ingestion",
+    "source_lang": "en",
+    "title": "AWS Data Ingestion Services Deep Dive | DEA-C01",
+    "excerpt": "In the AWS Certified Data Engineer - Associate (DEA-C01) exam, Domain 1: Data Ingestion and Transformation carries the highest weight at 34%.",
+    "content_file": "output/blog_batches/batch_5_post_0_content.txt"
+  },
+  {
+    "idx": 1,
+    "id": "daeac6fb-8a52-475a-a5a9-d615734f2486",
+    "slug": "redshift-data-warehouse",
+    "source_lang": "en",
+    "title": "Amazon Redshift Deep Dive | DEA-C01",
+    "excerpt": "Master Amazon Redshift — columnar storage, MPP, Data API vs JDBC — with exam-focused tips and real-world use cases covered in one post.",
+    "content_file": "output/blog_batches/batch_5_post_1_content.txt"
+  },
+  {
+    "idx": 2,
+    "id": "bbf61848-1bba-462b-9dfe-1134d93d2560",
+    "slug": "kinesis-streaming",
+    "source_lang": "en",
+    "title": "Amazon Kinesis Deep Dive | DEA-C01",
+    "excerpt": "Kinesis isn't a single service — it's a family of four services.",
+    "content_file": "output/blog_batches/batch_5_post_2_content.txt"
+  }
+]

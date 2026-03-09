@@ -1,0 +1,170 @@
+# CLF-C02 Core Concepts Mastered
+## From Cloud Computing Basics to the Shared Responsibility Model
+
+> 💡 This post covers key topics from **Domain 1 (Cloud Concepts)** and **Domain 2 (Security)** of the AWS Cloud Practitioner (CLF-C02) exam.
+
+---
+
+## ☁️ What is Cloud Computing?
+
+Cloud computing is the **on-demand delivery** of IT resources over the internet with **pay-as-you-go pricing**.  
+AWS owns and maintains the physical hardware — you simply access servers, storage, databases, and more through a web console or API and **pay only for what you use**.
+
+---
+
+## 🏗️ 3 Cloud Deployment Models
+
+| Type | Description | Key Characteristic |
+|------|-------------|--------------------|
+| **Private Cloud** | Used by a single organization | Full control, ideal for sensitive workloads |
+| **Public Cloud** | Owned by a third-party provider (e.g., AWS) | Cost-effective, highly scalable |
+| **Hybrid Cloud** | Mix of on-premises + public cloud | Flexibility, DR, data sovereignty |
+
+> 🎯 **Exam Tip:** Hybrid cloud keeps **some servers on-premises** while extending capabilities to the cloud — popular with enterprises that have strict data residency requirements.
+
+---
+
+## 🔥 5 Characteristics of Cloud Computing
+
+> 🎯 **Exam Tip:** Based on the NIST definition — memorize all five!
+
+1. **On-demand self-service** — Provision resources automatically without human intervention
+2. **Broad network access** — Access via standard network mechanisms from anywhere
+3. **Resource pooling** — Multi-tenant model shared across multiple customers
+4. **Rapid elasticity** — Scale up or down quickly based on demand
+5. **Measured service** — Usage is monitored and billed accordingly
+
+---
+
+## 💰 6 Advantages of Cloud Computing
+
+| Advantage | Description |
+|-----------|-------------|
+| **Cost Savings** | Pay only for what you use, no upfront investment |
+| **Speed & Agility** | Deploy services in minutes |
+| **Scalability** | Adjust resources on demand |
+| **High Availability** | Ensures business continuity |
+| **Global Reach** | Serve customers worldwide |
+| **Security** | Leverage AWS's robust security infrastructure |
+
+---
+
+## 🧱 Cloud Service Types: IaaS / PaaS / SaaS
+
+> 🎯 **Exam Tip:** Remember the AWS example for each type!
+
+| Type | Description | AWS Example | Non-AWS Example |
+|------|-------------|-------------|-----------------|
+| **IaaS** | Virtualized infrastructure | EC2 | GCP, Azure, Linode |
+| **PaaS** | App development platform | Elastic Beanstalk | Heroku, Google App Engine |
+| **SaaS** | Ready-to-use software | AWS Chime | Gmail, Zoom, Dropbox |
+```
+IaaS → You manage OS and apps
+PaaS → You focus on your application only
+SaaS → You just use the software
+```
+
+---
+
+## 💵 AWS Pricing: 3 Core Principles
+
+| Principle | Description | Example |
+|-----------|-------------|---------|
+| **Compute** | Pay for compute time used | EC2 hours, Lambda invocations |
+| **Storage** | Pay for data stored | S3 capacity, EBS volumes |
+| **Data Transfer OUT** | Pay for outbound data | **Inbound (IN) is FREE!** |
+
+> 🎯 **Exam Tip:** **Data Transfer IN is always free; you only pay for data going OUT.** This comes up frequently!
+
+---
+
+## 🌍 AWS Global Infrastructure
+
+### Hierarchy
+```
+🌏 Region
+    └── 🏢 Availability Zone (AZ) × 2–6
+              └── 🖥️ Data Centers
+🚀 Edge Location — operated separately
+```
+
+### Regions
+
+- Geographically isolated clusters of AWS data centers
+- 30+ regions worldwide
+- **4 criteria for choosing a region:**
+
+| Criteria | Description |
+|----------|-------------|
+| **Latency** | Choose closest region to your users |
+| **Compliance** | Meet data residency laws (e.g., GDPR) |
+| **Service Availability** | Verify your needed services exist there |
+| **Pricing** | Prices vary by region |
+
+### Availability Zones (AZs)
+
+- **Physically separate** data center groups within a region
+- Each AZ has independent **power, cooling, and networking**
+- Connected via **high-bandwidth, ultra-low latency** links
+- **No single point of failure** between AZs
+
+> 🎯 **Exam Tip:** For High Availability, always deploy across **at least 2 AZs**!
+
+### Edge Locations (Points of Presence)
+
+- 400+ locations worldwide
+- Used by **Amazon CloudFront** (CDN) and **AWS Global Accelerator**
+- Deliver content with **low latency** to end users
+
+> 🎯 **Exam Tip:** Edge Location ≠ AZ ≠ Region — know the difference between all three!
+
+---
+
+## 🔐 AWS Shared Responsibility Model
+
+One of the **most tested topics** on the exam. Security and compliance is a **shared** responsibility between AWS and the customer.
+
+### Core Principle
+```
+AWS      → Security OF the Cloud (the infrastructure itself)
+Customer → Security IN the Cloud (what you put in it)
+```
+
+### AWS Responsibilities
+
+- Physical data center security (access control, environmental controls)
+- Hypervisor, host OS, network infrastructure
+- Global network operations (DDoS protection, monitoring)
+
+### Customer Responsibilities
+
+- **Data encryption** (in transit and at rest)
+- **IAM configuration** (users, roles, policies)
+- **OS and application patching**
+- **Security group and NACL rules**
+- **Regulatory compliance**
+
+### Responsibility Comparison by Service
+
+| Service | AWS Responsibility | Customer Responsibility |
+|---------|-------------------|------------------------|
+| **IaaS (EC2)** | Physical infra, hypervisor | OS security, patching, data, network |
+| **PaaS (RDS)** | DB engine, backups, patching | Data encryption, DB access, IAM |
+| **SaaS (S3)** | Underlying infrastructure | Bucket policies, permissions, lifecycle |
+
+> 🎯 **Exam Tip:** The more managed a service is (RDS, Lambda), the **more AWS takes responsibility**. The more control you have (EC2), the **more you are responsible**.
+
+---
+
+## 🚀 Final Concept Summary
+
+| Concept | Key Takeaway |
+|---------|-------------|
+| Deployment Models | Private / Public / **Hybrid** |
+| Service Types | **IaaS**(EC2) / **PaaS**(Beanstalk) / **SaaS**(Chime) |
+| Pricing | Compute / Storage / **Data Transfer OUT** |
+| Global Infrastructure | **Region > AZ > Edge Location** |
+| AZ Feature | Independent power/cooling/network, **no single point of failure** |
+| Shared Responsibility | AWS = OF the Cloud / Customer = **IN the Cloud** |
+
+> 💪 **A solid foundation here makes every other domain click into place. You've got this!**

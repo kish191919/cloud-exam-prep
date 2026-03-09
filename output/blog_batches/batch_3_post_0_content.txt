@@ -1,0 +1,265 @@
+# Amazon SageMaker Complete Guide
+
+> 💡 **Exam Tip:** SageMaker has the most sub-features of any service tested in AIF-C01. You need to quickly map "Which SageMaker feature solves this?" for each scenario. Memorize each feature's name and purpose in a 1:1 relationship.
+
+---
+
+## What is Amazon SageMaker?
+
+Amazon SageMaker is a fully managed service enabling developers and data scientists to **build, train, and deploy** ML models at scale — managing the entire ML lifecycle in one place.
+
+**4 Core ML Lifecycle Phases:** Data Collection & Preparation → Model Building, Training & Tuning → Model Deployment → Performance Monitoring
+
+---
+
+## Built-in ML Algorithms
+
+| Type | Algorithms |
+|---|---|
+| Supervised | Linear regression/classification, K-Nearest Neighbors (KNN) |
+| Unsupervised | PCA (dimensionality reduction), K-means clustering, Anomaly detection |
+| Specialized | Textual algorithms (NLP, summarization), Image processing (classification, detection) |
+
+---
+
+## Automatic Model Tuning (AMT)
+
+You define the objective metric; AMT automatically selects hyperparameter ranges, search strategy, max runtime, and early stopping conditions.
+
+> 💡 **Exam Tip:** Automatic hyperparameter optimization = **SageMaker AMT**
+
+---
+
+## Model Deployment & Inference — 4 Types Compared
+
+> 💡 **Exam Tip:** Expect scenario questions asking which deployment type fits a given situation. Distinguish by **latency, payload size, and traffic pattern**.
+
+| Feature | Real-Time | Serverless | Asynchronous | Batch Transform |
+|---|---|---|---|---|
+| **Latency** | Very low (ms–sec) | Low (cold starts) | Medium–high | High (min–hours) |
+| **Max Payload** | 6 MB | 4 MB | **1 GB** | 100 MB/mini-batch |
+| **Timeout** | 60 sec | 60 sec | **Up to 1 hour** | Up to 1 hour |
+| **Best For** | Online fraud detection | Customer support bot | MRI/medical imaging | Weekly churn prediction for 1M+ users |
+
+**Key characteristics:**
+
+**Real-Time:** EC2-backed endpoint; individual predictions; low-latency interactive apps
+
+**Serverless:** No charges during idle; cold start tradeoff; sporadic, unpredictable workloads
+
+**Asynchronous:** Requests/responses stored in S3; up to 1 GB payloads; long processing tasks
+
+**Batch Transform:** Full dataset predictions; S3 I/O; bulk/scheduled processing
+
+---
+
+## SageMaker Studio
+
+**Unified IDE** for all ML workflows — access to all SageMaker features from one interface, team collaboration, automated workflow creation.
+
+> 💡 **Exam Tip:** SageMaker Studio = ML IDE. Data Wrangler, Feature Store, Clarify, Canvas all operate **within** Studio.
+
+---
+
+## SageMaker Data Wrangler
+
+Part of SageMaker Studio — a **one-stop data preparation tool**. Data selection, cleansing, exploration, visualization, and processing in a single interface. Supports SQL queries and data quality analysis.
+
+> 💡 **Exam Tip:** Single-interface data prep + feature engineering = **Data Wrangler**
+
+---
+
+## SageMaker Feature Store
+
+**Centralized feature management** — store, manage, and reuse ML features across teams and models.
+
+Features are input variables used in both training and inference. Example: from customer data → derive Age, Income Group, Location Group.
+
+> 💡 **Exam Tip:** Centralized feature storage and reuse across teams = **Feature Store**
+
+---
+
+## SageMaker Clarify
+
+Provides **model evaluation, bias detection, and explainability**.
+
+**① Model Evaluation & Comparison:** Evaluate foundation models including human factors (friendliness, humor). Uses AWS-managed teams or your own employees.
+
+**② Model Explainability:** Explains why predictions were made. Detects and measures bias in datasets and models. Use cases: "Why was this loan application rejected?" or "Why did the model make an incorrect prediction?"
+
+> 💡 **Exam Tip:** Explaining model predictions + detecting bias = **SageMaker Clarify**
+
+---
+
+## SageMaker Ground Truth
+
+Based on **RLHF** — uses human feedback to review, customize, and evaluate models.
+
+**Reviewer options:** Amazon Mechanical Turk workers, your employees, third-party vendors
+
+Human workforce generates labels and annotates data. **Ground Truth Plus** provides managed data labeling services.
+
+> 💡 **Exam Tip:** RLHF + human data labeling = **Ground Truth**. Training data labeling → Ground Truth; reviewing low-confidence ML outputs → A2I.
+
+---
+
+## ML Governance
+
+**Model Cards:** Document intended use, risk ratings, and training details for each model.
+
+**Role Manager:** Define roles and permissions (data scientists, MLOps engineers) within SageMaker.
+
+---
+
+## SageMaker Model Dashboard
+
+Central portal to **view, search, and explore all models**. Tracks deployed models. Identifies models violating thresholds for data quality, model quality, bias, and explainability.
+
+---
+
+## SageMaker Model Monitor
+
+Continuously monitors **quality of models in production**. Runs on schedule or continuously. Alerts on quality deviations. Enables proactive fixes and retraining.
+
+> 💡 **Exam Tip:** Model drift detection = **Model Monitor**. Example: a loan model starts approving applicants who don't meet credit requirements.
+
+---
+
+## SageMaker Model Registry
+
+**Centralized repository** for ML model management — version control, metadata association, approval status management for automated deployment, cross-team sharing.
+
+> 💡 **Exam Tip:** Model versioning + team sharing + deployment approval = **Model Registry**
+
+---
+
+## SageMaker Pipelines
+
+**CI/CD for Machine Learning** — automates the ML lifecycle.
+
+> 💡 **Exam Tip:** ML CI/CD = **SageMaker Pipelines**. Think of it as DevOps CI/CD applied to machine learning.
+
+**Supported Step Types:**
+
+| Step | Role |
+|---|---|
+| Processing | Data preprocessing |
+| Training | Model training |
+| Tuning | Hyperparameter optimization |
+| AutoML | Automatic model training |
+| Model | Create/register SageMaker model |
+| ClarifyCheck | Bias + explainability drift checks |
+| QualityCheck | Data + model quality drift checks |
+
+---
+
+## SageMaker JumpStart
+
+**ML hub** providing access to pre-trained models and pre-built ML solutions.
+
+**Pre-trained models:** Computer vision and NLP models from Hugging Face, Databricks, Meta, Stability AI, and more. **Larger selection than Amazon Bedrock.** Full deployment control.
+
+**Pre-built solutions:** Demand forecasting, credit rating prediction, fraud detection, computer vision.
+
+> 💡 **Exam Tip:** Broader model selection than Bedrock + full deployment control = **JumpStart**
+
+### Fine-Tuning Cost Comparison
+
+| Approach | Description | Cost |
+|---|---|---|
+| Prompt Engineering | No model modification | Cheapest |
+| RAG | Requires vector DB | Medium |
+| Instruction-Based Fine-Tuning | Labeled data, modifies weights | Expensive |
+| Domain Adaptation Fine-Tuning | Unlabeled data, domain-specific | Most Expensive |
+
+> 💡 **Exam Tip:** Cost order: Prompt Engineering < RAG < Instruction Fine-Tuning < Domain Adaptation Fine-Tuning
+
+---
+
+## SageMaker Canvas
+
+**No-code/low-code visual interface** for ML model development. Access ready-to-use models from Bedrock or JumpStart. Build custom models with AutoML (SageMaker Autopilot). Direct integration with Rekognition, Comprehend, and Textract. Part of SageMaker Studio.
+
+> 💡 **Exam Tip:** No-code ML for non-technical users = **SageMaker Canvas**
+
+---
+
+## MLFlow for Amazon SageMaker
+
+Open-source ML lifecycle management tool integrated with SageMaker via **MLFlow Tracking Servers**. Track runs and experiments; launch on SageMaker with a few clicks.
+
+---
+
+## Full SageMaker Feature Cheat Sheet
+
+| Feature | One-Liner |
+|---|---|
+| **SageMaker** | Full ML lifecycle platform |
+| **AMT** | Automatic hyperparameter optimization |
+| **Studio** | Unified IDE for all SageMaker features |
+| **Data Wrangler** | Data exploration, preparation, feature engineering |
+| **Feature Store** | Centralized feature storage and reuse |
+| **Clarify** | Model evaluation, bias detection, explainability |
+| **Ground Truth** | RLHF, human-feedback data labeling |
+| **Model Cards** | Model documentation |
+| **Model Dashboard** | All models in one view |
+| **Model Monitor** | Production model quality monitoring & drift detection |
+| **Model Registry** | Model version management + team sharing |
+| **Pipelines** | ML CI/CD automation |
+| **Role Manager** | Access control and permissions |
+| **JumpStart** | Pre-trained model hub + pre-built solutions |
+| **Canvas** | No-code ML model builder |
+| **MLFlow** | Open-source experiment tracking integration |
+
+---
+
+## Deployment Type Decision Guide
+
+```
+Need real-time response?
+  └─ YES → Payload ≤ 6MB?
+              └─ YES + always-on traffic  → Real-Time Inference
+              └─ YES + sporadic traffic   → Serverless Inference
+              └─ NO (large files up to 1GB) → Asynchronous Inference
+  └─ NO  → Process entire dataset at once → Batch Transform
+```
+
+---
+
+## Commonly Confused Feature Pairs
+
+**Ground Truth vs A2I**
+
+| | Ground Truth | A2I |
+|---|---|---|
+| Purpose | Create training data labels | Review uncertain ML predictions |
+| Stage | Pre-training data preparation | Post-deployment inference |
+
+**Clarify vs Model Monitor**
+
+| | Clarify | Model Monitor |
+|---|---|---|
+| Purpose | Bias detection + explainability | Production performance monitoring |
+| When | Pre and post-deployment | Continuous post-deployment |
+
+**JumpStart vs Canvas**
+
+| | JumpStart | Canvas |
+|---|---|---|
+| Target | Developers (full control) | Non-technical users (no-code) |
+| Approach | Pre-trained model hub | Visual AutoML builder |
+
+---
+
+## Pre-Exam Checklist ✅
+
+- [ ] SageMaker = full ML lifecycle platform (build → train → deploy → monitor)
+- [ ] 4 deployment types: Real-Time (low latency) / Serverless (sporadic) / Async (1GB payloads) / Batch (full dataset)
+- [ ] Data Wrangler = data prep; Feature Store = centralized feature management
+- [ ] Clarify = bias detection + explainability
+- [ ] Ground Truth = RLHF + human labeling; A2I = human review of low-confidence predictions
+- [ ] Model Monitor = drift detection; Model Registry = version control
+- [ ] Pipelines = ML CI/CD automation
+- [ ] JumpStart = pre-trained model hub (wider selection than Bedrock)
+- [ ] Canvas = no-code ML for non-technical users
+- [ ] Fine-tuning cost: Prompt Engineering < RAG < Instruction < Domain Adaptation

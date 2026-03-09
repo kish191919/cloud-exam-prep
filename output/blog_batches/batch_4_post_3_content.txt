@@ -1,0 +1,228 @@
+# Mastering AWS Databases & Analytics
+
+> 💡 **Exam Tip:** AWS database questions on the CLF-C02 often ask "which service fits this scenario?" Know the key characteristics and use cases for each service!
+
+---
+
+## 1. Relational vs NoSQL — The Basics
+
+### Relational Databases (SQL)
+
+- Structured data in predefined schema tables
+- Managed with SQL
+- Use cases: financial systems, transactional applications
+- Examples: MySQL, PostgreSQL, Oracle, SQL Server
+
+### NoSQL Databases
+
+- Flexible schema — no predefined structure required
+- Optimized for horizontal scaling (Scale-Out)
+- Use cases: real-time apps, IoT, mobile apps
+- Examples: DynamoDB, DocumentDB
+
+> 📝 **Exam Tip:** SQL = structured data / transactions. NoSQL = flexible schema / massive scale.
+
+---
+
+## 2. Amazon RDS — The Relational DB Workhorse
+
+**RDS (Relational Database Service)** is a fully managed relational database service.
+
+### Supported Engines
+
+MySQL, PostgreSQL, MariaDB, Oracle, SQL Server, Amazon Aurora
+
+### EC2 Self-Managed DB vs RDS
+
+| Feature | EC2 (Self-Managed) | RDS |
+|---------|-------------------|-----|
+| OS patching | Manual | AWS automated |
+| Backups | Manual | Automated + Point-in-Time Restore |
+| High availability | Manual setup | Multi-AZ built-in |
+| Read Replicas | Manual | Up to 5, easy to create |
+| SSH access | ✅ Yes | ❌ **No** ← Exam tip! |
+
+> 📝 **Exam Tip:** You **cannot SSH** into RDS instances — AWS manages the underlying infrastructure.
+
+### RDS Deployment Options
+
+| Option | Purpose | Key Detail |
+|--------|---------|-----------|
+| **Read Replicas** | Improve read performance | Async replication, up to 5, writes go to main DB only |
+| **Multi-AZ** | High availability | Sync replication, automatic failover, 1 standby |
+| **Multi-Region** | Disaster recovery + global reads | Protects against region failure, replication costs apply |
+
+> 📝 **Exam Tips:**
+> - Read Replicas → **read performance**
+> - Multi-AZ → **high availability** (AZ failure)
+> - Multi-Region → **disaster recovery** (region failure)
+
+---
+
+## 3. Amazon Aurora — Premium RDS
+
+Aurora is AWS's own high-performance relational database engine.
+
+| Feature | Detail |
+|---------|--------|
+| **Compatibility** | MySQL and PostgreSQL compatible |
+| **Performance** | 5x faster than MySQL, 3x faster than PostgreSQL |
+| **Storage** | Auto-scales up to 64 TB |
+| **Read Replicas** | Up to 15 |
+| **Cost** | ~20% more than RDS — but more efficient |
+
+> 📝 **Exam Tip:** Aurora = enterprise-grade workloads needing **high performance and availability**.
+
+---
+
+## 4. Amazon ElastiCache — In-Memory Caching
+
+Caches frequent query results in **memory** to reduce DB load and boost response speed.
+
+| Engine | Characteristics |
+|--------|----------------|
+| **Redis** | Replication, persistence, advanced features |
+| **Memcached** | Simple, memory-only, lightweight |
+
+> 📝 **Exam Tip:** ElastiCache = **high-performance in-memory cache** placed in front of a database. AWS handles OS patching and backups automatically.
+
+---
+
+## 5. Amazon DynamoDB — Serverless NoSQL
+
+DynamoDB is AWS's fully managed **serverless NoSQL** database.
+
+| Feature | Detail |
+|---------|--------|
+| Data model | Key-value + document |
+| Latency | **Single-digit milliseconds** |
+| Scale | Millions of req/sec, trillions of rows, 100s of TB |
+| Availability | Auto-replicated across **3 AZs** |
+| Management | Serverless — no infrastructure to manage |
+
+### DynamoDB Accelerator (DAX)
+
+In-memory cache purpose-built for DynamoDB — reduces latency from **milliseconds → microseconds**.
+
+### DynamoDB Global Tables
+
+- **Multi-region** replication (multi-master)
+- Low-latency reads and writes from anywhere in the world
+
+> 📝 **Exam Tips:** DynamoDB = **serverless + NoSQL + single-digit ms latency**
+> DAX = DynamoDB cache → **microsecond** response
+
+---
+
+## 6. Analytics & Data Warehouse Services
+
+### Amazon Redshift — Data Warehouse
+
+- Optimized for **OLAP** (Online Analytical Processing) — big data analytics
+- **Columnar storage** → fast aggregation queries
+- 10x better performance than other data warehouses, petabyte-scale
+- SQL interface, integrates with QuickSight and Tableau
+
+> 📝 **Exam Tip:** Transactional (OLTP) = RDS / Large-scale analytics (OLAP) = **Redshift**
+
+### Amazon Athena — Serverless SQL Queries
+
+- Query data stored in **S3 using serverless SQL** — no infrastructure needed
+- **Pay-per-query** pricing ($5 per TB scanned)
+- Supports CSV, JSON, Parquet, ORC formats
+- Use cases: analyze VPC Flow Logs, ELB logs, CloudTrail trails
+
+> 📝 **Exam Tip:** "Analyze S3 data with SQL" → **Athena**
+
+### Amazon EMR — Big Data Processing
+
+- Managed **Hadoop/Spark/Hive** clusters on EC2
+- Handles hundreds of EC2 instances automatically
+- Use cases: large-scale ETL, machine learning, web indexing
+
+### Amazon QuickSight — BI Dashboards
+
+- Serverless **Business Intelligence** visualization tool
+- Connects to RDS, Redshift, S3, and more
+- **Per-session pricing**, ML-powered insights
+- Use cases: executive dashboards, ad-hoc data analysis
+
+### AWS Glue — Serverless ETL
+
+- Fully managed serverless **ETL (Extract, Transform, Load)** service
+- **Glue Data Catalog**: centralized metadata repository integrated with Athena, Redshift, EMR
+
+---
+
+## 7. Specialized Database Services
+
+### DocumentDB — MongoDB-Compatible
+
+- AWS-managed **MongoDB-compatible** document database
+- Optimized for JSON storage, Multi-AZ, auto-scales to 64 TB
+- Use cases: content management, catalogs, mobile backends
+
+### Amazon Neptune — Graph Database
+
+- Fully managed **graph database**
+- Stores billions of relationships, queries in milliseconds
+- Use cases: social networks, fraud detection, recommendation engines, knowledge graphs
+
+### Amazon QLDB — Ledger Database
+
+- **Quantum Ledger Database** — immutable, cryptographically verifiable transaction journal
+- Every change is permanently recorded and cannot be modified
+- Centralized (no decentralization) → compliant with financial regulations
+
+### Amazon Managed Blockchain
+
+- Supports **Hyperledger Fabric** and **Ethereum**
+- Multi-party transactions without a trusted central authority
+- Build public or private blockchain networks
+
+> 📝 **Exam Tips:**
+> - QLDB = **centralized** immutable ledger (financial audits)
+> - Managed Blockchain = **decentralized** blockchain
+
+### AWS DMS — Database Migration Service
+
+- Migrate databases to AWS **securely and with minimal downtime**
+- **Source database stays operational** during migration
+- Supports homogeneous (Oracle → Oracle) and heterogeneous (SQL Server → Aurora) migrations
+
+---
+
+## 8. Quick Reference Comparison Table
+
+| Service | Type | Key Keywords |
+|---------|------|-------------|
+| **RDS** | Relational (OLTP) | SQL, fully managed, Multi-AZ, Read Replicas |
+| **Aurora** | Relational (OLTP) | MySQL/PostgreSQL compatible, 5x faster |
+| **ElastiCache** | In-memory cache | Redis/Memcached, ultra-low latency |
+| **DynamoDB** | NoSQL (serverless) | Key-value, ms latency, auto-scaling |
+| **DAX** | DynamoDB cache | Microsecond response |
+| **Redshift** | Data warehouse (OLAP) | Columnar storage, big data analytics |
+| **EMR** | Big data processing | Hadoop/Spark, EC2 clusters |
+| **Athena** | Serverless query | SQL on S3, $5/TB |
+| **QuickSight** | BI visualization | Dashboards, serverless |
+| **DocumentDB** | NoSQL document DB | MongoDB-compatible, JSON |
+| **Neptune** | Graph DB | Social networks, recommendations |
+| **QLDB** | Ledger DB | Immutable records, financial audit |
+| **Managed Blockchain** | Blockchain | Hyperledger/Ethereum, decentralized |
+| **Glue** | ETL | Serverless, Data Catalog |
+| **DMS** | DB migration | Source DB stays live during migration |
+
+---
+
+## 🎯 Last-Minute Exam Checklist
+
+- [ ] RDS = SQL relational DB, **no SSH access**, AWS handles patches/backups
+- [ ] Read Replicas (read performance) vs Multi-AZ (high availability) vs Multi-Region (disaster recovery)
+- [ ] Aurora = MySQL/PostgreSQL compatible, **5x faster than MySQL**
+- [ ] DynamoDB = **serverless NoSQL**, single-digit ms latency
+- [ ] DAX = DynamoDB cache → **microsecond** latency
+- [ ] Redshift = **OLAP** data warehouse (analytics), NOT for OLTP
+- [ ] Athena = **serverless SQL queries on S3 data**
+- [ ] QLDB = immutable ledger (centralized) / Managed Blockchain = decentralized
+- [ ] Glue = serverless **ETL** + Data Catalog
+- [ ] DMS = **source DB stays operational** during migration

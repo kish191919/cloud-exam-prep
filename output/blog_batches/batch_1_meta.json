@@ -1,0 +1,47 @@
+[
+  {
+    "idx": 0,
+    "id": "25debf4c-920d-4ba3-83f2-f86553725793",
+    "slug": "prompt-engineering",
+    "source_lang": "en",
+    "title": "Prompt Engineering | AIF-C01",
+    "excerpt": "Prompt engineering essentials — Zero-Shot, Few-Shot, Chain of Thought, RAG techniques, optimization parameters, and prompt injection security.",
+    "content_file": "output/blog_batches/batch_1_post_0_content.txt"
+  },
+  {
+    "idx": 1,
+    "id": "d7757e2c-8104-44d6-a30d-e9bbf0156b67",
+    "slug": "cloud-computing-basics",
+    "source_lang": "en",
+    "title": "Cloud Computing Basics to the Shared Responsibility Model | CLF-C02",
+    "excerpt": "Master CLF-C02 essentials: cloud deployment models, IaaS/PaaS/SaaS, AWS global infrastructure, and the Shared Responsibility Model explained simply.",
+    "content_file": "output/blog_batches/batch_1_post_1_content.txt"
+  },
+  {
+    "idx": 2,
+    "id": "43b51e47-4536-4018-86b0-fe74414bbf8d",
+    "slug": "ec2-virtual-machines",
+    "source_lang": "en",
+    "title": "AWS EC2 | CLF-C02",
+    "excerpt": "Master AWS EC2 for CLF-C02 — instance types, security groups, and purchasing options (On-Demand, Reserved, Spot, and more) explained with key exam tips.",
+    "content_file": "output/blog_batches/batch_1_post_2_content.txt"
+  },
+  {
+    "idx": 3,
+    "id": "e521478d-ba96-43c6-ba4b-9e0c8106f7ba",
+    "slug": "athena",
+    "source_lang": "en",
+    "title": "Amazon Athena Deep Dive | DEA-C01",
+    "excerpt": "Any time a question scenario mentions \"query S3 data with SQL without managing infrastructure,\" the answer is Athena. Remember: it's serverless and you pay only",
+    "content_file": "output/blog_batches/batch_1_post_3_content.txt"
+  },
+  {
+    "idx": 4,
+    "id": "6ed12e84-63dc-462e-93e4-62ae56510f8f",
+    "slug": "glue",
+    "source_lang": "en",
+    "title": "AWS Glue Complete Guide | DEA-C01",
+    "excerpt": "As a fully managed serverless ETL service, it automates the entire extract-transform-load lifecycle.",
+    "content_file": "output/blog_batches/batch_1_post_4_content.txt"
+  }
+]

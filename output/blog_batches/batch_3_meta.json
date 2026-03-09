@@ -1,0 +1,47 @@
+[
+  {
+    "idx": 0,
+    "id": "cab683eb-4a91-4d5d-bf1e-a386b68b7c55",
+    "slug": "amazon-sagemaker",
+    "source_lang": "en",
+    "title": "Amazon SageMaker | AIF-C01",
+    "excerpt": "Master all 16 SageMaker features in one post — inference types, Clarify, Ground Truth, Pipelines, JumpStart, and more. The definitive SageMaker study guide.",
+    "content_file": "output/blog_batches/batch_3_post_0_content.txt"
+  },
+  {
+    "idx": 1,
+    "id": "306609d4-f76c-4cd2-b192-955f31de1253",
+    "slug": "responsible-ai-and-security",
+    "source_lang": "en",
+    "title": "Responsible AI and Security | AIF-C01",
+    "excerpt": "8 Core dimensions, key AWS services like Bedrock & SageMaker Clarify, plus interpretability vs explainability explained simply.",
+    "content_file": "output/blog_batches/batch_3_post_1_content.txt"
+  },
+  {
+    "idx": 2,
+    "id": "950dde75-e63b-4f45-82e2-0938c16f271b",
+    "slug": "security-services-ai",
+    "source_lang": "en",
+    "title": "Core Security Services at a Glance | CIF-C01",
+    "excerpt": "Master AWS security services  - IAM, S3, Lambda, VPC, CloudTrail & more explained simply with exam tips.",
+    "content_file": "output/blog_batches/batch_3_post_2_content.txt"
+  },
+  {
+    "idx": 3,
+    "id": "3c3032ba-39a6-4949-bd8c-8c4b1b726713",
+    "slug": "genai-capabilities-challenges",
+    "source_lang": "en",
+    "title": "GenAI Capabilities & Challenges | AIF-C01",
+    "excerpt": "Master GenAI capabilities and key challenges — hallucinations, toxicity, prompt injection & more",
+    "content_file": "output/blog_batches/batch_3_post_3_content.txt"
+  },
+  {
+    "idx": 4,
+    "id": "3169d5cb-5c7a-4733-a6cc-15f8803ebd3b",
+    "slug": "aws-clf-c02-complete-study-guide",
+    "source_lang": "en",
+    "title": "AWS Cloud Practitioner Complete Study Guide | CLF-C02",
+    "excerpt": "Master all 4 CLF-C02 domains—Cloud Concepts, Security, Technology, and Billing—with exam tips and key AWS services explained simply.",
+    "content_file": "output/blog_batches/batch_3_post_4_content.txt"
+  }
+]
