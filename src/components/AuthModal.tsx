@@ -57,12 +57,19 @@ const NaverIcon = () => (
   </svg>
 );
 
+const AppleIcon = () => (
+  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
+    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.7 9.05 7.42c1.39.07 2.35.74 3.15.8 1.2-.24 2.35-.93 3.61-.84 1.54.12 2.7.72 3.44 1.84-3.14 1.88-2.38 5.98.48 7.13-.57 1.56-1.33 3.1-2.68 3.93zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+  </svg>
+);
+
 // ─── Login Form ────────────────────────────────────────────────────────────────
 const LoginForm = ({ onSuccess, onForgotPassword }: { onSuccess: () => void; onForgotPassword: () => void }) => {
   const { t } = useTranslation('auth');
-  const { signInWithEmail, signInWithGoogle, signInWithKakao, signInWithNaver } = useAuth();
+  const { signInWithEmail, signInWithGoogle, signInWithApple, signInWithKakao, signInWithNaver } = useAuth();
   const [showPw, setShowPw] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [appleLoading, setAppleLoading] = useState(false);
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
@@ -87,6 +94,15 @@ const LoginForm = ({ onSuccess, onForgotPassword }: { onSuccess: () => void; onF
     }
   };
 
+  const handleApple = async () => {
+    setAppleLoading(true);
+    const { error } = await signInWithApple();
+    if (error) {
+      toast.error(t('socialLoginFailed'));
+      setAppleLoading(false);
+    }
+  };
+
   const handleKakao = () => {
     signInWithKakao();
   };
@@ -107,6 +123,18 @@ const LoginForm = ({ onSuccess, onForgotPassword }: { onSuccess: () => void; onF
       >
         {googleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <GoogleIcon />}
         {t('continueWithGoogle')}
+      </Button>
+
+      {/* Apple */}
+      <Button
+        type="button"
+        variant="outline"
+        className="hidden w-full gap-3 h-12 text-sm font-medium"
+        onClick={handleApple}
+        disabled={appleLoading}
+      >
+        {appleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <AppleIcon />}
+        {t('continueWithApple')}
       </Button>
 
       {/* Kakao */}
@@ -257,10 +285,11 @@ const ForgotPasswordForm = ({ onBack }: { onBack: () => void }) => {
 // ─── Signup Form ───────────────────────────────────────────────────────────────
 const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const { t } = useTranslation('auth');
-  const { signUpWithEmail, signInWithGoogle, signInWithKakao, signInWithNaver } = useAuth();
+  const { signUpWithEmail, signInWithGoogle, signInWithApple, signInWithKakao, signInWithNaver } = useAuth();
   const [showPw, setShowPw] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [appleLoading, setAppleLoading] = useState(false);
   const [done, setDone] = useState(false);
   const [emailExists, setEmailExists] = useState(false);
 
@@ -285,6 +314,15 @@ const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
     if (error) {
       toast.error(t('socialLoginFailed'));
       setGoogleLoading(false);
+    }
+  };
+
+  const handleApple = async () => {
+    setAppleLoading(true);
+    const { error } = await signInWithApple();
+    if (error) {
+      toast.error(t('socialLoginFailed'));
+      setAppleLoading(false);
     }
   };
 
@@ -334,6 +372,18 @@ const SignupForm = ({ onSuccess }: { onSuccess: () => void }) => {
       >
         {googleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <GoogleIcon />}
         {t('signupWithGoogle')}
+      </Button>
+
+      {/* Apple */}
+      <Button
+        type="button"
+        variant="outline"
+        className="hidden w-full gap-3 h-12 text-sm font-medium"
+        onClick={handleApple}
+        disabled={appleLoading}
+      >
+        {appleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <AppleIcon />}
+        {t('signupWithApple')}
       </Button>
 
       {/* Kakao */}

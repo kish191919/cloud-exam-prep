@@ -59,9 +59,11 @@ const Footer = () => {
             © {year} CloudMaster. All rights reserved.
           </p>
         </div>
-        <p className="text-xs text-muted-foreground text-center mt-4 px-4">
-          {t('pages:index.footer.nonAffiliation')}
-        </p>
+        <div className="container mx-auto mt-4 px-4">
+          <p className="text-xs text-muted-foreground text-center">
+            {t('pages:index.footer.nonAffiliation')}
+          </p>
+        </div>
       </footer>
 
       <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
