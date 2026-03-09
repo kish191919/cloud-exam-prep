@@ -9,10 +9,10 @@ import {
 import { GEO_LANG_CACHE_KEY } from '@/hooks/useGeoLanguage';
 
 const LANGUAGES = [
-  { code: 'ko', name: '한국어', flag: '🇰🇷' },
   { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'pt', name: 'Português', flag: '🇧🇷' },
   { code: 'es', name: 'Español', flag: '🇪🇸' },
+  { code: 'pt', name: 'Português', flag: '🇧🇷' },
+  { code: 'ko', name: '한국어', flag: '🇰🇷' },
   { code: 'ja', name: '日本語', flag: '🇯🇵' },
 ];
 
