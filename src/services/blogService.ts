@@ -12,10 +12,19 @@ export interface BlogPost {
   tags: string[];
   title: string;
   titleEn: string | null;
+  titleJa: string | null;
+  titleEs: string | null;
+  titlePt: string | null;
   excerpt: string | null;
   excerptEn: string | null;
+  excerptJa: string | null;
+  excerptEs: string | null;
+  excerptPt: string | null;
   content: string;
   contentEn: string | null;
+  contentJa: string | null;
+  contentEs: string | null;
+  contentPt: string | null;
   coverImageUrl: string | null;
   readTimeMinutes: number | null;
   refLinks: Json;
@@ -36,10 +45,19 @@ export interface BlogPostInput {
   tags?: string[];
   title: string;
   titleEn?: string | null;
+  titleJa?: string | null;
+  titleEs?: string | null;
+  titlePt?: string | null;
   excerpt?: string | null;
   excerptEn?: string | null;
+  excerptJa?: string | null;
+  excerptEs?: string | null;
+  excerptPt?: string | null;
   content: string;
   contentEn?: string | null;
+  contentJa?: string | null;
+  contentEs?: string | null;
+  contentPt?: string | null;
   coverImageUrl?: string | null;
   readTimeMinutes?: number | null;
   refLinks?: Json;
@@ -58,10 +76,19 @@ function toBlogPost(row: Record<string, unknown>): BlogPost {
     tags:            (row.tags as string[]) ?? [],
     title:           row.title as string,
     titleEn:         (row.title_en as string | null) ?? null,
+    titleJa:         (row.title_ja as string | null) ?? null,
+    titleEs:         (row.title_es as string | null) ?? null,
+    titlePt:         (row.title_pt as string | null) ?? null,
     excerpt:         (row.excerpt as string | null) ?? null,
     excerptEn:       (row.excerpt_en as string | null) ?? null,
+    excerptJa:       (row.excerpt_ja as string | null) ?? null,
+    excerptEs:       (row.excerpt_es as string | null) ?? null,
+    excerptPt:       (row.excerpt_pt as string | null) ?? null,
     content:         row.content as string,
     contentEn:       (row.content_en as string | null) ?? null,
+    contentJa:       (row.content_ja as string | null) ?? null,
+    contentEs:       (row.content_es as string | null) ?? null,
+    contentPt:       (row.content_pt as string | null) ?? null,
     coverImageUrl:   (row.cover_image_url as string | null) ?? null,
     readTimeMinutes: (row.read_time_minutes as number | null) ?? null,
     refLinks:        (row.ref_links as Json) ?? [],
@@ -177,10 +204,19 @@ export async function createBlogPost(input: BlogPostInput): Promise<string> {
       tags:             input.tags ?? [],
       title:            input.title,
       title_en:         input.titleEn ?? null,
+      title_ja:         input.titleJa ?? null,
+      title_es:         input.titleEs ?? null,
+      title_pt:         input.titlePt ?? null,
       excerpt:          input.excerpt ?? null,
       excerpt_en:       input.excerptEn ?? null,
+      excerpt_ja:       input.excerptJa ?? null,
+      excerpt_es:       input.excerptEs ?? null,
+      excerpt_pt:       input.excerptPt ?? null,
       content:          input.content,
       content_en:       input.contentEn ?? null,
+      content_ja:       input.contentJa ?? null,
+      content_es:       input.contentEs ?? null,
+      content_pt:       input.contentPt ?? null,
       cover_image_url:  input.coverImageUrl ?? null,
       read_time_minutes: readTime,
       ref_links:        input.refLinks ?? [],
@@ -207,13 +243,22 @@ export async function updateBlogPost(
   if (input.tags            !== undefined) payload.tags             = input.tags;
   if (input.title           !== undefined) payload.title            = input.title;
   if (input.titleEn         !== undefined) payload.title_en         = input.titleEn;
+  if (input.titleJa         !== undefined) payload.title_ja         = input.titleJa;
+  if (input.titleEs         !== undefined) payload.title_es         = input.titleEs;
+  if (input.titlePt         !== undefined) payload.title_pt         = input.titlePt;
   if (input.excerpt         !== undefined) payload.excerpt          = input.excerpt;
   if (input.excerptEn       !== undefined) payload.excerpt_en       = input.excerptEn;
+  if (input.excerptJa       !== undefined) payload.excerpt_ja       = input.excerptJa;
+  if (input.excerptEs       !== undefined) payload.excerpt_es       = input.excerptEs;
+  if (input.excerptPt       !== undefined) payload.excerpt_pt       = input.excerptPt;
   if (input.content         !== undefined) {
     payload.content           = input.content;
     payload.read_time_minutes = input.readTimeMinutes ?? calcReadTime(input.content);
   }
   if (input.contentEn       !== undefined) payload.content_en       = input.contentEn;
+  if (input.contentJa       !== undefined) payload.content_ja       = input.contentJa;
+  if (input.contentEs       !== undefined) payload.content_es       = input.contentEs;
+  if (input.contentPt       !== undefined) payload.content_pt       = input.contentPt;
   if (input.coverImageUrl   !== undefined) payload.cover_image_url  = input.coverImageUrl;
   if (input.refLinks        !== undefined) payload.ref_links        = input.refLinks;
   if (input.isPublished     !== undefined) {

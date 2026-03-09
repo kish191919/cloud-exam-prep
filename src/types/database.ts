@@ -53,11 +53,20 @@ export interface Database {
           exam_id: string
           text: string
           text_en: string | null
+          text_pt: string | null
+          text_es: string | null
+          text_ja: string | null
           correct_option_id: string
           explanation: string
           explanation_en: string | null
+          explanation_pt: string | null
+          explanation_es: string | null
+          explanation_ja: string | null
           key_points: string | null
           key_points_en: string | null
+          key_points_pt: string | null
+          key_points_es: string | null
+          key_points_ja: string | null
           ref_links: Json
           created_at: string
           updated_at: string
@@ -67,11 +76,20 @@ export interface Database {
           exam_id: string
           text: string
           text_en?: string | null
+          text_pt?: string | null
+          text_es?: string | null
+          text_ja?: string | null
           correct_option_id: string
           explanation: string
           explanation_en?: string | null
+          explanation_pt?: string | null
+          explanation_es?: string | null
+          explanation_ja?: string | null
           key_points?: string | null
           key_points_en?: string | null
+          key_points_pt?: string | null
+          key_points_es?: string | null
+          key_points_ja?: string | null
           ref_links?: Json
           created_at?: string
           updated_at?: string
@@ -81,11 +99,20 @@ export interface Database {
           exam_id?: string
           text?: string
           text_en?: string | null
+          text_pt?: string | null
+          text_es?: string | null
+          text_ja?: string | null
           correct_option_id?: string
           explanation?: string
           explanation_en?: string | null
+          explanation_pt?: string | null
+          explanation_es?: string | null
+          explanation_ja?: string | null
           key_points?: string | null
           key_points_en?: string | null
+          key_points_pt?: string | null
+          key_points_es?: string | null
+          key_points_ja?: string | null
           ref_links?: Json
           created_at?: string
           updated_at?: string
@@ -98,8 +125,14 @@ export interface Database {
           option_id: string
           text: string
           text_en: string | null
+          text_pt: string | null
+          text_es: string | null
+          text_ja: string | null
           explanation: string | null
           explanation_en: string | null
+          explanation_pt: string | null
+          explanation_es: string | null
+          explanation_ja: string | null
           sort_order: number
         }
         Insert: {
@@ -108,8 +141,14 @@ export interface Database {
           option_id: string
           text: string
           text_en?: string | null
+          text_pt?: string | null
+          text_es?: string | null
+          text_ja?: string | null
           explanation?: string | null
           explanation_en?: string | null
+          explanation_pt?: string | null
+          explanation_es?: string | null
+          explanation_ja?: string | null
           sort_order: number
         }
         Update: {
@@ -118,8 +157,14 @@ export interface Database {
           option_id?: string
           text?: string
           text_en?: string | null
+          text_pt?: string | null
+          text_es?: string | null
+          text_ja?: string | null
           explanation?: string | null
           explanation_en?: string | null
+          explanation_pt?: string | null
+          explanation_es?: string | null
+          explanation_ja?: string | null
           sort_order?: number
         }
       }

@@ -45,14 +45,28 @@ const PROVIDER_CONFIG: Record<BlogProvider | 'all', {
 
 function BlogCard({ post }: { post: BlogPost }) {
   const { i18n } = useTranslation('pages');
-  const isKo = i18n.language === 'ko';
+  const lang = i18n.language;
+  const isKo = lang === 'ko';
 
-  const title   = !isKo && post.titleEn   ? post.titleEn   : post.title;
-  const excerpt = !isKo && post.excerptEn ? post.excerptEn : (post.excerpt ?? '');
+  const title = (
+    lang === 'ja' && post.titleJa ? post.titleJa :
+    lang === 'es' && post.titleEs ? post.titleEs :
+    lang === 'pt' && post.titlePt ? post.titlePt :
+    lang !== 'ko' && post.titleEn ? post.titleEn :
+    post.title
+  );
+  const excerpt = (
+    lang === 'ja' && post.excerptJa ? post.excerptJa :
+    lang === 'es' && post.excerptEs ? post.excerptEs :
+    lang === 'pt' && post.excerptPt ? post.excerptPt :
+    lang !== 'ko' && post.excerptEn ? post.excerptEn :
+    (post.excerpt ?? '')
+  );
   const readMin = post.readTimeMinutes ?? 1;
   const providerCfg = PROVIDER_CONFIG[post.provider];
+  const dateLocale = isKo ? 'ko-KR' : lang === 'ja' ? 'ja-JP' : lang === 'es' ? 'es-ES' : lang === 'pt' ? 'pt-BR' : 'en-US';
   const date = post.publishedAt
-    ? new Date(post.publishedAt).toLocaleDateString(isKo ? 'ko-KR' : 'en-US', {
+    ? new Date(post.publishedAt).toLocaleDateString(dateLocale, {
         month: 'short', day: 'numeric', year: 'numeric',
       })
     : '';

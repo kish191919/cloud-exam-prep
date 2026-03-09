@@ -182,17 +182,17 @@
     },
     "whyCloud": {
       "title": "Why Cloud Certifications?",
-      "subtitle": "In the AI era, cloud is no longer optional — it's the foundation of everything",
+      "subtitle": "In the AI era, cloud is no longer optional. It's the foundation of everything",
       "items": [
         {
           "icon": "Brain",
           "title": "The Backbone of Every AI Service",
-          "desc": "ChatGPT, image generation AI, self-driving cars — every AI service runs on cloud infrastructure. Understanding cloud is the first step to truly understanding AI."
+          "desc": "ChatGPT, Image generation AI, Self-driving Cars. Every AI service runs on cloud infrastructure. Understanding cloud is the first step to truly understanding AI."
         },
         {
           "icon": "Database",
           "title": "The Engine Behind Big Data & ML",
-          "desc": "Data pipelines, ML model deployment, real-time analytics — all built on AWS, GCP, or AZURE. A cloud certification is non-negotiable for any data career."
+          "desc": "Data pipelines, ML model deployment, Real-time analytics. All built on AWS, GCP, or AZURE. A cloud certification is non-negotiable for any data career."
         },
         {
           "icon": "TrendingUp",

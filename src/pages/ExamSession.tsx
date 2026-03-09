@@ -16,6 +16,7 @@ import { seededShuffle } from '@/utils/shuffle';
 import { useAuth } from '@/contexts/AuthContext';
 import ThemeToggle from '@/components/ThemeToggle';
 import FontSizeToggle from '@/components/FontSizeToggle';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useFullscreen } from '@/hooks/useFullscreen';
 
@@ -318,22 +319,8 @@ const ExamSession = () => {
           {/* Font size toggle */}
           <FontSizeToggle />
 
-          {/* Language toggle */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => i18n.changeLanguage(isKo ? 'en' : 'ko')}
-                className="text-xs sm:text-sm px-2 sm:px-2.5 h-8 text-muted-foreground hover:text-foreground"
-              >
-                {isKo ? '🇰🇷 KO' : '🇺🇸 EN'}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{isKo ? '영어로 전환 / Switch to English' : '한국어로 전환 / Switch to Korean'}</p>
-            </TooltipContent>
-          </Tooltip>
+          {/* Language selector */}
+          <LanguageSwitcher />
 
           {/* Submit: only in exam mode */}
           {isExamMode && (

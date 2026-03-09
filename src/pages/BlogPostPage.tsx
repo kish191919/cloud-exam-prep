@@ -28,8 +28,15 @@ const PROVIDER_COLORS: Record<string, string> = {
 
 function RelatedPostCard({ post }: { post: BlogPost }) {
   const { i18n } = useTranslation('pages');
-  const isKo = i18n.language === 'ko';
-  const title = !isKo && post.titleEn ? post.titleEn : post.title;
+  const lang = i18n.language;
+  const title = (
+    lang === 'ja' && post.titleJa ? post.titleJa :
+    lang === 'es' && post.titleEs ? post.titleEs :
+    lang === 'pt' && post.titlePt ? post.titlePt :
+    lang !== 'ko' && post.titleEn ? post.titleEn :
+    post.title
+  );
+  const isKo = lang === 'ko';
   const readMin = post.readTimeMinutes ?? 1;
 
   return (
@@ -146,7 +153,8 @@ const mdComponents = {
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { t, i18n } = useTranslation('pages');
-  const isKo = i18n.language === 'ko';
+  const lang = i18n.language;
+  const isKo = lang === 'ko';
 
   const [post, setPost] = useState<BlogPost | null>(null);
   const [related, setRelated] = useState<BlogPost[]>([]);
@@ -200,12 +208,31 @@ const BlogPostPage = () => {
     );
   }
 
-  const title   = !isKo && post.titleEn   ? post.titleEn   : post.title;
-  const content = !isKo && post.contentEn ? post.contentEn : post.content;
-  const excerpt = !isKo && post.excerptEn ? post.excerptEn : (post.excerpt ?? '');
+  const title = (
+    lang === 'ja' && post.titleJa ? post.titleJa :
+    lang === 'es' && post.titleEs ? post.titleEs :
+    lang === 'pt' && post.titlePt ? post.titlePt :
+    lang !== 'ko' && post.titleEn ? post.titleEn :
+    post.title
+  );
+  const content = (
+    lang === 'ja' && post.contentJa ? post.contentJa :
+    lang === 'es' && post.contentEs ? post.contentEs :
+    lang === 'pt' && post.contentPt ? post.contentPt :
+    lang !== 'ko' && post.contentEn ? post.contentEn :
+    post.content
+  );
+  const excerpt = (
+    lang === 'ja' && post.excerptJa ? post.excerptJa :
+    lang === 'es' && post.excerptEs ? post.excerptEs :
+    lang === 'pt' && post.excerptPt ? post.excerptPt :
+    lang !== 'ko' && post.excerptEn ? post.excerptEn :
+    (post.excerpt ?? '')
+  );
   const readMin = post.readTimeMinutes ?? 1;
+  const dateLocale = isKo ? 'ko-KR' : lang === 'ja' ? 'ja-JP' : lang === 'es' ? 'es-ES' : lang === 'pt' ? 'pt-BR' : 'en-US';
   const dateStr = post.publishedAt
-    ? new Date(post.publishedAt).toLocaleDateString(isKo ? 'ko-KR' : 'en-US', {
+    ? new Date(post.publishedAt).toLocaleDateString(dateLocale, {
         year: 'numeric', month: 'long', day: 'numeric',
       })
     : '';
@@ -312,41 +339,44 @@ const BlogPostPage = () => {
                 )}
                 <span className="flex items-center gap-1">
                   <Clock className="h-3.5 w-3.5" />
-                  {isKo ? `${readMin}분 읽기` : `${readMin} min read`}
+                  {isKo ? `${readMin}분 읽기` : lang === 'ja' ? `${readMin}分` : lang === 'es' ? `${readMin} min de lectura` : lang === 'pt' ? `${readMin} min de leitura` : `${readMin} min read`}
                 </span>
 
-                {/* 한/영 토글 — 영어 버전이 있는 포스트에만 표시 */}
-                {(post.titleEn || post.contentEn) && (
-                  <div className="flex items-center gap-0.5 rounded-full border border-border overflow-hidden text-[10px] font-semibold">
-                    <button
-                      onClick={() => i18n.changeLanguage('ko')}
-                      className={`px-2.5 py-1 transition-colors ${
-                        isKo
-                          ? 'bg-accent text-accent-foreground'
-                          : 'text-muted-foreground hover:bg-muted'
-                      }`}
-                    >
-                      KO
-                    </button>
-                    <button
-                      onClick={() => i18n.changeLanguage('en')}
-                      className={`px-2.5 py-1 transition-colors ${
-                        !isKo
-                          ? 'bg-accent text-accent-foreground'
-                          : 'text-muted-foreground hover:bg-muted'
-                      }`}
-                    >
-                      EN
-                    </button>
-                  </div>
-                )}
+                {/* 언어 토글 — 번역된 언어 버전이 있는 포스트에만 표시 */}
+                {(() => {
+                  const langButtons = [
+                    { code: 'ko', label: 'KO', hasContent: true },
+                    { code: 'en', label: 'EN', hasContent: !!(post.titleEn || post.contentEn) },
+                    { code: 'ja', label: 'JA', hasContent: !!(post.titleJa || post.contentJa) },
+                    { code: 'es', label: 'ES', hasContent: !!(post.titleEs || post.contentEs) },
+                    { code: 'pt', label: 'PT', hasContent: !!(post.titlePt || post.contentPt) },
+                  ].filter(b => b.hasContent);
+                  if (langButtons.length < 2) return null;
+                  return (
+                    <div className="flex items-center gap-0.5 rounded-full border border-border overflow-hidden text-[10px] font-semibold">
+                      {langButtons.map(b => (
+                        <button
+                          key={b.code}
+                          onClick={() => i18n.changeLanguage(b.code)}
+                          className={`px-2.5 py-1 transition-colors ${
+                            lang === b.code
+                              ? 'bg-accent text-accent-foreground'
+                              : 'text-muted-foreground hover:bg-muted'
+                          }`}
+                        >
+                          {b.label}
+                        </button>
+                      ))}
+                    </div>
+                  );
+                })()}
 
                 <button
                   onClick={handleShare}
                   className="ml-auto flex items-center gap-1 hover:text-accent transition-colors"
                 >
                   <Share2 className="h-3.5 w-3.5" />
-                  {isKo ? '공유' : 'Share'}
+                  {isKo ? '공유' : lang === 'ja' ? '共有' : lang === 'es' ? 'Compartir' : lang === 'pt' ? 'Compartilhar' : 'Share'}
                 </button>
               </div>
 
@@ -392,7 +422,7 @@ const BlogPostPage = () => {
               {refLinks.length > 0 && (
                 <div className="mt-6 p-4 rounded-lg bg-muted/50 border border-border">
                   <p className="text-xs font-semibold text-muted-foreground mb-2">
-                    {isKo ? '참고 자료' : 'References'}
+                    {isKo ? '참고 자료' : lang === 'ja' ? '参考資料' : lang === 'es' ? 'Referencias' : lang === 'pt' ? 'Referências' : 'References'}
                   </p>
                   <ul className="space-y-1">
                     {refLinks.map((link, i) => (
@@ -432,8 +462,10 @@ const BlogPostPage = () => {
                     {t('blog.relatedQuestions')}
                   </p>
                   <p className="text-xs text-muted-foreground mb-3">
-                    {isKo
-                      ? '이 내용을 시험 문제로 확인해보세요'
+                    {isKo ? '이 내용을 시험 문제로 확인해보세요'
+                      : lang === 'ja' ? '練習問題でこの知識を確認しましょう'
+                      : lang === 'es' ? 'Pon a prueba este conocimiento con preguntas prácticas'
+                      : lang === 'pt' ? 'Teste esse conhecimento com questões práticas'
                       : 'Test this knowledge with practice questions'}
                   </p>
                   <Link to={`/exams`}>

@@ -47,7 +47,14 @@ const QuestionDisplay = ({
   onRequestUpgrade,
 }: QuestionDisplayProps) => {
   const { i18n } = useTranslation();
-  const isEn = i18n.language === 'en';
+  const lang = i18n.language;
+  const loc = (ko: string, en?: string, pt?: string, es?: string, ja?: string): string => {
+    if (lang === 'en' && en) return en;
+    if (lang === 'pt' && pt) return pt;
+    if (lang === 'es' && es) return es;
+    if (lang === 'ja' && ja) return ja;
+    return ko;
+  };
   const { user, openAuthModal } = useAuth();
   const { toast } = useToast();
 
@@ -93,10 +100,12 @@ const QuestionDisplay = ({
     }
   };
 
-  // Select language-appropriate content, falling back to Korean if English not available
-  const questionText = (isEn && question.textEn) ? question.textEn : question.text;
-  const questionExplanation = isEn ? question.explanationEn : question.explanation;
-  const questionKeyPoints = isEn ? question.keyPointsEn : question.keyPoints;
+  // Select language-appropriate content, falling back to Korean if translation not available
+  const questionText = loc(question.text, question.textEn, question.textPt, question.textEs, question.textJa);
+  const questionExplanation = loc(question.explanation, question.explanationEn, question.explanationPt, question.explanationEs, question.explanationJa);
+  const questionKeyPoints = question.keyPoints
+    ? loc(question.keyPoints, question.keyPointsEn, question.keyPointsPt, question.keyPointsEs, question.keyPointsJa)
+    : undefined;
 
   const isStudy = mode === 'study';
   const isPractice = mode === 'practice';
@@ -242,8 +251,8 @@ const QuestionDisplay = ({
 
           // Per-option explanation: show own explanation if available,
           // or fall back to the overall question.explanation for the correct option
-          const optionText = (isEn && option.textEn) ? option.textEn : option.text;
-          const optionExplanation = isEn ? option.explanationEn : option.explanation;
+          const optionText = loc(option.text, option.textEn, option.textPt, option.textEs, option.textJa);
+          const optionExplanation = loc(option.explanation ?? '', option.explanationEn, option.explanationPt, option.explanationEs, option.explanationJa) || undefined;
           const perOptionExplanation = optionExplanation
             || (showFeedback && isCorrect ? questionExplanation : undefined);
 

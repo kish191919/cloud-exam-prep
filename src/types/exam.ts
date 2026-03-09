@@ -2,21 +2,36 @@ export interface QuestionOption {
   id: string;
   text: string;
   textEn?: string;
+  textPt?: string;
+  textEs?: string;
+  textJa?: string;
   explanation?: string;
   explanationEn?: string;
+  explanationPt?: string;
+  explanationEs?: string;
+  explanationJa?: string;
 }
 
 export interface Question {
   id: string;
   text: string;
   textEn?: string;
+  textPt?: string;
+  textEs?: string;
+  textJa?: string;
   options: QuestionOption[];
   correctOptionId: string;
   explanation: string;
   explanationEn?: string;
+  explanationPt?: string;
+  explanationEs?: string;
+  explanationJa?: string;
   tags: string[];
   keyPoints?: string;
   keyPointsEn?: string;
+  keyPointsPt?: string;
+  keyPointsEs?: string;
+  keyPointsJa?: string;
   refLinks?: { name: string; url: string }[];
 }
 
