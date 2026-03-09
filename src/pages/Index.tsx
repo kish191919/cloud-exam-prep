@@ -220,7 +220,7 @@ const Index = () => {
                     {IconComponent && <IconComponent className="h-6 w-6 text-white relative z-10" />}
                   </div>
                   <h3 className="font-bold text-lg md:text-xl mb-3 break-keep">{item.title}</h3>
-                  <p className="text-sm md:text-base text-primary-foreground/70 leading-relaxed break-keep">{item.desc}</p>
+                  <p className="text-sm md:text-base text-primary-foreground/70 leading-relaxed break-words">{item.desc}</p>
                 </div>
               );
             })}
