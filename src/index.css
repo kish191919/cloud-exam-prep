@@ -142,6 +142,7 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
+    overflow-x: hidden;
   }
 
   /* 일본어: keep-all 대신 normal로 자연스러운 글자 단위 줄바꿈 */
