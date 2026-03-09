@@ -228,7 +228,7 @@ def main():
     # .env 로드
     env_path = Path('.env')
     env = load_env(env_path)
-    supabase_url = env.get('SUPABASE_URL', '')
+    supabase_url = env.get('SUPABASE_URL') or env.get('VITE_SUPABASE_URL', '')
     supabase_key = env.get('SUPABASE_SERVICE_ROLE_KEY', '')
 
     if not supabase_url or not supabase_key:

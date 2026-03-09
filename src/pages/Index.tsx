@@ -139,9 +139,11 @@ const Index = () => {
 
         <div className="container mx-auto text-center max-w-5xl relative z-10">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-primary/30 text-sm mb-6 bg-primary/10 backdrop-blur-sm shadow-lg">
-            <Zap className="h-4 w-4 text-accent animate-pulse" />
-            <span className="font-semibold whitespace-nowrap">{t('index.hero.badge')}</span>
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-primary/30 text-sm bg-primary/10 backdrop-blur-sm shadow-lg">
+              <Zap className="h-4 w-4 text-accent animate-pulse" />
+              <span className="font-semibold whitespace-nowrap">{t('index.hero.badge')}</span>
+            </div>
           </div>
 
           {/* Main Title */}
