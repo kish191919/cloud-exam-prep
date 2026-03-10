@@ -26,7 +26,7 @@ const PrivacyKo = () => (
       <p className="text-sm text-muted-foreground mb-8">최종 업데이트: 2026년 2월</p>
 
       <Section title="1. 수집하는 개인정보">
-        <p>CloudMaster는 서비스 제공을 위해 다음 정보를 수집합니다.</p>
+        <p>CloudMasterIT LLC는 서비스 제공을 위해 다음 정보를 수집합니다.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>계정 정보:</strong> 이메일 주소 (회원가입 및 로그인 시)</li>
           <li><strong>학습 데이터:</strong> 시험 세션, 정답/오답 기록, 북마크</li>
@@ -47,7 +47,7 @@ const PrivacyKo = () => (
       </Section>
 
       <Section title="4. 제3자 제공 및 위탁">
-        <p>CloudMaster는 이용자의 개인정보를 제3자에게 판매하거나 임대하지 않습니다. 또한 법령에 의한 경우를 제외하고 제3자에게 제공하지 않습니다. 다만 서비스 운영을 위해 아래 업체에 처리를 위탁합니다.</p>
+        <p>CloudMasterIT LLC는 이용자의 개인정보를 제3자에게 판매하거나 임대하지 않습니다. 또한 법령에 의한 경우를 제외하고 제3자에게 제공하지 않습니다. 다만 서비스 운영을 위해 아래 업체에 처리를 위탁합니다.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Supabase:</strong> 데이터베이스 및 인증 (미국 소재, GDPR 준수)</li>
           <li><strong>Vercel:</strong> 웹 호스팅 (미국 소재)</li>
@@ -65,13 +65,13 @@ const PrivacyKo = () => (
       </Section>
 
       <Section title="6. 쿠키 및 로컬 스토리지">
-        <p>CloudMaster는 로그인 상태 유지 및 학습 데이터 임시 저장을 위해 브라우저의 로컬 스토리지와 세션 스토리지를 사용합니다. 비로그인 상태에서의 학습 데이터는 브라우저 종료 시 자동으로 삭제됩니다.</p>
+        <p>CloudMasterIT LLC는 로그인 상태 유지 및 학습 데이터 임시 저장을 위해 브라우저의 로컬 스토리지와 세션 스토리지를 사용합니다. 비로그인 상태에서의 학습 데이터는 브라우저 종료 시 자동으로 삭제됩니다.</p>
         <p>본 서비스를 이용함으로써 본 방침에 따른 정보 수집 및 이용에 동의한 것으로 간주합니다.</p>
       </Section>
 
       <Section title="7. 개인정보 보호책임자">
         <p>개인정보 처리에 관한 문의 및 불만 처리는 아래로 연락해 주세요.</p>
-        <p>이메일: cloudmasterit.service@gmail.com</p>
+        <p>이메일: admin@cloudmasterit.com</p>
       </Section>
 
       <Section title="8. 방침 변경">
@@ -88,7 +88,7 @@ const PrivacyEn = () => (
       <p className="text-sm text-muted-foreground mb-8">Last updated: February 2026</p>
 
       <Section title="1. Information We Collect">
-        <p>CloudMaster collects the following information to provide our service.</p>
+        <p>CloudMasterIT LLC collects the following information to provide our service.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Account information:</strong> Email address (when signing up or logging in)</li>
           <li><strong>Learning data:</strong> Exam sessions, correct/wrong answer records, bookmarks</li>
@@ -127,13 +127,13 @@ const PrivacyEn = () => (
       </Section>
 
       <Section title="6. Cookies & Local Storage">
-        <p>CloudMaster uses browser local storage and session storage to maintain login state and temporarily save learning data. Learning data for non-logged-in users is automatically deleted when the browser is closed.</p>
+        <p>CloudMasterIT LLC uses browser local storage and session storage to maintain login state and temporarily save learning data. Learning data for non-logged-in users is automatically deleted when the browser is closed.</p>
         <p>By using this website, you consent to the collection and use of information in accordance with this Privacy Policy.</p>
       </Section>
 
       <Section title="7. Contact">
         <p>For privacy-related inquiries, please contact us at:</p>
-        <p>Email: cloudmasterit.service@gmail.com</p>
+        <p>Email: admin@cloudmasterit.com</p>
       </Section>
 
       <Section title="8. Policy Updates">
@@ -150,7 +150,7 @@ const PrivacyEs = () => (
       <p className="text-sm text-muted-foreground mb-8">Última actualización: febrero de 2026</p>
 
       <Section title="1. Información que recopilamos">
-        <p>CloudMaster recopila la siguiente información para prestar el servicio.</p>
+        <p>CloudMasterIT LLC recopila la siguiente información para prestar el servicio.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Información de cuenta:</strong> Dirección de correo electrónico (al registrarse o iniciar sesión)</li>
           <li><strong>Datos de aprendizaje:</strong> Sesiones de examen, registros de respuestas correctas/incorrectas, marcadores</li>
@@ -189,13 +189,13 @@ const PrivacyEs = () => (
       </Section>
 
       <Section title="6. Cookies y almacenamiento local">
-        <p>CloudMaster utiliza el almacenamiento local y de sesión del navegador para mantener el estado de inicio de sesión y guardar temporalmente los datos de aprendizaje. Los datos de aprendizaje de usuarios no registrados se eliminan automáticamente al cerrar el navegador.</p>
+        <p>CloudMasterIT LLC utiliza el almacenamiento local y de sesión del navegador para mantener el estado de inicio de sesión y guardar temporalmente los datos de aprendizaje. Los datos de aprendizaje de usuarios no registrados se eliminan automáticamente al cerrar el navegador.</p>
         <p>Al utilizar este sitio web, usted consiente la recopilación y el uso de información de acuerdo con esta Política de Privacidad.</p>
       </Section>
 
       <Section title="7. Contacto">
         <p>Para consultas relacionadas con la privacidad, contáctenos en:</p>
-        <p>Correo electrónico: cloudmasterit.service@gmail.com</p>
+        <p>Correo electrónico: admin@cloudmasterit.com</p>
       </Section>
 
       <Section title="8. Actualizaciones de la política">
@@ -212,7 +212,7 @@ const PrivacyPt = () => (
       <p className="text-sm text-muted-foreground mb-8">Última atualização: fevereiro de 2026</p>
 
       <Section title="1. Informações que coletamos">
-        <p>O CloudMaster coleta as seguintes informações para prestar o serviço.</p>
+        <p>O CloudMasterIT LLC coleta as seguintes informações para prestar o serviço.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Informações de conta:</strong> Endereço de e-mail (ao se cadastrar ou fazer login)</li>
           <li><strong>Dados de aprendizado:</strong> Sessões de exame, registros de respostas corretas/incorretas, favoritos</li>
@@ -251,13 +251,13 @@ const PrivacyPt = () => (
       </Section>
 
       <Section title="6. Cookies e armazenamento local">
-        <p>O CloudMaster usa o armazenamento local e de sessão do navegador para manter o estado de login e salvar temporariamente os dados de aprendizado. Os dados de aprendizado de usuários não logados são excluídos automaticamente ao fechar o navegador.</p>
+        <p>O CloudMasterIT LLC usa o armazenamento local e de sessão do navegador para manter o estado de login e salvar temporariamente os dados de aprendizado. Os dados de aprendizado de usuários não logados são excluídos automaticamente ao fechar o navegador.</p>
         <p>Ao usar este site, você consente com a coleta e o uso de informações de acordo com esta Política de Privacidade.</p>
       </Section>
 
       <Section title="7. Contato">
         <p>Para dúvidas relacionadas à privacidade, entre em contato conosco:</p>
-        <p>E-mail: cloudmasterit.service@gmail.com</p>
+        <p>E-mail: admin@cloudmasterit.com</p>
       </Section>
 
       <Section title="8. Atualizações da política">
@@ -274,7 +274,7 @@ const PrivacyJa = () => (
       <p className="text-sm text-muted-foreground mb-8">最終更新: 2026年2月</p>
 
       <Section title="1. 収集する情報">
-        <p>CloudMasterは、サービス提供のために以下の情報を収集します。</p>
+        <p>CloudMasterIT LLCは、サービス提供のために以下の情報を収集します。</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>アカウント情報:</strong> メールアドレス（会員登録またはログイン時）</li>
           <li><strong>学習データ:</strong> 試験セッション、正解・不正解の記録、ブックマーク</li>
@@ -295,7 +295,7 @@ const PrivacyJa = () => (
       </Section>
 
       <Section title="4. 第三者への提供">
-        <p>CloudMasterは、以下に記載されている場合または法令で義務付けられている場合を除き、お客様の個人情報を第三者に販売、貸与、または共有しません。プラットフォームの運営のために以下のサービスを利用しています。</p>
+        <p>CloudMasterIT LLCは、以下に記載されている場合または法令で義務付けられている場合を除き、お客様の個人情報を第三者に販売、貸与、または共有しません。プラットフォームの運営のために以下のサービスを利用しています。</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Supabase:</strong> データベースおよび認証（米国拠点、GDPR準拠）</li>
           <li><strong>Vercel:</strong> ウェブホスティング（米国拠点）</li>
@@ -313,13 +313,13 @@ const PrivacyJa = () => (
       </Section>
 
       <Section title="6. Cookie およびローカルストレージ">
-        <p>CloudMasterは、ログイン状態の維持と学習データの一時保存のために、ブラウザのローカルストレージおよびセッションストレージを使用します。未ログイン状態の学習データは、ブラウザを閉じると自動的に削除されます。</p>
+        <p>CloudMasterIT LLCは、ログイン状態の維持と学習データの一時保存のために、ブラウザのローカルストレージおよびセッションストレージを使用します。未ログイン状態の学習データは、ブラウザを閉じると自動的に削除されます。</p>
         <p>本サービスを利用することにより、本プライバシーポリシーに基づく情報の収集および利用に同意したものとみなされます。</p>
       </Section>
 
       <Section title="7. お問い合わせ">
         <p>プライバシーに関するお問い合わせは、以下までご連絡ください。</p>
-        <p>メール: cloudmasterit.service@gmail.com</p>
+        <p>メール: admin@cloudmasterit.com</p>
       </Section>
 
       <Section title="8. ポリシーの更新">

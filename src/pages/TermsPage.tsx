@@ -26,7 +26,7 @@ const TermsKo = () => (
       <p className="text-sm text-muted-foreground mb-8">최종 업데이트: 2026년 2월</p>
 
       <Section title="1. 서비스 소개">
-        <p>CloudMaster(이하 "서비스")는 AWS, GCP, AZURE 클라우드 자격증 시험을 준비하는 사용자를 위한 독립적인 온라인 교육 플랫폼입니다. 본 약관은 서비스 이용에 관한 이용자와 CloudMaster 간의 권리·의무를 규정합니다.</p>
+        <p>CloudMasterIT LLC(이하 "서비스")는 AWS, GCP, AZURE 클라우드 자격증 시험을 준비하는 사용자를 위한 독립적인 온라인 교육 플랫폼입니다. 본 약관은 서비스 이용에 관한 이용자와 CloudMasterIT LLC 간의 권리·의무를 규정합니다.</p>
         <p>본 서비스는 Amazon Web Services(AWS), Microsoft, Google Cloud와 제휴·후원·승인 관계가 없는 독립 교육 플랫폼입니다.</p>
       </Section>
 
@@ -40,7 +40,7 @@ const TermsKo = () => (
       </Section>
 
       <Section title="3. 무료 및 유료 서비스">
-        <p>CloudMaster는 일부 기능을 무료로 제공하며, 추가 기능은 유료 구독을 통해 이용할 수 있습니다.</p>
+        <p>CloudMasterIT LLC는 일부 기능을 무료로 제공하며, 추가 기능은 유료 구독을 통해 이용할 수 있습니다.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>무료:</strong> 샘플 문제 및 제한된 시험 세트 이용</li>
           <li><strong>유료:</strong> 전체 문제 은행, 무제한 시험, 상세 분석 등</li>
@@ -60,18 +60,18 @@ const TermsKo = () => (
       </Section>
 
       <Section title="5. 지식재산권">
-        <p>서비스 내 모든 콘텐츠(문제, 해설, UI 등)의 저작권은 CloudMaster에 귀속됩니다. 이용자는 개인 학습 목적으로만 서비스를 이용할 수 있으며, 상업적 이용은 금지됩니다.</p>
-        <p>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud 및 관련 상표는 각 소유자의 재산이며, CloudMaster와 무관합니다. 해당 명칭은 식별 목적으로만 사용됩니다.</p>
+        <p>서비스 내 모든 콘텐츠(문제, 해설, UI 등)의 저작권은 CloudMasterIT LLC에 귀속됩니다. 이용자는 개인 학습 목적으로만 서비스를 이용할 수 있으며, 상업적 이용은 금지됩니다.</p>
+        <p>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud 및 관련 상표는 각 소유자의 재산이며, CloudMasterIT LLC와 무관합니다. 해당 명칭은 식별 목적으로만 사용됩니다.</p>
         <p>이용자는 사전 서면 허가 없이 서비스 내 콘텐츠를 복제, 재배포 또는 판매할 수 없습니다.</p>
       </Section>
 
       <Section title="6. 서비스 중단 및 변경">
-        <p>CloudMaster는 서비스 개선, 유지보수, 사업상의 이유로 서비스의 일부 또는 전부를 변경하거나 중단할 수 있습니다. 중요한 변경 또는 서비스 종료 시 사전에 공지합니다.</p>
+        <p>CloudMasterIT LLC는 서비스 개선, 유지보수, 사업상의 이유로 서비스의 일부 또는 전부를 변경하거나 중단할 수 있습니다. 중요한 변경 또는 서비스 종료 시 사전에 공지합니다.</p>
       </Section>
 
       <Section title="7. 면책 조항">
         <ul className="list-disc pl-5 space-y-1">
-          <li>CloudMaster는 서비스 내 문제·해설의 정확성을 위해 노력하나, 완전한 정확성을 보장하지 않습니다.</li>
+          <li>CloudMasterIT LLC는 서비스 내 문제·해설의 정확성을 위해 노력하나, 완전한 정확성을 보장하지 않습니다.</li>
           <li>서비스 내 모든 연습 문제는 교육 목적으로 독자적으로 제작된 것이며, 실제 자격증 시험 문제가 아닙니다.</li>
           <li>실제 자격증 시험 합격을 보장하지 않습니다.</li>
           <li>본 서비스는 AWS, Microsoft, Google Cloud와 공식 제휴 관계가 없으며, 해당 기업들의 승인을 받지 않았습니다.</li>
@@ -81,7 +81,7 @@ const TermsKo = () => (
       </Section>
 
       <Section title="8. 계정 해지">
-        <p>이용자는 언제든지 계정을 삭제할 수 있습니다. CloudMaster는 약관 위반 시 사전 통보 없이 이용을 제한하거나 계정을 해지할 수 있습니다.</p>
+        <p>이용자는 언제든지 계정을 삭제할 수 있습니다. CloudMasterIT LLC는 약관 위반 시 사전 통보 없이 이용을 제한하거나 계정을 해지할 수 있습니다.</p>
       </Section>
 
       <Section title="9. 약관 변경">
@@ -89,8 +89,8 @@ const TermsKo = () => (
       </Section>
 
       <Section title="10. 문의">
-        <p>이용약관에 관한 문의: cloudmasterit.service@gmail.com</p>
-        <p>저작권 침해 신고: cloudmasterit.service@gmail.com</p>
+        <p>이용약관에 관한 문의: admin@cloudmasterit.com</p>
+        <p>저작권 침해 신고: admin@cloudmasterit.com</p>
       </Section>
     </div>
   </AppLayout>
@@ -103,7 +103,7 @@ const TermsEn = () => (
       <p className="text-sm text-muted-foreground mb-8">Last updated: February 2026</p>
 
       <Section title="1. About the Service">
-        <p>CloudMaster ("Service") is an independent online educational platform for users preparing for AWS, GCP and AZURE cloud certifications. These Terms govern the relationship between users and CloudMaster regarding the use of the Service.</p>
+        <p>CloudMasterIT LLC ("Service") is an independent online educational platform for users preparing for AWS, GCP and AZURE cloud certifications. These Terms govern the relationship between users and CloudMasterIT LLC regarding the use of the Service.</p>
         <p>This website is not affiliated with, endorsed by, or sponsored by Amazon Web Services (AWS), Microsoft, or Google Cloud.</p>
       </Section>
 
@@ -117,7 +117,7 @@ const TermsEn = () => (
       </Section>
 
       <Section title="3. Free & Paid Features">
-        <p>CloudMaster provides some features for free and additional features through a paid subscription.</p>
+        <p>CloudMasterIT LLC provides some features for free and additional features through a paid subscription.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Free:</strong> Sample questions and limited exam sets</li>
           <li><strong>Paid:</strong> Full question bank, unlimited exams, detailed analytics, and more</li>
@@ -137,13 +137,13 @@ const TermsEn = () => (
       </Section>
 
       <Section title="5. Intellectual Property">
-        <p>All content within the Service (questions, explanations, UI, etc.) is owned by CloudMaster. Users may use the Service for personal study purposes only. Commercial use is prohibited.</p>
-        <p>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud, and related trademarks are the property of their respective owners and are not affiliated with CloudMaster. These names are used for identification purposes only.</p>
+        <p>All content within the Service (questions, explanations, UI, etc.) is owned by CloudMasterIT LLC. Users may use the Service for personal study purposes only. Commercial use is prohibited.</p>
+        <p>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud, and related trademarks are the property of their respective owners and are not affiliated with CloudMasterIT LLC. These names are used for identification purposes only.</p>
         <p>Users may not copy, reproduce, distribute, or republish any content from this website without prior written permission.</p>
       </Section>
 
       <Section title="6. Service Changes">
-        <p>CloudMaster may modify or discontinue the Service in whole or in part for improvement, maintenance, or business reasons. Significant changes or service terminations will be announced in advance.</p>
+        <p>CloudMasterIT LLC may modify or discontinue the Service in whole or in part for improvement, maintenance, or business reasons. Significant changes or service terminations will be announced in advance.</p>
       </Section>
 
       <Section title="7. Disclaimers">
@@ -158,7 +158,7 @@ const TermsEn = () => (
       </Section>
 
       <Section title="8. Account Termination">
-        <p>You may delete your account at any time. CloudMaster reserves the right to restrict or terminate accounts that violate these Terms without prior notice.</p>
+        <p>You may delete your account at any time. CloudMasterIT LLC reserves the right to restrict or terminate accounts that violate these Terms without prior notice.</p>
       </Section>
 
       <Section title="9. Changes to Terms">
@@ -166,8 +166,8 @@ const TermsEn = () => (
       </Section>
 
       <Section title="10. Contact">
-        <p>For inquiries about these Terms: cloudmasterit.service@gmail.com</p>
-        <p>Copyright infringement reports: cloudmasterit.service@gmail.com</p>
+        <p>For inquiries about these Terms: admin@cloudmasterit.com</p>
+        <p>Copyright infringement reports: admin@cloudmasterit.com</p>
       </Section>
     </div>
   </AppLayout>
@@ -180,7 +180,7 @@ const TermsEs = () => (
       <p className="text-sm text-muted-foreground mb-8">Última actualización: febrero de 2026</p>
 
       <Section title="1. Acerca del servicio">
-        <p>CloudMaster ("Servicio") es una plataforma educativa en línea independiente para usuarios que se preparan para las certificaciones en la nube de AWS, GCP y AZURE. Estos Términos rigen la relación entre los usuarios y CloudMaster con respecto al uso del Servicio.</p>
+        <p>CloudMasterIT LLC ("Servicio") es una plataforma educativa en línea independiente para usuarios que se preparan para las certificaciones en la nube de AWS, GCP y AZURE. Estos Términos rigen la relación entre los usuarios y CloudMasterIT LLC con respecto al uso del Servicio.</p>
         <p>Este sitio web no tiene afiliación, respaldo ni patrocinio de Amazon Web Services (AWS), Microsoft ni Google Cloud.</p>
       </Section>
 
@@ -194,7 +194,7 @@ const TermsEs = () => (
       </Section>
 
       <Section title="3. Funciones gratuitas y de pago">
-        <p>CloudMaster ofrece algunas funciones de forma gratuita y funciones adicionales mediante una suscripción de pago.</p>
+        <p>CloudMasterIT LLC ofrece algunas funciones de forma gratuita y funciones adicionales mediante una suscripción de pago.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Gratuito:</strong> Preguntas de muestra y conjuntos de exámenes limitados</li>
           <li><strong>De pago:</strong> Banco de preguntas completo, exámenes ilimitados, análisis detallados y más</li>
@@ -214,13 +214,13 @@ const TermsEs = () => (
       </Section>
 
       <Section title="5. Propiedad intelectual">
-        <p>Todo el contenido del Servicio (preguntas, explicaciones, interfaz, etc.) es propiedad de CloudMaster. Los usuarios pueden utilizar el Servicio únicamente para fines de estudio personal. El uso comercial está prohibido.</p>
-        <p>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud y las marcas comerciales relacionadas son propiedad de sus respectivos dueños y no tienen afiliación con CloudMaster. Estos nombres se utilizan únicamente con fines de identificación.</p>
+        <p>Todo el contenido del Servicio (preguntas, explicaciones, interfaz, etc.) es propiedad de CloudMasterIT LLC. Los usuarios pueden utilizar el Servicio únicamente para fines de estudio personal. El uso comercial está prohibido.</p>
+        <p>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud y las marcas comerciales relacionadas son propiedad de sus respectivos dueños y no tienen afiliación con CloudMasterIT LLC. Estos nombres se utilizan únicamente con fines de identificación.</p>
         <p>Los usuarios no pueden copiar, reproducir, distribuir ni republicar ningún contenido de este sitio web sin permiso previo por escrito.</p>
       </Section>
 
       <Section title="6. Cambios en el servicio">
-        <p>CloudMaster puede modificar o interrumpir el Servicio total o parcialmente por motivos de mejora, mantenimiento o razones comerciales. Los cambios significativos o la terminación del servicio se anunciarán con anticipación.</p>
+        <p>CloudMasterIT LLC puede modificar o interrumpir el Servicio total o parcialmente por motivos de mejora, mantenimiento o razones comerciales. Los cambios significativos o la terminación del servicio se anunciarán con anticipación.</p>
       </Section>
 
       <Section title="7. Exenciones de responsabilidad">
@@ -235,7 +235,7 @@ const TermsEs = () => (
       </Section>
 
       <Section title="8. Terminación de cuenta">
-        <p>Puede eliminar su cuenta en cualquier momento. CloudMaster se reserva el derecho de restringir o cancelar cuentas que infrinjan estos Términos sin previo aviso.</p>
+        <p>Puede eliminar su cuenta en cualquier momento. CloudMasterIT LLC se reserva el derecho de restringir o cancelar cuentas que infrinjan estos Términos sin previo aviso.</p>
       </Section>
 
       <Section title="9. Cambios en los términos">
@@ -243,8 +243,8 @@ const TermsEs = () => (
       </Section>
 
       <Section title="10. Contacto">
-        <p>Para consultas sobre estos Términos: cloudmasterit.service@gmail.com</p>
-        <p>Informes de infracción de derechos de autor: cloudmasterit.service@gmail.com</p>
+        <p>Para consultas sobre estos Términos: admin@cloudmasterit.com</p>
+        <p>Informes de infracción de derechos de autor: admin@cloudmasterit.com</p>
       </Section>
     </div>
   </AppLayout>
@@ -257,7 +257,7 @@ const TermsPt = () => (
       <p className="text-sm text-muted-foreground mb-8">Última atualização: fevereiro de 2026</p>
 
       <Section title="1. Sobre o serviço">
-        <p>O CloudMaster ("Serviço") é uma plataforma educacional online independente para usuários que se preparam para as certificações em nuvem AWS, GCP e AZURE. Estes Termos regem a relação entre os usuários e o CloudMaster no que diz respeito ao uso do Serviço.</p>
+        <p>O CloudMasterIT LLC ("Serviço") é uma plataforma educacional online independente para usuários que se preparam para as certificações em nuvem AWS, GCP e AZURE. Estes Termos regem a relação entre os usuários e o CloudMasterIT LLC no que diz respeito ao uso do Serviço.</p>
         <p>Este site não é afiliado, endossado nem patrocinado pela Amazon Web Services (AWS), Microsoft ou Google Cloud.</p>
       </Section>
 
@@ -271,7 +271,7 @@ const TermsPt = () => (
       </Section>
 
       <Section title="3. Recursos gratuitos e pagos">
-        <p>O CloudMaster oferece alguns recursos gratuitamente e recursos adicionais por meio de uma assinatura paga.</p>
+        <p>O CloudMasterIT LLC oferece alguns recursos gratuitamente e recursos adicionais por meio de uma assinatura paga.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Gratuito:</strong> Questões de amostra e conjuntos de exames limitados</li>
           <li><strong>Pago:</strong> Banco de questões completo, exames ilimitados, análises detalhadas e mais</li>
@@ -291,13 +291,13 @@ const TermsPt = () => (
       </Section>
 
       <Section title="5. Propriedade intelectual">
-        <p>Todo o conteúdo do Serviço (questões, explicações, interface, etc.) é de propriedade do CloudMaster. Os usuários podem usar o Serviço apenas para fins de estudo pessoal. O uso comercial é proibido.</p>
-        <p>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud e marcas relacionadas são propriedade de seus respectivos donos e não são afiliadas ao CloudMaster. Esses nomes são usados apenas para fins de identificação.</p>
+        <p>Todo o conteúdo do Serviço (questões, explicações, interface, etc.) é de propriedade do CloudMasterIT LLC. Os usuários podem usar o Serviço apenas para fins de estudo pessoal. O uso comercial é proibido.</p>
+        <p>AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud e marcas relacionadas são propriedade de seus respectivos donos e não são afiliadas ao CloudMasterIT LLC. Esses nomes são usados apenas para fins de identificação.</p>
         <p>Os usuários não podem copiar, reproduzir, distribuir ou republicar qualquer conteúdo deste site sem permissão prévia por escrito.</p>
       </Section>
 
       <Section title="6. Alterações no serviço">
-        <p>O CloudMaster pode modificar ou descontinuar o Serviço total ou parcialmente por razões de melhoria, manutenção ou negócios. Alterações significativas ou encerramento do serviço serão anunciados com antecedência.</p>
+        <p>O CloudMasterIT LLC pode modificar ou descontinuar o Serviço total ou parcialmente por razões de melhoria, manutenção ou negócios. Alterações significativas ou encerramento do serviço serão anunciados com antecedência.</p>
       </Section>
 
       <Section title="7. Isenções de responsabilidade">
@@ -312,7 +312,7 @@ const TermsPt = () => (
       </Section>
 
       <Section title="8. Encerramento de conta">
-        <p>Você pode excluir sua conta a qualquer momento. O CloudMaster se reserva o direito de restringir ou encerrar contas que violem estes Termos sem aviso prévio.</p>
+        <p>Você pode excluir sua conta a qualquer momento. O CloudMasterIT LLC se reserva o direito de restringir ou encerrar contas que violem estes Termos sem aviso prévio.</p>
       </Section>
 
       <Section title="9. Alterações nos termos">
@@ -320,8 +320,8 @@ const TermsPt = () => (
       </Section>
 
       <Section title="10. Contato">
-        <p>Para dúvidas sobre estes Termos: cloudmasterit.service@gmail.com</p>
-        <p>Relatos de violação de direitos autorais: cloudmasterit.service@gmail.com</p>
+        <p>Para dúvidas sobre estes Termos: admin@cloudmasterit.com</p>
+        <p>Relatos de violação de direitos autorais: admin@cloudmasterit.com</p>
       </Section>
     </div>
   </AppLayout>
@@ -334,7 +334,7 @@ const TermsJa = () => (
       <p className="text-sm text-muted-foreground mb-8">最終更新: 2026年2月</p>
 
       <Section title="1. サービスについて">
-        <p>CloudMaster（以下「サービス」）は、AWS、GCP、AZUREのクラウド認定試験を準備するユーザー向けの独立したオンライン教育プラットフォームです。本規約は、サービスの利用に関するユーザーとCloudMasterの間の権利・義務を定めるものです。</p>
+        <p>CloudMasterIT LLC（以下「サービス」）は、AWS、GCP、AZUREのクラウド認定試験を準備するユーザー向けの独立したオンライン教育プラットフォームです。本規約は、サービスの利用に関するユーザーとCloudMasterIT LLCの間の権利・義務を定めるものです。</p>
         <p>本サービスは、Amazon Web Services（AWS）、Microsoft、Google Cloudとの提携・後援・承認関係のない独立した教育プラットフォームです。</p>
       </Section>
 
@@ -348,7 +348,7 @@ const TermsJa = () => (
       </Section>
 
       <Section title="3. 無料・有料機能">
-        <p>CloudMasterは一部の機能を無料で提供し、追加機能は有料サブスクリプションでご利用いただけます。</p>
+        <p>CloudMasterIT LLCは一部の機能を無料で提供し、追加機能は有料サブスクリプションでご利用いただけます。</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>無料:</strong> サンプル問題および限定的な試験セット</li>
           <li><strong>有料:</strong> 全問題バンク、無制限の試験、詳細な分析など</li>
@@ -368,13 +368,13 @@ const TermsJa = () => (
       </Section>
 
       <Section title="5. 知的財産権">
-        <p>サービス内のすべてのコンテンツ（問題、解説、UIなど）の著作権はCloudMasterに帰属します。ユーザーは個人学習目的のみサービスを利用できます。商業的利用は禁止されています。</p>
-        <p>AWS、Amazon Web Services、Microsoft、AZURE、Google Cloudおよび関連商標は各所有者の財産であり、CloudMasterとは無関係です。これらの名称は識別目的のみに使用されています。</p>
+        <p>サービス内のすべてのコンテンツ（問題、解説、UIなど）の著作権はCloudMasterIT LLCに帰属します。ユーザーは個人学習目的のみサービスを利用できます。商業的利用は禁止されています。</p>
+        <p>AWS、Amazon Web Services、Microsoft、AZURE、Google Cloudおよび関連商標は各所有者の財産であり、CloudMasterIT LLCとは無関係です。これらの名称は識別目的のみに使用されています。</p>
         <p>ユーザーは事前の書面による許可なく、本サービスのコンテンツを複製、再配布、販売することはできません。</p>
       </Section>
 
       <Section title="6. サービスの変更・中断">
-        <p>CloudMasterはサービスの改善、メンテナンス、事業上の理由により、サービスの一部または全部を変更または中断することがあります。重要な変更またはサービス終了の際は事前にお知らせします。</p>
+        <p>CloudMasterIT LLCはサービスの改善、メンテナンス、事業上の理由により、サービスの一部または全部を変更または中断することがあります。重要な変更またはサービス終了の際は事前にお知らせします。</p>
       </Section>
 
       <Section title="7. 免責事項">
@@ -389,7 +389,7 @@ const TermsJa = () => (
       </Section>
 
       <Section title="8. アカウントの解約">
-        <p>ユーザーはいつでもアカウントを削除できます。CloudMasterは規約違反があった場合、事前通知なしにサービスの利用を制限またはアカウントを停止する権利を有します。</p>
+        <p>ユーザーはいつでもアカウントを削除できます。CloudMasterIT LLCは規約違反があった場合、事前通知なしにサービスの利用を制限またはアカウントを停止する権利を有します。</p>
       </Section>
 
       <Section title="9. 規約の変更">
@@ -397,8 +397,8 @@ const TermsJa = () => (
       </Section>
 
       <Section title="10. お問い合わせ">
-        <p>本規約に関するお問い合わせ: cloudmasterit.service@gmail.com</p>
-        <p>著作権侵害の申告: cloudmasterit.service@gmail.com</p>
+        <p>本規約に関するお問い合わせ: admin@cloudmasterit.com</p>
+        <p>著作権侵害の申告: admin@cloudmasterit.com</p>
       </Section>
     </div>
   </AppLayout>

@@ -27,7 +27,7 @@ const DisclaimerKo = () => (
 
       <Section title="1. 면책 조항 (Disclaimer)">
         <p>
-          CloudMaster는 클라우드 자격증 시험 준비를 위한 독립적인 교육 플랫폼입니다.
+          CloudMasterIT LLC는 클라우드 자격증 시험 준비를 위한 독립적인 교육 플랫폼입니다.
         </p>
         <ul className="list-disc pl-5 space-y-1">
           <li>본 웹사이트는 Amazon Web Services(AWS), Microsoft, Google Cloud와 제휴·후원·승인·인증 관계가 없습니다.</li>
@@ -38,13 +38,13 @@ const DisclaimerKo = () => (
       </Section>
 
       <Section title="2. 저작권 및 상표권 고지 (Copyright & Trademark Notice)">
-        <p>© 2026 CloudMaster. All rights reserved.</p>
+        <p>© 2026 CloudMasterIT LLC. All rights reserved.</p>
         <p>본 웹사이트의 모든 연습 문제, 해설, 블로그 게시물 및 학습 자료는 저작권법의 보호를 받습니다.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li>사전 서면 허가 없이 본 웹사이트의 콘텐츠를 무단으로 복제, 재배포 또는 재발행하는 것은 엄격히 금지됩니다.</li>
           <li>
             AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud 및 관련 상표는 각 소유자의 재산이며,
-            CloudMaster와 무관합니다. 해당 명칭은 식별 목적으로만 사용됩니다.
+            CloudMasterIT LLC와 무관합니다. 해당 명칭은 식별 목적으로만 사용됩니다.
           </li>
         </ul>
       </Section>
@@ -54,7 +54,7 @@ const DisclaimerKo = () => (
           본 웹사이트의 콘텐츠가 저작권 또는 시험 정책을 침해한다고 판단되시면,
           즉시 검토 후 필요한 경우 해당 콘텐츠를 삭제하겠습니다.
         </p>
-        <p>문의: cloudmasterit.service@gmail.com</p>
+        <p>문의: admin@cloudmasterit.com</p>
       </Section>
     </div>
   </AppLayout>
@@ -68,7 +68,7 @@ const DisclaimerEn = () => (
 
       <Section title="1. Disclaimer">
         <p>
-          CloudMaster is an independent educational platform for cloud certification exam preparation.
+          CloudMasterIT LLC is an independent educational platform for cloud certification exam preparation.
         </p>
         <ul className="list-disc pl-5 space-y-1">
           <li>This website is not affiliated with, endorsed by, or sponsored by Amazon Web Services (AWS), Microsoft, or Google Cloud.</li>
@@ -79,14 +79,14 @@ const DisclaimerEn = () => (
       </Section>
 
       <Section title="2. Copyright & Trademark Notice">
-        <p>© 2026 CloudMaster. All rights reserved.</p>
+        <p>© 2026 CloudMasterIT LLC. All rights reserved.</p>
         <p>All practice questions, explanations, blog posts, and educational materials on this website are protected by copyright law.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li>Unauthorized copying, redistribution, or reproduction of any content from this website is strictly prohibited without prior written permission.</li>
           <li>
             AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud, and related trademarks are the property of
             their respective owners and are used for identification purposes only. Their use does not imply any
-            affiliation with or endorsement by CloudMaster.
+            affiliation with or endorsement by CloudMasterIT LLC.
           </li>
         </ul>
       </Section>
@@ -97,7 +97,7 @@ const DisclaimerEn = () => (
           this website violates copyright or exam policies, please contact us and we will promptly review and
           remove the content if necessary.
         </p>
-        <p>Contact: cloudmasterit.service@gmail.com</p>
+        <p>Contact: admin@cloudmasterit.com</p>
       </Section>
     </div>
   </AppLayout>
@@ -111,7 +111,7 @@ const DisclaimerEs = () => (
 
       <Section title="1. Aviso legal">
         <p>
-          CloudMaster es una plataforma educativa independiente para la preparación de exámenes de certificación en la nube.
+          CloudMasterIT LLC es una plataforma educativa independiente para la preparación de exámenes de certificación en la nube.
         </p>
         <ul className="list-disc pl-5 space-y-1">
           <li>Este sitio web no tiene afiliación, respaldo, patrocinio ni certificación de Amazon Web Services (AWS), Microsoft ni Google Cloud.</li>
@@ -122,12 +122,12 @@ const DisclaimerEs = () => (
       </Section>
 
       <Section title="2. Aviso de derechos de autor y marcas comerciales">
-        <p>© 2026 CloudMaster. Todos los derechos reservados.</p>
+        <p>© 2026 CloudMasterIT LLC. Todos los derechos reservados.</p>
         <p>Todas las preguntas de práctica, explicaciones, publicaciones de blog y materiales educativos de este sitio web están protegidos por la ley de derechos de autor.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li>Está estrictamente prohibido copiar, redistribuir o reproducir cualquier contenido de este sitio web sin permiso previo por escrito.</li>
           <li>
-            AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud y las marcas comerciales relacionadas son propiedad de sus respectivos dueños y se utilizan únicamente con fines de identificación. Su uso no implica ninguna afiliación con CloudMaster ni respaldo por parte de CloudMaster.
+            AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud y las marcas comerciales relacionadas son propiedad de sus respectivos dueños y se utilizan únicamente con fines de identificación. Su uso no implica ninguna afiliación con CloudMasterIT LLC ni respaldo por parte de CloudMasterIT LLC.
           </li>
         </ul>
       </Section>
@@ -136,7 +136,7 @@ const DisclaimerEs = () => (
         <p>
           Respetamos los derechos de propiedad intelectual de los proveedores de certificaciones. Si considera que algún contenido de este sitio web infringe los derechos de autor o las políticas de examen, comuníquese con nosotros y revisaremos y eliminaremos el contenido de forma inmediata si fuera necesario.
         </p>
-        <p>Contacto: cloudmasterit.service@gmail.com</p>
+        <p>Contacto: admin@cloudmasterit.com</p>
       </Section>
     </div>
   </AppLayout>
@@ -150,7 +150,7 @@ const DisclaimerPt = () => (
 
       <Section title="1. Isenção de responsabilidade">
         <p>
-          O CloudMaster é uma plataforma educacional independente para preparação de exames de certificação em nuvem.
+          O CloudMasterIT LLC é uma plataforma educacional independente para preparação de exames de certificação em nuvem.
         </p>
         <ul className="list-disc pl-5 space-y-1">
           <li>Este site não é afiliado, endossado, patrocinado nem certificado pela Amazon Web Services (AWS), Microsoft ou Google Cloud.</li>
@@ -161,12 +161,12 @@ const DisclaimerPt = () => (
       </Section>
 
       <Section title="2. Aviso de direitos autorais e marcas registradas">
-        <p>© 2026 CloudMaster. Todos os direitos reservados.</p>
+        <p>© 2026 CloudMasterIT LLC. Todos os direitos reservados.</p>
         <p>Todas as questões de prática, explicações, postagens de blog e materiais educacionais deste site são protegidos pela lei de direitos autorais.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li>É estritamente proibido copiar, redistribuir ou reproduzir qualquer conteúdo deste site sem permissão prévia por escrito.</li>
           <li>
-            AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud e marcas relacionadas são propriedade de seus respectivos donos e são usadas apenas para fins de identificação. Seu uso não implica qualquer afiliação com o CloudMaster nem endosso pelo CloudMaster.
+            AWS, Amazon Web Services, Microsoft, AZURE, Google Cloud e marcas relacionadas são propriedade de seus respectivos donos e são usadas apenas para fins de identificação. Seu uso não implica qualquer afiliação com o CloudMasterIT LLC nem endosso pelo CloudMasterIT LLC.
           </li>
         </ul>
       </Section>
@@ -175,7 +175,7 @@ const DisclaimerPt = () => (
         <p>
           Respeitamos os direitos de propriedade intelectual dos provedores de certificação. Se você acreditar que algum conteúdo deste site viola direitos autorais ou políticas de exame, entre em contato conosco e revisaremos e removeremos o conteúdo prontamente, se necessário.
         </p>
-        <p>Contato: cloudmasterit.service@gmail.com</p>
+        <p>Contato: admin@cloudmasterit.com</p>
       </Section>
     </div>
   </AppLayout>
@@ -189,7 +189,7 @@ const DisclaimerJa = () => (
 
       <Section title="1. 免責事項">
         <p>
-          CloudMasterはクラウド認定試験の準備のための独立した教育プラットフォームです。
+          CloudMasterIT LLCはクラウド認定試験の準備のための独立した教育プラットフォームです。
         </p>
         <ul className="list-disc pl-5 space-y-1">
           <li>本サービスはAmazon Web Services（AWS）、Microsoft、Google Cloudとの提携・後援・承認・認定関係はありません。</li>
@@ -200,12 +200,12 @@ const DisclaimerJa = () => (
       </Section>
 
       <Section title="2. 著作権および商標表示">
-        <p>© 2026 CloudMaster. All rights reserved.</p>
+        <p>© 2026 CloudMasterIT LLC. All rights reserved.</p>
         <p>本サービスのすべての練習問題、解説、ブログ記事、学習教材は著作権法の保護を受けています。</p>
         <ul className="list-disc pl-5 space-y-1">
           <li>事前の書面による許可なく、本サービスのコンテンツを無断で複製、再配布、または再発行することは厳禁です。</li>
           <li>
-            AWS、Amazon Web Services、Microsoft、AZURE、Google Cloudおよび関連商標は各所有者の財産であり、CloudMasterとは無関係です。これらの名称は識別目的のみに使用されており、CloudMasterとの提携や承認を示すものではありません。
+            AWS、Amazon Web Services、Microsoft、AZURE、Google Cloudおよび関連商標は各所有者の財産であり、CloudMasterIT LLCとは無関係です。これらの名称は識別目的のみに使用されており、CloudMasterIT LLCとの提携や承認を示すものではありません。
           </li>
         </ul>
       </Section>
@@ -214,7 +214,7 @@ const DisclaimerJa = () => (
         <p>
           認定プロバイダーの知的財産権を尊重しています。本サービスのコンテンツが著作権または試験ポリシーに違反していると思われる場合は、お問い合わせください。速やかに確認し、必要に応じて該当コンテンツを削除いたします。
         </p>
-        <p>お問い合わせ: cloudmasterit.service@gmail.com</p>
+        <p>お問い合わせ: admin@cloudmasterit.com</p>
       </Section>
     </div>
   </AppLayout>

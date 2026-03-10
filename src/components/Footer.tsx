@@ -56,7 +56,7 @@ const Footer = () => {
             </button>
           </div>
           <p className="text-xs text-muted-foreground">
-            © {year} CloudMaster. All rights reserved.
+            © {year} CloudMasterIT LLC. All rights reserved.
           </p>
         </div>
         <div className="container mx-auto mt-4 px-4">
