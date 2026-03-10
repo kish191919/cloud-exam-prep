@@ -506,6 +506,114 @@ PATCH 완료:  질문(ref_links) {q_patched}개, 옵션 {opt_patched}개
 
 ---
 
+## `/patch-reflinks` 커맨드 처리
+
+기존 문제의 ref_links에 다국어 name(`name_en`/`name_pt`/`name_es`/`name_ja`)을 백필하는 파이프라인.
+
+### 처리 흐름
+
+```
+1. exam_id 입력 (Enter 스킵 시 전체 exam 대상)
+2. set_name 입력 (Enter 스킵 시 해당 exam 전체, exam_id 없으면 생략)
+3. --fetch-reflinks 실행 → needs_reflinks.json 생성 및 통계 출력
+4. needs_reflinks.json이 비어있으면 종료
+5. translation_guide/{exam_id}.md 로드 (없으면 null)
+6. Haiku 배치 호출 (10문제씩, ceil(N/10)개 동시 실행)
+7. 결과 취합 → output/translated_reflinks.json 저장
+8. --patch 실행 → Supabase PATCH
+9. 결과 요약 출력
+```
+
+### Step 1: 멀티턴 정보 수집
+
+```
+ref_links 다국어 name 백필을 시작합니다.
+
+exam_id를 입력하세요 (전체 대상이면 Enter):
+exam_id: aws-aif-c01
+
+세트 이름을 입력하세요 (전체 대상이면 Enter, 예: 샘플 세트):
+set_name: 샘플 세트
+```
+
+### Step 2: --fetch-reflinks 실행
+
+```bash
+python3 .claude/skills/sql-generator/scripts/patch_en_supabase.py \
+  --fetch-reflinks \
+  [--exam-id {exam_id}] \
+  [--set-name "{set_name}"]
+```
+
+### Step 3: Haiku 배치 호출 (10문제씩)
+
+`output/needs_reflinks.json`의 각 항목을 10개씩 묶어 동시 실행:
+
+```python
+Task(
+    subagent_type="general-purpose",
+    model="haiku",
+    prompt={
+        "task": "translate_reflinks",
+        "questions": batch,          # needs_reflinks.json의 항목 10개
+        "translation_guide": translation_guide_content,  # 없으면 null
+    }
+)
+```
+
+**Haiku 번역 지시사항 (프롬프트에 포함):**
+```
+각 문제의 ref_links 배열에서 name을 4개 언어로 번역하여 반환하라.
+
+규칙:
+- name(한국어)을 기반으로 name_en/name_pt/name_es/name_ja 생성
+- name이 이미 영어인 경우: name_en = name 그대로, name은 한국어로 번역, 나머지 언어도 번역
+- AWS 서비스명(Amazon Bedrock, SageMaker 등) 원문 보존 — 모든 언어 동일
+- translation_guide의 용어 대역표가 있으면 우선 적용
+- URL은 절대 변경하지 않음
+- 기존 name_en/name_pt/name_es/name_ja가 있으면 그대로 유지 (덮어쓰지 않음)
+
+출력 형식:
+{
+  "results": [
+    {
+      "id": "{question_id}",
+      "ref_links": [
+        {
+          "name": "기존 한국어 이름",
+          "name_en": "English Name",
+          "name_pt": "Nome em Português",
+          "name_es": "Nombre en Español",
+          "name_ja": "日本語名",
+          "url": "https://docs.aws.amazon.com/..."
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Step 4: --patch 실행
+
+```bash
+python3 .claude/skills/sql-generator/scripts/patch_en_supabase.py \
+  --patch \
+  --input-file output/translated_reflinks.json
+```
+
+### Step 5: 결과 요약 출력
+
+```
+✅ ref_links 다국어 name 백필 완료
+━━━━━━━━━━━━━━━━━━━━━━━━
+누락 탐지:   {total}개 문제
+번역 성공:   {translated}개
+PATCH 완료:  {patched}개
+━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
 ## `/blog-write` 커맨드 처리
 
 `input/` 폴더의 txt 파일(사용자 제공 공부 자료, 메모, 서비스 설명 등)을 읽어
@@ -1153,13 +1261,15 @@ Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 | `output/translated_questions.json` | 번역 완료 결과 (`/patch-en` 생성) |
 | `output/needs_content.json` | 보기 해설·참고자료 누락 목록 (`/patch-content` 생성) |
 | `output/generated_content.json` | 생성 완료 결과 (`/patch-content` 생성) |
+| `output/needs_reflinks.json` | ref_links 다국어 name 누락 목록 (`/patch-reflinks` 생성) |
+| `output/translated_reflinks.json` | ref_links 번역 완료 결과 (`/patch-reflinks` 생성) |
 | `output/draft_blog_posts.json` | 블로그 포스트 초안 (`/blog-write` 생성) |
 | `output/generated_concepts_log.json` | 자동 생성 모드에서 생성된 개념 누적 로그 (exam_id별, cross-run 반복 방지) |
 | `output/redesigned_question_generate.json` | (레거시) 이전 staged 파이프라인 임시 파일 — 신규 pipeline 모드에서는 생성되지 않음 |
 | `.env` | Supabase 접속 정보 (git에 포함되지 않음) |
 | `.claude/skills/question-parser/scripts/parse_text.py` | 파싱 스크립트 |
 | `.claude/skills/sql-generator/scripts/insert_supabase.py` | Supabase REST API 직접 삽입 스크립트 |
-| `.claude/skills/sql-generator/scripts/patch_en_supabase.py` | 영문 백필·콘텐츠 백필 스크립트 (`--fetch` / `--fetch-content` / `--patch` 모드) |
+| `.claude/skills/sql-generator/scripts/patch_en_supabase.py` | 영문 백필·콘텐츠 백필·ref_links 백필 스크립트 (`--fetch` / `--fetch-content` / `--fetch-reflinks` / `--patch` 모드) |
 | `.claude/skills/sql-generator/scripts/generate_sql.py` | 영문 백필 전용 (`--patch-en` 모드) |
 | `.claude/skills/sql-generator/scripts/insert_blog_supabase.py` | 블로그 포스트 Supabase 삽입 스크립트 (`--publish` / `--dry-run` 모드) |
 | `.claude/skills/question-redesigner/references/translation_guide/{exam_id}.md` | AWS 자격증 영문 번역 가이드 (문장 패턴 + 용어 대역표) |

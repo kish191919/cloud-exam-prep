@@ -338,6 +338,54 @@ def fetch_content_mode(supabase_url, supabase_key, exam_id, output_dir, set_name
     print(f'\n저장: {out_file}')
 
 
+def fetch_reflinks_mode(supabase_url, supabase_key, exam_id, output_dir, set_name=None):
+    """ref_links에 name_en/name_pt/name_es/name_ja 누락된 문제 탐지 → output/needs_reflinks.json"""
+    q_fields = 'id,exam_id,ref_links'
+    opt_fields = 'question_id'
+
+    all_questions, _ = _fetch_questions_and_options(
+        supabase_url, supabase_key, exam_id, set_name, q_fields, opt_fields,
+    )
+    if not all_questions:
+        return
+
+    needs_list = []
+    for q in all_questions:
+        ref = q.get('ref_links')
+        if not ref or ref == '[]' or ref == [] or ref == '':
+            continue  # ref_links 자체가 없는 문제는 스킵 (--fetch-content로 처리)
+
+        links = ref
+        if isinstance(ref, str):
+            try:
+                links = json.loads(ref)
+            except (json.JSONDecodeError, ValueError):
+                continue
+
+        if not isinstance(links, list) or not links:
+            continue
+
+        needs_translation = False
+        for link in links:
+            if not link.get('name_en') or not link.get('name_pt') or not link.get('name_es') or not link.get('name_ja'):
+                needs_translation = True
+                break
+
+        if needs_translation:
+            needs_list.append({
+                'id': q['id'],
+                'exam_id': q['exam_id'],
+                'ref_links': links,
+            })
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    out_file = output_dir / 'needs_reflinks.json'
+    out_file.write_text(json.dumps(needs_list, ensure_ascii=False, indent=2), encoding='utf-8')
+
+    print(f'\n[결과] ref_links 다국어 name 누락 문제: {len(needs_list)}개')
+    print(f'저장: {out_file}')
+
+
 def patch_mode(supabase_url, supabase_key, input_file):
     if not input_file.exists():
         print(f'[ERROR] 입력 파일 없음: {input_file}')
@@ -421,6 +469,8 @@ def main():
                             help='영어 필드 미번역 문제 조회 모드')
     mode_group.add_argument('--fetch-content', action='store_true',
                             help='보기 해설·참고자료 누락 문제 조회 모드')
+    mode_group.add_argument('--fetch-reflinks', action='store_true',
+                            help='ref_links 다국어 name 누락 문제 조회 모드')
     mode_group.add_argument('--patch', action='store_true',
                             help='번역/생성 결과 PATCH 모드')
     parser.add_argument('--exam-id',
@@ -449,6 +499,8 @@ def main():
         fetch_mode(supabase_url, supabase_key, args.exam_id, Path(args.output_dir), args.set_name)
     elif args.fetch_content:
         fetch_content_mode(supabase_url, supabase_key, args.exam_id, Path(args.output_dir), args.set_name)
+    elif args.fetch_reflinks:
+        fetch_reflinks_mode(supabase_url, supabase_key, args.exam_id, Path(args.output_dir), args.set_name)
     else:
         patch_mode(supabase_url, supabase_key, Path(args.input_file))
 
