@@ -63,7 +63,7 @@ export default function ContactFloatingButton() {
             aria-label={t('floating.contactAria')}
             className={`
               relative flex items-center justify-center
-              w-12 h-12 rounded-full
+              w-12 h-12 md:w-14 md:h-14 rounded-full
               bg-accent text-accent-foreground
               shadow-lg shadow-accent/30
               transition-all duration-300 ease-out
@@ -75,7 +75,7 @@ export default function ContactFloatingButton() {
             `}
           >
             <MessageSquare
-              className={`h-5 w-5 transition-all duration-200 ${hovered ? 'scale-110' : 'scale-100'}`}
+              className={`h-5 w-5 md:h-6 md:w-6 transition-all duration-200 ${hovered ? 'scale-110' : 'scale-100'}`}
             />
           </button>
         </div>

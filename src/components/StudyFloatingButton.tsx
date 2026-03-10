@@ -19,7 +19,7 @@ export default function StudyFloatingButton() {
   };
 
   return (
-    <div className="fixed bottom-[5.25rem] right-6 z-40 flex items-center justify-end">
+    <div className="fixed bottom-[5.25rem] md:bottom-24 right-6 z-40 flex items-center justify-end">
       {/* 호버 시 슬라이드 인 라벨 */}
       <div
         className={`
@@ -61,7 +61,7 @@ export default function StudyFloatingButton() {
           aria-label={t('floating.studyAria')}
           className={`
             relative flex items-center justify-center
-            w-12 h-12 rounded-full
+            w-12 h-12 md:w-14 md:h-14 rounded-full
             bg-primary text-primary-foreground
             shadow-lg shadow-primary/30
             transition-all duration-300 ease-out
@@ -73,7 +73,7 @@ export default function StudyFloatingButton() {
           `}
         >
           <BookOpen
-            className={`h-5 w-5 transition-all duration-200 ${hovered ? 'scale-110' : 'scale-100'}`}
+            className={`h-5 w-5 md:h-6 md:w-6 transition-all duration-200 ${hovered ? 'scale-110' : 'scale-100'}`}
           />
         </button>
       </div>
