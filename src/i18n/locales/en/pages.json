@@ -28,6 +28,11 @@
         }
       }
     },
+    "langStrip": {
+      "badge": "Available in 5 Languages 🌏",
+      "tagline": "Study cloud certifications in your native language — available in 5 languages",
+      "languages": "Languages:"
+    },
     "featuresSection": {
       "title": "Why Anyone Can Pass with CloudMaster",
       "subtitle": "Maximum efficiency in minimum time. Detailed explanations, realistic CBT practice — everything you need to pass."

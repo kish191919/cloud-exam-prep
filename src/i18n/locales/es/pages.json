@@ -28,6 +28,11 @@
         }
       }
     },
+    "langStrip": {
+      "badge": "Estudiando en Español 🇪🇸",
+      "tagline": "Comprende los conceptos de la nube en español y domina el examen de certificación",
+      "languages": "Idiomas:"
+    },
     "featuresSection": {
       "title": "Por Qué Cualquiera Puede Aprobar con CloudMaster",
       "subtitle": "Máxima eficiencia en el menor tiempo. Explicaciones detalladas, práctica CBT realista — todo lo que necesitas para aprobar."

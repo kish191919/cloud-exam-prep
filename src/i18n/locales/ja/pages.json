@@ -28,6 +28,11 @@
         }
       }
     },
+    "langStrip": {
+      "badge": "日本語で学習中 🇯🇵",
+      "tagline": "母国語でクラウドの概念を理解して、英語試験を攻略しましょう",
+      "languages": "対応言語:"
+    },
     "featuresSection": {
       "title": "CloudMasterで誰でも合格できる理由",
       "subtitle": "最短時間で最大の効率を。詳しい解説とリアルなCBT練習 — 合格に必要なすべてが揃っています。"

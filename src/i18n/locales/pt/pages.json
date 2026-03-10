@@ -28,6 +28,11 @@
         }
       }
     },
+    "langStrip": {
+      "badge": "Estudando em Português 🇧🇷",
+      "tagline": "Entenda os conceitos de nuvem em português e conquiste sua certificação com confiança",
+      "languages": "Idiomas:"
+    },
     "featuresSection": {
       "title": "Por que Qualquer Um Pode Passar com o CloudMaster",
       "subtitle": "Máxima eficiência no menor tempo. Explicações detalhadas, prática CBT realista — tudo que você precisa para passar."

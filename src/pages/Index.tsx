@@ -34,7 +34,8 @@ const isStandalone =
     (window.navigator as any).standalone === true);
 
 const Index = () => {
-  const { t } = useTranslation(['pages', 'common']);
+  const { t, i18n } = useTranslation(['pages', 'common']);
+  const isNonEnglish = i18n.language !== 'en';
   const { canInstall, install } = usePWAInstall();
   const { user, openAuthModal } = useAuth();
 
@@ -142,7 +143,47 @@ const Index = () => {
           <div className="flex justify-center mb-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-primary/30 text-sm bg-primary/10 backdrop-blur-sm shadow-lg">
               <Zap className="h-4 w-4 text-accent animate-pulse" />
-              <span className="font-semibold whitespace-nowrap">{t('index.hero.badge')}</span>
+              <span className="font-semibold whitespace-nowrap">
+                {isNonEnglish ? t('index.langStrip.badge') : t('index.hero.badge')}
+              </span>
+            </div>
+          </div>
+
+          {/* Language Advantage Strip */}
+          <div className={`mx-auto mb-8 max-w-xl rounded-2xl border px-5 py-3.5 text-center backdrop-blur-sm transition-all duration-300 ${
+            isNonEnglish
+              ? 'border-accent/40 bg-accent/10 shadow-lg shadow-accent/10'
+              : 'border-primary/20 bg-primary/5'
+          }`}>
+            {isNonEnglish && (
+              <p className="text-sm font-semibold text-accent mb-1.5 break-keep">
+                {t('index.langStrip.tagline')}
+              </p>
+            )}
+            {!isNonEnglish && (
+              <p className="text-xs sm:text-sm text-foreground/60 font-medium mb-1.5 break-keep">
+                {t('index.langStrip.tagline')}
+              </p>
+            )}
+            <div className="flex items-center justify-center gap-2 text-xs text-foreground/50">
+              <span className="font-medium">{t('index.langStrip.languages')}</span>
+              {[
+                { flag: '🇺🇸', code: 'en', label: 'English' },
+                { flag: '🇰🇷', code: 'ko', label: '한국어' },
+                { flag: '🇯🇵', code: 'ja', label: '日本語' },
+                { flag: '🇧🇷', code: 'pt', label: 'Português' },
+                { flag: '🇪🇸', code: 'es', label: 'Español' },
+              ].map(({ flag, code, label }) => (
+                <span
+                  key={code}
+                  className={`text-lg leading-none cursor-default transition-transform duration-200 hover:scale-125 ${
+                    i18n.language === code ? 'scale-125 drop-shadow-md' : 'opacity-60'
+                  }`}
+                  title={label}
+                >
+                  {flag}
+                </span>
+              ))}
             </div>
           </div>
 
