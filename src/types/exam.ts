@@ -32,7 +32,7 @@ export interface Question {
   keyPointsPt?: string;
   keyPointsEs?: string;
   keyPointsJa?: string;
-  refLinks?: { name: string; url: string }[];
+  refLinks?: { name: string; name_en?: string; name_pt?: string; name_es?: string; name_ja?: string; url: string }[];
 }
 
 export interface ExamSet {

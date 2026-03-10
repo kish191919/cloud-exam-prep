@@ -369,7 +369,7 @@ const QuestionDisplay = ({
                       rel="noopener noreferrer"
                       className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
                     >
-                      <span>{link.name}</span>
+                      <span>{loc(link.name, link.name_en, link.name_pt, link.name_es, link.name_ja)}</span>
                       <ExternalLink className="h-3 w-3" />
                     </a>
                   </li>

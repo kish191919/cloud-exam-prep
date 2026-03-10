@@ -462,7 +462,7 @@ Task(
 - needs에 없는 필드는 출력 생략
 - AWS 서비스명 원문 보존 (Amazon Bedrock, SageMaker 등)
 - translation_guide의 용어 대역표 우선 적용
-- ref_links: docs.aws.amazon.com 또는 aws.amazon.com 도메인만, 1~3개
+- ref_links: docs.aws.amazon.com 또는 aws.amazon.com 도메인만, 1~3개. 각 링크에 name(한국어), name_en, name_pt, name_es, name_ja 포함
 - options[].explanation(한국어): is_correct가 true이면 "왜 정답인지", false이면 "왜 오답인지" (2~3문장)
 - options[].explanation_en: 동일 내용 영어로 (AWS 시험 공식 문체)
 - 각 옵션의 text와 question의 text를 충분히 참고하여 정확한 설명 생성
@@ -472,7 +472,7 @@ Task(
   "results": [
     {
       "id": "{question_id}",
-      "ref_links": "[{\"name\": \"...\", \"url\": \"...\"}]",  // needs.ref_links가 true일 때만
+      "ref_links": "[{\"name\": \"한국어 문서명\", \"name_en\": \"English Doc Name\", \"name_pt\": \"Nome do documento\", \"name_es\": \"Nombre del documento\", \"name_ja\": \"ドキュメント名\", \"url\": \"...\"}]",  // needs.ref_links가 true일 때만
       "options": [
         {
           "option_id": "a",
@@ -1064,10 +1064,10 @@ for idx in range(3):
 
 ━━ STEP P-2: 다국어 번역 (영어·포르투갈어·스페인어·일본어) ━━
 `translation_guide`를 참조하여 5개 문제 각각에 5개 언어 필드를 추가한다:
-- 영어(en): `text_en`, `explanation_en`, `key_points_en`, `options[].text_en`, `options[].explanation_en`
-- 포르투갈어(pt): `text_pt`, `explanation_pt`, `key_points_pt`, `options[].text_pt`, `options[].explanation_pt`
-- 스페인어(es): `text_es`, `explanation_es`, `key_points_es`, `options[].text_es`, `options[].explanation_es`
-- 일본어(ja): `text_ja`, `explanation_ja`, `key_points_ja`, `options[].text_ja`, `options[].explanation_ja`
+- 영어(en): `text_en`, `explanation_en`, `key_points_en`, `options[].text_en`, `options[].explanation_en`, `ref_links[].name_en`
+- 포르투갈어(pt): `text_pt`, `explanation_pt`, `key_points_pt`, `options[].text_pt`, `options[].explanation_pt`, `ref_links[].name_pt`
+- 스페인어(es): `text_es`, `explanation_es`, `key_points_es`, `options[].text_es`, `options[].explanation_es`, `ref_links[].name_es`
+- 일본어(ja): `text_ja`, `explanation_ja`, `key_points_ja`, `options[].text_ja`, `options[].explanation_ja`, `ref_links[].name_ja`
 번역 원칙:
 - AWS 서비스명 원문 보존 (Amazon Bedrock, SageMaker 등) — 모든 언어 동일
 - 영어: "A company is...", "Which AWS service BEST meets these requirements?" (대문자 강조)

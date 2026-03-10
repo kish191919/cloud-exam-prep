@@ -184,7 +184,7 @@ Gap 우선순위 (커버리지 낮은 순):
 
 **규칙 9** key_points: `{핵심 개념 제목}\n• 포인트1\n• 포인트2\n• 포인트3` (3~5개).
 
-**규칙 10** ref_links: JSON 배열 1~3개. `docs.aws.amazon.com` 또는 `aws.amazon.com` 도메인만 허용.
+**규칙 10** ref_links: JSON 배열 1~3개. `docs.aws.amazon.com` 또는 `aws.amazon.com` 도메인만 허용. 각 링크에 name(한국어), name_en, name_pt, name_es, name_ja 포함 필수.
 
 **규칙 11** 하나의 핵심 개념만 테스트. 여러 서비스를 동시에 답으로 요구하는 구조 금지.
 
@@ -210,7 +210,7 @@ Gap 우선순위 (커버리지 낮은 순):
   "correct_option_id": "b",
   "explanation": "문제 전체 해설 (왜 정답인지 + 오답 설명)",
   "key_points": "핵심 개념 제목\n• 포인트 1\n• 포인트 2\n• 포인트 3",
-  "ref_links": "[{\"name\": \"...\", \"url\": \"https://docs.aws.amazon.com/...\"}]",
+  "ref_links": "[{\"name\": \"한국어 문서명\", \"name_en\": \"English Doc Name\", \"name_pt\": \"Nome do documento\", \"name_es\": \"Nombre del documento\", \"name_ja\": \"ドキュメント名\", \"url\": \"https://docs.aws.amazon.com/...\"}]",
   "tag": "도메인 태그 (한국어)",
   "tag_en": "Domain tag (English)",
   "tag_pt": "Tag de domínio (Português)",
@@ -308,9 +308,9 @@ Main의 [G-5.5] 번역 배치에서 별도로 추가된다.
 
 - Main을 통하지 않고 다른 에이전트를 직접 호출하지 않는다
 - `key_points`는 반드시 "제목\n• 포인트" 형식
-- `ref_links`는 JSON 문자열로 직렬화: `"[{\"name\": \"...\", \"url\": \"...\"}]"`
+- `ref_links`는 JSON 문자열로 직렬화: `"[{\"name\": \"한국어\", \"name_en\": \"English\", \"name_pt\": \"Português\", \"name_es\": \"Español\", \"name_ja\": \"日本語\", \"url\": \"...\"}]"`
 - AWS 서비스명은 반드시 원문 그대로 보존
 - **파일을 읽거나 쓰지 않는다** — 입력은 프롬프트, 출력은 JSON 텍스트 반환
 - ⚠️ `options[].explanation`은 4개 모든 보기에 필수 (영문 필드는 Main이 별도 번역 배치로 추가)
-- ⚠️ `ref_links`는 빈 배열 불가 — 관련 AWS 공식 문서 링크 1~3개 포함 필수
+- ⚠️ `ref_links`는 빈 배열 불가 — 관련 AWS 공식 문서 링크 1~3개 포함 필수, 각 링크에 name/name_en/name_pt/name_es/name_ja 필수
 - ⚠️ ID 형식: 반드시 3자리 zero-padding (`awsaifc01-q667`). 비패딩 (`q67`) 절대 금지

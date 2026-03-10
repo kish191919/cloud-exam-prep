@@ -240,8 +240,8 @@ const BlogPostPage = () => {
   const providerColor = PROVIDER_COLORS[post.provider] ?? '';
   const siteUrl = `https://cloudmasterit.com/blog/${post.slug}`;
 
-  const refLinks: { name: string; url: string }[] = Array.isArray(post.refLinks)
-    ? post.refLinks as { name: string; url: string }[]
+  const refLinks: { name: string; name_en?: string; name_pt?: string; name_es?: string; name_ja?: string; url: string }[] = Array.isArray(post.refLinks)
+    ? post.refLinks as { name: string; name_en?: string; name_pt?: string; name_es?: string; name_ja?: string; url: string }[]
     : [];
 
   const handleShare = () => {
@@ -434,7 +434,7 @@ const BlogPostPage = () => {
                           className="inline-flex items-center gap-1 text-xs text-accent hover:underline"
                         >
                           <ExternalLink className="h-3 w-3" />
-                          {link.name || link.url}
+                          {(lang === 'en' && link.name_en) || (lang === 'pt' && link.name_pt) || (lang === 'es' && link.name_es) || (lang === 'ja' && link.name_ja) || link.name || link.url}
                         </a>
                       </li>
                     ))}
