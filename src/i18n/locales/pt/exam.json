@@ -25,7 +25,8 @@
     "detailsPlaceholder": "Descreva o problema...",
     "cancel": "Cancelar",
     "submitReport": "Enviar Relatório",
-    "submitting": "Enviando..."
+    "submitting": "Enviando...",
+    "screenshotWarning": "Captura de tela detectada. A distribuição não autorizada deste conteúdo é proibida."
   },
   "premiumGate": {
     "premiumOnly": "Somente Premium",

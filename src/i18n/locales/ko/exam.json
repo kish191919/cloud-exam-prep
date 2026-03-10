@@ -25,7 +25,8 @@
     "detailsPlaceholder": "구체적인 내용을 입력해주세요...",
     "cancel": "취소",
     "submitReport": "신고 제출",
-    "submitting": "제출 중..."
+    "submitting": "제출 중...",
+    "screenshotWarning": "스크린샷이 감지되었습니다. 본 콘텐츠의 무단 배포는 금지되어 있습니다."
   },
   "premiumGate": {
     "premiumOnly": "프리미엄 전용",

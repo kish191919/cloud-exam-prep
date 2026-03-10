@@ -25,7 +25,8 @@
     "detailsPlaceholder": "具体的な内容を入力してください...",
     "cancel": "キャンセル",
     "submitReport": "報告を送信",
-    "submitting": "送信中..."
+    "submitting": "送信中...",
+    "screenshotWarning": "スクリーンショットが検出されました。本コンテンツの無断配布は禁止されています。"
   },
   "premiumGate": {
     "premiumOnly": "プレミアム限定",

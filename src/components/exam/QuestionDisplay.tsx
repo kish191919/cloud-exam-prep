@@ -195,12 +195,6 @@ const QuestionDisplay = ({
       className={`relative w-full max-w-3xl mx-auto animate-fade-in select-none ${!showFeedback ? 'h-full flex flex-col min-h-0 md:block' : ''}`}
       onContextMenu={(e) => e.preventDefault()}
     >
-      {/* 워터마크: 스크린샷 도용 억제 */}
-      <div className="absolute inset-0 pointer-events-none z-10 flex items-center justify-center overflow-hidden rounded-xl">
-        <span className="text-4xl font-bold text-foreground opacity-[0.035] rotate-[-25deg] whitespace-nowrap select-none">
-          {user?.email ?? 'exam-prep.kr'}
-        </span>
-      </div>
       {/* 질문 영역: 스크롤 가능한 상단 */}
       <div className={`${!showFeedback ? 'flex-1 overflow-y-auto min-h-0' : ''} px-3 pt-3 sm:px-5 sm:pt-5 md:px-8 md:pt-6 pb-2 md:pb-0`}>
         {/* Header row: question number + tags + bookmark */}

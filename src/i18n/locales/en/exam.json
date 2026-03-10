@@ -25,7 +25,8 @@
     "detailsPlaceholder": "Please describe the issue...",
     "cancel": "Cancel",
     "submitReport": "Submit Report",
-    "submitting": "Submitting..."
+    "submitting": "Submitting...",
+    "screenshotWarning": "Screenshot detected. Unauthorized distribution of this content is prohibited."
   },
   "premiumGate": {
     "premiumOnly": "Premium Only",

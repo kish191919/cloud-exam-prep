@@ -19,6 +19,7 @@ import FontSizeToggle from '@/components/FontSizeToggle';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useFullscreen } from '@/hooks/useFullscreen';
+import { useToast } from '@/hooks/use-toast';
 
 const MODE_LABEL: Record<string, { ko: string; en: string; color: string }> = {
   practice: { ko: '연습모드', en: 'Practice', color: 'bg-green-100 text-green-700' },
@@ -28,6 +29,8 @@ const MODE_LABEL: Record<string, { ko: string; en: string; color: string }> = {
 
 const ExamSession = () => {
   const { t, i18n } = useTranslation('pages');
+  const { t: tExam } = useTranslation('exam');
+  const { toast } = useToast();
   const isKo = i18n.language === 'ko';
   const { sessionId } = useParams();
   const navigate = useNavigate();
@@ -211,6 +214,42 @@ const ExamSession = () => {
     document.addEventListener('keydown', handleCopyAttempt);
     return () => document.removeEventListener('keydown', handleCopyAttempt);
   }, []);
+
+  // 스크린샷 감지: visibilitychange + PrintScreen 키
+  useEffect(() => {
+    let lastHidden = 0;
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        lastHidden = Date.now();
+      } else if (lastHidden > 0) {
+        const elapsed = Date.now() - lastHidden;
+        if (elapsed > 100 && elapsed < 3000) {
+          toast({
+            description: tExam('questionDisplay.screenshotWarning'),
+            variant: 'destructive',
+          });
+        }
+        lastHidden = 0;
+      }
+    };
+
+    const handlePrintScreen = (e: KeyboardEvent) => {
+      if (e.key === 'PrintScreen') {
+        toast({
+          description: tExam('questionDisplay.screenshotWarning'),
+          variant: 'destructive',
+        });
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('keydown', handlePrintScreen);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('keydown', handlePrintScreen);
+    };
+  }, [toast, tExam]);
 
   if (loading) {
     return (
