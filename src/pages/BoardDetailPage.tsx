@@ -308,7 +308,8 @@ function SourcesSection({ sources, refLinks }: { sources: string[]; refLinks: st
 function RelatedPosts({ current }: { current: Announcement }) {
   const [posts, setPosts] = useState<Announcement[]>([]);
   const { i18n } = useTranslation('pages');
-  const isKo = i18n.language === 'ko';
+  const lang = i18n.language;
+  const isKo = lang === 'ko';
 
   useEffect(() => {
     getAnnouncements({ limit: 6 })
@@ -328,7 +329,13 @@ function RelatedPosts({ current }: { current: Announcement }) {
         <div className="grid sm:grid-cols-3 gap-3">
           {posts.map(post => {
             const cfg = CATEGORY_CONFIG[post.category];
-            const postTitle = !isKo && post.titleEn ? post.titleEn : post.title;
+            const postTitle = (
+              lang === 'ja' && post.titleJa ? post.titleJa :
+              lang === 'es' && post.titleEs ? post.titleEs :
+              lang === 'pt' && post.titlePt ? post.titlePt :
+              lang !== 'ko' && post.titleEn ? post.titleEn :
+              post.title
+            );
             const Icon = cfg.icon;
             return (
               <Link
@@ -420,8 +427,21 @@ const BoardDetailPage = () => {
 
   const cfg = CATEGORY_CONFIG[item.category];
   const Icon = cfg.icon;
-  const title   = !isKo && item.titleEn   ? item.titleEn   : item.title;
-  const content = !isKo && item.contentEn ? item.contentEn : item.content;
+  const lang = i18n.language;
+  const title = (
+    lang === 'ja' && item.titleJa ? item.titleJa :
+    lang === 'es' && item.titleEs ? item.titleEs :
+    lang === 'pt' && item.titlePt ? item.titlePt :
+    lang !== 'ko' && item.titleEn ? item.titleEn :
+    item.title
+  );
+  const content = (
+    lang === 'ja' && item.contentJa ? item.contentJa :
+    lang === 'es' && item.contentEs ? item.contentEs :
+    lang === 'pt' && item.contentPt ? item.contentPt :
+    lang !== 'ko' && item.contentEn ? item.contentEn :
+    item.content
+  );
   const catLabel = isKo ? cfg.label : cfg.labelEn;
   const sources = extractSources(item.content + (item.contentEn ?? ''));
   const mins = readingTime(content);

@@ -41,12 +41,25 @@ function stripSpecial(text: string): string {
 
 function AnnouncementCard({ item }: { item: Announcement }) {
   const { i18n } = useTranslation('pages');
-  const isKo = i18n.language === 'ko';
+  const lang = i18n.language;
+  const isKo = lang === 'ko';
   const cfg = CATEGORY_CONFIG[item.category];
   const Icon = cfg.icon;
 
-  const title   = !isKo && item.titleEn   ? item.titleEn   : item.title;
-  const rawContent = !isKo && item.contentEn ? item.contentEn : item.content;
+  const title = (
+    lang === 'ja' && item.titleJa ? item.titleJa :
+    lang === 'es' && item.titleEs ? item.titleEs :
+    lang === 'pt' && item.titlePt ? item.titlePt :
+    lang !== 'ko' && item.titleEn ? item.titleEn :
+    item.title
+  );
+  const rawContent = (
+    lang === 'ja' && item.contentJa ? item.contentJa :
+    lang === 'es' && item.contentEs ? item.contentEs :
+    lang === 'pt' && item.contentPt ? item.contentPt :
+    lang !== 'ko' && item.contentEn ? item.contentEn :
+    item.content
+  );
   const excerpt = stripSpecial(rawContent).slice(0, 120) + '…';
   const mins    = readingTime(rawContent);
   const catLabel = isKo ? cfg.label : cfg.labelEn;
@@ -119,8 +132,15 @@ function AnnouncementCard({ item }: { item: Announcement }) {
 // ─── Pinned Banner ────────────────────────────────────────────────────────────
 function PinnedBanner({ item }: { item: Announcement }) {
   const { t, i18n } = useTranslation('pages');
-  const isKo = i18n.language === 'ko';
-  const title = !isKo && item.titleEn ? item.titleEn : item.title;
+  const lang = i18n.language;
+  const isKo = lang === 'ko';
+  const title = (
+    lang === 'ja' && item.titleJa ? item.titleJa :
+    lang === 'es' && item.titleEs ? item.titleEs :
+    lang === 'pt' && item.titlePt ? item.titlePt :
+    lang !== 'ko' && item.titleEn ? item.titleEn :
+    item.title
+  );
 
   return (
     <Link
