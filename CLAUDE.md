@@ -111,16 +111,44 @@ questions_raw = re.split(r'\n(?=\s*(?:Q?\d+[\.\)]|Question\s+\d+))', content.str
 questions_raw = [q.strip() for q in questions_raw if q.strip()]
 
 exam_code = exam_id.replace('-', '')  # aws-aif-c01 → awsaifc01
+
+def apply_linebreaks_ko(question_text: str) -> str:
+    """
+    규칙 3 결정론적 적용 (source_language == 'ko' 전용):
+    - 마지막 문장(? 로 끝남) 앞에 \\n\\n 삽입
+    - 전체 문장 수 >= 4이면 첫 번째 문장 뒤에도 \\n\\n 삽입
+    원문 텍스트는 단어 하나도 수정하지 않는다.
+    """
+    parts = re.split(r'(?<=[다요까]\.?)\s+', question_text.strip())
+    parts = [p.strip() for p in parts if p.strip()]
+
+    if len(parts) <= 1:
+        return question_text.strip()
+
+    last = parts[-1]   # 질문 문장 (? 로 끝남)
+    body = parts[:-1]
+
+    if len(parts) >= 4:
+        formatted = body[0] + '\n\n' + ' '.join(body[1:]) + '\n\n' + last
+    else:
+        formatted = ' '.join(body) + '\n\n' + last
+
+    return formatted.strip()
+
 parsed_questions = []
 for i, q_text in enumerate(questions_raw):
     # 번호 제거 후 질문 텍스트만 추출
     clean_text = re.sub(r'^\s*(?:Q?\d+[\.\)]\s*|Question\s+\d+[:.]\s*)', '', q_text).strip()
     num = current_max_id + i + 1
-    parsed_questions.append({
+    entry = {
         "number": i + 1,
         "question": clean_text,
         "assigned_id": f"{exam_code}-q{num:03d}"
-    })
+    }
+    # source_language == 'ko'이면 text 필드 사전 확정 (Redesigner가 수정 불가)
+    if source_language == 'ko':
+        entry["text"] = apply_linebreaks_ko(clean_text)
+    parsed_questions.append(entry)
 
 # output/parsed_questions.json 저장
 with open('output/parsed_questions.json', 'w', encoding='utf-8') as f:
@@ -153,7 +181,8 @@ for idx, batch in enumerate(batches):
         model="haiku",
         prompt={
             "task": "pipeline_batch",          # 질문 번역 + 보기 생성 + 번역 + 즉시 삽입
-            "questions": batch,                # {number, question, assigned_id} 배열
+            "questions": batch,                # {number, question, assigned_id, text(ko시 사전확정)} 배열
+            "text_is_final": source_language == 'ko',  # True이면 text 필드 수정 절대 금지
             "exam_id": exam_id,
             "source_language": source_language,
             "domain_tags": domain_tags_content,
