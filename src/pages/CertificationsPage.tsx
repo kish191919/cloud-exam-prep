@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Navbar from '@/components/Navbar';
@@ -10,51 +9,10 @@ import {
   PROVIDERS,
   LEVEL_META,
   CAREER_META,
-  type CareerPath,
   type CertLevel,
   type Certification,
   type ProviderConfig,
 } from '@/data/certifications';
-
-// ────────────────────────────────────────────────────────────────────────────
-// Career Filter Bar
-// ────────────────────────────────────────────────────────────────────────────
-const CAREER_FILTERS: CareerPath[] = ['all', 'cloud-architect', 'devops', 'data-ml', 'security', 'developer'];
-
-interface CareerFilterProps {
-  active: CareerPath;
-  onChange: (c: CareerPath) => void;
-}
-
-function CareerFilter({ active, onChange }: CareerFilterProps) {
-  const { t } = useTranslation('pages');
-  return (
-    <div className="flex flex-wrap gap-2 justify-center">
-      {CAREER_FILTERS.map((c) => {
-        const emoji = CAREER_META[c].emoji;
-        const label = t(`certifications.careers.${c}.label`);
-        const isActive = active === c;
-        return (
-          <button
-            key={c}
-            onClick={() => onChange(c)}
-            className={`
-              inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium
-              border transition-all duration-200
-              ${isActive
-                ? 'bg-accent text-accent-foreground border-accent shadow-sm'
-                : 'bg-background text-muted-foreground border-border hover:border-accent/50 hover:text-foreground'
-              }
-            `}
-          >
-            <span>{emoji}</span>
-            {label}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
 
 // ────────────────────────────────────────────────────────────────────────────
 // Certification Card
@@ -62,14 +20,12 @@ function CareerFilter({ active, onChange }: CareerFilterProps) {
 interface CertCardProps {
   cert: Certification;
   providerColor: string;
-  activeCareer: CareerPath;
   lang: string;
 }
 
-function CertCard({ cert, providerColor, activeCareer, lang }: CertCardProps) {
+function CertCard({ cert, providerColor, lang }: CertCardProps) {
   const { t } = useTranslation('pages');
   const levelMeta = LEVEL_META[cert.level];
-  const isHighlighted = activeCareer === 'all' || cert.careerPaths.includes(activeCareer);
   const hasExam = Boolean(cert.examId);
   const description =
     lang === 'ko' ? cert.description
@@ -83,7 +39,6 @@ function CertCard({ cert, providerColor, activeCareer, lang }: CertCardProps) {
       className={`
         bg-card rounded-xl border p-5 flex flex-col gap-3
         transition-all duration-300 card-hover
-        ${isHighlighted ? 'opacity-100' : 'opacity-35'}
       `}
     >
       {/* Level Badge + availability */}
@@ -169,11 +124,10 @@ interface LevelSectionProps {
   level: CertLevel;
   certs: Certification[];
   providerColor: string;
-  activeCareer: CareerPath;
   lang: string;
 }
 
-function LevelSection({ level, certs, providerColor, activeCareer, lang }: LevelSectionProps) {
+function LevelSection({ level, certs, providerColor, lang }: LevelSectionProps) {
   const { t } = useTranslation('pages');
   if (certs.length === 0) return null;
   const meta = LEVEL_META[level];
@@ -197,7 +151,6 @@ function LevelSection({ level, certs, providerColor, activeCareer, lang }: Level
             key={cert.id}
             cert={cert}
             providerColor={providerColor}
-            activeCareer={activeCareer}
             lang={lang}
           />
         ))}
@@ -211,11 +164,10 @@ function LevelSection({ level, certs, providerColor, activeCareer, lang }: Level
 // ────────────────────────────────────────────────────────────────────────────
 interface ProviderRoadmapProps {
   provider: ProviderConfig;
-  activeCareer: CareerPath;
   lang: string;
 }
 
-function ProviderRoadmap({ provider, activeCareer, lang }: ProviderRoadmapProps) {
+function ProviderRoadmap({ provider, lang }: ProviderRoadmapProps) {
   const { t } = useTranslation('pages');
   const tagline = lang === 'ko' ? provider.tagline : provider.taglineEn;
 
@@ -246,7 +198,6 @@ function ProviderRoadmap({ provider, activeCareer, lang }: ProviderRoadmapProps)
               level={level}
               certs={certs}
               providerColor={provider.color}
-              activeCareer={activeCareer}
               lang={lang}
             />
             {idx < provider.levels.length - 1 && (
@@ -265,7 +216,6 @@ function ProviderRoadmap({ provider, activeCareer, lang }: ProviderRoadmapProps)
 // Page
 // ────────────────────────────────────────────────────────────────────────────
 const CertificationsPage = () => {
-  const [activeCareer, setActiveCareer] = useState<CareerPath>('all');
   const { t, i18n } = useTranslation('pages');
   const lang = i18n.language;
 
@@ -299,16 +249,6 @@ const CertificationsPage = () => {
         </div>
       </section>
 
-      {/* Career Filter */}
-      <section className="py-8 px-4 bg-card border-b border-border sticky top-[61px] z-40 backdrop-blur-md bg-card/90">
-        <div className="container mx-auto max-w-4xl">
-          <p className="text-center text-xs text-muted-foreground mb-3 font-medium uppercase tracking-wider">
-            {t('certifications.filterLabel')}
-          </p>
-          <CareerFilter active={activeCareer} onChange={setActiveCareer} />
-        </div>
-      </section>
-
       {/* Roadmap Tabs */}
       <section className="py-12 px-4">
         <div className="container mx-auto max-w-5xl">
@@ -323,7 +263,7 @@ const CertificationsPage = () => {
 
             {PROVIDERS.map((provider) => (
               <TabsContent key={provider.id} value={provider.id}>
-                <ProviderRoadmap provider={provider} activeCareer={activeCareer} lang={lang} />
+                <ProviderRoadmap provider={provider} lang={lang} />
               </TabsContent>
             ))}
           </Tabs>
