@@ -1,6 +1,6 @@
-# AWS 시험 문제 변환 오케스트레이터
+# 시험 문제 생성 오케스트레이터
 
-이 프로젝트의 Claude Code 에이전트는 영문 또는 한국어 AWS 시험 문제를 한국어 4지선다 문제로 재설계하고, Supabase에 직접 삽입하는 완전 자동화 변환 파이프라인을 실행합니다.
+이 프로젝트의 Claude Code 에이전트는 영문 또는 한국어 AWS/GCP/Azure 시험 문제 텍스트 파일을 읽어 한국어 4지선다 문제로 재설계하고, Supabase에 직접 삽입하는 완전 자동화 파이프라인을 실행합니다.
 
 ## 역할
 
@@ -19,621 +19,29 @@ Main 오케스트레이터로서:
 
 **규칙:** 서브에이전트 간 직접 호출 금지 — 반드시 Main(이 파일)을 통해 조율한다.
 
-
-## `/patch-en` 커맨드 처리
-
-Supabase에 이미 저장된 문제 중 영어 필드(`text_en`, `explanation_en`, `key_points_en`)가
-누락된 항목을 탐지하고 Haiku로 번역하여 PATCH하는 백필 파이프라인.
-
-### 처리 흐름
-
-```
-1. exam_id 입력 (Enter 스킵 시 전체 exam 대상)
-2. set_name 입력 (Enter 스킵 시 해당 exam 전체, exam_id 없으면 생략)
-3. --fetch 실행 → needs_translation.json 생성 및 통계 출력
-4. needs_translation.json이 비어있으면 종료
-5. translation_guide/{exam_id}.md 로드 (없으면 null)
-6. Haiku 배치 호출 (5문제씩, ceil(N/5)개 동시 실행)
-7. 결과 취합 → output/translated_questions.json 저장
-8. --patch 실행 → Supabase PATCH
-9. 결과 요약 출력
-```
-
-### Step 1: 멀티턴 정보 수집
-
-```
-영문 백필을 시작합니다.
-
-exam_id를 입력하세요 (전체 대상이면 Enter):
-exam_id: aws-aif-c01
-
-세트 이름을 입력하세요 (전체 대상이면 Enter, 예: 샘플 세트):
-set_name: 샘플 세트
-```
-
-- `exam_id`를 Enter로 스킵하면 set_name 입력 없이 전체 대상 진행
-- `set_name`을 입력하면 해당 세트 소속 문제만 처리 (문제 수 대폭 축소)
-
-### Step 2: --fetch 실행
-
-```bash
-python3 .claude/skills/sql-generator/scripts/patch_en_supabase.py \
-  --fetch \
-  [--exam-id {exam_id}] \
-  [--set-name "{set_name}"]   # set_name 입력 시 추가 (--exam-id 필수)
-```
-
-- `--set-name` 지정 시 `--exam-id`도 반드시 함께 전달
-- 세트 필터가 없으면 기존 동작(exam 전체 또는 전체 exam) 그대로
-
-출력 예:
-```
-[결과] 미번역 문제: 43개
-  - 질문 text_en 누락:         5개
-  - 질문 explanation_en 누락:  12개
-  - 옵션 text_en 누락:         38개 (항목 기준)
-  - 옵션 explanation_en 누락:  30개 (항목 기준)
-저장: output/needs_translation.json
-```
-
-### Step 3: Haiku 배치 호출 (5문제씩)
-
-`output/needs_translation.json`의 각 항목을 5개씩 묶어 동시 실행:
-
-```python
-Task(
-    subagent_type="general-purpose",
-    model="haiku",
-    prompt={
-        "task": "translate_to_en",
-        "questions": batch,          # needs_translation.json의 항목 5개
-        "translation_guide": translation_guide_content,  # 없으면 null
-    }
-)
-```
-
-**Haiku 번역 지시사항 (프롬프트에 포함):**
-```
-각 질문의 'needs' 객체 안에 있는 필드만 영어로 번역하여 반환하라.
-- AWS 서비스명(Amazon Bedrock, SageMaker 등)은 원문 그대로 유지
-- translation_guide의 용어 대역표를 우선 적용
-- 번역 불필요한 필드(needs에 없는 필드)는 출력에서 생략
-
-출력 형식:
-{
-  "results": [
-    {
-      "id": "{question_id}",
-      "text_en": "...",          // needs.text_en이 있을 때만
-      "explanation_en": "...",   // needs.explanation_en이 있을 때만
-      "key_points_en": "...",    // needs.key_points_en이 있을 때만
-      "options": [
-        {
-          "option_id": "A",
-          "text_en": "...",         // needs.text_en이 있을 때만
-          "explanation_en": "..."   // needs.explanation_en이 있을 때만
-        }
-      ]
-    }
-  ]
-}
-```
-
-### Step 4: --patch 실행
-
-```bash
-python3 .claude/skills/sql-generator/scripts/patch_en_supabase.py \
-  --patch \
-  --input-file output/translated_questions.json
-```
-
-### Step 5: 결과 요약 출력
-
-```
-✅ 영문 백필 완료
-━━━━━━━━━━━━━━━━━━━━━━━━
-미번역 탐지:   {total}개 문제
-번역 성공:     {translated}개
-PATCH 완료:    질문 {q_patched}개, 옵션 {opt_patched}개
-━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
----
-
-## `/patch-content` 커맨드 처리
-
-Supabase에 이미 저장된 문제 중 보기별 해설(`options[].explanation`/`explanation_en`)과
-참고자료(`ref_links`)가 누락된 항목을 탐지하고 Haiku로 생성하여 PATCH하는 백필 파이프라인.
-
-### 처리 흐름
-
-```
-1. exam_id 입력 (Enter 스킵 시 전체 exam 대상)
-2. set_name 입력 (Enter 스킵 시 해당 exam 전체, exam_id 없으면 생략)
-3. --fetch-content 실행 → needs_content.json 생성 및 통계 출력
-4. needs_content.json이 비어있으면 종료
-5. translation_guide/{exam_id}.md 로드 (없으면 null)
-6. Haiku 배치 호출 (5문제씩, ceil(N/5)개 동시 실행)
-7. 결과 취합 → output/generated_content.json 저장
-8. --patch 실행 (--input-file output/generated_content.json)
-9. 결과 요약 출력
-```
-
-### Step 1: 멀티턴 정보 수집
-
-```
-보기 해설·참고자료 백필을 시작합니다.
-
-exam_id를 입력하세요 (전체 대상이면 Enter):
-exam_id: aws-aif-c01
-
-세트 이름을 입력하세요 (전체 대상이면 Enter, 예: 세트 2):
-set_name: 세트 2
-```
-
-### Step 2: --fetch-content 실행
-
-```bash
-python3 .claude/skills/sql-generator/scripts/patch_en_supabase.py \
-  --fetch-content \
-  [--exam-id {exam_id}] \
-  [--set-name "{set_name}"]
-```
-
-출력 예:
-```
-[결과] 콘텐츠 누락 문제: 45개
-  - ref_links 누락:              45개
-  - 옵션 explanation(한) 누락:   180개 (항목 기준)
-  - 옵션 explanation_en(영) 누락: 180개 (항목 기준)
-저장: output/needs_content.json
-```
-
-### Step 3: Haiku 배치 호출 (5문제씩)
-
-`output/needs_content.json`의 각 항목을 5개씩 묶어 동시 실행:
-
-```python
-Task(
-    subagent_type="general-purpose",
-    model="haiku",
-    prompt={
-        "task": "generate_content",
-        "questions": batch,          # needs_content.json의 항목 5개
-        "translation_guide": translation_guide_content,  # 없으면 null
-    }
-)
-```
-
-**Haiku 생성 지시사항 (프롬프트에 포함):**
-```
-각 질문의 'needs' 객체를 보고 누락된 필드만 생성하여 반환하라.
-
-규칙:
-- needs에 없는 필드는 출력 생략
-- AWS 서비스명 원문 보존 (Amazon Bedrock, SageMaker 등)
-- translation_guide의 용어 대역표 우선 적용
-- ref_links: docs.aws.amazon.com 또는 aws.amazon.com 도메인만, 1~3개. 각 링크에 name(한국어), name_en, name_pt, name_es, name_ja 포함
-- options[].explanation(한국어): is_correct가 true이면 "왜 정답인지", false이면 "왜 오답인지" (2~3문장)
-- options[].explanation_en: 동일 내용 영어로 (AWS 시험 공식 문체)
-- 각 옵션의 text와 question의 text를 충분히 참고하여 정확한 설명 생성
-
-출력 형식:
-{
-  "results": [
-    {
-      "id": "{question_id}",
-      "ref_links": "[{\"name\": \"한국어 문서명\", \"name_en\": \"English Doc Name\", \"name_pt\": \"Nome do documento\", \"name_es\": \"Nombre del documento\", \"name_ja\": \"ドキュメント名\", \"url\": \"...\"}]",  // needs.ref_links가 true일 때만
-      "options": [
-        {
-          "option_id": "a",
-          "explanation": "...",       // needs에 포함된 경우만
-          "explanation_en": "..."     // needs에 포함된 경우만
-        }
-      ]
-    }
-  ]
-}
-```
-
-### Step 4: --patch 실행
-
-```bash
-python3 .claude/skills/sql-generator/scripts/patch_en_supabase.py \
-  --patch \
-  --input-file output/generated_content.json
-```
-
-### Step 5: 결과 요약 출력
-
-```
-✅ 콘텐츠 백필 완료
-━━━━━━━━━━━━━━━━━━━━━━━━
-누락 탐지:   {total}개 문제
-생성 성공:   {generated}개
-PATCH 완료:  질문(ref_links) {q_patched}개, 옵션 {opt_patched}개
-━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
----
-
-## `/patch-reflinks` 커맨드 처리
-
-기존 문제의 ref_links에 다국어 name(`name_en`/`name_pt`/`name_es`/`name_ja`)을 백필하는 파이프라인.
-
-### 처리 흐름
-
-```
-1. exam_id 입력 (Enter 스킵 시 전체 exam 대상)
-2. set_name 입력 (Enter 스킵 시 해당 exam 전체, exam_id 없으면 생략)
-3. --fetch-reflinks 실행 → needs_reflinks.json 생성 및 통계 출력
-4. needs_reflinks.json이 비어있으면 종료
-5. translation_guide/{exam_id}.md 로드 (없으면 null)
-6. Haiku 배치 호출 (10문제씩, ceil(N/10)개 동시 실행)
-7. 결과 취합 → output/translated_reflinks.json 저장
-8. --patch 실행 → Supabase PATCH
-9. 결과 요약 출력
-```
-
-### Step 1: 멀티턴 정보 수집
-
-```
-ref_links 다국어 name 백필을 시작합니다.
-
-exam_id를 입력하세요 (전체 대상이면 Enter):
-exam_id: aws-aif-c01
-
-세트 이름을 입력하세요 (전체 대상이면 Enter, 예: 샘플 세트):
-set_name: 샘플 세트
-```
-
-### Step 2: --fetch-reflinks 실행
-
-```bash
-python3 .claude/skills/sql-generator/scripts/patch_en_supabase.py \
-  --fetch-reflinks \
-  [--exam-id {exam_id}] \
-  [--set-name "{set_name}"]
-```
-
-### Step 3: Haiku 배치 호출 (10문제씩)
-
-`output/needs_reflinks.json`의 각 항목을 10개씩 묶어 동시 실행:
-
-```python
-Task(
-    subagent_type="general-purpose",
-    model="haiku",
-    prompt={
-        "task": "translate_reflinks",
-        "questions": batch,          # needs_reflinks.json의 항목 10개
-        "translation_guide": translation_guide_content,  # 없으면 null
-    }
-)
-```
-
-**Haiku 번역 지시사항 (프롬프트에 포함):**
-```
-각 문제의 ref_links 배열에서 name을 4개 언어로 번역하여 반환하라.
-
-규칙:
-- name(한국어)을 기반으로 name_en/name_pt/name_es/name_ja 생성
-- name이 이미 영어인 경우: name_en = name 그대로, name은 한국어로 번역, 나머지 언어도 번역
-- AWS 서비스명(Amazon Bedrock, SageMaker 등) 원문 보존 — 모든 언어 동일
-- translation_guide의 용어 대역표가 있으면 우선 적용
-- URL은 절대 변경하지 않음
-- 기존 name_en/name_pt/name_es/name_ja가 있으면 그대로 유지 (덮어쓰지 않음)
-
-출력 형식:
-{
-  "results": [
-    {
-      "id": "{question_id}",
-      "ref_links": [
-        {
-          "name": "기존 한국어 이름",
-          "name_en": "English Name",
-          "name_pt": "Nome em Português",
-          "name_es": "Nombre en Español",
-          "name_ja": "日本語名",
-          "url": "https://docs.aws.amazon.com/..."
-        }
-      ]
-    }
-  ]
-}
-```
-
-### Step 4: --patch 실행
-
-```bash
-python3 .claude/skills/sql-generator/scripts/patch_en_supabase.py \
-  --patch \
-  --input-file output/translated_reflinks.json
-```
-
-### Step 5: 결과 요약 출력
-
-```
-✅ ref_links 다국어 name 백필 완료
-━━━━━━━━━━━━━━━━━━━━━━━━
-누락 탐지:   {total}개 문제
-번역 성공:   {translated}개
-PATCH 완료:  {patched}개
-━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
----
-
-## `/blog-write` 커맨드 처리
-
-`input/` 폴더의 txt 파일(사용자 제공 공부 자료, 메모, 서비스 설명 등)을 읽어
-SEO 최적화된 한/영 양방향 블로그 포스트를 배치 생성하고 Supabase에 삽입하는 파이프라인.
-
-### 인자 파싱
-
-사용자가 `/blog-write` 실행 시 다음 인자를 지원한다:
-
-| 인자 | 동작 |
-|------|------|
-| (인자 없음) | 기존 대화형 진행 (Step 1 확인 + Step 5 검토 모두 표시) |
-| `--draft` | YAML 헤더 완전 시 Step 1 확인 생략 + Step 5 건너뜀 (모두 초안 저장) |
-| `--publish` | YAML 헤더 완전 시 Step 1 확인 생략 + Step 5 건너뜀 (모두 즉시 게시) |
-
-예: `/blog-write --draft`, `/blog-write --publish`
-
-### 처리 흐름
-
-```
-[/blog-write [--draft|--publish]]
-  → 인자 파싱 (--draft / --publish 여부 확인)
-  → input/ 폴더 스캔 (.txt 파일, 알파벳 순)
-  → 파일별 YAML 헤더 파싱 or Main 자동 감지
-  → 파일 목록·주제 출력
-      ├─ YAML 헤더 완전 + --draft/--publish → 확인 없이 자동 진행
-      └─ 그 외 → [A/B/C] 사용자 확인
-  → YAML 자동 감지 파일 있으면: 헤더 추가 힌트 표시
-  → 참조 파일 선로드 (domain_tags, blog_guide, translation_guide)
-  → Blog Writer Agent (Haiku, 5개씩 배치 병렬) — SEO 최적화 포함
-  → 에스컬레이션 처리 → output/draft_blog_posts.json
-      ├─ --draft/--publish 지정 시 → 자동으로 삽입 진행 (Step 5 생략)
-      └─ 인자 없음 → Step 5 사용자 검토 → 초안/즉시 게시 선택
-  → insert_blog_supabase.py 실행
-  → 파일 input/done/ 이동
-  → 결과 요약 출력
-```
-
-### input/ txt 파일 형식
-
-`input/` 폴더의 txt 파일은 **선택적 YAML 헤더 + 본문**으로 구성된다:
-
-```
----
-provider: aws
-exam_id: aws-aif-c01
-content_type: domain_guide
-topic: Amazon Bedrock 파운데이션 모델 활용 가이드
-slug_hint: aws-aif-c01-bedrock-guide
----
-[본문: 공부 메모, 공식 문서 발췌, 핵심 개념 정리 등 자유 형식]
-```
-
-- YAML 헤더가 없으면 Main(Sonnet)이 본문 내용에서 provider·content_type·topic 자동 감지
-- `exam_id`, `slug_hint`는 선택사항
-- `content_type` 선택지: `overview` / `domain_guide` / `service_comparison` / `exam_strategy`
-
-**파일이 없는 경우** — 즉시 종료:
-```
-input/ 폴더에 .txt 파일이 없습니다.
-블로그로 작성할 내용을 .txt 파일로 input/ 폴더에 저장한 후 다시 실행해주세요.
-```
-
-### Step 1: input/ 폴더 스캔 + 파일 분석
-
-파일 목록을 알파벳 순으로 스캔하고 각 파일의 YAML 헤더를 파싱한다.
-헤더가 없는 파일은 Main(Sonnet)이 첫 500자를 읽어 provider·topic 자동 감지.
-
-출력 예:
-```
-처리할 파일 목록 (input/):
-  [1] bedrock_study.txt      — provider: aws | content_type: domain_guide | 주제: Amazon Bedrock 파운데이션 모델
-  [2] clf_overview.txt       — provider: aws | content_type: overview     | 주제: AWS Cloud Practitioner 개요
-  [3] sagemaker_vs_bedrock.txt — provider: aws | content_type: service_comparison | 주제: SageMaker vs Bedrock
-
-총 3개 파일을 처리합니다.
-
-[A] 모두 그대로 진행합니다
-[B] 특정 파일의 설정을 수정합니다 (예: "2번 content_type: exam_strategy로 변경")
-[C] 취소합니다
-```
-
-**자동 진행 조건 (Step 1 확인 생략):**
-
-다음 조건이 **모두** 충족되면 [A/B/C] 질문 없이 파일 목록만 출력 후 자동으로 Step 2로 진행한다:
-1. 모든 파일의 YAML 헤더에 `provider` + `content_type` + `topic`이 모두 명시되어 있음
-2. `--draft` 또는 `--publish` 인자가 전달되었음
-
-자동 진행 시 출력 예:
-```
-처리할 파일 목록 (input/):
-  [1] bedrock_study.txt   — provider: aws | content_type: domain_guide | 주제: Amazon Bedrock 파운데이션 모델
-  [2] clf_overview.txt    — provider: aws | content_type: overview     | 주제: AWS Cloud Practitioner 개요
-
-총 2개 파일 처리를 시작합니다. (--draft 모드)
-```
-
-**YAML 헤더 없는 파일이 있는 경우 — 힌트 표시:**
-
-자동 감지가 필요한 파일이 하나라도 있으면, 파일 목록 + [A/B/C] 확인 출력 후 다음 힌트를 추가로 표시한다:
-```
-💡 다음 실행 시 확인 단계를 생략하려면 아래 YAML 헤더를 파일 상단에 추가하세요:
----
-provider: aws
-exam_id: aws-aif-c01      (선택사항)
-content_type: domain_guide
-topic: [주제 입력]
-slug_hint: [url-slug]     (선택사항)
----
-```
-
-### Step 2: 참조 파일 선로드
-
-Blog Writer Agent 호출 전에 다음 파일을 읽어 텍스트로 보관한다:
-
-```
-blog_guide_content    ← .claude/skills/blog-write/references/blog_writing_guide/{provider}.md
-                        (파일 없으면 null)
-domain_tags_content   ← .claude/skills/question-redesigner/references/domain_tags/{exam_id}.md
-                        (exam_id가 null이면 null)
-translation_guide_content ← .claude/skills/question-redesigner/references/translation_guide/{exam_id}.md
-                             (파일 없으면 null)
-```
-
-### Step 3: Blog Writer Agent 배치 호출 (5개씩)
-
-파일 목록의 각 항목을 **5개씩 묶어** Task 호출한다.
-각 항목에 `source_content` (txt 파일 전체 내용)를 포함해 전달한다:
-
-```python
-batch_size = 5
-batches = [items[i:i+batch_size] for i in range(0, len(items), batch_size)]
-
-for batch in batches:
-    Task(
-        subagent_type="general-purpose",
-        model="haiku",
-        prompt={
-            "task": "write_blog_batch",
-            "items": [
-                {
-                    "number": item["number"],
-                    "provider": item["provider"],
-                    "exam_id": item.get("exam_id"),
-                    "content_type": item["content_type"],
-                    "topic": item["topic"],
-                    "slug_hint": item.get("slug_hint"),
-                    "source_content": item["source_content"]   # txt 파일 전체 내용
-                }
-                for item in batch
-            ],
-            "blog_guide": blog_guide_content,
-            "domain_tags": domain_tags_content,
-            "translation_guide": translation_guide_content,
-        }
-    )
-# 모든 Task를 단일 메시지에 묶어 동시 실행
-```
-
-**provider가 파일마다 다를 경우:** provider별로 blog_guide 파일을 각각 로드하여 해당 배치에 전달한다.
-
-### Step 4: 결과 취합 → output/draft_blog_posts.json 저장
-
-- 각 배치 결과의 `results` 배열을 number 기준 정렬 후 합산
-- 성공 결과만 `output/draft_blog_posts.json`에 배열로 저장
-- 에스컬레이션 결과는 사용자에게 전달 (아래 에스컬레이션 처리 참조)
-
-### Step 5: 사용자 검토
-
-**`--draft` 또는 `--publish` 인자가 전달된 경우 → 이 단계를 건너뛴다:**
-
-- `--draft`: 포스트 목록과 수만 간략히 출력 후 자동으로 Step 6 (초안 저장) 진행
-  ```
-  3개 포스트를 초안으로 저장합니다.
-    [1] aws-aif-c01-bedrock-foundation-model-guide — "Amazon Bedrock 완벽 가이드 | AIF-C01"
-    [2] aws-clf-c02-overview — "AWS Cloud Practitioner(CLF-C02) 완벽 합격 가이드"
-    ...
-  ```
-- `--publish`: 동일하게 목록 출력 후 자동으로 Step 6 (즉시 게시) 진행
-
-**인자가 없는 경우 → 아래 대화형 선택을 진행한다:**
-
-```
-{N}개 포스트 초안이 완성되었습니다:
-
-  [1] aws-aif-c01-bedrock-foundation-model-guide
-      제목: "Amazon Bedrock 파운데이션 모델 완벽 가이드 | AIF-C01 합격 전략"
-      분량: 약 2,800자 | 읽기 시간: 6분 | provider: aws
-  [2] aws-clf-c02-overview
-      제목: "AWS Cloud Practitioner(CLF-C02) 완벽 합격 가이드"
-      분량: 약 2,300자 | 읽기 시간: 5분 | provider: aws
-
-처리 방법을 선택하세요:
-  [A] 모두 초안으로 저장 (is_published=false, 어드민에서 추후 게시)
-  [B] 모두 즉시 게시 (is_published=true)
-  [C] 개별 선택 (예: "1번 게시, 2번 초안")
-  [D] 특정 포스트 수정 후 저장 (예: "1번 수정: 시험 전략 섹션 강화")
-```
-
-[D] 수정 선택 시 → 해당 항목만 Blog Writer Agent 단독 재호출 (수정 지시 + source_content 포함).
-
-### Step 6: insert_blog_supabase.py 실행
-
-```bash
-# [A] 초안 저장 (기본)
-python3 .claude/skills/sql-generator/scripts/insert_blog_supabase.py \
-  --input-file output/draft_blog_posts.json
-
-# [B] 즉시 게시
-python3 .claude/skills/sql-generator/scripts/insert_blog_supabase.py \
-  --input-file output/draft_blog_posts.json \
-  --publish
-```
-
-### Step 7: 파일 이동
-
-```bash
-mv input/{filename} input/done/{filename}
-```
-
-### Step 8: 결과 요약 출력
-
-```
-✅ 블로그 포스트 생성 완료
-━━━━━━━━━━━━━━━━━━━━━━━━
-총 입력 파일:    {total}개
-작성 성공:       {success}개
-에스컬레이션 스킵: {escalated_skipped}개 → [주제 목록]
-━━━━━━━━━━━━━━━━━━━━━━━━
-Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
-게시 상태: {published}개 게시됨 | {draft}개 초안
-```
-
-## 에스컬레이션 처리 (`/blog-write`)
-
-배치 결과의 `results`에서 `success: false` 항목을 순서대로 처리한다:
-
-1. 사용자에게 에스컬레이션 내용을 그대로 출력
-2. 사용자 응답 대기:
-   - **[A] 직접 지시:** 해당 항목만 Blog Writer를 단독(`items` 배열에 1개만) 재호출 (지시 + source_content 포함)
-   - **[B] 스킵:** 해당 항목 스킵 처리
-
-모든 에스컬레이션 처리 완료 후 Step 5(사용자 검토)로 진행.
-
 ---
 
 ## `/generate` 커맨드 처리
 
-`input/` 폴더의 문제 텍스트 파일을 읽어 한국어 4지선다 문제를 배치 생성하고,
-사용자 개념 검토 후 Supabase에 삽입하는 자동화 파이프라인.
+`input/` 폴더의 질문 텍스트 파일을 읽어, 각 질문에 대한 보기/정답/해설/key_points/ref_links를 생성하고 5개 언어(한/영/스/포/일)로 번역하여 Supabase에 삽입하는 자동화 파이프라인. 질문 텍스트는 원문 그대로 사용 (영문이면 한국어로 번역).
 
 ### 처리 흐름
 
 ```
-1. exam_id 입력 → exam_sets 자동 조회 → 세트 선택/생성
+1. exam_id 입력 → exam_sets 자동 조회 → 세트 자동 선택
 2. input/ 폴더 스캔 → 파일 목록 출력 (알파벳 순)
 3. 파일별: 언어 감지 → 파싱 → 자동 진행
 4. 참조 파일 선로드 + Redesigner(Haiku) 5개씩 배치 병렬 호출
-5. 결과 취합 → output/redesigned_question_generate.json 저장
-6. Supabase 삽입 → 파일 input/done/ 이동
-7. 완료 요약 출력
+5. Supabase 즉시 삽입 → 파일 input/done/ 이동
+6. 완료 요약 출력
 ```
 
 ### Step 1: 멀티턴 정보 수집
 
 ```
-AWS 시험 문제 생성을 시작합니다.
+시험 문제 생성을 시작합니다.
 
-먼저 시험 ID를 입력해주세요. (예: aws-aif-c01, aws-saa-c03)
+먼저 시험 ID를 입력해주세요. (예: aws-aif-c01, aws-clf-c02, aws-saa-c03, azure-az-900, gcp-ace)
 exam_id:
 ```
 
@@ -684,17 +92,42 @@ max_sort = GET /rest/v1/exam_set_questions?set_id=eq.{set_id}&select=sort_order&
 sort_order_cursor = (max_sort + 1) if max_sort else 1   # 파일 처리마다 누적 증가
 ```
 
-이후 **[B-2]~[B-7]을 파일 수만큼 반복**한다. 각 반복에서 `current_max_id`와 `sort_order_cursor`는 이전 파일 처리 결과를 반영한 누적값을 사용한다.
+이후 **[B-2]~[B-5]을 파일 수만큼 반복**한다. 각 반복에서 `current_max_id`와 `sort_order_cursor`는 이전 파일 처리 결과를 반영한 누적값을 사용한다.
 
 **[B-2] 언어 감지 + 파싱 (현재 파일)**
 
 현재 파일에 대해:
 - 파일 첫 500자로 `source_language` 감지 (`"ko"` / `"en"`)
-- Parser & SQL Agent에 `file_path` 전달 → `parse_text.py` 실행 → `output/parsed_questions.json` 생성
+- Main이 인라인 Python으로 질문 텍스트만 추출 (txt 파일에는 보기/정답이 없으므로 `parse_text.py` 미사용)
 
-> **ID 할당 규칙 (인라인 파싱 시):** `parse_text.py`를 사용할 수 없을 때 (options/answers 없는 파일 등)
-> Main이 직접 ID를 할당해야 하는 경우, 반드시 **3자리 zero-padding**을 사용하며 `current_max_id + 1`부터 순서대로 부여한다.
-> 형식: `{exam_code}-q{N:03d}` (예: `awsdeac01-q087`, `awsdeac01-q088`, ...)
+```python
+import re, json
+
+with open(file_path, 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# 번호 패턴으로 질문 분리: "1.", "1)", "Q1.", "Q1)" 등
+questions_raw = re.split(r'\n(?=\s*(?:Q?\d+[\.\)]|Question\s+\d+))', content.strip())
+questions_raw = [q.strip() for q in questions_raw if q.strip()]
+
+exam_code = exam_id.replace('-', '')  # aws-aif-c01 → awsaifc01
+parsed_questions = []
+for i, q_text in enumerate(questions_raw):
+    # 번호 제거 후 질문 텍스트만 추출
+    clean_text = re.sub(r'^\s*(?:Q?\d+[\.\)]\s*|Question\s+\d+[:.]\s*)', '', q_text).strip()
+    num = current_max_id + i + 1
+    parsed_questions.append({
+        "number": i + 1,
+        "question": clean_text,
+        "assigned_id": f"{exam_code}-q{num:03d}"
+    })
+
+# output/parsed_questions.json 저장
+with open('output/parsed_questions.json', 'w', encoding='utf-8') as f:
+    json.dump(parsed_questions, f, ensure_ascii=False, indent=2)
+```
+
+> **ID 할당 규칙:** 반드시 **3자리 zero-padding** 사용. 형식: `{exam_code}-q{N:03d}` (예: `awsdeac01-q087`)
 > **절대 비패딩 형식 (`q87`, `q88`) 사용 금지** — 알파벳 정렬과 숫자 정렬이 달라져 MAX(id) 오계산 원인이 됨.
 
 파싱 완료 후, `domain_tags_content`가 아직 로드되지 않은 경우 로드한다 (첫 파일 처리 시 1회만):
@@ -715,20 +148,14 @@ batches = [parsed_questions[i:i+batch_size] for i in range(0, len(parsed_questio
 
 # 모든 Task를 단일 메시지에 묶어 동시 실행
 for idx, batch in enumerate(batches):
-    # correct_answer_concepts: 문제 번호 → 원문 정답 보기 텍스트 매핑
-    correct_answer_concepts = {
-        str(q["number"]): q["options"].get(q["answer"].split(",")[0].strip(), "")
-        for q in batch
-    }
     Task(
         subagent_type="general-purpose",
         model="haiku",
         prompt={
-            "task": "pipeline_batch",          # 재설계 + 번역 + 즉시 삽입
-            "questions": batch,
+            "task": "pipeline_batch",          # 질문 번역 + 보기 생성 + 번역 + 즉시 삽입
+            "questions": batch,                # {number, question, assigned_id} 배열
             "exam_id": exam_id,
             "source_language": source_language,
-            "correct_answer_concepts": correct_answer_concepts,
             "domain_tags": domain_tags_content,
             "translation_guide": translation_guide_content,
             # 삽입 정보 — sort_order_cursor 기반 배치별 사전 배분
@@ -739,7 +166,7 @@ for idx, batch in enumerate(batches):
     )
 ```
 
-각 배치 에이전트가 Redesigner AGENT.md 규칙(STEP 3~5.5)에 따라 재설계·번역을 완료한 후,
+각 배치 에이전트가 Redesigner AGENT.md 규칙(STEP 3~5.5)에 따라 보기 생성·번역을 완료한 후,
 `task == "pipeline_batch"`이므로 STEP 6에서 즉시 Supabase에 삽입하고 결과를 반환한다.
 
 에스컬레이션 발생 시: 배치 결과의 `success: false` 항목을 사용자에게 출력 → [A] 재호출 지시 또는 [B] 스킵 선택.
@@ -791,24 +218,16 @@ Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 | `input/*.txt` | 처리 대기 중인 문제 텍스트 파일 (알파벳 순 처리) |
 | `input/done/*.txt` | 처리 완료된 파일 (자동 이동) |
 | `output/parsed_questions.json` | 파싱 결과 |
-| `output/needs_translation.json` | 영문 백필 대상 목록 (`/patch-en` 생성) |
-| `output/translated_questions.json` | 번역 완료 결과 (`/patch-en` 생성) |
-| `output/needs_content.json` | 보기 해설·참고자료 누락 목록 (`/patch-content` 생성) |
-| `output/generated_content.json` | 생성 완료 결과 (`/patch-content` 생성) |
-| `output/needs_reflinks.json` | ref_links 다국어 name 누락 목록 (`/patch-reflinks` 생성) |
-| `output/translated_reflinks.json` | ref_links 번역 완료 결과 (`/patch-reflinks` 생성) |
-| `output/draft_blog_posts.json` | 블로그 포스트 초안 (`/blog-write` 생성) |
 | `.env` | Supabase 접속 정보 (git에 포함되지 않음) |
+| `.claude/agents/parser-sql/AGENT.md` | Parser & SQL 서브에이전트 |
+| `.claude/agents/redesigner/AGENT.md` | Redesigner 서브에이전트 |
 | `.claude/skills/question-parser/scripts/parse_text.py` | 파싱 스크립트 |
 | `.claude/skills/sql-generator/scripts/insert_supabase.py` | Supabase REST API 직접 삽입 스크립트 |
-| `.claude/skills/sql-generator/scripts/patch_en_supabase.py` | 영문 백필·콘텐츠 백필·ref_links 백필 스크립트 (`--fetch` / `--fetch-content` / `--fetch-reflinks` / `--patch` 모드) |
-| `.claude/skills/sql-generator/scripts/generate_sql.py` | 영문 백필 전용 (`--patch-en` 모드) |
-| `.claude/skills/sql-generator/scripts/insert_blog_supabase.py` | 블로그 포스트 Supabase 삽입 스크립트 (`--publish` / `--dry-run` 모드) |
-| `.claude/skills/question-redesigner/references/translation_guide/{exam_id}.md` | AWS 자격증 영문 번역 가이드 (문장 패턴 + 용어 대역표) |
-| `.claude/skills/blog-write/references/blog_writing_guide/{provider}.md` | 블로그 작성 가이드 (서비스명 표기·SEO 전략·ref_links 우선순위) |
+| `.claude/skills/question-redesigner/references/domain_tags/{exam_id}.md` | 도메인 태그 (시험별) |
+| `.claude/skills/question-redesigner/references/translation_guide/{exam_id}.md` | 영문 번역 가이드 (시험별) |
 
 ## 중요 제약사항
 
-- AWS 서비스명은 원문 그대로 보존 (번역·축약 금지)
+- 클라우드 서비스명은 원문 그대로 보존 (AWS/GCP/Azure 서비스명 번역·축약 금지)
 - 출력 문제는 반드시 단일 정답 4지선다 형식
-- LLM 모델: Parser & SQL → Claude Sonnet 4.6 / Redesigner → Claude Haiku 4.5 / Blog Writer → Claude Haiku 4.5
+- LLM 모델: Parser & SQL → Claude Sonnet 4.6 / Redesigner → Claude Haiku 4.5
