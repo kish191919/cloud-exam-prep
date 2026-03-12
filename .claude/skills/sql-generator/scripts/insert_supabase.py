@@ -110,6 +110,17 @@ def insert_question(q: dict, set_id: str, sort_order: int, supabase_url: str, su
         print(f'[SKIP] {qid} — 이미 존재합니다 (중복 삽입 방지)')
         return []
 
+    # correct_option_id / option_id 정규화: 숫자("1"~"4") → 알파벳("a"~"d")
+    _num_to_letter = {"1": "a", "2": "b", "3": "c", "4": "d"}
+    raw_correct = q.get('correct_option_id', '')
+    if raw_correct in _num_to_letter:
+        print(f'[WARN] {qid} correct_option_id 숫자 형식 감지: "{raw_correct}" → "{_num_to_letter[raw_correct]}" 자동 변환')
+        q = dict(q)
+        q['correct_option_id'] = _num_to_letter[raw_correct]
+    for opt in q.get('options', []):
+        if opt.get('option_id') in _num_to_letter:
+            opt['option_id'] = _num_to_letter[opt['option_id']]
+
     # 1. questions
     ref_links_raw = q.get('ref_links', [])
     if isinstance(ref_links_raw, str):

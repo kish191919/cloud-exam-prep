@@ -224,7 +224,7 @@ const CertificationsPage = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative hero-gradient text-foreground pt-24 md:pt-32 pb-16 px-4 overflow-hidden">
+      <section className="relative hero-gradient text-white pt-24 md:pt-32 pb-16 px-4 overflow-hidden">
         {/* 배경 블러 장식 */}
         <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
           <div className="absolute top-20 left-0 w-64 h-64 bg-primary rounded-full blur-3xl -translate-x-1/2" />
@@ -232,18 +232,18 @@ const CertificationsPage = () => {
         </div>
 
         <div className="container mx-auto max-w-3xl text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-primary/30 text-sm mb-6 bg-primary/10 backdrop-blur-sm shadow-lg">
-            <Cloud className="h-4 w-4 text-accent animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-white/25 text-sm mb-6 bg-white/10 backdrop-blur-sm shadow-lg">
+            <Cloud className="h-4 w-4 text-white animate-pulse" />
             <span className="font-semibold whitespace-nowrap">{t('certifications.hero.badge')}</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight mb-5">
             {t('certifications.hero.title')}
             <br />
-            <span className="bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-sky-300 via-blue-200 to-cyan-300 bg-clip-text text-transparent">
               {t('certifications.hero.titleAccent')}
             </span>
           </h1>
-          <p className="text-lg text-foreground/70 max-w-xl mx-auto leading-relaxed" style={{ wordBreak: 'keep-all' }}>
+          <p className="text-lg text-white/70 max-w-xl mx-auto leading-relaxed" style={{ wordBreak: 'keep-all' }}>
             {t('certifications.hero.subtitle')}
           </p>
         </div>

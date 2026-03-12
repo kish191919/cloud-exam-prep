@@ -109,7 +109,7 @@ const Index = () => {
       </div>
 
       {/* Hero */}
-      <section className="relative hero-gradient text-foreground pt-12 md:pt-20 pb-20 md:pb-28 px-4 overflow-hidden">
+      <section className="relative hero-gradient text-white pt-12 md:pt-20 pb-20 md:pb-28 px-4 overflow-hidden">
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 hero-dots pointer-events-none" />
 
@@ -140,7 +140,7 @@ const Index = () => {
 
         <div className="container mx-auto text-center max-w-5xl relative z-10">
           {/* Supported Languages */}
-          <div className="flex items-center justify-center gap-2 mb-8 text-xs text-foreground/40">
+          <div className="flex items-center justify-center gap-2 mb-8 text-xs text-white/40">
             <span className="font-medium">{t('index.langStrip.languages')}</span>
             {[
               { flag: '🇺🇸', code: 'en', label: 'English' },
@@ -165,13 +165,13 @@ const Index = () => {
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.2] mt-4 mb-5 md:mb-8 tracking-tight break-keep">
             {t('index.hero.title')}
             <br />
-            <span className="bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-sky-300 via-blue-200 to-cyan-300 bg-clip-text text-transparent">
               {t('index.hero.titleAccent')}
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-sm sm:text-base md:text-lg text-foreground/70 max-w-2xl mx-auto mb-10 md:mb-14 leading-relaxed font-medium break-keep">
+          <p className="text-sm sm:text-base md:text-lg text-white/70 max-w-2xl mx-auto mb-10 md:mb-14 leading-relaxed font-medium break-keep">
             {t('index.hero.subtitle')}
           </p>
 
@@ -189,7 +189,7 @@ const Index = () => {
               <Button
                 size="lg"
                 variant="ghost"
-                className="border-2 border-primary/40 text-primary bg-primary/8 hover:bg-primary/15 hover:text-primary text-base sm:text-lg font-semibold px-8 sm:px-10 py-5 sm:py-7 rounded-xl backdrop-blur-sm transition-all duration-300 hover:scale-105 w-full"
+                className="border-2 border-white/30 text-white bg-white/10 hover:bg-white/15 hover:text-white text-base sm:text-lg font-semibold px-8 sm:px-10 py-5 sm:py-7 rounded-xl backdrop-blur-sm transition-all duration-300 hover:scale-105 w-full"
               >
                 {t('index.hero.ctaSecondary')}
               </Button>
