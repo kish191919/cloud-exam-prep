@@ -249,12 +249,12 @@ STEP 4에서 생성한 4개 보기를 무작위로 재배치한다.
 [PASS] 규칙 3: 줄바꿈 서식 (질문 앞 \n\n 확인, 4문장+ 시 첫 문장 뒤 \n\n 확인)
 [PASS] 다국어 줄바꿈 서식: text_en/pt/es 필드에도 질문 앞 \n\n 확인, 4문장+ 시 첫 문장 뒤 \n\n 확인
 [PASS] 기술적 호환성: 정답 서비스가 질문의 수치·패턴 조건과 실제 호환됨
-[PASS] 보기 해설 완결성: options[a/b/c/d] 4개 모두(오답 포함) explanation + explanation_en/pt/es/ja 각 1~2문장 이상 포함 — 빈 문자열·누락·"정답입니다."·"오답입니다."·"Correct answer."·판정만 있는 문장 → FAIL
-[PASS] 보기 해설 길이: options[].explanation(_en/pt/es/ja) 각 1~2문장 이내 — 3문장 이상 → FAIL (초과 내용은 메인 explanation 단락 2~3으로 이동)
+[PASS] 보기 해설 완결성: options[a/b/c/d] 4개 모두(오답 포함) explanation + explanation_en/pt/es 각 1~2문장 이상 포함 — 빈 문자열·누락·"정답입니다."·"오답입니다."·"Correct answer."·판정만 있는 문장 → FAIL
+[PASS] 보기 해설 길이: options[].explanation(_en/pt/es) 각 1~2문장 이내 — 3문장 이상 → FAIL (초과 내용은 메인 explanation 단락 2~3으로 이동)
 [PASS] tag 한국어 저장: tag 필드가 domain_tags 첫 번째 열(한국어) 값과 정확히 일치 — 영문 등 비한국어 → FAIL
 [PASS] text_* 완전 번역: text_en/text_pt/text_es 3개 필드 모두 비어있지 않고 각 해당 언어(비한국어)로 작성됨 — NULL·빈 문자열·한국어 원문 잔류 → FAIL
 [PASS] 메인 해설 3단락 구조: explanation 필드가 \n\n으로 구분된 3개 단락으로 구성됨 (단락1=문제접근+정답근거, 단락2=개념+실전맥락, 단락3=시험포인트). 대괄호 헤더([...]) 포함 또는 단락 수 부족 → 즉시 FAIL
-[PASS] 참고자료 필수: ref_links 반드시 1~3개 존재 (빈 배열 [] 또는 누락 → 즉시 FAIL). 각 링크에 name/name_en/name_pt/name_es/name_ja + url 모두 포함
+[PASS] 참고자료 필수: ref_links 반드시 1~3개 존재 (빈 배열 [] 또는 누락 → 즉시 FAIL). 각 링크에 name/name_en/name_pt/name_es + url 모두 포함
 [PASS] 언어 순수성: text 및 options[].text에 영어 문장 없음 — 특히 질문 문장(마지막 문장, ?로 끝나는 문장)이 한국어인지 확인
 [PASS] options 완결성: a, b, c, d 4개 보기 모두 text + explanation 필드 누락 없음
 [PASS] 영문 언어 순수성: text_en 및 options[].text_en에 한국어 등 비영어 문자 없음

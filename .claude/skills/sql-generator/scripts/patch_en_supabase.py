@@ -339,7 +339,7 @@ def fetch_content_mode(supabase_url, supabase_key, exam_id, output_dir, set_name
 
 
 def fetch_reflinks_mode(supabase_url, supabase_key, exam_id, output_dir, set_name=None):
-    """ref_links에 name_en/name_pt/name_es/name_ja 누락된 문제 탐지 → output/needs_reflinks.json"""
+    """ref_links에 name_en/name_pt/name_es 누락된 문제 탐지 → output/needs_reflinks.json"""
     q_fields = 'id,exam_id,ref_links'
     opt_fields = 'question_id'
 
@@ -367,7 +367,7 @@ def fetch_reflinks_mode(supabase_url, supabase_key, exam_id, output_dir, set_nam
 
         needs_translation = False
         for link in links:
-            if not link.get('name_en') or not link.get('name_pt') or not link.get('name_es') or not link.get('name_ja'):
+            if not link.get('name_en') or not link.get('name_pt') or not link.get('name_es'):
                 needs_translation = True
                 break
 
