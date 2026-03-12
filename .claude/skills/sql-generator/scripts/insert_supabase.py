@@ -25,14 +25,24 @@ from pathlib import Path
 def normalize_text_linebreaks(text: str) -> str:
     """
     Rule 3 결정론적 후처리 — text_* 5개 필드에 적용 (5개 언어 공통).
-    1. 기존 \\n / \\n\\n 을 공백으로 평탄화
-    2. 문장 경계(. ! ? 。 ？ + 공백)로 분리
-    3. ? 가 없으면 평탄화 그대로 반환
-    4. 마지막 ? 문장 앞에 항상 \\n\\n 삽입
-    5. 전체 문장 수 >= 4이면 첫 번째 문장 뒤에도 \\n\\n 삽입
+    1. 이미 올바른 \\n\\n 서식이면 단락 내부 공백만 정리 후 반환 (한국어 등 대응)
+    2. 기존 \\n / \\n\\n 을 공백으로 평탄화
+    3. 문장 경계(. ! ? 。 ？ + 공백)로 분리
+    4. ? 가 없으면 평탄화 그대로 반환
+    5. 마지막 ? 문장 앞에 항상 \\n\\n 삽입
+    6. 전체 문장 수 >= 4이면 첫 번째 문장 뒤에도 \\n\\n 삽입
     """
     if not text or not isinstance(text, str):
         return text
+
+    # 이미 올바른 \n\n 서식 (한국어 등 마침표 없는 언어 대응)
+    # \n\n 뒤 마지막 단락에 ?가 있으면 구조 보존, 단락 내부 공백만 정리
+    if '\n\n' in text:
+        paragraphs = [p.strip() for p in text.split('\n\n') if p.strip()]
+        if paragraphs and ('?' in paragraphs[-1] or '？' in paragraphs[-1]):
+            cleaned = [re.sub(r'\s*\n\s*', ' ', p) for p in paragraphs]
+            cleaned = [re.sub(r'  +', ' ', p) for p in cleaned]
+            return '\n\n'.join(cleaned).lstrip('\n ').rstrip()
 
     # 평탄화
     flat = re.sub(r'\n+', ' ', text).strip()

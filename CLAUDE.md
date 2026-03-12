@@ -119,11 +119,19 @@ def apply_linebreaks_ko(question_text: str) -> str:
     - 전체 문장 수 >= 4이면 첫 번째 문장 뒤에도 \\n\\n 삽입
     원문 텍스트는 단어 하나도 수정하지 않는다.
     """
-    parts = re.split(r'(?<=[다요까]\.?)\s+', question_text.strip())
-    parts = [p.strip() for p in parts if p.strip()]
+    text = question_text.strip()
 
+    # 마침표(. ) 기반 분리 — 마침표 보존 (primary)
+    if '. ' in text:
+        raw = text.split('. ')
+        parts = [p.strip() + '.' for p in raw[:-1]] + [raw[-1].strip()]
+    else:
+        # 폴백: 마침표 없을 때 다/요/까 패턴
+        parts = re.split(r'(?<=[다요까])\s+', text)
+
+    parts = [p for p in parts if p]
     if len(parts) <= 1:
-        return question_text.strip()
+        return text
 
     last = parts[-1]   # 질문 문장 (? 로 끝남)
     body = parts[:-1]

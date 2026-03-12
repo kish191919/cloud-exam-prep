@@ -322,10 +322,14 @@ STEP 5 품질 검증이 전체 PASS된 후 실행한다. `translation_guide`가 
    - 접미사 없는 필드(한국어)에 일본어 문자(ひ, カ 등) 또는 한자(U+4E00-U+9FFF, 예: 實·間·回) 포함 → 순수 한글로 재작성
 9. **선행 공백 금지**: 모든 `text_*` 필드는 첫 문장으로 바로 시작. `\n`, `\n\n`, 공백으로 시작 금지
 10. **text_* 필드 줄바꿈 서식**: `text_en`, `text_pt`, `text_es`, `text_ja`에도 한국어 `text`와 동일한 `\n\n` 서식 적용 필수
-    - 질문 문장(`?`로 끝나는 마지막 문장) 바로 앞에 항상 `\n\n` 삽입
+    - 질문 문장(마지막 문장) 바로 앞에 항상 `\n\n` 삽입
+      - 영어/포르투갈어/스페인어: `?`로 끝나는 마지막 문장
+      - 일본어(`text_ja`): `？`(전각 물음표)로 끝나는 마지막 문장. `。`(。)로 문장 경계 구분
     - 전체 문장 수가 4개 이상이면 첫 번째 문장 바로 뒤에도 `\n\n` 삽입
-    - 예시(3문장): `"First sentence. Second sentence.\n\nWhich AWS service BEST meets these requirements?"`
-    - 예시(4문장+): `"First sentence.\n\nSecond sentence. Third sentence.\n\nWhich AWS service BEST meets these requirements?"`
+    - 예시 EN(3문장): `"First sentence. Second sentence.\n\nWhich AWS service BEST meets these requirements?"`
+    - 예시 EN(4문장+): `"First sentence.\n\nSecond sentence. Third sentence.\n\nWhich AWS service BEST meets these requirements?"`
+    - 예시 JA(3문장): `"最初の文。2番目の文。\n\nこの要件を満たすための最も適切なアプローチはどれですか？"`
+    - 예시 JA(4문장+): `"最初の文。\n\n2番目の文。3番目の文。\n\nこの要件を満たすための最も適切なアプローチはどれですか？"`
     - ⚠️ 선행 `\n` 금지 — 반드시 첫 문장으로 바로 시작
 
 번역 검증 실패 시: 해당 필드만 재번역 (최대 1회). 재시도 후에도 실패하면 일반 번역으로 대체하고 계속 진행한다 (에스컬레이션 없이).
