@@ -253,6 +253,8 @@ STEP 4에서 생성한 4개 보기를 무작위로 재배치한다.
 [PASS] 보기 해설 길이: options[].explanation(_en/pt/es) 각 1~2문장 이내 — 3문장 이상 → FAIL (초과 내용은 메인 explanation 단락 2~3으로 이동)
 [PASS] tag 한국어 저장: tag 필드가 domain_tags 첫 번째 열(한국어) 값과 정확히 일치 — 영문 등 비한국어 → FAIL
 [PASS] text_* 완전 번역: text_en/text_pt/text_es 3개 필드 모두 비어있지 않고 각 해당 언어(비한국어)로 작성됨 — NULL·빈 문자열·한국어 원문 잔류 → FAIL
+[PASS] text_pt 언어 순수성: text_pt 필드에 한글(가-힣) 없음 AND text_en과 동일하지 않음 — 브라질 포르투갈어로만 작성 (한국어 또는 영어 원문 복사 → 즉시 FAIL)
+[PASS] text_es 언어 순수성: text_es 필드에 한글(가-힣) 없음 AND text_en과 동일하지 않음 — 스페인어로만 작성 (한국어 또는 영어 원문 복사 → 즉시 FAIL)
 [PASS] 메인 해설 3단락 구조: explanation 필드가 \n\n으로 구분된 3개 단락으로 구성됨 (단락1=문제접근+정답근거, 단락2=개념+실전맥락, 단락3=시험포인트). 대괄호 헤더([...]) 포함 또는 단락 수 부족 → 즉시 FAIL
 [PASS] 참고자료 필수: ref_links 반드시 1~3개 존재 (빈 배열 [] 또는 누락 → 즉시 FAIL). 각 링크에 name/name_en/name_pt/name_es + url 모두 포함
 [PASS] 언어 순수성: text 및 options[].text에 영어 문장 없음 — 특히 질문 문장(마지막 문장, ?로 끝나는 문장)이 한국어인지 확인
@@ -284,6 +286,18 @@ STEP 4에서 생성한 4개 보기를 무작위로 재배치한다.
 ### STEP 5.5: 다국어 번역 (EN/ES/PT)
 
 STEP 5 품질 검증이 전체 PASS된 후 실행한다. `translation_guide`가 `null`이면 일반 번역을 수행한다.
+
+⚠️ **`text_pt` / `text_es` 번역 필수 경고 — 절대 원문 복사 금지:**
+- `text_pt`는 반드시 **브라질 포르투갈어(Português do Brasil)**로 번역한다.
+  - ❌ 한국어 원문(`text`) 그대로 복사 절대 금지
+  - ❌ 영어(`text_en`) 그대로 복사 절대 금지
+- `text_es`는 반드시 **라틴아메리카 스페인어(Español latinoamericano)**로 번역한다.
+  - ❌ 한국어 원문 복사 절대 금지
+  - ❌ 영어 복사 절대 금지
+- 번역 예시 (3문장 구조):
+  - `text` (KO): `"한 기업이 파운데이션 모델을 선택하려 합니다. 여러 모델을 비교하려 합니다.\n\n가장 적합한 접근 방식은 무엇입니까?"`
+  - `text_pt` (PT): `"Uma empresa deseja selecionar um foundation model. A empresa deseja comparar vários modelos.\n\nQual é a abordagem MAIS adequada?"`
+  - `text_es` (ES): `"Una empresa deseja seleccionar un foundation model. La empresa desea comparar varios modelos.\n\n¿Cuál es el enfoque MÁS adecuado?"`
 
 ⚠️ **`text_en` 생성 규칙 (`source_language == "en"` 시 필수)**
 - `text_en`은 반드시 STEP 4에서 생성된 한국어 `text` 필드를 영어로 번역한 결과여야 한다
