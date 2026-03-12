@@ -183,7 +183,11 @@ const CertLandingPage = () => {
       <section className="py-10 px-4 border-b border-border">
         <div className="container mx-auto max-w-4xl">
           <p className="text-base md:text-lg text-muted-foreground leading-relaxed break-keep">
-            {isKo ? cert.description : cert.descriptionEn}
+            {lang === 'ko' ? cert.description
+              : lang === 'ja' ? (cert.descriptionJa ?? cert.descriptionEn)
+              : lang === 'es' ? (cert.descriptionEs ?? cert.descriptionEn)
+              : lang === 'pt' ? (cert.descriptionPt ?? cert.descriptionEn)
+              : cert.descriptionEn}
           </p>
           {data.renewalYears > 0 && (
             <p className="text-sm text-muted-foreground mt-3">
