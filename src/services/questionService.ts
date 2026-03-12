@@ -16,18 +16,15 @@ interface QuestionRow {
   text_en: string | null;
   text_pt: string | null;
   text_es: string | null;
-  text_ja: string | null;
   correct_option_id: string;
   explanation: string;
   explanation_en: string | null;
   explanation_pt: string | null;
   explanation_es: string | null;
-  explanation_ja: string | null;
   key_points: string | null;
   key_points_en: string | null;
   key_points_pt: string | null;
   key_points_es: string | null;
-  key_points_ja: string | null;
   ref_links: any;
   question_options: Array<{
     id: string;
@@ -36,13 +33,11 @@ interface QuestionRow {
     text_en: string | null;
     text_pt: string | null;
     text_es: string | null;
-    text_ja: string | null;
-    explanation: string | null;
+      explanation: string | null;
     explanation_en: string | null;
     explanation_pt: string | null;
     explanation_es: string | null;
-    explanation_ja: string | null;
-    sort_order: number;
+      sort_order: number;
   }>;
   question_tags: Array<{
     tag: string;
@@ -61,12 +56,10 @@ export async function getQuestionsForExam(examId: string): Promise<Question[]> {
         text_en,
         text_pt,
         text_es,
-        text_ja,
         explanation,
         explanation_en,
         explanation_pt,
         explanation_es,
-        explanation_ja,
         sort_order
       ),
       question_tags (
@@ -89,7 +82,6 @@ export async function getQuestionsForExam(examId: string): Promise<Question[]> {
     textEn: q.text_en ?? undefined,
     textPt: q.text_pt ?? undefined,
     textEs: q.text_es ?? undefined,
-    textJa: q.text_ja ?? undefined,
     options: q.question_options
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(opt => ({
@@ -98,25 +90,21 @@ export async function getQuestionsForExam(examId: string): Promise<Question[]> {
         textEn: opt.text_en ?? undefined,
         textPt: opt.text_pt ?? undefined,
         textEs: opt.text_es ?? undefined,
-        textJa: opt.text_ja ?? undefined,
         explanation: opt.explanation ?? undefined,
         explanationEn: opt.explanation_en ?? undefined,
         explanationPt: opt.explanation_pt ?? undefined,
         explanationEs: opt.explanation_es ?? undefined,
-        explanationJa: opt.explanation_ja ?? undefined,
       })),
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
     explanationEn: q.explanation_en ?? undefined,
     explanationPt: q.explanation_pt ?? undefined,
     explanationEs: q.explanation_es ?? undefined,
-    explanationJa: q.explanation_ja ?? undefined,
     tags: q.question_tags.map(t => t.tag),
     keyPoints: q.key_points ?? undefined,
     keyPointsEn: q.key_points_en ?? undefined,
     keyPointsPt: q.key_points_pt ?? undefined,
     keyPointsEs: q.key_points_es ?? undefined,
-    keyPointsJa: q.key_points_ja ?? undefined,
     refLinks: parseRefLinks(q.ref_links),
   }));
 }
@@ -133,12 +121,10 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
         text_en,
         text_pt,
         text_es,
-        text_ja,
         explanation,
         explanation_en,
         explanation_pt,
         explanation_es,
-        explanation_ja,
         sort_order
       ),
       question_tags (
@@ -163,7 +149,6 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
     textEn: q.text_en ?? undefined,
     textPt: q.text_pt ?? undefined,
     textEs: q.text_es ?? undefined,
-    textJa: q.text_ja ?? undefined,
     options: q.question_options
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(opt => ({
@@ -172,25 +157,21 @@ export async function getQuestionById(questionId: string): Promise<Question | nu
         textEn: opt.text_en ?? undefined,
         textPt: opt.text_pt ?? undefined,
         textEs: opt.text_es ?? undefined,
-        textJa: opt.text_ja ?? undefined,
         explanation: opt.explanation ?? undefined,
         explanationEn: opt.explanation_en ?? undefined,
         explanationPt: opt.explanation_pt ?? undefined,
         explanationEs: opt.explanation_es ?? undefined,
-        explanationJa: opt.explanation_ja ?? undefined,
       })),
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
     explanationEn: q.explanation_en ?? undefined,
     explanationPt: q.explanation_pt ?? undefined,
     explanationEs: q.explanation_es ?? undefined,
-    explanationJa: q.explanation_ja ?? undefined,
     tags: q.question_tags.map(t => t.tag),
     keyPoints: q.key_points ?? undefined,
     keyPointsEn: q.key_points_en ?? undefined,
     keyPointsPt: q.key_points_pt ?? undefined,
     keyPointsEs: q.key_points_es ?? undefined,
-    keyPointsJa: q.key_points_ja ?? undefined,
     refLinks: parseRefLinks(q.ref_links),
   };
 }
@@ -209,12 +190,10 @@ export async function getQuestionsByIds(questionIds: string[]): Promise<Question
         text_en,
         text_pt,
         text_es,
-        text_ja,
         explanation,
         explanation_en,
         explanation_pt,
         explanation_es,
-        explanation_ja,
         sort_order
       ),
       question_tags (
@@ -237,7 +216,6 @@ export async function getQuestionsByIds(questionIds: string[]): Promise<Question
       textEn: q.text_en ?? undefined,
       textPt: q.text_pt ?? undefined,
       textEs: q.text_es ?? undefined,
-      textJa: q.text_ja ?? undefined,
       options: q.question_options
         .sort((a, b) => a.sort_order - b.sort_order)
         .map(opt => ({
@@ -246,25 +224,21 @@ export async function getQuestionsByIds(questionIds: string[]): Promise<Question
           textEn: opt.text_en ?? undefined,
           textPt: opt.text_pt ?? undefined,
           textEs: opt.text_es ?? undefined,
-          textJa: opt.text_ja ?? undefined,
           explanation: opt.explanation ?? undefined,
           explanationEn: opt.explanation_en ?? undefined,
           explanationPt: opt.explanation_pt ?? undefined,
           explanationEs: opt.explanation_es ?? undefined,
-          explanationJa: opt.explanation_ja ?? undefined,
         })),
       correctOptionId: q.correct_option_id,
       explanation: q.explanation,
       explanationEn: q.explanation_en ?? undefined,
       explanationPt: q.explanation_pt ?? undefined,
       explanationEs: q.explanation_es ?? undefined,
-      explanationJa: q.explanation_ja ?? undefined,
       tags: q.question_tags.map(t => t.tag),
       keyPoints: q.key_points ?? undefined,
       keyPointsEn: q.key_points_en ?? undefined,
       keyPointsPt: q.key_points_pt ?? undefined,
       keyPointsEs: q.key_points_es ?? undefined,
-      keyPointsJa: q.key_points_ja ?? undefined,
       refLinks: parseRefLinks(q.ref_links),
     }])
   );
@@ -312,12 +286,10 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
           text_en,
           text_pt,
           text_es,
-          text_ja,
           explanation,
           explanation_en,
           explanation_pt,
           explanation_es,
-          explanation_ja,
           sort_order
         ),
         question_tags (
@@ -341,7 +313,6 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
       textEn: q.text_en ?? undefined,
       textPt: q.text_pt ?? undefined,
       textEs: q.text_es ?? undefined,
-      textJa: q.text_ja ?? undefined,
       options: (q.question_options as any[])
         .sort((a: any, b: any) => a.sort_order - b.sort_order)
         .map((opt: any) => ({
@@ -350,25 +321,21 @@ export async function getQuestionsForSet(setId: string): Promise<Question[]> {
           textEn: opt.text_en ?? undefined,
           textPt: opt.text_pt ?? undefined,
           textEs: opt.text_es ?? undefined,
-          textJa: opt.text_ja ?? undefined,
           explanation: opt.explanation ?? undefined,
           explanationEn: opt.explanation_en ?? undefined,
           explanationPt: opt.explanation_pt ?? undefined,
           explanationEs: opt.explanation_es ?? undefined,
-          explanationJa: opt.explanation_ja ?? undefined,
         })),
       correctOptionId: q.correct_option_id,
       explanation: q.explanation,
       explanationEn: q.explanation_en ?? undefined,
       explanationPt: q.explanation_pt ?? undefined,
       explanationEs: q.explanation_es ?? undefined,
-      explanationJa: q.explanation_ja ?? undefined,
       tags: (q.question_tags as any[]).map((t: any) => t.tag),
       keyPoints: q.key_points ?? undefined,
       keyPointsEn: q.key_points_en ?? undefined,
       keyPointsPt: q.key_points_pt ?? undefined,
       keyPointsEs: q.key_points_es ?? undefined,
-      keyPointsJa: q.key_points_ja ?? undefined,
       refLinks: parseRefLinks(q.ref_links),
     };
   });
@@ -386,12 +353,10 @@ export async function getQuestionsByTag(examId: string, tag: string): Promise<Qu
         text_en,
         text_pt,
         text_es,
-        text_ja,
         explanation,
         explanation_en,
         explanation_pt,
         explanation_es,
-        explanation_ja,
         sort_order
       ),
       question_tags!inner (
@@ -415,7 +380,6 @@ export async function getQuestionsByTag(examId: string, tag: string): Promise<Qu
     textEn: q.text_en ?? undefined,
     textPt: q.text_pt ?? undefined,
     textEs: q.text_es ?? undefined,
-    textJa: q.text_ja ?? undefined,
     options: q.question_options
       .sort((a, b) => a.sort_order - b.sort_order)
       .map(opt => ({
@@ -424,25 +388,21 @@ export async function getQuestionsByTag(examId: string, tag: string): Promise<Qu
         textEn: opt.text_en ?? undefined,
         textPt: opt.text_pt ?? undefined,
         textEs: opt.text_es ?? undefined,
-        textJa: opt.text_ja ?? undefined,
         explanation: opt.explanation ?? undefined,
         explanationEn: opt.explanation_en ?? undefined,
         explanationPt: opt.explanation_pt ?? undefined,
         explanationEs: opt.explanation_es ?? undefined,
-        explanationJa: opt.explanation_ja ?? undefined,
       })),
     correctOptionId: q.correct_option_id,
     explanation: q.explanation,
     explanationEn: q.explanation_en ?? undefined,
     explanationPt: q.explanation_pt ?? undefined,
     explanationEs: q.explanation_es ?? undefined,
-    explanationJa: q.explanation_ja ?? undefined,
     tags: q.question_tags.map(t => t.tag),
     keyPoints: q.key_points ?? undefined,
     keyPointsEn: q.key_points_en ?? undefined,
     keyPointsPt: q.key_points_pt ?? undefined,
     keyPointsEs: q.key_points_es ?? undefined,
-    keyPointsJa: q.key_points_ja ?? undefined,
     refLinks: parseRefLinks(q.ref_links),
   }));
 }

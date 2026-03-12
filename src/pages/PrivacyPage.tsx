@@ -8,7 +8,6 @@ const PrivacyPage = () => {
   if (lang === 'ko') return <PrivacyKo />;
   if (lang === 'es') return <PrivacyEs />;
   if (lang === 'pt') return <PrivacyPt />;
-  if (lang === 'ja') return <PrivacyJa />;
   return <PrivacyEn />;
 };
 
@@ -262,68 +261,6 @@ const PrivacyPt = () => (
 
       <Section title="8. Atualizações da política">
         <p>Esta política de privacidade pode ser atualizada em resposta a mudanças legais ou no serviço. Notificaremos os usuários por meio de avisos dentro do serviço.</p>
-      </Section>
-    </div>
-  </AppLayout>
-);
-
-const PrivacyJa = () => (
-  <AppLayout>
-    <div className="max-w-3xl mx-auto py-4">
-      <h1 className="text-2xl font-bold mb-2">プライバシーポリシー</h1>
-      <p className="text-sm text-muted-foreground mb-8">最終更新: 2026年2月</p>
-
-      <Section title="1. 収集する情報">
-        <p>CloudMasterIT LLCは、サービス提供のために以下の情報を収集します。</p>
-        <ul className="list-disc pl-5 space-y-1">
-          <li><strong>アカウント情報:</strong> メールアドレス（会員登録またはログイン時）</li>
-          <li><strong>学習データ:</strong> 試験セッション、正解・不正解の記録、ブックマーク</li>
-          <li><strong>デバイス情報:</strong> ブラウザの種類、アクセス時刻（サービス改善目的）</li>
-        </ul>
-      </Section>
-
-      <Section title="2. 情報の利用目的">
-        <ul className="list-disc pl-5 space-y-1">
-          <li>ログイン認証およびアカウント管理</li>
-          <li>学習進捗、不正解・ブックマークデータのデバイス間での保存・同期</li>
-          <li>サービス品質の向上およびエラー分析</li>
-        </ul>
-      </Section>
-
-      <Section title="3. データの保持期間">
-        <p>収集した個人データは、アカウント削除時または収集目的が達成された時点で速やかに削除されます。ただし、適用法令により保存が必要な場合は、該当期間中保管します。</p>
-      </Section>
-
-      <Section title="4. 第三者への提供">
-        <p>CloudMasterIT LLCは、以下に記載されている場合または法令で義務付けられている場合を除き、お客様の個人情報を第三者に販売、貸与、または共有しません。プラットフォームの運営のために以下のサービスを利用しています。</p>
-        <ul className="list-disc pl-5 space-y-1">
-          <li><strong>Supabase:</strong> データベースおよび認証（米国拠点、GDPR準拠）</li>
-          <li><strong>Vercel:</strong> ウェブホスティング（米国拠点）</li>
-        </ul>
-      </Section>
-
-      <Section title="5. お客様の権利">
-        <p>お客様はいつでも以下の権利を行使できます。</p>
-        <ul className="list-disc pl-5 space-y-1">
-          <li>個人データへのアクセス、訂正、または削除のリクエスト</li>
-          <li>処理の制限のリクエスト</li>
-          <li>アカウントの削除（すべてのデータを削除）</li>
-        </ul>
-        <p>ご要望はメールにてお問い合わせください。</p>
-      </Section>
-
-      <Section title="6. Cookie およびローカルストレージ">
-        <p>CloudMasterIT LLCは、ログイン状態の維持と学習データの一時保存のために、ブラウザのローカルストレージおよびセッションストレージを使用します。未ログイン状態の学習データは、ブラウザを閉じると自動的に削除されます。</p>
-        <p>本サービスを利用することにより、本プライバシーポリシーに基づく情報の収集および利用に同意したものとみなされます。</p>
-      </Section>
-
-      <Section title="7. お問い合わせ">
-        <p>プライバシーに関するお問い合わせは、以下までご連絡ください。</p>
-        <p>メール: admin@cloudmasterit.com</p>
-      </Section>
-
-      <Section title="8. ポリシーの更新">
-        <p>本プライバシーポリシーは、法令またはサービスの変更に応じて更新される場合があります。変更時はサービス内のお知らせを通じてご案内します。</p>
       </Section>
     </div>
   </AppLayout>

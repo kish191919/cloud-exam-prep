@@ -19,7 +19,6 @@ const CertLandingPage = () => {
 
   function getDomainName(domain: import('@/data/certLandingData').Domain): string {
     if (lang === 'ko') return domain.name;
-    if (lang === 'ja') return domain.nameJa ?? domain.nameEn;
     if (lang === 'es') return domain.nameEs ?? domain.nameEn;
     if (lang === 'pt') return domain.namePt ?? domain.nameEn;
     return domain.nameEn;
@@ -27,7 +26,6 @@ const CertLandingPage = () => {
 
   function getDomainTopics(domain: import('@/data/certLandingData').Domain): string[] {
     if (lang === 'ko') return domain.topics;
-    if (lang === 'ja') return domain.topicsJa ?? domain.topicsEn ?? domain.topics;
     if (lang === 'es') return domain.topicsEs ?? domain.topicsEn ?? domain.topics;
     if (lang === 'pt') return domain.topicsPt ?? domain.topicsEn ?? domain.topics;
     return domain.topicsEn ?? domain.topics;
@@ -184,7 +182,6 @@ const CertLandingPage = () => {
         <div className="container mx-auto max-w-4xl">
           <p className="text-base md:text-lg text-muted-foreground leading-relaxed break-keep">
             {lang === 'ko' ? cert.description
-              : lang === 'ja' ? (cert.descriptionJa ?? cert.descriptionEn)
               : lang === 'es' ? (cert.descriptionEs ?? cert.descriptionEn)
               : lang === 'pt' ? (cert.descriptionPt ?? cert.descriptionEn)
               : cert.descriptionEn}

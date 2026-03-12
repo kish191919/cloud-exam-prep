@@ -28,11 +28,10 @@ function formatTime(ms: number): string {
 const ExamResults = () => {
   const { i18n, t } = useTranslation('exam');
   const lang = i18n.language;
-  const loc = (ko: string, en?: string, pt?: string, es?: string, ja?: string): string => {
+  const loc = (ko: string, en?: string, pt?: string, es?: string): string => {
     if (lang === 'en' && en) return en;
     if (lang === 'pt' && pt) return pt;
     if (lang === 'es' && es) return es;
-    if (lang === 'ja' && ja) return ja;
     return ko;
   };
   const { sessionId } = useParams();
@@ -423,7 +422,7 @@ const ExamResults = () => {
                       <div className="flex-1 min-w-0">
                         <span className="text-xs text-muted-foreground">Q{globalIdx}</span>
                         <p className={`text-sm leading-relaxed mt-0.5 ${!isExpanded ? 'line-clamp-2' : 'whitespace-pre-line'}`}>
-                          {loc(q.text, q.textEn, q.textPt, q.textEs, q.textJa)}
+                          {loc(q.text, q.textEn, q.textPt, q.textEs)}
                         </p>
                       </div>
                       <div className="shrink-0 ml-2 mt-0.5">
@@ -457,7 +456,7 @@ const ExamResults = () => {
                                       isAnswer   ? 'text-green-800 dark:text-green-300 font-medium' :
                                       isUserPick ? 'text-red-700 dark:text-red-400' : ''
                                     }>
-                                      {loc(opt.text, opt.textEn, opt.textPt, opt.textEs, opt.textJa)}
+                                      {loc(opt.text, opt.textEn, opt.textPt, opt.textEs)}
                                     </span>
                                     {isAnswer && (
                                       <span className="ml-2 text-xs text-green-600 dark:text-green-400 font-medium">
@@ -480,7 +479,7 @@ const ExamResults = () => {
                                         </div>
                                       ) : (
                                         <p className="text-xs mt-1 text-muted-foreground italic">
-                                          {loc(opt.explanation ?? '', opt.explanationEn, opt.explanationPt, opt.explanationEs, opt.explanationJa)}
+                                          {loc(opt.explanation ?? '', opt.explanationEn, opt.explanationPt, opt.explanationEs)}
                                         </p>
                                       )
                                     )}
@@ -502,7 +501,7 @@ const ExamResults = () => {
                                 {t('examResults.explanation')}
                               </p>
                               <p className="text-xs text-foreground/80 leading-relaxed">
-                                {loc(q.explanation, q.explanationEn, q.explanationPt, q.explanationEs, q.explanationJa)}
+                                {loc(q.explanation, q.explanationEn, q.explanationPt, q.explanationEs)}
                               </p>
                             </div>
                           </PremiumGate>
@@ -522,7 +521,7 @@ const ExamResults = () => {
                                 </p>
                               </div>
                               <p className="text-xs text-foreground/80 leading-relaxed whitespace-pre-line">
-                                {loc(q.keyPoints ?? '', q.keyPointsEn, q.keyPointsPt, q.keyPointsEs, q.keyPointsJa)}
+                                {loc(q.keyPoints ?? '', q.keyPointsEn, q.keyPointsPt, q.keyPointsEs)}
                               </p>
                             </div>
                           </PremiumGate>

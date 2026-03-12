@@ -47,14 +47,12 @@ function AnnouncementCard({ item }: { item: Announcement }) {
   const Icon = cfg.icon;
 
   const title = (
-    lang === 'ja' && item.titleJa ? item.titleJa :
     lang === 'es' && item.titleEs ? item.titleEs :
     lang === 'pt' && item.titlePt ? item.titlePt :
     lang !== 'ko' && item.titleEn ? item.titleEn :
     item.title
   );
   const rawContent = (
-    lang === 'ja' && item.contentJa ? item.contentJa :
     lang === 'es' && item.contentEs ? item.contentEs :
     lang === 'pt' && item.contentPt ? item.contentPt :
     lang !== 'ko' && item.contentEn ? item.contentEn :
@@ -135,7 +133,6 @@ function PinnedBanner({ item }: { item: Announcement }) {
   const lang = i18n.language;
   const isKo = lang === 'ko';
   const title = (
-    lang === 'ja' && item.titleJa ? item.titleJa :
     lang === 'es' && item.titleEs ? item.titleEs :
     lang === 'pt' && item.titlePt ? item.titlePt :
     lang !== 'ko' && item.titleEn ? item.titleEn :

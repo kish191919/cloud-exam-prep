@@ -330,7 +330,6 @@ function RelatedPosts({ current }: { current: Announcement }) {
           {posts.map(post => {
             const cfg = CATEGORY_CONFIG[post.category];
             const postTitle = (
-              lang === 'ja' && post.titleJa ? post.titleJa :
               lang === 'es' && post.titleEs ? post.titleEs :
               lang === 'pt' && post.titlePt ? post.titlePt :
               lang !== 'ko' && post.titleEn ? post.titleEn :
@@ -429,14 +428,12 @@ const BoardDetailPage = () => {
   const Icon = cfg.icon;
   const lang = i18n.language;
   const title = (
-    lang === 'ja' && item.titleJa ? item.titleJa :
     lang === 'es' && item.titleEs ? item.titleEs :
     lang === 'pt' && item.titlePt ? item.titlePt :
     lang !== 'ko' && item.titleEn ? item.titleEn :
     item.title
   );
   const content = (
-    lang === 'ja' && item.contentJa ? item.contentJa :
     lang === 'es' && item.contentEs ? item.contentEs :
     lang === 'pt' && item.contentPt ? item.contentPt :
     lang !== 'ko' && item.contentEn ? item.contentEn :

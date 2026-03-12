@@ -97,7 +97,7 @@ def fetch_needs_translation(supabase_url, supabase_key, exam_id=None):
     while True:
         params_parts = [
             'is_published=eq.true',
-            'select=id,slug,title,excerpt,content,title_en,excerpt_en,content_en,title_ja,title_es,title_pt',
+            'select=id,slug,title,excerpt,content,title_en,excerpt_en,content_en,title_es,title_pt',
             f'offset={offset}',
             f'limit={page_size}',
         ]
@@ -117,12 +117,10 @@ def fetch_needs_translation(supabase_url, supabase_key, exam_id=None):
 
     print(f'[FETCH] 총 게시 포스트: {len(all_posts)}개')
 
-    # 미번역 필터 (title_ja / title_es / title_pt 중 하나라도 누락)
+    # 미번역 필터 (title_es / title_pt 중 하나라도 누락)
     needs = []
     for post in all_posts:
         missing_langs = []
-        if not post.get('title_ja'):
-            missing_langs.append('ja')
         if not post.get('title_es'):
             missing_langs.append('es')
         if not post.get('title_pt'):
@@ -145,12 +143,10 @@ def fetch_needs_translation(supabase_url, supabase_key, exam_id=None):
     output_path.parent.mkdir(exist_ok=True)
     output_path.write_text(json.dumps(needs, ensure_ascii=False, indent=2), encoding='utf-8')
 
-    ja_count = sum(1 for p in needs if 'ja' in p['missing_langs'])
     es_count = sum(1 for p in needs if 'es' in p['missing_langs'])
     pt_count = sum(1 for p in needs if 'pt' in p['missing_langs'])
 
     print(f'\n[결과] 미번역 포스트: {len(needs)}개')
-    print(f'  - title_ja 누락: {ja_count}개')
     print(f'  - title_es 누락: {es_count}개')
     print(f'  - title_pt 누락: {pt_count}개')
     print(f'저장: {output_path}')
@@ -183,8 +179,7 @@ def patch_translations(supabase_url, supabase_key, input_file):
 
         # 번역된 필드만 payload에 포함 (null/빈 값 제외)
         payload = {}
-        for field in ('title_ja', 'excerpt_ja', 'content_ja',
-                      'title_es', 'excerpt_es', 'content_es',
+        for field in ('title_es', 'excerpt_es', 'content_es',
                       'title_pt', 'excerpt_pt', 'content_pt'):
             val = item.get(field)
             if val:

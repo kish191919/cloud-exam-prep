@@ -3,11 +3,10 @@ import { useTranslation } from 'react-i18next';
 
 const GEO_CACHE_KEY = 'geo_lang_detected';
 
-const SUPPORTED_LANGS = ['ko', 'en', 'pt', 'es', 'ja'];
+const SUPPORTED_LANGS = ['ko', 'en', 'pt', 'es'];
 
 const COUNTRY_LANG: Record<string, string> = {
   KR: 'ko',
-  JP: 'ja',
   // Portuguese-speaking countries
   BR: 'pt', PT: 'pt', AO: 'pt', MZ: 'pt', CV: 'pt', GW: 'pt', ST: 'pt', TL: 'pt',
   // Spanish-speaking countries
@@ -20,7 +19,6 @@ const COUNTRY_LANG: Record<string, string> = {
 function detectBrowserLang(lang: string): string | null {
   if (!lang) return null;
   if (lang.startsWith('ko')) return 'ko';
-  if (lang.startsWith('ja')) return 'ja';
   if (lang.startsWith('pt')) return 'pt';
   if (lang.startsWith('es')) return 'es';
   return 'en';

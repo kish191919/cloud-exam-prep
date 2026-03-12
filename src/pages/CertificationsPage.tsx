@@ -29,7 +29,6 @@ function CertCard({ cert, providerColor, lang }: CertCardProps) {
   const hasExam = Boolean(cert.examId);
   const description =
     lang === 'ko' ? cert.description
-    : lang === 'ja' ? (cert.descriptionJa ?? cert.descriptionEn)
     : lang === 'es' ? (cert.descriptionEs ?? cert.descriptionEn)
     : lang === 'pt' ? (cert.descriptionPt ?? cert.descriptionEn)
     : cert.descriptionEn;

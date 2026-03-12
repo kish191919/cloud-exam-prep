@@ -4,12 +4,10 @@ export interface QuestionOption {
   textEn?: string;
   textPt?: string;
   textEs?: string;
-  textJa?: string;
   explanation?: string;
   explanationEn?: string;
   explanationPt?: string;
   explanationEs?: string;
-  explanationJa?: string;
 }
 
 export interface Question {
@@ -18,21 +16,18 @@ export interface Question {
   textEn?: string;
   textPt?: string;
   textEs?: string;
-  textJa?: string;
   options: QuestionOption[];
   correctOptionId: string;
   explanation: string;
   explanationEn?: string;
   explanationPt?: string;
   explanationEs?: string;
-  explanationJa?: string;
   tags: string[];
   keyPoints?: string;
   keyPointsEn?: string;
   keyPointsPt?: string;
   keyPointsEs?: string;
-  keyPointsJa?: string;
-  refLinks?: { name: string; name_en?: string; name_pt?: string; name_es?: string; name_ja?: string; url: string }[];
+  refLinks?: { name: string; name_en?: string; name_pt?: string; name_es?: string; url: string }[];
 }
 
 export interface ExamSet {

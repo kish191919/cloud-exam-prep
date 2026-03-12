@@ -19,11 +19,6 @@ import esCommon from './locales/es/common.json';
 import esPages from './locales/es/pages.json';
 import esExam from './locales/es/exam.json';
 import esAuth from './locales/es/auth.json';
-import jaCommon from './locales/ja/common.json';
-import jaPages from './locales/ja/pages.json';
-import jaExam from './locales/ja/exam.json';
-import jaAuth from './locales/ja/auth.json';
-
 export const resources = {
   ko: {
     common: koCommon,
@@ -48,12 +43,6 @@ export const resources = {
     pages: esPages,
     exam: esExam,
     auth: esAuth,
-  },
-  ja: {
-    common: jaCommon,
-    pages: jaPages,
-    exam: jaExam,
-    auth: jaAuth,
   },
 } as const;
 

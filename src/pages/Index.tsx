@@ -145,7 +145,6 @@ const Index = () => {
             {[
               { flag: '🇺🇸', code: 'en', label: 'English' },
               { flag: '🇰🇷', code: 'ko', label: '한국어' },
-              { flag: '🇯🇵', code: 'ja', label: '日本語' },
               { flag: '🇧🇷', code: 'pt', label: 'Português' },
               { flag: '🇪🇸', code: 'es', label: 'Español' },
             ].map(({ flag, code, label }) => (

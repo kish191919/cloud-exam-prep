@@ -30,7 +30,6 @@ function RelatedPostCard({ post }: { post: BlogPost }) {
   const { i18n } = useTranslation('pages');
   const lang = i18n.language;
   const title = (
-    lang === 'ja' && post.titleJa ? post.titleJa :
     lang === 'es' && post.titleEs ? post.titleEs :
     lang === 'pt' && post.titlePt ? post.titlePt :
     lang !== 'ko' && post.titleEn ? post.titleEn :
@@ -209,28 +208,25 @@ const BlogPostPage = () => {
   }
 
   const title = (
-    lang === 'ja' && post.titleJa ? post.titleJa :
     lang === 'es' && post.titleEs ? post.titleEs :
     lang === 'pt' && post.titlePt ? post.titlePt :
     lang !== 'ko' && post.titleEn ? post.titleEn :
     post.title
   );
   const content = (
-    lang === 'ja' && post.contentJa ? post.contentJa :
     lang === 'es' && post.contentEs ? post.contentEs :
     lang === 'pt' && post.contentPt ? post.contentPt :
     lang !== 'ko' && post.contentEn ? post.contentEn :
     post.content
   );
   const excerpt = (
-    lang === 'ja' && post.excerptJa ? post.excerptJa :
     lang === 'es' && post.excerptEs ? post.excerptEs :
     lang === 'pt' && post.excerptPt ? post.excerptPt :
     lang !== 'ko' && post.excerptEn ? post.excerptEn :
     (post.excerpt ?? '')
   );
   const readMin = post.readTimeMinutes ?? 1;
-  const dateLocale = isKo ? 'ko-KR' : lang === 'ja' ? 'ja-JP' : lang === 'es' ? 'es-ES' : lang === 'pt' ? 'pt-BR' : 'en-US';
+  const dateLocale = isKo ? 'ko-KR' : lang === 'es' ? 'es-ES' : lang === 'pt' ? 'pt-BR' : 'en-US';
   const dateStr = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString(dateLocale, {
         year: 'numeric', month: 'long', day: 'numeric',
@@ -240,8 +236,8 @@ const BlogPostPage = () => {
   const providerColor = PROVIDER_COLORS[post.provider] ?? '';
   const siteUrl = `https://cloudmasterit.com/blog/${post.slug}`;
 
-  const refLinks: { name: string; name_en?: string; name_pt?: string; name_es?: string; name_ja?: string; url: string }[] = Array.isArray(post.refLinks)
-    ? post.refLinks as { name: string; name_en?: string; name_pt?: string; name_es?: string; name_ja?: string; url: string }[]
+  const refLinks: { name: string; name_en?: string; name_pt?: string; name_es?: string; url: string }[] = Array.isArray(post.refLinks)
+    ? post.refLinks as { name: string; name_en?: string; name_pt?: string; name_es?: string; url: string }[]
     : [];
 
   const handleShare = () => {
@@ -339,7 +335,7 @@ const BlogPostPage = () => {
                 )}
                 <span className="flex items-center gap-1">
                   <Clock className="h-3.5 w-3.5" />
-                  {isKo ? `${readMin}분 읽기` : lang === 'ja' ? `${readMin}分` : lang === 'es' ? `${readMin} min de lectura` : lang === 'pt' ? `${readMin} min de leitura` : `${readMin} min read`}
+                  {isKo ? `${readMin}분 읽기` : lang === 'es' ? `${readMin} min de lectura` : lang === 'pt' ? `${readMin} min de leitura` : `${readMin} min read`}
                 </span>
 
                 {/* 언어 토글 — 번역된 언어 버전이 있는 포스트에만 표시 */}
@@ -347,7 +343,6 @@ const BlogPostPage = () => {
                   const langButtons = [
                     { code: 'ko', label: 'KO', hasContent: true },
                     { code: 'en', label: 'EN', hasContent: !!(post.titleEn || post.contentEn) },
-                    { code: 'ja', label: 'JA', hasContent: !!(post.titleJa || post.contentJa) },
                     { code: 'es', label: 'ES', hasContent: !!(post.titleEs || post.contentEs) },
                     { code: 'pt', label: 'PT', hasContent: !!(post.titlePt || post.contentPt) },
                   ].filter(b => b.hasContent);
@@ -376,7 +371,7 @@ const BlogPostPage = () => {
                   className="ml-auto flex items-center gap-1 hover:text-accent transition-colors"
                 >
                   <Share2 className="h-3.5 w-3.5" />
-                  {isKo ? '공유' : lang === 'ja' ? '共有' : lang === 'es' ? 'Compartir' : lang === 'pt' ? 'Compartilhar' : 'Share'}
+                  {isKo ? '공유' : lang === 'es' ? 'Compartir' : lang === 'pt' ? 'Compartilhar' : 'Share'}
                 </button>
               </div>
 
@@ -422,7 +417,7 @@ const BlogPostPage = () => {
               {refLinks.length > 0 && (
                 <div className="mt-6 p-4 rounded-lg bg-muted/50 border border-border">
                   <p className="text-xs font-semibold text-muted-foreground mb-2">
-                    {isKo ? '참고 자료' : lang === 'ja' ? '参考資料' : lang === 'es' ? 'Referencias' : lang === 'pt' ? 'Referências' : 'References'}
+                    {isKo ? '참고 자료' : lang === 'es' ? 'Referencias' : lang === 'pt' ? 'Referências' : 'References'}
                   </p>
                   <ul className="space-y-1">
                     {refLinks.map((link, i) => (
@@ -434,7 +429,7 @@ const BlogPostPage = () => {
                           className="inline-flex items-center gap-1 text-xs text-accent hover:underline"
                         >
                           <ExternalLink className="h-3 w-3" />
-                          {(lang === 'en' && link.name_en) || (lang === 'pt' && link.name_pt) || (lang === 'es' && link.name_es) || (lang === 'ja' && link.name_ja) || link.name || link.url}
+                          {(lang === 'en' && link.name_en) || (lang === 'pt' && link.name_pt) || (lang === 'es' && link.name_es) || link.name || link.url}
                         </a>
                       </li>
                     ))}
@@ -463,7 +458,6 @@ const BlogPostPage = () => {
                   </p>
                   <p className="text-xs text-muted-foreground mb-3">
                     {isKo ? '이 내용을 시험 문제로 확인해보세요'
-                      : lang === 'ja' ? '練習問題でこの知識を確認しましょう'
                       : lang === 'es' ? 'Pon a prueba este conocimiento con preguntas prácticas'
                       : lang === 'pt' ? 'Teste esse conhecimento com questões práticas'
                       : 'Test this knowledge with practice questions'}

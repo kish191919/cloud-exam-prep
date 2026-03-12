@@ -8,7 +8,6 @@ const DisclaimerPage = () => {
   if (lang === 'ko') return <DisclaimerKo />;
   if (lang === 'es') return <DisclaimerEs />;
   if (lang === 'pt') return <DisclaimerPt />;
-  if (lang === 'ja') return <DisclaimerJa />;
   return <DisclaimerEn />;
 };
 
@@ -176,45 +175,6 @@ const DisclaimerPt = () => (
           Respeitamos os direitos de propriedade intelectual dos provedores de certificação. Se você acreditar que algum conteúdo deste site viola direitos autorais ou políticas de exame, entre em contato conosco e revisaremos e removeremos o conteúdo prontamente, se necessário.
         </p>
         <p>Contato: admin@cloudmasterit.com</p>
-      </Section>
-    </div>
-  </AppLayout>
-);
-
-const DisclaimerJa = () => (
-  <AppLayout>
-    <div className="max-w-3xl mx-auto py-4">
-      <h1 className="text-2xl font-bold mb-2">免責事項および著作権表示</h1>
-      <p className="text-sm text-muted-foreground mb-8">最終更新: 2026年2月</p>
-
-      <Section title="1. 免責事項">
-        <p>
-          CloudMasterIT LLCはクラウド認定試験の準備のための独立した教育プラットフォームです。
-        </p>
-        <ul className="list-disc pl-5 space-y-1">
-          <li>本サービスはAmazon Web Services（AWS）、Microsoft、Google Cloudとの提携・後援・承認・認定関係はありません。</li>
-          <li>AWS、Amazon Web Services、Microsoft、AZURE、Google Cloudおよび関連商標は各所有者の財産です。</li>
-          <li>本サービスのすべての練習問題と学習教材は、教育および試験準備目的のために独自に作成されたものです。これらは実際の認定試験の問題ではなく、いかなる公式試験からも引用されていません。</li>
-          <li>正確で権威ある情報については、AWS、Microsoft、Google Cloudの公式ドキュメントおよびトレーニング教材を必ずご参照ください。</li>
-        </ul>
-      </Section>
-
-      <Section title="2. 著作権および商標表示">
-        <p>© 2026 CloudMasterIT LLC. All rights reserved.</p>
-        <p>本サービスのすべての練習問題、解説、ブログ記事、学習教材は著作権法の保護を受けています。</p>
-        <ul className="list-disc pl-5 space-y-1">
-          <li>事前の書面による許可なく、本サービスのコンテンツを無断で複製、再配布、または再発行することは厳禁です。</li>
-          <li>
-            AWS、Amazon Web Services、Microsoft、AZURE、Google Cloudおよび関連商標は各所有者の財産であり、CloudMasterIT LLCとは無関係です。これらの名称は識別目的のみに使用されており、CloudMasterIT LLCとの提携や承認を示すものではありません。
-          </li>
-        </ul>
-      </Section>
-
-      <Section title="3. 著作権侵害の申告">
-        <p>
-          認定プロバイダーの知的財産権を尊重しています。本サービスのコンテンツが著作権または試験ポリシーに違反していると思われる場合は、お問い合わせください。速やかに確認し、必要に応じて該当コンテンツを削除いたします。
-        </p>
-        <p>お問い合わせ: admin@cloudmasterit.com</p>
       </Section>
     </div>
   </AppLayout>

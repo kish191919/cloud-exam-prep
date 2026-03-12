@@ -9,10 +9,8 @@ function toAnnouncement(row: Record<string, unknown>): Announcement {
     titleEn:   (row.title_en as string | null) ?? null,
     content:   row.content as string,
     contentEn: (row.content_en as string | null) ?? null,
-    titleJa:   (row.title_ja as string | null) ?? null,
     titleEs:   (row.title_es as string | null) ?? null,
     titlePt:   (row.title_pt as string | null) ?? null,
-    contentJa: (row.content_ja as string | null) ?? null,
     contentEs: (row.content_es as string | null) ?? null,
     contentPt: (row.content_pt as string | null) ?? null,
     examId:    (row.exam_id as string | null) ?? null,
@@ -87,10 +85,8 @@ export async function createAnnouncement(input: AnnouncementInput): Promise<stri
       title_en:   input.titleEn ?? null,
       content:    input.content,
       content_en: input.contentEn ?? null,
-      title_ja:   input.titleJa ?? null,
       title_es:   input.titleEs ?? null,
       title_pt:   input.titlePt ?? null,
-      content_ja: input.contentJa ?? null,
       content_es: input.contentEs ?? null,
       content_pt: input.contentPt ?? null,
       exam_id:    input.examId ?? null,
@@ -116,10 +112,8 @@ export async function updateAnnouncement(
   if (input.titleEn    !== undefined) payload.title_en   = input.titleEn;
   if (input.content    !== undefined) payload.content    = input.content;
   if (input.contentEn  !== undefined) payload.content_en = input.contentEn;
-  if (input.titleJa    !== undefined) payload.title_ja   = input.titleJa;
   if (input.titleEs    !== undefined) payload.title_es   = input.titleEs;
   if (input.titlePt    !== undefined) payload.title_pt   = input.titlePt;
-  if (input.contentJa  !== undefined) payload.content_ja = input.contentJa;
   if (input.contentEs  !== undefined) payload.content_es = input.contentEs;
   if (input.contentPt  !== undefined) payload.content_pt = input.contentPt;
   if (input.examId     !== undefined) payload.exam_id    = input.examId;

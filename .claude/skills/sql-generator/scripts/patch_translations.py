@@ -32,10 +32,9 @@ LANG_NAMES = {
     'en': 'English (AWS exam style)',
     'pt': 'Brazilian Portuguese',
     'es': 'Latin American Spanish',
-    'ja': 'Japanese',
 }
 
-LANG_SUFFIX = ['en', 'pt', 'es', 'ja']
+LANG_SUFFIX = ['en', 'pt', 'es']
 
 Q_TRANSLATE_FIELDS = ['explanation', 'key_points']   # _en/_pt/_es/_ja 접미사 붙여서 사용
 OPT_TRANSLATE_FIELDS = ['explanation']

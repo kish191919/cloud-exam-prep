@@ -657,7 +657,6 @@ const ExamList = () => {
                             if (!desc) return exam.description;
                             const lang = i18n.language;
                             if (lang === 'ko') return desc.ko;
-                            if (lang === 'ja') return desc.ja ?? desc.en;
                             if (lang === 'es') return desc.es ?? desc.en;
                             if (lang === 'pt') return desc.pt ?? desc.en;
                             return desc.en;

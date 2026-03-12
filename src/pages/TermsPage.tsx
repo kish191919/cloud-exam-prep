@@ -8,7 +8,6 @@ const TermsPage = () => {
   if (lang === 'ko') return <TermsKo />;
   if (lang === 'es') return <TermsEs />;
   if (lang === 'pt') return <TermsPt />;
-  if (lang === 'ja') return <TermsJa />;
   return <TermsEn />;
 };
 
@@ -322,83 +321,6 @@ const TermsPt = () => (
       <Section title="10. Contato">
         <p>Para dúvidas sobre estes Termos: admin@cloudmasterit.com</p>
         <p>Relatos de violação de direitos autorais: admin@cloudmasterit.com</p>
-      </Section>
-    </div>
-  </AppLayout>
-);
-
-const TermsJa = () => (
-  <AppLayout>
-    <div className="max-w-3xl mx-auto py-4">
-      <h1 className="text-2xl font-bold mb-2">利用規約</h1>
-      <p className="text-sm text-muted-foreground mb-8">最終更新: 2026年2月</p>
-
-      <Section title="1. サービスについて">
-        <p>CloudMasterIT LLC（以下「サービス」）は、AWS、GCP、AZUREのクラウド認定試験を準備するユーザー向けの独立したオンライン教育プラットフォームです。本規約は、サービスの利用に関するユーザーとCloudMasterIT LLCの間の権利・義務を定めるものです。</p>
-        <p>本サービスは、Amazon Web Services（AWS）、Microsoft、Google Cloudとの提携・後援・承認関係のない独立した教育プラットフォームです。</p>
-      </Section>
-
-      <Section title="2. 利用資格">
-        <ul className="list-disc pl-5 space-y-1">
-          <li>本サービスをご利用いただくには、14歳以上である必要があります。</li>
-          <li>登録時に正確な情報を提供する必要があります。</li>
-          <li>アカウントのセキュリティ（パスワード等）の維持はユーザー本人の責任です。</li>
-          <li>各ユーザーは1つのアカウントのみ作成できます。</li>
-        </ul>
-      </Section>
-
-      <Section title="3. 無料・有料機能">
-        <p>CloudMasterIT LLCは一部の機能を無料で提供し、追加機能は有料サブスクリプションでご利用いただけます。</p>
-        <ul className="list-disc pl-5 space-y-1">
-          <li><strong>無料:</strong> サンプル問題および限定的な試験セット</li>
-          <li><strong>有料:</strong> 全問題バンク、無制限の試験、詳細な分析など</li>
-        </ul>
-        <p>料金および提供内容は事前通知のうえ変更される場合があります。</p>
-      </Section>
-
-      <Section title="4. 禁止行為">
-        <p>以下の行為を禁止します。</p>
-        <ul className="list-disc pl-5 space-y-1">
-          <li>サービス内の問題・解説等のコンテンツの無断複製、配布、販売</li>
-          <li>自動化ツール（ボット、スクレイパー等）を使用したデータ収集</li>
-          <li>他人のアカウントの不正使用または不正アクセスの試み</li>
-          <li>サービスの正常な運営を妨げる行為</li>
-          <li>関連法令に違反する行為</li>
-        </ul>
-      </Section>
-
-      <Section title="5. 知的財産権">
-        <p>サービス内のすべてのコンテンツ（問題、解説、UIなど）の著作権はCloudMasterIT LLCに帰属します。ユーザーは個人学習目的のみサービスを利用できます。商業的利用は禁止されています。</p>
-        <p>AWS、Amazon Web Services、Microsoft、AZURE、Google Cloudおよび関連商標は各所有者の財産であり、CloudMasterIT LLCとは無関係です。これらの名称は識別目的のみに使用されています。</p>
-        <p>ユーザーは事前の書面による許可なく、本サービスのコンテンツを複製、再配布、販売することはできません。</p>
-      </Section>
-
-      <Section title="6. サービスの変更・中断">
-        <p>CloudMasterIT LLCはサービスの改善、メンテナンス、事業上の理由により、サービスの一部または全部を変更または中断することがあります。重要な変更またはサービス終了の際は事前にお知らせします。</p>
-      </Section>
-
-      <Section title="7. 免責事項">
-        <ul className="list-disc pl-5 space-y-1">
-          <li>正確性の確保に努めますが、すべてのコンテンツが誤りなく提供されることを保証するものではありません。</li>
-          <li>本サービスのすべての練習問題は教育目的のために独自に作成されたものであり、実際の認定試験の問題ではありません。</li>
-          <li>認定試験の合格を保証するものではありません。</li>
-          <li>本サービスはAWS、Microsoft、Google Cloudとの公式提携関係はなく、これらの企業による承認も受けていません。</li>
-          <li>不可抗力またはサーバー障害によるサービス中断については責任を負いません。</li>
-          <li>本サービスはいかなる種類の保証もなく「現状のまま」提供されます。</li>
-        </ul>
-      </Section>
-
-      <Section title="8. アカウントの解約">
-        <p>ユーザーはいつでもアカウントを削除できます。CloudMasterIT LLCは規約違反があった場合、事前通知なしにサービスの利用を制限またはアカウントを停止する権利を有します。</p>
-      </Section>
-
-      <Section title="9. 規約の変更">
-        <p>本規約は必要に応じて変更される場合があります。変更時はサービス内のお知らせまたはメールを通じてご案内します。変更後もサービスを継続して利用した場合、変更された規約に同意したものとみなされます。</p>
-      </Section>
-
-      <Section title="10. お問い合わせ">
-        <p>本規約に関するお問い合わせ: admin@cloudmasterit.com</p>
-        <p>著作権侵害の申告: admin@cloudmasterit.com</p>
       </Section>
     </div>
   </AppLayout>

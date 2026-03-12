@@ -7,10 +7,8 @@ export interface Announcement {
   titleEn: string | null;
   content: string;
   contentEn: string | null;
-  titleJa: string | null;
   titleEs: string | null;
   titlePt: string | null;
-  contentJa: string | null;
   contentEs: string | null;
   contentPt: string | null;
   examId: string | null;
@@ -29,10 +27,8 @@ export interface AnnouncementInput {
   titleEn?: string;
   content: string;
   contentEn?: string;
-  titleJa?: string;
   titleEs?: string;
   titlePt?: string;
-  contentJa?: string;
   contentEs?: string;
   contentPt?: string;
   examId?: string | null;

@@ -45,53 +45,6 @@ const TAG_EN: Record<string, string> = {
   '비용 최적화 아키텍처 설계': 'Design Cost-Optimized Architectures',
 };
 
-const TAG_JA: Record<string, string> = {
-  // AWS AIF-C01 (구버전 5태그 — backward compatibility)
-  'AI 및 ML의 기초': 'AIとMLの基礎',
-  'GenAI의 기초': '生成AIの基礎',
-  '파운데이션 모델의 적용': 'ファウンデーションモデルの活用',
-  '책임 있는 AI에 대한 가이드라인': '責任あるAIのガイドライン',
-  'AI 솔루션의 보안, 규정 준수 및 거버넌스':
-    'AIソリューションのセキュリティ・コンプライアンス・ガバナンス',
-  // AWS AIF-C01 (신버전 11태그)
-  'AI·ML 개념과 알고리즘': 'AIとMLの概念とアルゴリズム',
-  'AI 실용 사례와 서비스 선택': 'AIのユースケースとサービス選択',
-  'ML 개발 수명 주기': 'ML開発ライフサイクル',
-  '생성형 AI 개념과 구조': '生成AIの概念とアーキテクチャ',
-  '생성형 AI 역량과 한계': '生成AIの能力と限界',
-  'AWS GenAI 인프라와 서비스': 'AWSのGenAIインフラとサービス',
-  'FM 애플리케이션 설계와 RAG': 'FMアプリケーション設計とRAG',
-  '프롬프트 엔지니어링과 보안': 'プロンプトエンジニアリングとセキュリティ',
-  'FM 훈련·파인튜닝·평가': 'FMのトレーニング・ファインチューニング・評価',
-  '책임 있는 AI와 공정성': '責任あるAIと公平性',
-  'AI 투명성·설명 가능성·거버넌스': 'AIの透明性・説明可能性・ガバナンス',
-  // AWS CLF-C02 & AZURE AZ-900 (shared)
-  '클라우드 개념': 'クラウドの概念',
-  // AWS CLF-C02
-  '보안 및 규정 준수': 'セキュリティとコンプライアンス',
-  '클라우드 기술 및 서비스': 'クラウドテクノロジーとサービス',
-  '청구, 가격 책정 및 지원': '請求、料金、サポート',
-  // AZURE AZ-900
-  'AZURE 핵심 아키텍처': 'AZUREコアアーキテクチャ',
-  '컴퓨팅 및 네트워킹': 'コンピューティングとネットワーキング',
-  '스토리지 서비스': 'ストレージサービス',
-  'ID, 접근 및 보안': 'ID、アクセス、セキュリティ',
-  '비용 관리': 'コスト管理',
-  '거버넌스 및 규정 준수': 'ガバナンスとコンプライアンス',
-  '리소스 배포 및 관리': 'リソースの展開と管理',
-  '모니터링 및 서비스 상태': '監視とサービス正常性',
-  // AWS DEA-C01
-  '데이터 수집 및 변환': 'データの取り込みと変換',
-  '데이터 저장소 관리': 'データストア管理',
-  '데이터 운영 및 지원': 'データオペレーションとサポート',
-  '데이터 보안 및 거버넌스': 'データセキュリティとガバナンス',
-  // AWS SAA-C03
-  '보안 아키텍처 설계': 'セキュアなアーキテクチャの設計',
-  '탄력적인 아키텍처 설계': '回復力のあるアーキテクチャの設計',
-  '고성능 아키텍처 설계': '高パフォーマンスアーキテクチャの設計',
-  '비용 최적화 아키텍처 설계': 'コスト最適化アーキテクチャの設計',
-};
-
 const TAG_ES: Record<string, string> = {
   // AWS AIF-C01 (구버전 5태그 — backward compatibility)
   'AI 및 ML의 기초': 'Fundamentos de IA y ML',
@@ -188,6 +141,6 @@ const TAG_PT: Record<string, string> = {
 
 export function translateTag(tag: string, lang: string): string {
   if (lang === 'ko') return tag;
-  const map = lang === 'ja' ? TAG_JA : lang === 'es' ? TAG_ES : lang === 'pt' ? TAG_PT : TAG_EN;
+  const map = lang === 'es' ? TAG_ES : lang === 'pt' ? TAG_PT : TAG_EN;
   return map[tag] ?? TAG_EN[tag] ?? tag;
 }

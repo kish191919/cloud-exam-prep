@@ -86,32 +86,27 @@ export interface QuestionInput {
   textEn?: string;
   textPt?: string;
   textEs?: string;
-  textJa?: string;
   options: {
     id: 'a' | 'b' | 'c' | 'd';
     text: string;
     textEn?: string;
     textPt?: string;
     textEs?: string;
-    textJa?: string;
     explanation?: string;
     explanationEn?: string;
     explanationPt?: string;
     explanationEs?: string;
-    explanationJa?: string;
   }[];
   correctOptionId: 'a' | 'b' | 'c' | 'd';
   explanation: string;
   explanationEn?: string;
   explanationPt?: string;
   explanationEs?: string;
-  explanationJa?: string;
   tags: string[];
   keyPoints?: string;
   keyPointsEn?: string;
   keyPointsPt?: string;
   keyPointsEs?: string;
-  keyPointsJa?: string;
   refLinks?: { name: string; url: string }[];
 }
 
@@ -133,18 +128,15 @@ export async function createQuestion(input: QuestionInput): Promise<string> {
       text_en: input.textEn ?? null,
       text_pt: input.textPt ?? null,
       text_es: input.textEs ?? null,
-      text_ja: input.textJa ?? null,
       correct_option_id: input.correctOptionId,
       explanation: input.explanation,
       explanation_en: input.explanationEn ?? null,
       explanation_pt: input.explanationPt ?? null,
       explanation_es: input.explanationEs ?? null,
-      explanation_ja: input.explanationJa ?? null,
       key_points: input.keyPoints ?? null,
       key_points_en: input.keyPointsEn ?? null,
       key_points_pt: input.keyPointsPt ?? null,
       key_points_es: input.keyPointsEs ?? null,
-      key_points_ja: input.keyPointsJa ?? null,
       ref_links: input.refLinks ?? [],
     });
   if (qErr) throw qErr;
@@ -159,12 +151,10 @@ export async function createQuestion(input: QuestionInput): Promise<string> {
       text_en: opt.textEn ?? null,
       text_pt: opt.textPt ?? null,
       text_es: opt.textEs ?? null,
-      text_ja: opt.textJa ?? null,
       explanation: opt.explanation ?? null,
       explanation_en: opt.explanationEn ?? null,
       explanation_pt: opt.explanationPt ?? null,
       explanation_es: opt.explanationEs ?? null,
-      explanation_ja: opt.explanationJa ?? null,
       sort_order: idx + 1,
     })) as any);
   if (optErr) throw optErr;
@@ -188,18 +178,15 @@ export async function updateQuestion(questionId: string, input: Omit<QuestionInp
       text_en: input.textEn ?? null,
       text_pt: input.textPt ?? null,
       text_es: input.textEs ?? null,
-      text_ja: input.textJa ?? null,
       correct_option_id: input.correctOptionId,
       explanation: input.explanation,
       explanation_en: input.explanationEn ?? null,
       explanation_pt: input.explanationPt ?? null,
       explanation_es: input.explanationEs ?? null,
-      explanation_ja: input.explanationJa ?? null,
       key_points: input.keyPoints ?? null,
       key_points_en: input.keyPointsEn ?? null,
       key_points_pt: input.keyPointsPt ?? null,
       key_points_es: input.keyPointsEs ?? null,
-      key_points_ja: input.keyPointsJa ?? null,
       ref_links: input.refLinks ?? [],
     })
     .eq('id', questionId);
@@ -217,12 +204,10 @@ export async function updateQuestion(questionId: string, input: Omit<QuestionInp
       text_en: opt.textEn ?? null,
       text_pt: opt.textPt ?? null,
       text_es: opt.textEs ?? null,
-      text_ja: opt.textJa ?? null,
       explanation: opt.explanation ?? null,
       explanation_en: opt.explanationEn ?? null,
       explanation_pt: opt.explanationPt ?? null,
       explanation_es: opt.explanationEs ?? null,
-      explanation_ja: opt.explanationJa ?? null,
       sort_order: idx + 1,
     })) as any);
   if (optErr) throw optErr;

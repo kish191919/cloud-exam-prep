@@ -184,7 +184,7 @@ def insert_question(q: dict, set_id: str, sort_order: int, supabase_url: str, su
 
     # Rule 3 post-processing: text_* 필드 줄바꿈 서식 결정론적 적용
     q = dict(q)
-    for _field in ('text', 'text_en', 'text_pt', 'text_es', 'text_ja'):
+    for _field in ('text', 'text_en', 'text_pt', 'text_es'):
         _val = q.get(_field)
         if _val and isinstance(_val, str):
             q[_field] = normalize_text_linebreaks(_val)
@@ -205,18 +205,15 @@ def insert_question(q: dict, set_id: str, sort_order: int, supabase_url: str, su
         'text_en': q.get('text_en') or None,
         'text_pt': q.get('text_pt') or None,
         'text_es': q.get('text_es') or None,
-        'text_ja': q.get('text_ja') or None,
         'correct_option_id': q['correct_option_id'],
         'explanation': q['explanation'],
         'explanation_en': q.get('explanation_en') or None,
         'explanation_pt': q.get('explanation_pt') or None,
         'explanation_es': q.get('explanation_es') or None,
-        'explanation_ja': q.get('explanation_ja') or None,
         'key_points': q.get('key_points') or '',
         'key_points_en': q.get('key_points_en') or None,
         'key_points_pt': q.get('key_points_pt') or None,
         'key_points_es': q.get('key_points_es') or None,
-        'key_points_ja': q.get('key_points_ja') or None,
         'ref_links': ref_links_val,
     }
     status, body = supabase_post(supabase_url, supabase_key, 'questions', question_body)
@@ -234,12 +231,10 @@ def insert_question(q: dict, set_id: str, sort_order: int, supabase_url: str, su
             'text_en': opt.get('text_en') or None,
             'text_pt': opt.get('text_pt') or None,
             'text_es': opt.get('text_es') or None,
-            'text_ja': opt.get('text_ja') or None,
             'explanation': opt.get('explanation') or '',
             'explanation_en': opt.get('explanation_en') or None,
             'explanation_pt': opt.get('explanation_pt') or None,
             'explanation_es': opt.get('explanation_es') or None,
-            'explanation_ja': opt.get('explanation_ja') or None,
             'sort_order': int(opt['sort_order']),
         })
     if options_body:
@@ -256,7 +251,6 @@ def insert_question(q: dict, set_id: str, sort_order: int, supabase_url: str, su
             'tag_en': q.get('tag_en') or None,
             'tag_pt': q.get('tag_pt') or None,
             'tag_es': q.get('tag_es') or None,
-            'tag_ja': q.get('tag_ja') or None,
         }
         status, body = supabase_post(supabase_url, supabase_key, 'question_tags', tag_body)
         if status not in (200, 201):
