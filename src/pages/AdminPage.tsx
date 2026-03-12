@@ -2434,10 +2434,16 @@ const BlogFormDialog = ({ exams, editItem, open, onClose, onSaved }: BlogFormDia
   const [tagsStr, setTagsStr] = useState('');
   const [title, setTitle] = useState('');
   const [titleEn, setTitleEn] = useState('');
+  const [titleEs, setTitleEs] = useState('');
+  const [titlePt, setTitlePt] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [excerptEn, setExcerptEn] = useState('');
+  const [excerptEs, setExcerptEs] = useState('');
+  const [excerptPt, setExcerptPt] = useState('');
   const [content, setContent] = useState('');
   const [contentEn, setContentEn] = useState('');
+  const [contentEs, setContentEs] = useState('');
+  const [contentPt, setContentPt] = useState('');
   const [coverImageUrl, setCoverImageUrl] = useState('');
   const [isPinned, setIsPinned] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
@@ -2453,10 +2459,16 @@ const BlogFormDialog = ({ exams, editItem, open, onClose, onSaved }: BlogFormDia
       setTagsStr(editItem.tags.join(', '));
       setTitle(editItem.title);
       setTitleEn(editItem.titleEn ?? '');
+      setTitleEs(editItem.titleEs ?? '');
+      setTitlePt(editItem.titlePt ?? '');
       setExcerpt(editItem.excerpt ?? '');
       setExcerptEn(editItem.excerptEn ?? '');
+      setExcerptEs(editItem.excerptEs ?? '');
+      setExcerptPt(editItem.excerptPt ?? '');
       setContent(editItem.content);
       setContentEn(editItem.contentEn ?? '');
+      setContentEs(editItem.contentEs ?? '');
+      setContentPt(editItem.contentPt ?? '');
       setCoverImageUrl(editItem.coverImageUrl ?? '');
       setIsPinned(editItem.isPinned);
       setIsPublished(editItem.isPublished);
@@ -2472,10 +2484,16 @@ const BlogFormDialog = ({ exams, editItem, open, onClose, onSaved }: BlogFormDia
       setTagsStr('');
       setTitle('');
       setTitleEn('');
+      setTitleEs('');
+      setTitlePt('');
       setExcerpt('');
       setExcerptEn('');
+      setExcerptEs('');
+      setExcerptPt('');
       setContent('');
       setContentEn('');
+      setContentEs('');
+      setContentPt('');
       setCoverImageUrl('');
       setIsPinned(false);
       setIsPublished(false);
@@ -2496,10 +2514,16 @@ const BlogFormDialog = ({ exams, editItem, open, onClose, onSaved }: BlogFormDia
         tags: tagsStr.split(',').map(t => t.trim()).filter(Boolean),
         title: title.trim(),
         titleEn: titleEn.trim() || null,
+        titleEs: titleEs.trim() || null,
+        titlePt: titlePt.trim() || null,
         excerpt: excerpt.trim() || null,
         excerptEn: excerptEn.trim() || null,
+        excerptEs: excerptEs.trim() || null,
+        excerptPt: excerptPt.trim() || null,
         content: content.trim(),
         contentEn: contentEn.trim() || null,
+        contentEs: contentEs.trim() || null,
+        contentPt: contentPt.trim() || null,
         coverImageUrl: coverImageUrl.trim() || null,
         readTimeMinutes: calcReadTime(content.trim()),
         refLinks: validLinks.length ? validLinks : [],
@@ -2608,6 +2632,16 @@ const BlogFormDialog = ({ exams, editItem, open, onClose, onSaved }: BlogFormDia
               <Input placeholder="Title in English" value={titleEn} onChange={e => setTitleEn(e.target.value)} />
             </div>
           </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-sm font-medium mb-1 block">제목 (Español, 선택)</label>
+              <Input placeholder="Título en español" value={titleEs} onChange={e => setTitleEs(e.target.value)} />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">제목 (Português, 선택)</label>
+              <Input placeholder="Título em português" value={titlePt} onChange={e => setTitlePt(e.target.value)} />
+            </div>
+          </div>
 
           {/* Excerpt */}
           <div className="grid grid-cols-2 gap-3">
@@ -2618,6 +2652,16 @@ const BlogFormDialog = ({ exams, editItem, open, onClose, onSaved }: BlogFormDia
             <div>
               <label className="text-sm font-medium mb-1 block">요약 (English, 선택)</label>
               <Input placeholder="SEO description..." value={excerptEn} onChange={e => setExcerptEn(e.target.value)} maxLength={160} />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-sm font-medium mb-1 block">요약 (Español, 선택)</label>
+              <Input placeholder="Descripción SEO..." value={excerptEs} onChange={e => setExcerptEs(e.target.value)} maxLength={160} />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1 block">요약 (Português, 선택)</label>
+              <Input placeholder="Descrição SEO..." value={excerptPt} onChange={e => setExcerptPt(e.target.value)} maxLength={160} />
             </div>
           </div>
 
@@ -2636,6 +2680,22 @@ const BlogFormDialog = ({ exams, editItem, open, onClose, onSaved }: BlogFormDia
             value={contentEn}
             onChange={setContentEn}
             placeholder="## Title&#10;&#10;Content in English..."
+            rows={4}
+          />
+
+          <MarkdownEditor
+            label="내용 (Español, 선택)"
+            value={contentEs}
+            onChange={setContentEs}
+            placeholder="## Título&#10;&#10;Contenido en español..."
+            rows={4}
+          />
+
+          <MarkdownEditor
+            label="내용 (Português, 선택)"
+            value={contentPt}
+            onChange={setContentPt}
+            placeholder="## Título&#10;&#10;Conteúdo em português..."
             rows={4}
           />
 
