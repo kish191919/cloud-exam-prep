@@ -263,6 +263,7 @@ STEP 4에서 생성한 4개 보기를 무작위로 재배치한다.
 [PASS] text_en 일치성: source_language=="en"인 경우, text_en이 원본 영어(question.question)가 아닌 한국어 text를 번역한 내용인지 (한국어 text에 시나리오가 있으면 text_en에도 동일한 시나리오가 영어로 포함되어야 함)
 [PASS] correct_option_id 유효성: correct_option_id 값이 options 배열의 option_id 값 중 하나와 정확히 일치 — 불일치 시 즉시 FAIL → 정답 보기의 새 option_id 재확인 후 수정
 [PASS] text 선행 공백 없음: text 및 text_en 필드가 \n, 공백 없이 첫 문장으로 바로 시작
+[PASS] 한국어 필드 일본어 금지: key_points, explanation, options[].explanation에 일본어(ひらがな·カタカナ·한자 U+3040-U+30FF·U+4E00-U+9FFF) 없음 → FAIL 시 해당 필드를 한국어로 즉시 재작성
 [PASS] 다국어 번역 완결성: explanation_en/pt/es, key_points_en/pt/es, options[].explanation_en/pt/es 모두 해당 언어로 작성됨 (한글(가-힣) 포함 → 즉시 FAIL)
 ```
 
