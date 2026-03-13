@@ -46,6 +46,8 @@ const ExamSession = () => {
   };
   const [showPanel, setShowPanel] = useState(true);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
+  const lastScreenshotToastRef = useRef<number>(0);
+  const linkClickedRef = useRef<boolean>(false);
 
   const { isFullscreen, isFullscreenSupported, isIOS, isChrome, isAndroid, toggleFullscreen } = useFullscreen();
 
@@ -215,15 +217,32 @@ const ExamSession = () => {
     return () => document.removeEventListener('keydown', handleCopyAttempt);
   }, []);
 
+  // 외부 링크 클릭 감지 (스크린샷 오탐지 방지용)
+  useEffect(() => {
+    const handleLinkClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a[target="_blank"]')) {
+        linkClickedRef.current = true;
+        setTimeout(() => { linkClickedRef.current = false; }, 500);
+      }
+    };
+    document.addEventListener('click', handleLinkClick);
+    return () => document.removeEventListener('click', handleLinkClick);
+  }, []);
+
   // 스크린샷 감지: PrintScreen 키
   useEffect(() => {
     const handlePrintScreen = (e: KeyboardEvent) => {
-      if (e.key === 'PrintScreen') {
-        toast({
-          description: tExam('questionDisplay.screenshotWarning'),
-          variant: 'destructive',
-        });
-      }
+      if (e.key !== 'PrintScreen') return;
+      if (e.code && e.code !== 'PrintScreen') return;  // 물리 키가 아닌 가짜 이벤트 필터링
+      if (linkClickedRef.current) return;               // 링크 클릭 직후 오탐지 방지
+      const now = Date.now();
+      if (now - lastScreenshotToastRef.current < 2000) return;  // 중복 토스트 방지
+      lastScreenshotToastRef.current = now;
+      toast({
+        description: tExam('questionDisplay.screenshotWarning'),
+        variant: 'destructive',
+      });
     };
 
     document.addEventListener('keydown', handlePrintScreen);
