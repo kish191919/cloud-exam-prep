@@ -218,13 +218,21 @@ const ExamSession = () => {
   // 스크린샷 감지: visibilitychange + PrintScreen 키
   useEffect(() => {
     let lastHidden = 0;
+    let suppressUntil = 0;  // 외부 링크 클릭 후 억제 타임스탬프
+
+    const handleLinkClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest('a');
+      if (target && target.href && target.target === '_blank') {
+        suppressUntil = Date.now() + 300;
+      }
+    };
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
         lastHidden = Date.now();
       } else if (lastHidden > 0) {
         const elapsed = Date.now() - lastHidden;
-        if (elapsed > 100 && elapsed < 3000) {
+        if (elapsed > 100 && elapsed < 3000 && Date.now() > suppressUntil) {
           toast({
             description: tExam('questionDisplay.screenshotWarning'),
             variant: 'destructive',
@@ -243,9 +251,11 @@ const ExamSession = () => {
       }
     };
 
+    document.addEventListener('click', handleLinkClick, true);
     document.addEventListener('visibilitychange', handleVisibilityChange);
     document.addEventListener('keydown', handlePrintScreen);
     return () => {
+      document.removeEventListener('click', handleLinkClick, true);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       document.removeEventListener('keydown', handlePrintScreen);
     };
