@@ -192,8 +192,19 @@ Amazon Athena — S3 서버리스 SQL 쿼리
 }
 ```
 
+⚠️ **ref_links는 반드시 객체 배열** — URL 문자열 배열 절대 금지:
+```
+❌ 잘못된 형식 (URL 문자열 배열):
+["https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-explainability.html"]
+
+✅ 올바른 형식 (객체 배열, 5개 필드 필수):
+[{"name": "SageMaker Clarify — 모델 설명 가능성", "name_en": "SageMaker Clarify — Model Explainability", "name_pt": "SageMaker Clarify — Explicabilidade do Modelo", "name_es": "SageMaker Clarify — Explicabilidad del Modelo", "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-explainability.html"}]
+```
+
 **금지사항:**
 - ❌ 빈 배열 `[]` 또는 누락 → 반드시 1~3개 링크 포함
+- ❌ URL 문자열 배열 형식 사용 (`["https://..."]`) → 반드시 객체 배열 형식
+- ❌ name/name_en/name_pt/name_es/url 5개 필드 중 하나라도 누락
 - ❌ 허용되지 않은 도메인 URL 사용
 - ❌ 임의 URL 생성 — 실제 존재하는 공식 문서 URL 사용
 
@@ -215,7 +226,8 @@ Amazon Athena — S3 서버리스 SQL 쿼리
 [PASS/FAIL] 메인 해설 헤더 금지: explanation에 [대괄호 헤더] 없음
 [PASS/FAIL] 언어 순수성: explanation, key_points, options[].explanation에 영어 문장 없음 (AWS 서비스명 영문 제외)
 [PASS/FAIL] 일본어 금지: 모든 한국어 필드에 ひらがな·カタカナ·漢字 없음
-[PASS/FAIL] ref_links 필수: ref_links 1~3개 존재, 각 링크에 name/name_en/name_pt/name_es + url 포함
+[PASS/FAIL] ref_links 필수: ref_links 1~3개 존재
+[PASS/FAIL] ref_links 구조: 각 링크가 name/name_en/name_pt/name_es/url 5개 필드를 모두 포함한 객체 — URL 문자열 배열(["https://..."]) 형식은 즉시 FAIL
 [PASS/FAIL] key_points 형식: {제목}\n• 포인트 형식, 3~5개 불릿
 ```
 
@@ -225,7 +237,8 @@ Amazon Athena — S3 서버리스 SQL 쿼리
   - 보기 해설 완결성 FAIL: 이유 있는 설명 1~2문장으로 재작성
   - 메인 해설 마크다운 FAIL: `**...**` 제거, `• 항목` → 서술체 문장 전환, `레이블:` → 자연스러운 문장으로 재작성
   - 메인 해설 3단락 FAIL: 누락 단락 추가
-  - ref_links FAIL: 공식 문서 URL 즉시 생성
+  - ref_links 필수 FAIL: 공식 문서 URL 1~3개로 객체 배열 즉시 생성
+  - ref_links 구조 FAIL: URL 문자열을 객체 형식으로 변환 — `{"name": "...", "name_en": "...", "name_pt": "...", "name_es": "...", "url": "..."}` 5개 필드 모두 채우기
 - **2회 재시도 후에도 FAIL** → 에스컬레이션
 
 ---
