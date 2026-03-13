@@ -16,6 +16,7 @@ Main 오케스트레이터로서:
 |---------|------|------|------|
 | Parser & SQL | `.claude/agents/parser-sql/AGENT.md` | STEP 1 파싱 + STEP 6 Supabase 직접 삽입 | Sonnet |
 | Redesigner | `.claude/agents/redesigner/AGENT.md` | 문제 5개(배치) 한국어 재설계 | **Haiku** |
+| Importer | `.claude/agents/importer/AGENT.md` | 완성 문제 5개(배치) 태그·해설·번역·삽입 | **Sonnet** |
 
 **규칙:** 서브에이전트 간 직접 호출 금지 — 반드시 Main(이 파일)을 통해 조율한다.
 
@@ -248,16 +249,203 @@ Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 
 ---
 
+## `/import` 커맨드 처리
+
+`input/` 폴더의 **완성 문제 파일**(한국어 질문 + 보기 4개 + 정답 포함)을 읽어, LLM이 태그·보기설명·해설·key_points·ref_links를 생성하고 4개 언어(한/영/스/포)로 번역하여 Supabase에 삽입하는 파이프라인.
+
+**`/generate`와 달리 질문 텍스트와 보기 텍스트는 사용자 작성 원문 그대로 사용 — 절대 수정 금지.**
+
+### 입력 파일 형식
+
+```
+1. 한 기업이 Amazon S3에 저장된 대용량 데이터를 SQL로 직접 분석하려 합니다.
+   가장 적합한 AWS 서비스는 무엇입니까?
+A. Amazon Redshift
+B. Amazon Athena
+C. Amazon EMR
+D. AWS Glue
+정답: B
+
+2. ...
+```
+
+- 질문 번호: `1.` / `1)` / `Q1.` 형식 지원
+- 보기: `A.` / `A)` 형식 지원 (대소문자 무관)
+- 정답: `정답: B` 또는 `Answer: B` (대소문자 무관)
+
+### 처리 흐름
+
+```
+1. exam_id 입력 → exam_sets 자동 조회 → 세트 자동 선택
+2. input/ 폴더 스캔 → 파일 목록 출력 (알파벳 순)
+3. 파일별: 파싱(질문+보기+정답 추출) → 자동 진행
+4. 참조 파일 선로드 + Importer(Sonnet) 5개씩 배치 병렬 호출
+5. Supabase 즉시 삽입 → 파일 input/done/ 이동
+6. 완료 요약 출력
+```
+
+### Step 1: exam_id 입력 + 세트 자동 선택
+
+`/generate`의 Step 1과 동일. exam_id 입력 직후 sort_order 내림차순으로 마지막 세트 자동 선택.
+
+```
+시험 문제 삽입을 시작합니다.
+
+먼저 시험 ID를 입력해주세요. (예: aws-aif-c01, aws-clf-c02, aws-saa-c03, azure-az-900, gcp-ace)
+exam_id:
+```
+
+### Step 2~7: 파일 처리 흐름
+
+**[I-1] input/ 폴더 스캔 + 커서 초기화**
+
+`/generate`의 [B-1]과 동일. 전체 파일 목록 출력 + 커서 초기화:
+
+```python
+# ① 현재 MAX(question id) 조회 → current_max_id 초기화
+all_ids = GET /rest/v1/questions?select=id&exam_id=eq.{exam_id}
+nums = [int(qid.split('-q')[1]) for qid in all_ids if qid.split('-q')[1].isdigit()]
+current_max_id = max(nums) if nums else 0
+
+# ② 세트 내 MAX(sort_order) 조회 → sort_order_cursor 초기화
+max_sort = GET /rest/v1/exam_set_questions?set_id=eq.{set_id}&select=sort_order&order=sort_order.desc&limit=1
+sort_order_cursor = (max_sort + 1) if max_sort else 1
+```
+
+**[I-2] 파싱 (현재 파일) — Main 인라인 Python**
+
+```python
+import re, json
+
+with open(file_path, 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# 질문 블록 분리 (번호로 시작하는 단락)
+blocks = re.split(r'\n(?=\s*(?:Q?\d+[\.\)]|Question\s+\d+))', content.strip())
+
+parsed = []
+parse_failed = 0
+for i, block in enumerate(blocks):
+    if not block.strip():
+        continue
+    lines = block.strip().splitlines()
+
+    # 질문 text 추출 (보기 라인 전까지)
+    option_start = next(
+        (j for j, l in enumerate(lines) if re.match(r'^\s*[A-Da-d][\.\)]', l)),
+        len(lines)
+    )
+    text_lines = [re.sub(r'^\s*(?:Q?\d+[\.\)]\s*|Question\s+\d+[:.]\s*)', '', lines[0])]
+    text_lines += lines[1:option_start]
+    text = ' '.join(l.strip() for l in text_lines if l.strip())
+
+    # 보기 4개 추출 — 정답 표시 없음, LLM이 STEP 0에서 결정
+    option_lines = [l for l in lines[option_start:] if re.match(r'^\s*[A-Da-d][\.\)]', l)]
+    options_text = {}
+    for ol in option_lines:
+        m = re.match(r'^\s*([A-Da-d])[\.\)]\s*(.*)', ol)
+        if m:
+            options_text[m.group(1).lower()] = m.group(2).strip()
+
+    # 유효성 검사: 보기 4개만 있으면 통과 (정답 없어도 OK)
+    if len(options_text) == 4:
+        num = current_max_id + len(parsed) + 1
+        exam_code = exam_id.replace('-', '')
+        parsed.append({
+            "number": i + 1,
+            "assigned_id": f"{exam_code}-q{num:03d}",
+            "text": text,              # 사용자 작성 원문 — 절대 수정 금지
+            "options_text": options_text,  # {"a": "...", "b": "...", "c": "...", "d": "..."}
+            # correct_option_id 없음 — 에이전트 STEP 0에서 결정
+        })
+    else:
+        parse_failed += 1
+        print(f"[PARSE FAIL] 블록 {i+1}: 보기={len(options_text)}개 — 스킵")
+
+# output/import_parsed.json 저장
+with open('output/import_parsed.json', 'w', encoding='utf-8') as f:
+    json.dump(parsed, f, ensure_ascii=False, indent=2)
+```
+
+> **ID 할당 규칙:** 반드시 **3자리 zero-padding** 사용. 형식: `{exam_code}-q{N:03d}`
+
+파싱 완료 후, `domain_tags_content`가 아직 로드되지 않은 경우 로드한다 (첫 파일 처리 시 1회만):
+```
+domain_tags_content ← .claude/skills/question-redesigner/references/domain_tags/{exam_id}.md
+                      (파일 없으면 null)
+translation_guide   ← .claude/skills/question-redesigner/references/translation_guide/{exam_id}.md
+                      (파일 없으면 null)
+```
+
+**[I-3] Importer 배치 호출 (5개씩)**
+
+```python
+batch_size = 5
+batches = [parsed[i:i+batch_size] for i in range(0, len(parsed), batch_size)]
+
+for idx, batch in enumerate(batches):
+    Task(
+        subagent_type="general-purpose",
+        model="sonnet",
+        prompt={
+            "task": "import_batch",
+            "questions": batch,     # {number, assigned_id, text, options_text} — correct_option_id 없음, 에이전트 STEP 0에서 결정
+            "exam_id": exam_id,
+            "domain_tags": domain_tags_content,
+            "translation_guide": translation_guide_content,
+            "set_id": set_id,
+            "sort_order_start": sort_order_cursor + idx * batch_size,
+            "insert_script_path": ".claude/skills/sql-generator/scripts/insert_supabase.py",
+            "agent_spec_path": ".claude/agents/importer/AGENT.md",
+        }
+    )
+```
+
+각 배치 에이전트는 `.claude/agents/importer/AGENT.md` 규칙에 따라 처리 후 Supabase에 즉시 삽입하고 결과를 반환한다.
+
+**[I-4] 결과 취합**
+
+`inserted_ids`, `failures`, `skipped`를 배치별로 수집·합산.
+
+**[I-5] 파일 이동 + 커서 업데이트**
+
+```bash
+mv input/{filename} input/done/{filename}
+```
+
+```python
+n_questions = len(parsed)
+sort_order_cursor += n_questions
+current_max_id    += n_questions
+```
+
+**[I-6] 완료 요약 출력**
+
+```
+✅ import 완료
+━━━━━━━━━━━━━━━━━━━━━━━━
+총 입력 문제 수:      {total}개
+삽입 성공:           {success}개
+파싱 실패 (스킵):     {parse_failed}개
+삽입 실패:           {insert_failed}개
+━━━━━━━━━━━━━━━━━━━━━━━━
+할당된 ID 범위: {first_id} ~ {last_id}
+```
+
+---
+
 ## 주요 파일 경로
 
 | 파일 | 역할 |
 |------|------|
 | `input/*.txt` | 처리 대기 중인 문제 텍스트 파일 (알파벳 순 처리) |
 | `input/done/*.txt` | 처리 완료된 파일 (자동 이동) |
-| `output/parsed_questions.json` | 파싱 결과 |
+| `output/parsed_questions.json` | /generate 파싱 결과 |
+| `output/import_parsed.json` | /import 파싱 결과 |
 | `.env` | Supabase 접속 정보 (git에 포함되지 않음) |
 | `.claude/agents/parser-sql/AGENT.md` | Parser & SQL 서브에이전트 |
-| `.claude/agents/redesigner/AGENT.md` | Redesigner 서브에이전트 |
+| `.claude/agents/redesigner/AGENT.md` | Redesigner 서브에이전트 (/generate) |
+| `.claude/agents/importer/AGENT.md` | Importer 서브에이전트 (/import) |
 | `.claude/skills/question-parser/scripts/parse_text.py` | 파싱 스크립트 |
 | `.claude/skills/sql-generator/scripts/insert_supabase.py` | Supabase REST API 직접 삽입 스크립트 |
 | `.claude/skills/question-redesigner/references/domain_tags/{exam_id}.md` | 도메인 태그 (시험별) |
@@ -267,4 +455,4 @@ Supabase 삽입 완료: {inserted}개 성공 | {failed}개 실패
 
 - 클라우드 서비스명은 원문 그대로 보존 (AWS/GCP/Azure 서비스명 번역·축약 금지)
 - 출력 문제는 반드시 단일 정답 4지선다 형식
-- LLM 모델: Parser & SQL → Claude Sonnet 4.6 / Redesigner → Claude Haiku 4.5
+- LLM 모델: Parser & SQL → Claude Sonnet 4.6 / Redesigner → Claude Haiku 4.5 / Importer → Claude Sonnet 4.6
