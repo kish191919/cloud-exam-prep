@@ -215,37 +215,8 @@ const ExamSession = () => {
     return () => document.removeEventListener('keydown', handleCopyAttempt);
   }, []);
 
-  // 스크린샷 감지: visibilitychange + PrintScreen 키
+  // 스크린샷 감지: PrintScreen 키
   useEffect(() => {
-    let lastHidden = 0;
-    let suppressNextHide = false;  // 외부 링크 클릭 후 다음 hide 이벤트 무시 플래그
-
-    const handleLinkClick = (e: MouseEvent) => {
-      const target = (e.target as HTMLElement).closest('a');
-      if (target && target.href && target.target === '_blank') {
-        suppressNextHide = true;
-      }
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        if (suppressNextHide) {
-          suppressNextHide = false;
-          return;  // 외부 링크로 인한 hide 이벤트 무시
-        }
-        lastHidden = Date.now();
-      } else if (lastHidden > 0) {
-        const elapsed = Date.now() - lastHidden;
-        if (elapsed > 100 && elapsed < 3000) {
-          toast({
-            description: tExam('questionDisplay.screenshotWarning'),
-            variant: 'destructive',
-          });
-        }
-        lastHidden = 0;
-      }
-    };
-
     const handlePrintScreen = (e: KeyboardEvent) => {
       if (e.key === 'PrintScreen') {
         toast({
@@ -255,14 +226,8 @@ const ExamSession = () => {
       }
     };
 
-    document.addEventListener('click', handleLinkClick, true);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
     document.addEventListener('keydown', handlePrintScreen);
-    return () => {
-      document.removeEventListener('click', handleLinkClick, true);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      document.removeEventListener('keydown', handlePrintScreen);
-    };
+    return () => document.removeEventListener('keydown', handlePrintScreen);
   }, [toast, tExam]);
 
   if (loading) {
