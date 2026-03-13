@@ -218,21 +218,25 @@ const ExamSession = () => {
   // 스크린샷 감지: visibilitychange + PrintScreen 키
   useEffect(() => {
     let lastHidden = 0;
-    let suppressUntil = 0;  // 외부 링크 클릭 후 억제 타임스탬프
+    let suppressNextHide = false;  // 외부 링크 클릭 후 다음 hide 이벤트 무시 플래그
 
     const handleLinkClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement).closest('a');
       if (target && target.href && target.target === '_blank') {
-        suppressUntil = Date.now() + 300;
+        suppressNextHide = true;
       }
     };
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
+        if (suppressNextHide) {
+          suppressNextHide = false;
+          return;  // 외부 링크로 인한 hide 이벤트 무시
+        }
         lastHidden = Date.now();
       } else if (lastHidden > 0) {
         const elapsed = Date.now() - lastHidden;
-        if (elapsed > 100 && elapsed < 3000 && Date.now() > suppressUntil) {
+        if (elapsed > 100 && elapsed < 3000) {
           toast({
             description: tExam('questionDisplay.screenshotWarning'),
             variant: 'destructive',
