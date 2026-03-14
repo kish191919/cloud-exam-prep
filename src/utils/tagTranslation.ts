@@ -20,14 +20,30 @@ const TAG_EN: Record<string, string> = {
   'AI 투명성·설명 가능성·거버넌스': 'AI Transparency, Explainability, and Governance',
   // AWS CLF-C02 & AZURE AZ-900 (shared)
   '클라우드 개념': 'Cloud Concepts',
-  // AWS CLF-C02
+  // AWS CLF-C02 (구버전 4태그 — backward compatibility)
   '보안 및 규정 준수': 'Security and Compliance',
   '클라우드 기술 및 서비스': 'Cloud Technology and Services',
   '청구, 가격 책정 및 지원': 'Billing, Pricing, and Support',
+  // AWS CLF-C02 (신버전 15태그)
+  '클라우드 이점과 가치 제안': 'Cloud Benefits and Value Proposition',
+  'Well-Architected 설계 원칙': 'Well-Architected Design Principles',
+  '마이그레이션과 클라우드 도입': 'Migration and Cloud Adoption',
+  '공동 책임 모델': 'Shared Responsibility Model',
+  '보안 거버넌스와 규정 준수': 'Security Governance and Compliance',
+  '접근 관리와 자격 증명': 'Access Management and Credentials',
+  '보안 서비스와 위협 방어': 'Security Services and Threat Defense',
+  '배포 방법과 글로벌 인프라': 'Deployment Methods and Global Infrastructure',
+  '컴퓨팅 서비스': 'Compute Services',
+  '데이터베이스 서비스': 'Database Services',
+  '네트워킹 서비스': 'Networking Services',
+  '스토리지 서비스': 'Storage Services',
+  '애플리케이션 통합과 기타 서비스': 'Application Integration and Other Services',
+  '요금 모델과 클라우드 경제성': 'Pricing Models and Cloud Economics',
+  'AWS 지원과 리소스': 'AWS Support and Resources',
   // AZURE AZ-900
   'AZURE 핵심 아키텍처': 'AZURE Core Architecture',
   '컴퓨팅 및 네트워킹': 'Compute and Networking',
-  '스토리지 서비스': 'Storage Services',
+  // '스토리지 서비스' — CLF-C02와 동일, 위에서 이미 정의됨
   'ID, 접근 및 보안': 'Identity, Access, and Security',
   '비용 관리': 'Cost Management',
   '거버넌스 및 규정 준수': 'Governance and Compliance',
@@ -67,14 +83,30 @@ const TAG_ES: Record<string, string> = {
   'AI 투명성·설명 가능성·거버넌스': 'Transparencia, Explicabilidad y Gobernanza de IA',
   // AWS CLF-C02 & AZURE AZ-900 (shared)
   '클라우드 개념': 'Conceptos de la Nube',
-  // AWS CLF-C02
+  // AWS CLF-C02 (구버전 4태그 — backward compatibility)
   '보안 및 규정 준수': 'Seguridad y Cumplimiento',
   '클라우드 기술 및 서비스': 'Tecnología y Servicios en la Nube',
   '청구, 가격 책정 및 지원': 'Facturación, Precios y Soporte',
+  // AWS CLF-C02 (신버전 15태그)
+  '클라우드 이점과 가치 제안': 'Beneficios de la Nube y Propuesta de Valor',
+  'Well-Architected 설계 원칙': 'Principios de Diseño Well-Architected',
+  '마이그레이션과 클라우드 도입': 'Migración y Adopción de la Nube',
+  '공동 책임 모델': 'Modelo de Responsabilidad Compartida',
+  '보안 거버넌스와 규정 준수': 'Gobernanza de Seguridad y Cumplimiento',
+  '접근 관리와 자격 증명': 'Gestión de Acceso y Credenciales',
+  '보안 서비스와 위협 방어': 'Servicios de Seguridad y Defensa contra Amenazas',
+  '배포 방법과 글로벌 인프라': 'Métodos de Despliegue e Infraestructura Global',
+  '컴퓨팅 서비스': 'Servicios de Cómputo',
+  '데이터베이스 서비스': 'Servicios de Base de Datos',
+  '네트워킹 서비스': 'Servicios de Red',
+  '스토리지 서비스': 'Servicios de Almacenamiento',
+  '애플리케이션 통합과 기타 서비스': 'Integración de Aplicaciones y Otros Servicios',
+  '요금 모델과 클라우드 경제성': 'Modelos de Precios y Economía de la Nube',
+  'AWS 지원과 리소스': 'Soporte y Recursos de AWS',
   // AZURE AZ-900
   'AZURE 핵심 아키텍처': 'Arquitectura Central de AZURE',
   '컴퓨팅 및 네트워킹': 'Cómputo y Redes',
-  '스토리지 서비스': 'Servicios de Almacenamiento',
+  // '스토리지 서비스' — CLF-C02와 동일, 위에서 이미 정의됨
   'ID, 접근 및 보안': 'Identidad, Acceso y Seguridad',
   '비용 관리': 'Gestión de Costos',
   '거버넌스 및 규정 준수': 'Gobernanza y Cumplimiento',
@@ -114,14 +146,30 @@ const TAG_PT: Record<string, string> = {
   'AI 투명성·설명 가능성·거버넌스': 'Transparência, Explicabilidade e Governança de IA',
   // AWS CLF-C02 & AZURE AZ-900 (shared)
   '클라우드 개념': 'Conceitos de Nuvem',
-  // AWS CLF-C02
+  // AWS CLF-C02 (구버전 4태그 — backward compatibility)
   '보안 및 규정 준수': 'Segurança e Conformidade',
   '클라우드 기술 및 서비스': 'Tecnologia e Serviços em Nuvem',
   '청구, 가격 책정 및 지원': 'Faturamento, Preços e Suporte',
+  // AWS CLF-C02 (신버전 15태그)
+  '클라우드 이점과 가치 제안': 'Benefícios da Nuvem e Proposta de Valor',
+  'Well-Architected 설계 원칙': 'Princípios de Design Well-Architected',
+  '마이그레이션과 클라우드 도입': 'Migração e Adoção da Nuvem',
+  '공동 책임 모델': 'Modelo de Responsabilidade Compartilhada',
+  '보안 거버넌스와 규정 준수': 'Governança de Segurança e Conformidade',
+  '접근 관리와 자격 증명': 'Gerenciamento de Acesso e Credenciais',
+  '보안 서비스와 위협 방어': 'Serviços de Segurança e Defesa contra Ameaças',
+  '배포 방법과 글로벌 인프라': 'Métodos de Implantação e Infraestrutura Global',
+  '컴퓨팅 서비스': 'Serviços de Computação',
+  '데이터베이스 서비스': 'Serviços de Banco de Dados',
+  '네트워킹 서비스': 'Serviços de Rede',
+  '스토리지 서비스': 'Serviços de Armazenamento',
+  '애플리케이션 통합과 기타 서비스': 'Integração de Aplicações e Outros Serviços',
+  '요금 모델과 클라우드 경제성': 'Modelos de Preços e Economia da Nuvem',
+  'AWS 지원과 리소스': 'Suporte e Recursos AWS',
   // AZURE AZ-900
   'AZURE 핵심 아키텍처': 'Arquitetura Central do AZURE',
   '컴퓨팅 및 네트워킹': 'Computação e Redes',
-  '스토리지 서비스': 'Serviços de Armazenamento',
+  // '스토리지 서비스' — CLF-C02와 동일, 위에서 이미 정의됨
   'ID, 접근 및 보안': 'Identidade, Acesso e Segurança',
   '비용 관리': 'Gerenciamento de Custos',
   '거버넌스 및 규정 준수': 'Governança e Conformidade',

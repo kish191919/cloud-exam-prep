@@ -1,0 +1,105 @@
+61. 한 보안 팀이 AWS에서 운영 중인 EC2 인스턴스와 해당 인스턴스에 배포된 애플리케이션의 보안 취약점을 정기적으로 자동 점검하고 싶습니다. 별도의 에이전트 설치 없이 취약점 평가를 자동화할 수 있는 AWS 서비스는 무엇입니까?
+
+A. Amazon GuardDuty
+B. AWS Security Hub
+C. Amazon Inspector
+D. AWS Config
+
+62. 한 기업이 기존 온프레미스 워크로드를 AWS로 마이그레이션하기 전에 현재 아키텍처가 AWS 모범 사례를 얼마나 잘 따르고 있는지 평가하고 싶습니다. 아키텍처를 검토하고 개선 권고사항을 제공하는 데 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Trusted Advisor
+B. AWS Config
+C. AWS CloudTrail
+D. AWS Well-Architected Tool
+
+63. 한 전자상거래 회사가 매일 자정에 전날의 주문 데이터를 집계하는 배치 작업을 자동으로 실행하려 합니다. 서버를 프로비저닝하지 않고 특정 시간에 코드를 실행할 수 있도록 스케줄 기반으로 트리거하는 AWS 서비스 조합은 무엇입니까?
+
+A. EC2 Auto Scaling, AWS Batch
+B. AWS Lambda, Amazon EventBridge
+C. AWS Glue, Amazon SQS
+D. Amazon ECS, AWS Step Functions
+
+64. 한 데이터 분석 팀이 수 테라바이트 규모의 로그 데이터를 Hadoop 기반 프레임워크로 처리하고 싶습니다. 클러스터 인프라를 직접 관리하지 않고 빅데이터 처리를 수행할 수 있는 AWS 관리형 서비스는 무엇입니까?
+
+A. Amazon Redshift
+B. AWS Glue
+C. Amazon Athena
+D. Amazon EMR
+
+65. 한 보안 담당자가 EC2 인스턴스에 접속해야 하지만, 보안 정책상 인바운드 SSH 포트(22번)를 열 수 없습니다. 포트를 개방하거나 SSH 키 없이도 EC2 인스턴스에 안전하게 접근할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Systems Manager Session Manager
+B. Amazon EC2 Instance Connect
+C. AWS VPN
+D. AWS Direct Connect
+
+66. 한 스타트업이 마이크로서비스 아키텍처로 애플리케이션을 컨테이너화하여 배포하려 합니다. EC2 인스턴스나 서버를 직접 관리하지 않고 컨테이너를 실행할 수 있는 AWS 서버리스 컨테이너 서비스는 무엇입니까?
+
+A. Amazon ECS on EC2
+B. Amazon EKS
+C. AWS Elastic Beanstalk
+D. AWS Fargate
+
+67. 한 동영상 스트리밍 서비스가 스포츠 중계 시간대에는 트래픽이 급증하고, 새벽 시간대에는 트래픽이 거의 없는 패턴을 보입니다. AWS 클라우드의 어떤 특성이 이러한 가변적인 트래픽 수요에 맞춰 컴퓨팅 리소스를 자동으로 늘리고 줄일 수 있게 해줍니까?
+
+A. 고가용성
+B. 탄력성
+C. 내구성
+D. 글로벌 인프라
+
+68. 한 기업이 AWS 환경에서 특정 서드파티 보안 소프트웨어를 도입하려 합니다. 별도의 벤더 계약 없이 AWS 환경 내에서 검증된 서드파티 소프트웨어를 검색하고 구독하여 바로 배포할 수 있는 서비스는 무엇입니까?
+
+A. AWS Partner Network
+B. AWS Service Catalog
+C. AWS Marketplace
+D. AWS Config
+
+69. 한 데이터 엔지니어링 팀이 Amazon S3에 저장된 수백 GB의 CSV 로그 파일을 별도의 데이터베이스로 옮기지 않고 SQL 쿼리로 직접 분석하려 합니다. 서버 프로비저닝 없이 S3 데이터에 SQL 분석을 수행할 수 있는 AWS 서비스는 무엇입니까?
+
+A. Amazon Redshift
+B. Amazon Athena
+C. AWS Glue
+D. Amazon RDS
+
+70. 한 스타트업의 재무팀이 매월 AWS 사용 비용이 특정 임계값을 초과하기 전에 이메일 알림을 받고 싶습니다. 예산을 설정하고 비용이 한도에 근접하거나 초과할 경우 자동으로 알림을 보낼 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Cost Explorer
+B. AWS Pricing Calculator
+C. AWS Trusted Advisor
+D. AWS Budgets
+
+71. 한 글로벌 SaaS 기업이 미국, 유럽, 아시아 전역의 사용자에게 최적의 응답 속도를 제공하고 싶습니다. 사용자의 위치를 기반으로 지연시간이 가장 낮은 AWS 리전으로 트래픽을 자동으로 라우팅하는 Amazon Route 53의 라우팅 정책은 무엇입니까?
+
+A. 가중치 기반 라우팅
+B. 지연 시간 기반 라우팅
+C. 지리적 위치 라우팅
+D. 장애 조치 라우팅
+
+72. 한 핀테크 스타트업이 갑작스러운 트래픽 급증에 자동으로 대응하고, 코드 실행 시간에 대해서만 비용을 지불하며, 서버 관리 부담 없이 백엔드 API를 운영하려 합니다. 이러한 요구사항을 모두 충족하는 AWS 컴퓨팅 서비스는 무엇입니까?
+
+A. AWS Lambda
+B. Amazon EC2 Auto Scaling
+C. AWS Elastic Beanstalk
+D. Amazon ECS
+
+73. 한 온라인 쇼핑몰이 블랙 프라이데이 기간에 트래픽이 평소의 10배로 급증했다가 이벤트가 끝나면 정상 수준으로 돌아옵니다. AWS에서 트래픽 변화에 따라 EC2 인스턴스 수를 자동으로 조절하여 탄력성을 구현하는 데 사용되는 서비스는 무엇입니까?
+
+A. Elastic Load Balancing
+B. Amazon CloudWatch
+C. AWS Auto Scaling
+D. Amazon EC2 Reserved Instances
+
+74. 한 중견 기업이 AWS 운영 중 발생하는 장애에 대해 24시간 365일 전화로 기술 지원을 받고 싶습니다. 이 기능을 제공하는 AWS Support 플랜 중 비용이 가장 낮은 플랜은 무엇입니까?
+
+A. Developer
+B. Business
+C. Enterprise On-Ramp
+D. Enterprise
+
+75. 한 DevOps 팀이 CI/CD 파이프라인을 통해 빌드된 Docker 컨테이너 이미지를 안전하게 저장하고, Amazon ECS 클러스터에 배포할 때 해당 이미지를 참조하려 합니다. Docker 이미지를 저장하고 관리하는 데 적합한 AWS 관리형 컨테이너 레지스트리 서비스는 무엇입니까?
+
+A. Amazon S3
+B. AWS CodeArtifact
+C. Amazon ECR
+D. AWS CodeCommit
+

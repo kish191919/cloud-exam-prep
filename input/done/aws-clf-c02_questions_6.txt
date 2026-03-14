@@ -1,0 +1,105 @@
+76. 한 미디어 회사는 사용자가 업로드한 썸네일 이미지를 저장해야 합니다. 이 데이터는 자주 접근하지 않지만 필요할 때 즉시 불러올 수 있어야 하며, 손실되더라도 재생성이 가능합니다. 비용을 최소화하면서 이 요구사항을 충족하는 Amazon S3 스토리지 클래스는 무엇입니까?
+
+A. S3 Standard
+B. S3 Glacier Flexible Retrieval
+C. S3 One Zone-IA
+D. S3 Intelligent-Tiering
+
+77. 한 스타트업 회사의 개발팀은 운영체제 수준에서 직접 접근이 필요한 커스텀 애플리케이션을 배포하려 합니다. 또한 사용한 만큼만 초 단위로 비용을 지불하고, 트래픽 변화에 따라 유연하게 컴퓨팅 리소스를 조정해야 합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. AWS Lambda
+B. Amazon ECS
+C. AWS Elastic Beanstalk
+D. Amazon EC2
+
+78. 한 기업의 HR 팀은 별도의 설치나 인프라 관리 없이 웹 브라우저를 통해 급여 관리 소프트웨어를 사용하고 싶어합니다. 공급업체가 애플리케이션 전체를 관리하며 사용자는 기능만 사용하는 이 클라우드 서비스 모델은 무엇입니까?
+
+A. SaaS
+B. PaaS
+C. IaaS
+D. FaaS
+
+79. 한 기업이 Amazon RDS를 사용하여 데이터베이스를 운영하고 있습니다. AWS 공동 책임 모델에 따르면, 데이터베이스에 저장된 고객 데이터 암호화와 데이터베이스에 접근하는 사용자 권한 관리는 누구의 책임입니까?
+
+A. AWS 단독 책임
+B. AWS와 고객 공동 책임
+C. 고객 단독 책임
+D. 서드파티 감사자 책임
+
+80. 한 금융 기업은 온프레미스에서 ActiveMQ 기반의 메시지 브로커를 운영하고 있으며, 이를 AWS 클라우드로 마이그레이션하려 합니다. 기존 애플리케이션 코드 변경을 최소화하면서 메시지 브로커와의 호환성을 유지할 수 있는 AWS 관리형 서비스는 무엇입니까?
+
+A. Amazon SQS
+B. Amazon MQ
+C. Amazon SNS
+D. Amazon Kinesis
+
+81. 한 기업의 운영팀은 자사 AWS 계정에서 사용 중인 특정 서비스에 장애가 발생했을 때, 해당 장애가 자신들의 리소스에 어떤 영향을 미치는지 즉시 확인하고 싶어합니다. 이 요구사항에 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS CloudTrail
+B. Amazon CloudWatch
+C. AWS Service Health Dashboard
+D. AWS Personal Health Dashboard
+
+82. 한 기업이 온프레미스의 백업 데이터를 AWS 클라우드로 이전하려 합니다. 물리적 테이프 백업 시스템을 클라우드 기반으로 대체하거나, 파일 또는 볼륨 수준의 스토리지를 AWS와 연동하려 할 때 사용할 수 있는 AWS Storage Gateway의 유형에는 어떤 것들이 있습니까?
+
+A. File Gateway, Volume Gateway, Tape Gateway
+B. Block Gateway, Object Gateway, Archive Gateway
+C. S3 Gateway, EBS Gateway, Glacier Gateway
+D. NFS Gateway, iSCSI Gateway, VTL Gateway
+
+83. 한 전자상거래 기업은 서버의 CPU 사용률이 일정 임계값을 초과할 경우 운영팀에게 즉시 이메일로 알림을 보내는 시스템을 구축하려 합니다. 이 요구사항을 충족하기 위해 함께 사용해야 하는 AWS 서비스 조합은 무엇입니까?
+
+A. AWS CloudTrail, Amazon SES
+B. Amazon CloudWatch, Amazon SNS
+C. AWS Config, Amazon SQS
+D. Amazon EventBridge, Amazon SES
+
+84. 한 기업의 클라우드 아키텍트는 새로운 시스템을 설계하면서 비용 최적화, 보안, 안정성뿐만 아니라 에너지 소비와 탄소 발자국을 줄이는 것도 고려해야 한다는 요구를 받았습니다. 이 지속 가능성 관련 설계 원칙이 포함된 AWS Well-Architected Framework의 여섯 번째 기둥은 무엇입니까?
+
+A. 비용 최적화
+B. 운영 우수성
+C. 지속 가능성
+D. 성능 효율성
+
+85. 한 개발팀은 인프라 관리에 신경 쓰지 않고 애플리케이션 코드만 업로드하면 자동으로 배포, 로드 밸런싱, 확장이 이루어지는 환경을 원합니다. 단, 필요 시 운영체제에도 접근할 수 있어야 합니다. 이 요구사항에 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Elastic Beanstalk
+B. AWS Lambda
+C. Amazon ECS
+D. Amazon EC2 Auto Scaling
+
+86. 한 온라인 쇼핑몰은 평상시에는 적은 수의 서버로 운영되다가 블랙프라이데이와 같은 이벤트 기간에는 폭발적으로 증가하는 트래픽을 처리하기 위해 자동으로 리소스를 늘리고, 이벤트가 끝나면 다시 줄이고 싶어합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. AWS Elastic Load Balancing
+B. Amazon CloudFront
+C. AWS Auto Scaling
+D. Amazon RDS Multi-AZ
+
+87. 한 스타트업이 신규 프로젝트를 위해 컴퓨팅 리소스가 필요하지만, 사용량이 얼마나 될지 예측하기 어렵고 장기 계약을 맺기 부담스럽습니다. 필요할 때 즉시 사용하고 중단 보장 없이 유연하게 운영하려 할 때 가장 적합한 Amazon EC2 요금 모델은 무엇입니까?
+
+A. Reserved Instance
+B. Savings Plans
+C. Dedicated Host
+D. On-Demand Instance
+
+88. 한 개발자가 AWS CLI를 사용하여 S3 버킷에 파일을 업로드하는 자동화 스크립트를 작성하려 합니다. 이 스크립트가 AWS 리소스에 프로그래밍 방식으로 접근하려면 IAM 사용자에 연결된 어떤 자격 증명이 필요합니까?
+
+A. IAM 역할, 신뢰 정책
+B. 루트 계정 이메일, 비밀번호
+C. 액세스 키 ID, 시크릿 액세스 키
+D. MFA 토큰, 콘솔 비밀번호
+
+89. 한 기업의 보안팀은 AWS 환경에서 각 직원이 자신의 업무에 필요한 리소스에만 접근할 수 있도록 사용자, 역할, 권한 정책을 중앙에서 관리하는 시스템을 구축하려 합니다. 이 요구사항에 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon Cognito
+B. AWS IAM
+C. AWS Organizations
+D. AWS Shield
+
+90. 한 금융 서비스 기업은 고객 데이터를 처리하는 웹 애플리케이션을 운영하고 있으며, SQL 인젝션 및 크로스 사이트 스크립팅(XSS)과 같은 웹 기반 공격으로부터 애플리케이션을 보호하고 싶어합니다. 이 요구사항에 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS WAF
+B. AWS Shield Advanced
+C. Amazon GuardDuty
+D. AWS Firewall Manager
+
