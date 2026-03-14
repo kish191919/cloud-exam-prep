@@ -1,0 +1,105 @@
+391. 의료 AI 스타트업이 환자 상담을 지원하기 위해 생성형 AI 챗봇을 도입하려 합니다. 그런데 내부 검토 중, AI가 실제로 존재하지 않는 의약품 이름이나 치료 방법을 사실인 것처럼 생성하는 현상이 발견되었습니다. 이처럼 생성형 AI가 사실에 근거하지 않은 정보를 마치 실제인 것처럼 출력하는 현상을 무엇이라고 합니까?
+
+A. 과적합(Overfitting)
+B. 할루시네이션(Hallucination)
+C. 데이터 드리프트(Data Drift)
+D. 편향(Bias)
+
+392. 법률 AI 솔루션 회사가 계약서 조항 분류 모델을 개발하고 있습니다. 초기 테스트에서 아무런 예시 없이 질문만 제공하는 방식은 분류 정확도가 낮았습니다. 팀은 정확도를 높이기 위해 프롬프트 내에 올바른 분류 예시를 여러 개 포함하여 모델에게 제공하는 방식으로 전환하려 합니다. 이처럼 프롬프트에 다수의 입출력 예시를 포함하여 모델의 응답 정확도를 높이는 프롬프트 엔지니어링 기법은 무엇입니까?
+
+A. 파인튜닝(Fine-tuning)
+B. 제로샷 프롬프팅(Zero-shot Prompting)
+C. 체인오브쏘트(Chain-of-Thought)
+D. 퓨샷 프롬프팅(Few-shot Prompting)
+
+393. 대형 보험사가 고객으로부터 수신하는 수천 건의 청구서와 스캔된 양식에서 청구 금액, 날짜, 서명 여부 등의 구조화된 데이터를 자동으로 추출하고자 합니다. 기존의 수작업 처리 방식은 오류가 많고 비효율적이었습니다. 이 요구사항을 충족하기 위해 사용할 수 있는 AWS의 OCR 기반 문서 분석 서비스는 무엇입니까?
+
+A. Amazon Textract
+B. Amazon Comprehend
+C. Amazon Rekognition
+D. AWS Glue
+
+394. 금융 서비스 기업이 Amazon SageMaker를 사용하여 대출 승인 예측 모델을 프로덕션 환경에 배포했습니다. 시간이 지남에 따라 실제 입력 데이터의 분포가 훈련 당시와 달라지면서 모델 성능이 저하되는 현상이 발생했습니다. 이러한 데이터 분포 변화를 자동으로 감지하고 경고를 발생시키기 위해 사용할 수 있는 AWS 서비스는 무엇입니까?
+
+A. Amazon SageMaker Experiments
+B. Amazon SageMaker Debugger
+C. AWS CloudWatch Anomaly Detection
+D. Amazon SageMaker Model Monitor
+
+395. 게임 개발사가 Amazon Bedrock의 이미지 생성 모델을 활용하여 캐릭터 아트를 제작하고 있습니다. 개발팀은 생성된 이미지가 프롬프트에 얼마나 충실하게 따를지의 강도를 조절하고 싶어합니다. 값을 높일수록 프롬프트에 더 엄격하게 따르고, 낮출수록 더 창의적인 결과가 나오는 이미지 생성 품질 제어 파라미터는 무엇입니까?
+
+A. Temperature
+B. Top-P
+C. CFG Scale(Guidance Scale)
+D. Seed
+
+396. 헬스케어 기업이 Amazon Bedrock을 활용하여 환자 데이터를 처리하는 애플리케이션을 구축하고 있습니다. 보안 정책상 모든 데이터는 퍼블릭 인터넷을 경유하지 않고 AWS 네트워크 내부에서만 전송되어야 합니다. VPC 내의 애플리케이션이 인터넷을 거치지 않고 Amazon Bedrock에 안전하게 접근할 수 있도록 해주는 AWS 네트워킹 기능은 무엇입니까?
+
+A. AWS Direct Connect
+B. VPC 엔드포인트(PrivateLink)
+C. AWS Transit Gateway
+D. NAT Gateway
+
+397. 소셜 미디어 플랫폼이 Amazon Bedrock 기반의 콘텐츠 생성 기능을 출시하려 합니다. 플랫폼 운영 정책에 따라 혐오 발언, 폭력적 내용, 개인 정보 침해 등의 유해한 입력과 출력을 자동으로 차단해야 합니다. Amazon Bedrock에서 이러한 입출력 콘텐츠 필터링 및 안전 제어 기능을 제공하는 것은 무엇입니까?
+
+A. Amazon Bedrock Fine-tuning
+B. AWS WAF 콘텐츠 정책
+C. Amazon Bedrock Guardrails
+D. IAM 정책 기반 접근 제어
+
+398. 스타트업 AI 팀이 여러 기초 모델(Foundation Model)의 응답 품질을 비교 평가하고자 합니다. 별도의 코드 작성이나 API 연동 없이 웹 콘솔에서 직접 프롬프트를 입력하고 다양한 모델의 응답을 즉시 테스트할 수 있는 Amazon Bedrock의 기능은 무엇입니까?
+
+A. Amazon Bedrock Studio
+B. Amazon Bedrock Playgrounds
+C. SageMaker JumpStart
+D. Amazon Bedrock Model Evaluation
+
+399. 자동차 제조사가 차량 정비 및 기술 매뉴얼에 특화된 AI 어시스턴트를 개발하려고 합니다. 범용 AI 모델은 일반적인 질문에는 잘 응답하지만, 특정 차량 모델의 오류 코드나 부품 교체 절차에 대해서는 정확도가 낮습니다. 모델의 도메인 특화 성능을 향상시키기 위해 가장 중요한 요소는 무엇입니까?
+
+A. 모델 파라미터 수 증가
+B. 추론 시 Temperature 낮춤
+C. 도메인 특화 데이터로 파인튜닝
+D. 프롬프트 길이 최대화
+
+400. 채용 플랫폼이 Amazon Bedrock 기반의 이력서 평가 AI를 개발하고 있습니다. 특정 성별, 연령, 출신 지역에 따른 편향된 평가가 발생하지 않도록 출력 내용을 제어하고, 책임 있는 AI 원칙을 준수해야 합니다. 모델 출력에서 편향된 내용이나 특정 주제에 대한 응답을 제한하기 위해 Amazon Bedrock에서 사용할 수 있는 기능은 무엇입니까?
+
+A. Amazon Bedrock Knowledge Base
+B. Amazon Bedrock Agents
+C. IAM 역할 기반 권한 제어
+D. Amazon Bedrock Guardrails
+
+401. 중소 유통기업의 마케팅 팀이 고객 이탈 예측 모델을 직접 구축하고 싶어합니다. 팀 내에 머신러닝 전문 개발자가 없으며, 코드 작성 없이 비즈니스 데이터를 업로드하고 시각적 인터페이스를 통해 예측 모델을 만들 수 있는 환경이 필요합니다. 이 요구사항에 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon SageMaker Studio
+B. Amazon QuickSight ML Insights
+C. Amazon SageMaker Canvas
+D. AWS Glue DataBrew
+
+402. 글로벌 금융 그룹이 AI 기반 대출 심사 시스템을 도입하면서, 직원들에게 AI 모델이 특정 인구 집단에 불리하게 작동하지 않는지, 그리고 모델이 내린 결정을 설명할 수 있는지에 대한 교육을 제공하려 합니다. 이 교육에서 핵심적으로 다루어야 할 책임 있는 AI의 두 가지 원칙은 무엇입니까?
+
+A. 확장성, 비용 효율성
+B. 공정성(Fairness), 설명가능성(Explainability)
+C. 정확도(Accuracy), 재현율(Recall)
+D. 투명성(Transparency), 가용성(Availability)
+
+403. 의료 진단 보조 AI를 운영하는 회사가 규제 기관으로부터 모델이 특정 진단 결과를 왜 도출했는지 설명할 수 있어야 한다는 요구를 받았습니다. 의료진이 AI의 예측 근거를 이해하고 신뢰할 수 있도록, 어떤 입력 특성이 예측에 얼마나 영향을 미쳤는지를 설명할 수 있는 AI 접근 방식은 무엇입니까?
+
+A. 강화학습(Reinforcement Learning)
+B. 앙상블 학습(Ensemble Learning)
+C. 설명가능한 AI(XAI)
+D. 전이학습(Transfer Learning)
+
+404. 전자상거래 기업이 수백만 명의 고객 구매 이력 데이터를 보유하고 있습니다. 고객에게 별도의 레이블 없이 유사한 구매 패턴을 가진 그룹으로 자동 분류하여 타겟 마케팅에 활용하려고 합니다. 이처럼 레이블이 없는 데이터에서 유사한 특성을 가진 그룹을 자동으로 묶는 대표적인 비지도 학습 알고리즘은 무엇입니까?
+
+A. 선형 회귀(Linear Regression)
+B. 랜덤 포레스트(Random Forest)
+C. 로지스틱 회귀(Logistic Regression)
+D. K-평균 군집화(K-Means Clustering)
+
+405. 패션 브랜드가 Amazon Bedrock의 이미지 생성 모델을 활용하여 제품 광고 이미지를 제작하고 있습니다. 생성된 이미지에 배경에 불필요한 텍스트, 워터마크, 흐릿한 얼굴 등이 포함되는 문제가 반복적으로 발생합니다. 이미지 생성 시 원하지 않는 요소가 결과물에 나타나지 않도록 명시적으로 제외할 수 있는 프롬프트 기법은 무엇입니까?
+
+A. 포지티브 프롬프트(Positive Prompt)
+B. 네거티브 프롬프트(Negative Prompt)
+C. 시스템 프롬프트(System Prompt)
+D. 체인오브쏘트 프롬프트(Chain-of-Thought)
+

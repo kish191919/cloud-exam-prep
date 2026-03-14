@@ -1,0 +1,105 @@
+406. 한 대형 물류 기업이 배송 이미지를 분류하는 ML 모델을 개발하려 합니다. 이 기업은 내부 인력이 부족하여 전문 작업자를 통한 고품질 데이터 라벨링이 필요하며, AWS가 라벨링 워크플로우 전체를 관리해 주기를 원합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. Amazon Mechanical Turk
+B. SageMaker Ground Truth Plus
+C. SageMaker Data Wrangler
+D. AWS Glue DataBrew
+
+407. 한 전자상거래 기업이 수백만 개의 상품 설명을 벡터 임베딩으로 변환하여 저장한 후, 고객이 검색어를 입력하면 의미적으로 유사한 상품을 빠르게 찾아주는 시스템을 구축하려 합니다. 대규모 임베딩 데이터에 대한 k-NN 기반 유사도 검색을 지원하는 AWS 서비스는 무엇입니까?
+
+A. Amazon RDS
+B. Amazon DynamoDB
+C. Amazon OpenSearch Service
+D. AWS Glue
+
+408. 한 금융 기업이 내부 규정 문서와 정책 매뉴얼을 기반으로 직원들의 질문에 정확하게 답변하는 AI 챗봇을 구축하려 합니다. 이 챗봇은 최신 내부 문서를 검색하여 LLM이 응답을 생성할 수 있어야 합니다. 이 RAG 아키텍처를 가장 쉽게 구현할 수 있는 AWS 서비스는 무엇입니까?
+
+A. Amazon Kendra
+B. Amazon Lex
+C. Amazon Bedrock Knowledge Bases
+D. SageMaker JumpStart
+
+409. 한 보험 회사가 고객 이탈 예측 모델을 운영 중입니다. 최근 고객 행동 패턴이 변화하면서 모델의 예측 정확도가 점점 낮아지고 있습니다. 이처럼 시간이 지남에 따라 입력 데이터의 통계적 분포가 변화하여 모델 성능이 저하되는 현상을 가리키는 용어는 무엇입니까?
+
+A. 과적합(Overfitting)
+B. 모델 드리프트(Model Drift)
+C. 데이터 불균형(Class Imbalance)
+D. 편향-분산 트레이드오프
+
+410. 한 은행이 대출 심사 자동화 모델을 개발했습니다. 규제 기관으로부터 모델이 특정 인구 집단에 불공정한 영향을 미치는지 분석하고, 각 입력 변수가 예측 결과에 얼마나 기여하는지 설명할 수 있어야 한다는 요구를 받았습니다. 이 요구사항을 충족하기 위해 사용할 수 있는 AWS 서비스는 무엇입니까?
+
+A. Amazon SageMaker Clarify
+B. AWS Trusted Advisor
+C. Amazon SageMaker Debugger
+D. Amazon Rekognition
+
+411. 한 리테일 기업이 수요 예측 모델을 프로덕션 환경에서 운영하고 있습니다. 이 기업은 모델의 예측 품질이 기준치 이하로 떨어지면 자동으로 새로운 데이터로 재훈련 파이프라인이 실행되도록 구성하려 합니다. 이 MLOps 자동화를 구현하기 위해 함께 사용해야 하는 AWS 서비스 조합은 무엇입니까?
+
+A. SageMaker Model Monitor, SageMaker Pipelines
+B. AWS Glue, Amazon Athena
+C. SageMaker Clarify, AWS Step Functions
+D. Amazon EventBridge, AWS Lambda
+
+412. 한 마케팅 회사가 수백만 명의 고객 구매 이력 데이터를 보유하고 있습니다. 이 회사는 별도의 레이블 없이 구매 패턴이 유사한 고객들을 자동으로 그룹화하여 세분화된 타겟 마케팅 전략을 수립하려 합니다. 이 목적에 가장 적합한 머신러닝 학습 방식은 무엇입니까?
+
+A. 지도학습(Supervised Learning)
+B. 강화학습(Reinforcement Learning)
+C. 준지도학습(Semi-supervised Learning)
+D. 비지도학습(Unsupervised Learning)
+
+413. 한 미디어 기업이 LLM을 활용하여 긴 뉴스 기사를 자동으로 요약하는 시스템을 개발했습니다. 이 기업은 모델이 생성한 요약문이 사람이 작성한 참조 요약문과 얼마나 유사한지를 정량적으로 측정하여 모델 성능을 평가하려 합니다. 이때 가장 일반적으로 사용되는 평가 메트릭은 무엇입니까?
+
+A. BLEU Score
+B. F1 Score
+C. ROUGE Score
+D. Perplexity
+
+414. 한 헬스케어 기업이 의료 영상 분석 AI 모델을 개발하고 있습니다. 모델이 생성한 진단 결과의 정확성과 품질을 평가하기 위해 의료 전문가들이 직접 모델 출력을 검토하고 평가하는 Human-in-the-loop 방식의 품질 평가 체계를 구축하려 합니다. 이 요구사항에 적합한 AWS 서비스는 무엇입니까?
+
+A. SageMaker Ground Truth Plus
+B. Amazon Augmented AI(A2I)
+C. Amazon Mechanical Turk
+D. SageMaker Model Monitor
+
+415. 한 보험사가 의료비 청구 자동 심사 AI 시스템을 도입하려 합니다. 규제 기관은 이 시스템이 연령, 성별 등 특정 속성에 따른 차별 없이 공정하게 작동하는지 증명할 수 있어야 하며, 각 심사 결과에 대한 근거도 제시할 수 있어야 한다고 요구하고 있습니다. 이 규제 요건을 충족하기 위해 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon SageMaker Clarify
+B. AWS Shield
+C. Amazon Macie
+D. SageMaker Debugger
+
+416. 한 소비재 기업이 자사 제품에 대한 소셜 미디어 게시글 수백만 건을 분석하여 소비자들의 전반적인 감정이 긍정적인지, 부정적인지, 중립적인지를 자동으로 분류하는 시스템을 구축하려 합니다. 이 기능을 구현하기 위해 사용되는 NLP 기술은 무엇입니까?
+
+A. 개체명 인식(NER)
+B. 감성 분석(Sentiment Analysis)
+C. 텍스트 요약(Text Summarization)
+D. 기계 번역(Machine Translation)
+
+417. 한 금융 기업이 Amazon Bedrock을 활용하여 내부 AI 애플리케이션을 구축했습니다. 보안 정책상 모든 API 트래픽이 인터넷을 경유하지 않고 AWS 내부 네트워크를 통해서만 전송되어야 합니다. 이 보안 요구사항을 충족하기 위해 사용해야 하는 AWS 네트워크 기능은 무엇입니까?
+
+A. AWS WAF
+B. Amazon CloudFront
+C. VPC 엔드포인트(PrivateLink)
+D. AWS Direct Connect
+
+418. 한 호텔 체인이 투숙객이 남긴 수천 건의 온라인 리뷰를 분석하여 고객 만족도를 자동으로 측정하고, 긍정·부정·중립으로 분류하는 시스템을 구축하려 합니다. 별도의 ML 모델 개발 없이 이 기능을 바로 사용할 수 있는 AWS 서비스는 무엇입니까?
+
+A. Amazon SageMaker AutoML
+B. Amazon Rekognition
+C. Amazon Comprehend
+D. Amazon Textract
+
+419. 한 콘텐츠 제작 기업이 텍스트 입력만으로 이미지, 영상, 음악을 동시에 생성할 수 있는 AI 시스템을 구축하려 합니다. 이처럼 하나의 모델이 텍스트, 이미지, 오디오 등 여러 유형의 데이터를 처리하거나 생성할 수 있는 Foundation Model의 특성을 나타내는 용어는 무엇입니까?
+
+A. 멀티태스킹(Multitasking)
+B. 멀티모달(Multimodal)
+C. 파인튜닝(Fine-tuning)
+D. 전이학습(Transfer Learning)
+
+420. 한 의료 진단 AI 스타트업이 희귀 질환 탐지 모델을 개발하고 있습니다. 이 모델은 희귀 질환 양성 사례를 놓치는 것이 매우 위험하며, 동시에 불필요한 오진을 최소화하는 것도 중요합니다. Precision과 Recall을 균형 있게 반영하여 모델 성능을 단일 수치로 평가할 수 있는 지표는 무엇입니까?
+
+A. ROC-AUC
+B. F1 Score
+C. Accuracy
+D. RMSE
+
