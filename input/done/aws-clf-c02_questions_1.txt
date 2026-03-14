@@ -1,0 +1,105 @@
+1. 한 금융 서비스 회사가 AWS 계정에서 수행된 모든 API 호출과 사용자 활동을 기록하고 감사(Audit)해야 하는 규정 준수 요건이 있습니다. 이 요건을 충족하기 위해 AWS 계정 활동을 자동으로 기록하고 로그를 안전하게 저장할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Config
+B. Amazon CloudWatch
+C. AWS CloudTrail
+D. AWS Security Hub
+
+2. 한 스타트업의 개발팀이 Python으로 작성된 애플리케이션에서 Amazon S3, DynamoDB 등 다양한 AWS 서비스를 프로그래밍 방식으로 호출해야 합니다. 개발자가 코드 내에서 직접 AWS 서비스를 통합하고 호출할 수 있도록 지원하는 AWS 도구는 무엇입니까?
+
+A. AWS CLI
+B. AWS SDK
+C. AWS CloudFormation
+D. AWS Management Console
+
+3. 한 미디어 회사가 여러 EC2 인스턴스에서 동시에 접근 가능한 공유 파일 스토리지 시스템이 필요합니다. 이 스토리지는 여러 가용 영역(AZ)에 걸쳐 데이터를 저장해야 합니다. 이 요구사항을 충족하는 AWS 스토리지 서비스는 무엇입니까?
+
+A. Amazon S3
+B. Amazon EBS
+C. AWS Storage Gateway
+D. Amazon EFS
+
+4. 한 기업이 기존 온프레미스 환경에서 사용하던 Windows Server 라이선스를 AWS 클라우드로 그대로 가져와 사용하고자 합니다. 이 라이선스는 물리적 서버 단위로 바인딩되어 있습니다. 이 요구사항을 충족하는 EC2 구매 옵션은 무엇입니까?
+
+A. 전용 호스트(Dedicated Host)
+B. 전용 인스턴스(Dedicated Instance)
+C. 예약 인스턴스(Reserved Instance)
+D. 스팟 인스턴스(Spot Instance)
+
+5. 글로벌 커머스 기업이 전 세계 여러 리전에 분산된 사용자들이 낮은 지연 시간으로 데이터를 읽고 쓸 수 있는 데이터베이스 솔루션이 필요합니다. 모든 리전에서 Active-Active 방식으로 동작해야 할 때 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon Aurora Global Database
+B. Amazon RDS Multi-AZ
+C. Amazon DynamoDB Global Tables
+D. Amazon ElastiCache
+
+6. 한 개발자가 Linux 기반 EC2 온디맨드 인스턴스를 시작한 후 45초 만에 종료하였습니다. 이 경우 AWS에서 청구되는 최소 과금 시간은 얼마입니까?
+
+A. 45초
+B. 30분
+C. 1분
+D. 1시간
+
+7. 한 전자상거래 회사가 주문 처리 시스템과 재고 관리 시스템을 분리하여 각 서비스가 독립적으로 운영될 수 있도록 마이크로서비스 아키텍처를 도입하려 합니다. 서비스 간 느슨한 결합(Loose Coupling)을 구현하기에 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon SQS
+B. Amazon SNS
+C. AWS Step Functions
+D. Amazon EventBridge
+
+8. 한 SaaS 기업이 MySQL 호환 관계형 데이터베이스가 필요하지만, 운영팀이 패치, 백업, 고가용성 설정 등 데이터베이스 관리 업무에 시간을 소모하고 싶지 않습니다. 이 요구사항에 적합한 완전 관리형 AWS 데이터베이스 서비스는 무엇입니까?
+
+A. Amazon DynamoDB
+B. Amazon RDS
+C. Amazon Redshift
+D. Amazon EC2에 MySQL 직접 설치
+
+9. 한 기업이 동일한 AWS 리전 내에서 EC2 인스턴스에서 Amazon S3 버킷으로 대용량 데이터를 정기적으로 전송하는 아키텍처를 설계하고 있습니다. 이 데이터 전송에 대한 AWS의 요금 정책은 무엇입니까?
+
+A. 전송 데이터 크기에 따라 과금
+B. 같은 리전 내 EC2-S3 전송 무료
+C. 가용 영역 간 이동 시 무료
+D. 월 1GB 초과분만 과금
+
+10. 한 제조 기업이 연말 성수기에 트래픽이 급증하고 비수기에는 급감하는 패턴을 가지고 있습니다. 온프레미스 인프라 대신 AWS 클라우드를 도입할 때 얻을 수 있는 가장 큰 이점은 무엇입니까?
+
+A. 고정 비용으로 예산 예측 용이
+B. 물리 서버 직접 관리 가능
+C. 수요에 따른 탄력적 확장, 축소
+D. 단일 리전 내 높은 가용성 보장
+
+11. 한 온라인 쇼핑몰이 급증하는 사용자 요청을 여러 EC2 인스턴스에 균등하게 분산하여 특정 서버에 과부하가 발생하지 않도록 하려 합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. Amazon Route 53
+B. AWS Auto Scaling
+C. Amazon CloudFront
+D. Elastic Load Balancing
+
+12. 한 금융 기관이 보안 정책상 퍼블릭 인터넷을 통하지 않고 온프레미스 데이터센터와 AWS 클라우드 간에 안정적이고 전용적인 네트워크 연결이 필요합니다. 이 요구사항에 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS VPN
+B. AWS Direct Connect
+C. Amazon VPC 피어링
+D. AWS Transit Gateway
+
+13. 한 기업이 향후 1년간 특정 EC2 인스턴스 유형을 지속적으로 사용할 계획입니다. 온디맨드 요금 대비 비용을 절감하기 위해 선택할 수 있는 AWS 구매 옵션은 무엇입니까?
+
+A. 스팟 인스턴스(Spot Instance)
+B. 온디맨드 인스턴스(On-Demand)
+C. 전용 호스트(Dedicated Host)
+D. 예약 인스턴스(Reserved Instance)
+
+14. 한 글로벌 기업이 신규 애플리케이션 버전을 배포할 때 전체 트래픽의 10%만 새 버전으로 전송하고 나머지 90%는 기존 버전으로 유지하여 점진적으로 마이그레이션하려 합니다. 이를 구현하기 위해 사용할 수 있는 Amazon Route 53의 라우팅 정책은 무엇입니까?
+
+A. 지연 시간 기반 라우팅
+B. 가중치 기반 라우팅
+C. 장애 조치 라우팅
+D. 지리적 위치 라우팅
+
+15. 한 스타트업이 이미지 업로드 시 자동으로 썸네일을 생성하는 기능을 개발하려 합니다. 서버를 직접 프로비저닝하거나 관리하지 않고 코드 실행만으로 이 기능을 구현하고 싶을 때 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon EC2
+B. AWS Elastic Beanstalk
+C. AWS Lambda
+D. Amazon ECS
+
