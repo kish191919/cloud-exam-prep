@@ -1,0 +1,105 @@
+1266. 글로벌 제조 기업이 수십 개의 사업부별 VPC를 운영하고 있으며, 각 VPC 간 통신을 위해 수많은 피어링 연결을 유지하는 데 관리 부담이 증가하고 있습니다. 네트워크 팀은 복잡한 VPC 간 연결 구조를 단순화하고 중앙에서 일관되게 관리할 수 있는 방법을 찾고 있습니다. 이 요구사항을 충족하기 위해 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. VPC Peering
+B. AWS Direct Connect
+C. AWS Transit Gateway
+D. AWS PrivateLink
+
+1267. 한 기업의 AWS 운영팀은 현재 자신들이 사용 중인 AWS 서비스에 장애가 발생했는지, 또는 예정된 유지보수 일정이 있는지를 계정 수준에서 실시간으로 확인하고 싶습니다. 이처럼 개인화된 AWS 서비스 상태 정보와 유지보수 알림을 제공하는 AWS 서비스는 무엇입니까?
+
+A. AWS Health Dashboard
+B. Amazon CloudWatch
+C. AWS Service Health Dashboard
+D. AWS Trusted Advisor
+
+1268. 금융 서비스 기업의 보안팀은 AWS 계정 내에서 발생하는 비정상적인 API 호출, 의심스러운 네트워크 트래픽, 악성 IP와의 통신 등을 자동으로 탐지하고 싶습니다. 별도의 보안 인프라를 구축하지 않고 CloudTrail 로그, VPC Flow Logs, DNS 로그를 분석하여 위협을 식별할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Shield
+B. Amazon Inspector
+C. AWS WAF
+D. Amazon GuardDuty
+
+1269. 한 기업이 AWS에서 웹 애플리케이션을 운영하고 있습니다. 보안 감사팀이 AWS 공동 책임 모델(Shared Responsibility Model)에 따라 책임 범위를 검토하고 있습니다. 다음 중 AWS가 직접 책임지는 보안 영역에 해당하는 것은 무엇입니까?
+
+A. 애플리케이션 코드 보안
+B. 물리적 데이터센터 보안
+C. IAM 사용자 권한 관리
+D. 운영체제 패치 적용
+
+1270. 의료 기관이 규정에 따라 환자 데이터를 최소 10년 이상 보관해야 합니다. 해당 데이터는 감사 요청이 있을 때를 제외하면 거의 접근하지 않으며, 가능한 한 낮은 비용으로 장기 보관하는 것이 최우선 요건입니다. 이 요구사항에 가장 적합한 Amazon S3 스토리지 클래스는 무엇입니까?
+
+A. S3 Standard
+B. S3 Glacier Flexible Retrieval
+C. S3 Intelligent-Tiering
+D. S3 Glacier Deep Archive
+
+1271. 한 스타트업이 다양한 유형의 EC2 인스턴스를 여러 워크로드에 걸쳐 운영하고 있습니다. 비용 절감을 위해 각 인스턴스의 실제 사용 패턴을 분석하고, 과도하게 프로비저닝된 리소스에 대해 적절한 인스턴스 유형으로 변경할 것을 권장받고 싶습니다. 이러한 비용 최적화 권장 사항을 제공하는 AWS 서비스는 무엇입니까?
+
+A. AWS Cost Explorer
+B. AWS Budgets
+C. AWS Compute Optimizer
+D. AWS Trusted Advisor
+
+1272. 한 IT 팀이 특정 운영체제, 보안 패치, 기업 표준 소프트웨어가 사전 설치된 표준화된 서버 환경을 여러 팀이 동일하게 사용할 수 있도록 구성하려 합니다. 새로운 EC2 인스턴스를 시작할 때마다 이 표준 환경을 재사용할 수 있게 해주는 AWS 기능은 무엇입니까?
+
+A. EC2 Launch Template
+B. Amazon Machine Image (AMI)
+C. AWS Elastic Beanstalk
+D. EC2 Snapshot
+
+1273. 콘텐츠 제작 회사가 여러 대의 EC2 인스턴스에서 실행되는 영상 편집 애플리케이션을 운영하고 있습니다. 모든 인스턴스가 동일한 파일 시스템에 동시에 접근할 수 있어야 하며, 저장 용량은 데이터 증가에 따라 자동으로 확장되어야 합니다. 이 요구사항을 충족하는 AWS 스토리지 서비스는 무엇입니까?
+
+A. Amazon EBS
+B. Amazon S3
+C. Amazon FSx
+D. Amazon EFS
+
+1274. 한 기업의 재무팀이 AWS 계정의 월별 비용 추이를 CloudWatch 메트릭을 통해 모니터링하려고 합니다. 팀원 중 한 명이 특정 리전에서만 청구 관련 메트릭을 확인할 수 있다고 안내받았습니다. AWS 청구 메트릭(Billing Metrics)을 CloudWatch에서 확인할 수 있는 리전은 어디입니까?
+
+A. ap-northeast-1 (도쿄)
+B. eu-west-1 (아일랜드)
+C. us-east-1 (버지니아 북부)
+D. us-west-2 (오레곤)
+
+1275. 한 스타트업이 Amazon S3를 이용해 정적 웹사이트를 호스팅하려 합니다. S3 버킷에 정적 웹사이트 호스팅을 활성화했지만 외부 사용자가 웹사이트에 접근하지 못하는 상황입니다. 외부 사용자가 S3 정적 웹사이트에 정상적으로 접근하려면 반드시 확인하고 설정해야 하는 것은 무엇입니까?
+
+A. CloudFront 배포 연결
+B. S3 버전 관리 활성화
+C. 퍼블릭 액세스 허용 및 버킷 정책
+D. IAM 사용자 액세스 키 발급
+
+1276. 한 기업이 스토리지 비용을 분석하던 중 Amazon EBS와 Amazon EFS의 과금 방식이 다르다는 것을 발견했습니다. EBS는 프로비저닝한 용량 전체에 대해 요금이 부과되는 반면, EFS는 실제로 저장한 데이터 양에 따라 요금이 부과됩니다. 데이터 양이 예측하기 어렵고 수시로 변동되는 워크로드에서 비용 효율성을 높이려면 어느 스토리지 서비스가 더 적합합니까?
+
+A. Amazon EBS Provisioned IOPS
+B. Amazon EFS
+C. Amazon S3
+D. AWS Storage Gateway
+
+1277. 온라인 커뮤니티 플랫폼 운영사가 사용자가 업로드하는 이미지에서 유해 콘텐츠를 자동으로 탐지하고, 이미지 내 텍스트를 추출하는 기능을 구현하려 합니다. 별도의 머신러닝 모델을 훈련하거나 인프라를 구축하지 않고 이 기능을 구현할 수 있는 AWS 관리형 서비스는 무엇입니까?
+
+A. Amazon SageMaker
+B. Amazon Comprehend
+C. AWS DeepLens
+D. Amazon Rekognition
+
+1278. 한 기업의 보안팀이 AWS 계정 보안을 강화하기 위한 정책을 수립하고 있습니다. 루트 사용자 사용을 최소화하고, 모든 IAM 사용자에게 추가 인증 수단을 적용하며, 업무에 필요한 최소한의 권한만 부여하는 원칙을 도입하려 합니다. 이 중 IAM 보안 모범 사례에서 모든 사용자에게 활성화할 것을 권장하는 추가 인증 방식은 무엇입니까?
+
+A. IAM 액세스 키 교체
+B. AWS SSO 연동
+C. 다중 인증(MFA)
+D. 강력한 패스워드 정책
+
+1279. 글로벌 전자상거래 기업이 미국 리전에 저장된 고객 주문 데이터를 규정 준수 요건에 따라 유럽 리전에도 자동으로 복제해야 합니다. 데이터 손실 없이 서로 다른 리전의 S3 버킷 간에 객체를 자동으로 복제할 수 있는 Amazon S3 기능은 무엇입니까?
+
+A. S3 버전 관리(Versioning)
+B. S3 교차 리전 복제(CRR)
+C. S3 동일 리전 복제(SRR)
+D. S3 수명 주기 정책
+
+1280. 대형 금융 기관이 AWS에서 운영 중인 서비스에 대한 DDoS 공격 위협에 대비하고자 합니다. 고급 DDoS 보호 기능뿐만 아니라, DDoS 공격으로 인해 AWS 리소스 사용량이 급증할 경우 발생하는 추가 비용까지 보호받기를 원합니다. 이러한 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. AWS WAF
+B. Amazon GuardDuty
+C. AWS Shield Advanced
+D. AWS Firewall Manager
+

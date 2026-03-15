@@ -1,0 +1,105 @@
+1251. 한 스타트업이 새로운 웹 서비스를 출시하려 합니다. 초기 사용자 수요를 예측하기 어렵고, 서비스가 안정화될 때까지 단기간만 서버를 운영할 계획입니다. 장기 계약 없이 사용한 만큼만 비용을 지불하고 중단 위험 없이 안정적으로 인스턴스를 운영하고자 할 때, 가장 적합한 Amazon EC2 요금 모델은 무엇입니까?
+
+A. Spot Instance
+B. On-Demand Instance
+C. Reserved Instance
+D. Savings Plans
+
+1252. 한 개발자가 AWS 관리 콘솔에 로그인하지 않고 Python 스크립트를 통해 Amazon S3 버킷에 파일을 업로드하는 자동화 작업을 구성하려 합니다. 이 개발자가 AWS CLI 및 SDK를 사용하여 프로그래밍 방식으로 AWS 리소스에 접근하려면 IAM에서 무엇을 생성해야 합니까?
+
+A. IAM 역할
+B. MFA 디바이스
+C. 액세스 키
+D. IAM 그룹
+
+1253. 한 기업이 여러 부서의 직원과 애플리케이션 서비스가 AWS 리소스에 접근할 수 있도록 중앙에서 권한을 관리하려 합니다. 각 사용자와 서비스에 최소 권한 원칙을 적용하고 정책 기반으로 접근을 제어하고자 할 때, 이를 가능하게 하는 AWS 서비스는 무엇입니까?
+
+A. AWS Organizations
+B. Amazon Cognito
+C. AWS Shield
+D. AWS IAM
+
+1254. 한 전자상거래 회사가 웹 애플리케이션을 운영하던 중 SQL Injection 및 Cross-site Scripting(XSS)과 같은 Layer 7 수준의 공격 시도가 탐지되었습니다. 이러한 웹 애플리케이션 공격으로부터 서비스를 보호하기 위해 도입해야 할 AWS 서비스는 무엇입니까?
+
+A. AWS WAF
+B. AWS Shield Standard
+C. Amazon GuardDuty
+D. AWS Firewall Manager
+
+1255. 한 기업의 클라우드 운영팀이 AWS 환경 전반에 걸쳐 비용 낭비 요소, 보안 취약점, 성능 저하 원인을 한 번에 파악하고 AWS 모범 사례에 따른 개선 권고사항을 받고 싶어 합니다. 비용 최적화, 보안, 성능 등 다양한 카테고리를 분석하여 권장 사항을 제공하는 AWS 서비스는 무엇입니까?
+
+A. Amazon Inspector
+B. AWS Config
+C. AWS Trusted Advisor
+D. AWS CloudTrail
+
+1256. 한 금융 기업이 규정 감사를 대비하여 AWS 환경 내 리소스의 구성이 언제, 어떻게 변경되었는지 이력을 추적하고 규정 준수 여부를 지속적으로 모니터링하고자 합니다. 리소스 설정 변경 기록과 규정 준수 감사를 지원하는 AWS 서비스는 무엇입니까?
+
+A. AWS CloudTrail
+B. Amazon CloudWatch
+C. AWS Config
+D. AWS Trusted Advisor
+
+1257. 한 기업이 Amazon EC2 인스턴스를 사용하여 애플리케이션을 운영하고 있습니다. AWS 공동 책임 모델에 따르면, EC2 인스턴스의 운영체제 패치 적용 및 보안 업데이트 관리에 대한 책임은 누구에게 있습니까?
+
+A. AWS
+B. 고객
+C. AWS, 고객 공동
+D. AWS 파트너사
+
+1258. 한 솔루션 아키텍트가 새로 설계한 AWS 아키텍처가 보안, 안정성, 성능 효율성, 비용 최적화, 운영 우수성의 관점에서 AWS 모범 사례를 충족하는지 체계적으로 검토하고자 합니다. 이 아키텍처를 AWS Well-Architected Framework 기반으로 평가할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Trusted Advisor
+B. AWS Well-Architected Tool
+C. AWS Config
+D. AWS Service Catalog
+
+1259. 한 글로벌 미디어 기업이 전 세계 사용자에게 동영상 콘텐츠를 제공하고 있습니다. 사용자의 지리적 위치와 관계없이 엣지 로케이션을 통해 콘텐츠를 캐싱하여 지연 시간을 줄이고 빠른 콘텐츠 전송을 구현하려 할 때, 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon CloudFront
+B. AWS Global Accelerator
+C. Amazon Route 53
+D. Elastic Load Balancing
+
+1260. 한 헬스케어 기업이 환자 기록 데이터를 AWS에 저장하려 합니다. 데이터가 자동으로 여러 가용 영역에 복제되어 높은 내구성을 보장받고, 별도의 파일 시스템 관리 없이 객체 단위로 데이터를 저장하고자 할 때, 가장 적합한 AWS 스토리지 서비스는 무엇입니까?
+
+A. Amazon EFS
+B. Amazon EBS
+C. AWS Storage Gateway
+D. Amazon S3
+
+1261. 한 온라인 뉴스 플랫폼이 트래픽 급증으로 인해 데이터베이스 읽기 성능이 저하되는 문제를 겪고 있습니다. 기존 데이터베이스의 쓰기 부하는 유지하면서 읽기 트래픽을 분산시켜 전체적인 데이터베이스 성능을 향상시키려 할 때, Amazon RDS에서 사용할 수 있는 기능은 무엇입니까?
+
+A. 멀티 AZ 배포
+B. 읽기 전용 복제본
+C. 자동 백업
+D. RDS Proxy
+
+1262. 한 콘텐츠 관리 팀이 Amazon S3에 저장된 중요 문서를 실수로 덮어쓰거나 삭제하는 사고가 발생했습니다. 이러한 실수로부터 데이터를 복구할 수 있도록 이전 상태의 객체를 보존하고 필요 시 특정 시점으로 복원할 수 있게 해주는 Amazon S3 기능은 무엇입니까?
+
+A. S3 수명 주기 정책
+B. S3 교차 리전 복제
+C. S3 버전 관리
+D. S3 Object Lock
+
+1263. 한 기업이 VPC 환경에서 EC2 인스턴스와 서브넷 수준의 트래픽을 각각 제어하려 합니다. 인스턴스 레벨에서는 상태 저장 방식으로, 서브넷 레벨에서는 상태 비저장 방식으로 인바운드 및 아웃바운드 트래픽을 필터링하고자 할 때, 함께 사용해야 하는 두 가지 VPC 보안 구성 요소는 무엇입니까?
+
+A. IGW, NAT 게이트웨이
+B. 보안 그룹, NACL
+C. VPN, Direct Connect
+D. 라우팅 테이블, 보안 그룹
+
+1264. 한 클라우드 관리자가 특정 IAM 사용자에게 Amazon S3 버킷에 대한 읽기 권한만 허용하는 정책을 작성하려 합니다. IAM 정책 JSON 문서에서 허용 여부, 수행 가능한 작업, 적용 대상 리소스를 각각 정의하는 세 가지 핵심 요소는 무엇입니까?
+
+A. Version, Statement, Condition
+B. Principal, Action, Resource
+C. Effect, Action, Resource
+D. Effect, Principal, Condition
+
+1265. 한 기업이 프라이빗 서브넷에 위치한 EC2 인스턴스에서 Amazon S3에 저장된 데이터를 처리해야 합니다. 보안 정책상 인터넷을 경유하지 않고 AWS 내부 네트워크를 통해 S3에 접근하도록 구성하려 할 때, 사용해야 하는 VPC 구성 요소는 무엇입니까?
+
+A. NAT 게이트웨이
+B. 인터넷 게이트웨이
+C. VPC 피어링
+D. VPC 엔드포인트
+

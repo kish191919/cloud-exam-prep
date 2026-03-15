@@ -1,0 +1,105 @@
+1281. 한 미디어 회사는 콘텐츠 아카이브 시스템을 운영하며, 오래된 영상 파일은 가끔씩만 조회되지만 필요할 때는 즉시 접근할 수 있어야 합니다. 스토리지 비용을 줄이면서도 즉각적인 접근성을 유지하려 할 때, 적합한 Amazon EFS 스토리지 클래스는 무엇입니까?
+
+A. EFS Standard
+B. EFS One Zone-Infrequent Access
+C. EFS Infrequent Access
+D. EFS Glacier
+
+1282. 한 대형 법률 회사는 수천 건의 계약서, 판례 문서, 내부 정책 파일을 보유하고 있으며, 직원들이 자연어로 원하는 문서를 빠르게 찾을 수 있는 지능형 검색 시스템을 도입하려 합니다. 이 요구사항을 충족하는 데 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon Rekognition
+B. Amazon Comprehend
+C. Amazon Textract
+D. Amazon Kendra
+
+1283. 한 기업이 AWS EC2 인스턴스 위에서 자체 개발한 웹 애플리케이션을 운영하고 있습니다. 보안 감사 팀은 운영체제 보안 패치 적용 및 애플리케이션 취약점 관리의 책임이 누구에게 있는지 확인하려 합니다. AWS 공동 책임 모델에 따르면, 이 작업들은 누구의 책임입니까?
+
+A. AWS 단독 책임
+B. 고객 책임
+C. AWS, 고객 공동 책임
+D. 서드파티 보안 벤더 책임
+
+1284. 한 제조 기업은 공장 내 온프레미스 서버와 AWS VPC 내 시스템 간에 안전한 통신 채널이 필요합니다. 별도의 전용 회선 없이 공용 인터넷을 통해 암호화된 연결을 구성하려 할 때, 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Direct Connect
+B. AWS PrivateLink
+C. AWS Transit Gateway
+D. AWS Site-to-Site VPN
+
+1285. 한 유통 기업은 데이터센터에서 운영 중인 수십 대의 물리적 서버를 AWS로 이전하려 합니다. 서버를 재구성하거나 재개발 없이 그대로 AWS로 옮기는 리프트 앤 시프트 방식의 마이그레이션을 지원하는 데 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Application Migration Service
+B. AWS Database Migration Service
+C. AWS DataSync
+D. AWS Snow Family
+
+1286. 한 핀테크 스타트업은 새로운 기능을 빠르게 배포하면서도 EC2 인스턴스와 온프레미스 서버 모두에 일관된 방식으로 애플리케이션을 자동 배포하고 배포 상태를 추적하고 싶어 합니다. 이 요구사항에 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Elastic Beanstalk
+B. AWS CodePipeline
+C. AWS CodeDeploy
+D. AWS OpsWorks
+
+1287. 한 이커머스 기업은 연중 안정적으로 실행되는 백엔드 서버 워크로드를 운영하며, 장기적인 인프라 비용을 최대한 절감하고자 합니다. 1년 또는 3년 약정을 통해 온디맨드 대비 최대 약 72%까지 비용을 절감할 수 있는 EC2 구매 옵션은 무엇입니까?
+
+A. 스팟 인스턴스
+B. 온디맨드 인스턴스
+C. Reserved Instance
+D. Dedicated Host
+
+1288. 한 금융 기업은 규제 기관의 요구에 따라 AWS 리소스의 설정 변경 이력을 추적하고, 특정 시점의 구성 상태를 감사할 수 있어야 합니다. 이 컴플라이언스 요구사항을 충족하는 데 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS CloudTrail
+B. AWS Config
+C. Amazon CloudWatch
+D. AWS Security Hub
+
+1289. 한 헬스케어 기업은 환자 데이터를 Amazon S3에 저장할 때, 파일이 업로드되는 순간부터 자동으로 암호화되어 보호받기를 원합니다. 이 요구사항을 충족하는 S3의 기능은 무엇입니까?
+
+A. S3 버킷 정책
+B. S3 MFA Delete
+C. S3 버전 관리
+D. S3 기본 암호화
+
+1290. 한 글로벌 기업은 개발, 스테이징, 프로덕션 환경을 각각 별도의 AWS 계정으로 운영하면서, 중앙에서 보안 정책을 적용하고 계정별 비용을 통합 관리하고자 합니다. 이 요구사항에 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Control Tower
+B. AWS IAM Identity Center
+C. AWS Organizations
+D. AWS Service Catalog
+
+1291. 한 리테일 기업은 수년간 축적된 수십 테라바이트의 판매 데이터를 분석하여 경영진에게 비즈니스 인사이트를 제공하려 합니다. 대규모 데이터에 대한 고속 SQL 분석 쿼리를 지원하는 데 적합한 AWS 데이터 웨어하우스 서비스는 무엇입니까?
+
+A. Amazon RDS
+B. Amazon Aurora
+C. Amazon DynamoDB
+D. Amazon Redshift
+
+1292. 한 소프트웨어 기업은 컨테이너 기반 애플리케이션을 실행하면서 필요에 따라 운영체제 수준에 직접 접근하여 환경을 커스터마이징해야 합니다. 이 요구사항을 충족하는 Amazon ECS의 실행 유형은 무엇입니까?
+
+A. AWS Fargate
+B. EC2 시작 유형
+C. AWS Lambda
+D. AWS Outposts
+
+1293. 한 바이오 연구소는 수백 대의 EC2 인스턴스가 동시에 동일한 유전체 분석 데이터에 접근하며 병렬로 연산을 수행해야 합니다. 여러 인스턴스가 동시에 읽고 쓸 수 있는 공유 파일 시스템이 필요할 때 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon S3
+B. Amazon EBS
+C. Amazon EFS
+D. AWS Storage Gateway
+
+1294. 한 기업의 보안 팀은 프라이빗 서브넷의 EC2 인스턴스가 인터넷을 경유하지 않고 Amazon S3 및 Amazon DynamoDB에 안전하게 접근하도록 구성하려 합니다. 이 요구사항을 충족하는 데 적합한 VPC 구성 요소는 무엇입니까?
+
+A. NAT 게이트웨이
+B. 인터넷 게이트웨이
+C. VPC 엔드포인트
+D. AWS PrivateLink
+
+1295. 한 기업의 자회사가 AWS Organizations에 멤버 계정으로 속해 있었으나, 독립 법인으로 분리되면서 자체 결제 정보를 등록하고 조직에서 탈퇴해야 합니다. 이 과정에서 멤버 계정이 조직을 떠나기 위해 반드시 갖춰야 하는 조건은 무엇입니까?
+
+A. 관리 계정의 SCP 전체 삭제
+B. 독립적인 결제 수단 보유
+C. 루트 사용자 MFA 비활성화
+D. 조직 내 모든 리소스 삭제
+
