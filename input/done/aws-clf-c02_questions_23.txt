@@ -1,0 +1,105 @@
+331. 한 유통 기업이 계절별 수요 변동이 심한 제품군의 재고를 효율적으로 관리하려 합니다. 과거 판매 데이터와 시계열 패턴을 분석하여 향후 수요를 자동으로 예측하고 싶습니다. 이 기업이 사용해야 할 AWS 서비스는 무엇입니까?
+
+A. Amazon Forecast
+B. Amazon Rekognition
+C. Amazon SageMaker Canvas
+D. AWS Glue
+
+332. 한 소셜 미디어 플랫폼이 사용자 간의 팔로우, 친구 관계, 콘텐츠 추천 등 복잡한 관계형 데이터를 저장하고 탐색해야 합니다. 엔터티 간의 관계를 효율적으로 쿼리할 수 있는 완전관리형 AWS 데이터베이스 서비스는 무엇입니까?
+
+A. Amazon DynamoDB
+B. Amazon RDS
+C. Amazon Redshift
+D. Amazon Neptune
+
+333. 한 게임 회사가 스마트폰 사용자에게 실시간 멀티플레이어 게임 서비스를 제공하려 합니다. 통신사의 5G 네트워크 인프라에서 컴퓨팅을 실행하여 모바일 사용자에게 초저지연 환경을 제공하고자 합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. AWS Outposts
+B. AWS Wavelength
+C. AWS Local Zones
+D. Amazon CloudFront
+
+334. 한 기업이 AWS EC2 인스턴스에서 웹 애플리케이션을 운영하고 있습니다. AWS 공동 책임 모델에 따라 EC2 인스턴스에 설치된 운영체제의 보안 패치 및 업데이트 관리 책임은 누구에게 있습니까?
+
+A. AWS
+B. 고객
+C. AWS, 고객 공동
+D. AWS Trusted Advisor
+
+335. 한 금융 회사가 고객 자산 이동 내역을 기록하는 시스템을 구축하려 합니다. 규제 기관의 감사 요구사항을 충족하기 위해 데이터 변경 이력이 절대 삭제되거나 수정될 수 없는 불변(Immutable) 트랜잭션 로그가 필요합니다. 이 요구사항에 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon RDS
+B. AWS CloudTrail
+C. Amazon QLDB
+D. Amazon DynamoDB Streams
+
+336. 한 개발팀이 AWS Elastic Beanstalk로 배포된 웹 애플리케이션의 성능 저하 원인을 분석하려 합니다. 애플리케이션 상태, CPU 사용량, 요청 처리 현황 등을 상세히 모니터링하고 Amazon CloudWatch와 통합하여 지표를 확인하고 싶습니다. 이를 위해 활성화해야 하는 Elastic Beanstalk 기능은 무엇입니까?
+
+A. 고급 상태 보고(Enhanced Health Reporting)
+B. 관리형 플랫폼 업데이트
+C. 롤링 배포(Rolling Deployment)
+D. Elastic Beanstalk 디버거
+
+337. 한 기업의 네트워크 관리자가 VPC 내 특정 서브넷으로 유입되는 트래픽을 IP 주소 범위(CIDR) 기반으로 제어하려 합니다. 서브넷 수준에서 인바운드 및 아웃바운드 트래픽을 허용하거나 거부하는 규칙을 설정할 수 있는 AWS 네트워크 보안 구성 요소는 무엇입니까?
+
+A. 보안 그룹(Security Group)
+B. AWS WAF
+C. 네트워크 ACL(NACL)
+D. AWS Shield
+
+338. 한 기업의 보안 담당자가 AWS 계정의 보안을 강화하기 위한 정책을 수립하고 있습니다. IAM 보안 모범 사례에 따라 반드시 적용해야 할 조치 중 하나로, 루트 계정 및 IAM 사용자 로그인 시 비밀번호 외에 추가 인증 수단을 요구하는 기능은 무엇입니까?
+
+A. IAM 역할(Role) 전환
+B. AWS Organizations SCP
+C. 액세스 키 교체
+D. 다중 인증(MFA)
+
+339. 한 스타트업이 AWS 사용 비용을 최소화하며 클라우드 인프라를 구축하려 합니다. AWS 프리 티어와 별개로 사용량과 관계없이 항상 무료로 제공되는 AWS 서비스에 해당하는 것은 무엇입니까?
+
+A. Amazon EC2 (t2.micro)
+B. Amazon S3 (5GB)
+C. AWS IAM
+D. Amazon RDS (단일 AZ)
+
+340. 한 DevOps 팀이 코드 변경 사항을 Amazon EC2 인스턴스와 온프레미스 서버에 자동으로 배포하는 CI/CD 파이프라인을 구성하려 합니다. 배포 자동화를 담당하는 AWS 서비스는 무엇입니까?
+
+A. AWS CodeBuild
+B. AWS CodeDeploy
+C. AWS CodeCommit
+D. AWS Elastic Beanstalk
+
+341. 한 리테일 기업의 경영진이 전국 매장별 매출, 재고, 고객 데이터를 시각적으로 분석하고 인터랙티브 대시보드로 확인하고 싶습니다. 별도의 BI 솔루션 없이 AWS 내에서 데이터 시각화와 비즈니스 인텔리전스 기능을 제공하는 서비스는 무엇입니까?
+
+A. Amazon Athena
+B. AWS Glue
+C. Amazon Redshift
+D. Amazon QuickSight
+
+342. 한 기업이 수백만 건의 실시간 세션 데이터를 인메모리에서 처리하는 고성능 캐싱 애플리케이션을 AWS에서 운영하려 합니다. 대용량 메모리가 필요한 이 워크로드에 가장 적합한 EC2 인스턴스 패밀리는 무엇입니까?
+
+A. 컴퓨팅 최적화 (C 패밀리)
+B. 메모리 최적화 (R 패밀리)
+C. 스토리지 최적화 (I 패밀리)
+D. 범용 (M 패밀리)
+
+343. 한 기업이 AWS 계정에서 특정 리전에 생성할 수 있는 EC2 인스턴스 수가 제한에 도달하여 추가 인스턴스를 생성하지 못하는 상황이 발생했습니다. 이러한 AWS 리소스 사용 제한을 확인하고 상향 요청을 관리할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Config
+B. AWS CloudTrail
+C. Service Quotas
+D. AWS Trusted Advisor
+
+344. 한 소프트웨어 개발 팀이 내부 개발 프로젝트에서 사용하는 npm 및 Maven 패키지를 안전하게 저장하고 팀원들과 공유할 수 있는 프라이빗 패키지 저장소를 AWS에서 구성하려 합니다. 이에 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS CodeCommit
+B. Amazon S3
+C. AWS CodeArtifact
+D. AWS CodeBuild
+
+345. 한 미디어 회사가 여러 대의 EC2 인스턴스에서 동일한 영상 편집 파일에 동시에 접근하고 수정해야 하는 공유 스토리지 환경을 구성하려 합니다. NFS 프로토콜 기반으로 다수의 인스턴스가 동시에 마운트하여 사용할 수 있는 AWS 스토리지 서비스는 무엇입니까?
+
+A. Amazon EBS
+B. Amazon S3
+C. Amazon EFS
+D. AWS Storage Gateway
+

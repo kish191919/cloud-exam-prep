@@ -1,0 +1,105 @@
+391. 한 데이터 분석 스타트업이 Amazon S3에 저장된 수백만 건의 고객 로그 데이터를 분석해야 합니다. 별도의 데이터베이스 서버를 구축하거나 관리하지 않고 S3 데이터에 직접 SQL 쿼리를 실행할 수 있는 서버리스 분석 서비스는 무엇입니까?
+
+A. Amazon Redshift
+B. Amazon RDS
+C. Amazon Athena
+D. AWS Glue
+
+392. 한 소프트웨어 개발팀이 웹 애플리케이션을 빠르게 배포하고 싶지만, 인프라 구성이나 Auto Scaling 설정에 시간을 쏟고 싶지 않습니다. 애플리케이션 코드만 업로드하면 인프라 프로비저닝, 배포, 모니터링을 자동으로 처리해 주는 AWS 서비스는 무엇입니까?
+
+A. AWS CloudFormation
+B. AWS Elastic Beanstalk
+C. Amazon EC2 Auto Scaling
+D. AWS Lambda
+
+393. 한 모바일 게임 회사가 전 세계 수백만 명의 사용자로부터 발생하는 실시간 게임 점수 데이터를 밀리초 단위의 지연 시간으로 처리해야 합니다. 별도의 데이터베이스 관리 없이 자동 확장이 가능한 완전 관리형 NoSQL 데이터베이스 서비스는 무엇입니까?
+
+A. Amazon Aurora
+B. Amazon RDS
+C. Amazon ElastiCache
+D. Amazon DynamoDB
+
+394. 한 IT 팀이 온프레미스 서버를 클라우드로 전환하면서 운영 체제, 미들웨어, 런타임 환경을 직접 제어하고 구성할 수 있는 가상 머신 기반의 IaaS 컴퓨팅 서비스가 필요합니다. 이 요구 사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. Amazon EC2
+B. AWS Lambda
+C. AWS Elastic Beanstalk
+D. Amazon ECS
+
+395. 한 대기업이 오랫동안 VMware 기반의 온프레미스 데이터 센터를 운영해 왔습니다. 기존 VMware 환경과 운영 방식을 그대로 유지하면서 AWS 인프라로 워크로드를 이전하여 하이브리드 클라우드를 구성하려 할 때 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Outposts
+B. AWS Direct Connect
+C. VMware Cloud on AWS
+D. Amazon VPC
+
+396. 한 핀테크 회사가 마이크로서비스 기반 애플리케이션을 컨테이너로 패키징하여 운영하고 있으며, Kubernetes를 사용해 컨테이너 오케스트레이션을 자동화하고 싶습니다. Kubernetes 클러스터를 직접 관리할 필요 없이 사용할 수 있는 AWS 관리형 서비스는 무엇입니까?
+
+A. Amazon ECS
+B. AWS Fargate
+C. Amazon EKS
+D. AWS App Runner
+
+397. 한 의료 기관이 수십 테라바이트 규모의 환자 데이터를 AWS로 마이그레이션해야 하지만, 인터넷 연결 속도가 제한적이어서 온라인 전송이 현실적으로 불가능한 상황입니다. 물리적 장치를 통해 대규모 데이터를 오프라인으로 AWS에 전송할 수 있는 서비스는 무엇입니까?
+
+A. AWS DataSync
+B. AWS Snowball
+C. AWS Storage Gateway
+D. AWS Transfer Family
+
+398. 한 스타트업이 AWS 클라우드 도입을 검토하면서 예상되는 인프라 비용을 사전에 파악하고 싶습니다. 사용할 리소스 유형과 수량을 입력하면 월별 예상 비용을 계산해 주는 AWS 도구는 무엇입니까?
+
+A. AWS Cost Explorer
+B. AWS Budgets
+C. AWS Pricing Calculator
+D. AWS Trusted Advisor
+
+399. 한 회사의 재무팀이 AWS 클라우드 비용이 월별 허용 한도를 초과하지 않도록 관리하고 싶습니다. 특정 비용 임계값을 설정하고 예산이 초과될 경우 이메일 알림을 받을 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Cost Explorer
+B. AWS Organizations
+C. Amazon CloudWatch
+D. AWS Budgets
+
+400. 한 미디어 회사가 매일 밤 대용량 동영상 파일을 인코딩하는 배치 작업을 실행합니다. 작업이 중단되더라도 재시작이 가능하며, 비용을 최대한 절감하고 싶습니다. On-Demand 가격 대비 최대 90%까지 비용을 절감할 수 있는 EC2 구매 옵션은 무엇입니까?
+
+A. Reserved Instance
+B. Savings Plans
+C. Dedicated Host
+D. Spot Instance
+
+401. 한 회사의 클라우드 운영팀이 지난 6개월간 AWS 서비스별 비용 추세를 분석하고, 비용이 급증한 서비스를 파악하여 최적화 방안을 수립하려 합니다. 서비스별 비용 내역과 사용 추세를 시각적으로 분석할 수 있는 AWS 도구는 무엇입니까?
+
+A. AWS Cost Explorer
+B. AWS Budgets
+C. AWS Pricing Calculator
+D. AWS Trusted Advisor
+
+402. 한 글로벌 기업이 개발, 스테이징, 운영 환경을 각각 별도의 AWS 계정으로 운영하고 있습니다. 각 계정의 비용을 하나의 청구서로 통합하여 관리하고, 볼륨 할인 혜택도 받고 싶을 때 활용할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Control Tower
+B. AWS IAM
+C. AWS Organizations
+D. AWS Config
+
+403. 한 중소기업이 AWS를 처음 사용하기 시작했습니다. 추가 비용 없이 기본으로 제공되는 지원 플랜을 통해 AWS 공식 문서, 백서, 지원 포럼에 접근하고 일부 Trusted Advisor 기능을 사용하려고 합니다. 이 기업이 이용하고 있는 AWS Support 플랜은 무엇입니까?
+
+A. Developer
+B. Basic
+C. Business
+D. Enterprise
+
+404. 한 회사의 클라우드 관리자가 AWS 환경에서 사용되지 않는 유휴 리소스를 탐지하고, 비용 절감 및 보안 개선을 위한 권장 사항을 자동으로 확인하고 싶습니다. 이러한 목적으로 사용할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Config
+B. Amazon CloudWatch
+C. AWS Security Hub
+D. AWS Trusted Advisor
+
+405. 한 전자상거래 회사가 연중 안정적인 트래픽을 처리하기 위해 EC2 인스턴스를 장기적으로 운영할 계획입니다. 1년 또는 3년 단위로 약정하여 On-Demand 요금 대비 비용을 크게 절감할 수 있는 EC2 구매 옵션은 무엇입니까?
+
+A. Spot Instance
+B. Dedicated Host
+C. On-Demand Instance
+D. Reserved Instance
+

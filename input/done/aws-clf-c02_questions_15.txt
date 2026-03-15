@@ -1,0 +1,105 @@
+211. 인터넷에서 Amazon S3로 데이터를 전송할 때 발생하는 요금 정책은 무엇입니까?
+
+A. 전송 데이터 크기에 따라 요금 부과
+B. 인터넷 인바운드 전송 무료
+C. 월 1GB 초과 시 요금 부과
+D. 리전별 상이한 인바운드 요금 적용
+
+212. 도메인 이름을 하나의 IP 주소로 단순하게 연결할 때 가장 적합한 Amazon Route 53 라우팅 정책은 무엇입니까?
+
+A. 지연 시간 기반 라우팅
+B. 장애 조치 라우팅
+C. 가중치 기반 라우팅
+D. 단순 라우팅
+
+213. 다른 AWS 계정의 S3 버킷으로 데이터를 자동 복제하고 메타데이터를 유지해야 할 때 사용해야 하는 Amazon S3 기능은 무엇입니까?
+
+A. S3 Transfer Acceleration
+B. S3 교차 리전 복제(CRR)
+C. S3 버전 관리
+D. S3 수명 주기 정책
+
+214. 서버 프로비저닝 없이 S3 이미지 업로드 시 자동으로 썸네일을 생성하는 데 적합한 AWS 서비스 조합은 무엇입니까?
+
+A. EC2, S3 이벤트 알림
+B. S3, ECS
+C. Lambda, S3 이벤트 알림
+D. Elastic Beanstalk, SQS
+
+215. 암호화 키 중앙 관리와 감사 로그가 필요한 S3 암호화 방식은 무엇입니까?
+
+A. SSE-S3
+B. SSE-KMS
+C. 클라이언트 측 암호화
+D. SSE-C
+
+216. AWS에서 전력, 냉각, 네트워크를 독립적으로 운영하는 데이터 센터 집합을 무엇이라고 합니까?
+
+A. 리전
+B. 엣지 로케이션
+C. 가용 영역
+D. AWS Outposts
+
+217. 중단 허용, 유연한 시작 시간을 가진 배치 워크로드에 가장 비용 효율적인 EC2 구매 옵션은 무엇입니까?
+
+A. 온디맨드 인스턴스
+B. 전용 호스트
+C. 예약 인스턴스
+D. 스팟 인스턴스
+
+218. 중단 후 재시작 가능한 야간 배치 처리에 Amazon EC2 Spot Instance가 적합합니까?
+
+A. 아니오, 예약 인스턴스가 적합
+B. 예, 비용 절감, 중단 허용 워크로드에 적합
+C. 아니오, 온디맨드 인스턴스가 적합
+D. 예, 그러나 전용 호스트와 병행 필요
+
+219. 프라이빗 서브넷의 EC2에서 인터넷 경로 없이 S3에 접근하기 위한 AWS 기능은 무엇입니까?
+
+A. NAT 게이트웨이
+B. 인터넷 게이트웨이
+C. VPC 엔드포인트
+D. AWS Direct Connect
+
+220. 두 VPC 간 인터넷 경유 없이 프라이빗 통신을 위한 AWS 네트워킹 기능은 무엇입니까?
+
+A. AWS Site-to-Site VPN
+B. VPC 피어링
+C. AWS Transit Gateway
+D. AWS Direct Connect
+
+221. 복구 시간 허용, AWS 평상시 비용 최소화를 우선하는 재해 복구 전략은 무엇입니까?
+
+A. 멀티 사이트 액티브-액티브
+B. 웜 스탠바이
+C. 파일럿 라이트
+D. 백업 및 복원
+
+222. HTTP, HTTPS 처리 및 URL 경로 기반 라우팅이 필요한 경우 가장 적합한 AWS 로드 밸런서는 무엇입니까?
+
+A. Classic Load Balancer
+B. Network Load Balancer
+C. Gateway Load Balancer
+D. Application Load Balancer
+
+223. 단일 AWS 리전 장애에도 서비스 지속을 위한 고가용성 배포 전략은 무엇입니까?
+
+A. 단일 리전, 다중 가용 영역 배포
+B. 단일 가용 영역 이중화
+C. 멀티 리전 배포
+D. 엣지 로케이션 활용
+
+224. EBS 스냅샷이 저장되는 위치는 무엇입니까?
+
+A. EC2 인스턴스 로컬 스토리지
+B. Amazon Glacier
+C. EBS 볼륨 내부
+D. Amazon S3
+
+225. 특정 서버 과부하 방지 및 균등한 요청 처리 자동화를 위해 사용해야 하는 AWS 서비스는 무엇입니까?
+
+A. Amazon CloudFront
+B. AWS Auto Scaling
+C. Elastic Load Balancing
+D. Amazon Route 53
+

@@ -1,0 +1,105 @@
+151. 한 IT 팀이 AWS 클라우드 인프라를 관리하면서 수동으로 서버를 프로비저닝하고 설정 변경 사항을 문서로만 기록하고 있습니다. AWS Well-Architected Framework의 운영 우수성(Operational Excellence) 원칙에 따라 인프라를 코드로 정의하고 버전 관리 시스템을 통해 변경 사항을 추적하는 방식으로 전환하려고 합니다. 이 접근 방식을 가능하게 하는 AWS의 개념은 무엇입니까?
+
+A. Infrastructure as Code
+B. Auto Scaling 정책
+C. AWS Config 규칙 기반 관리
+D. CloudWatch 로그 모니터링
+
+152. 한 보안 컨설팅 회사가 고객사의 AWS 환경에 대한 취약점 평가를 수행하고자 합니다. 팀은 Amazon EC2 인스턴스와 RDS 데이터베이스를 대상으로 침투 테스트를 진행하려고 합니다. AWS에서 사전 승인 없이 허용되는 침투 테스트 범위를 규정하는 정책은 무엇입니까?
+
+A. AWS Acceptable Use Policy
+B. AWS 침투 테스트 정책
+C. AWS 공동 책임 모델
+D. AWS 보안 평가 프레임워크
+
+153. 한 스타트업이 AWS 클라우드 사용 비용을 체계적으로 관리하고자 합니다. 월별 지출 한도를 설정하고, 예약 인스턴스 사용률이 특정 임계값 아래로 떨어질 경우 알림을 받고 싶습니다. 또한 Savings Plans의 적용 범위를 모니터링하는 기능도 필요합니다. 이러한 다양한 예산 유형을 모두 지원하는 AWS 서비스는 무엇입니까?
+
+A. AWS Cost Explorer
+B. AWS Pricing Calculator
+C. AWS Budgets
+D. AWS Cost and Usage Report
+
+154. 한 대기업의 재무팀이 AWS 클라우드 비용을 시간 단위로 분석하고, 서비스별 사용량 데이터를 자체 데이터 웨어하우스로 가져와 상세 보고서를 생성하려고 합니다. 비용 및 사용량 데이터를 Amazon S3 버킷에 자동으로 저장하여 이후 분석 도구와 연동할 수 있게 해주는 AWS 서비스는 무엇입니까?
+
+A. AWS Budgets
+B. AWS Cost Explorer
+C. Amazon QuickSight
+D. AWS Cost and Usage Report
+
+155. 한 미디어 회사가 수년간 촬영한 영상 원본 파일을 보관해야 합니다. 이 파일들은 거의 접근하지 않지만 필요 시 몇 분에서 몇 시간 내에 복원할 수 있어야 합니다. 비용 효율적인 장기 아카이빙을 지원하면서 낮은 접근 빈도에 적합한 AWS 스토리지 서비스는 무엇입니까?
+
+A. Amazon S3 Standard
+B. Amazon EBS Cold HDD
+C. Amazon S3 Glacier Flexible Retrieval
+D. Amazon S3 Intelligent-Tiering
+
+156. 한 금융기관이 규정 준수 요건에 따라 거래 기록을 최소 10년간 보관해야 합니다. 해당 데이터는 감사 목적으로만 사용되며 수일 내 복원이 가능하면 충분합니다. 매우 낮은 비용으로 장기 규정 준수 보관을 지원하는 데 가장 적합한 AWS 스토리지 서비스는 무엇입니까?
+
+A. Amazon S3 Glacier Deep Archive
+B. Amazon S3 Standard-IA
+C. AWS Storage Gateway
+D. Amazon S3 Glacier Flexible Retrieval
+
+157. 한 개발팀이 AWS Lambda를 사용하여 서버리스 애플리케이션을 운영하고 있습니다. AWS 공동 책임 모델(Shared Responsibility Model)에 따르면, Lambda 함수 내부에 포함된 코드의 보안과 해당 함수에 부여된 IAM 권한 관리는 누구의 책임입니까?
+
+A. AWS 단독 책임
+B. 고객 책임
+C. AWS, 고객 공동 책임
+D. AWS 파트너 책임
+
+158. 한 운영팀이 특정 AWS 리전에서 구성한 Amazon Machine Image(AMI)를 사용하여 다른 리전에서 EC2 인스턴스를 시작하려고 시도했지만 실패했습니다. AMI가 리전 단위 리소스로 동작하기 때문에 다른 리전에서 인스턴스를 시작하려면 어떤 작업이 필요합니까?
+
+A. AMI를 글로벌 리소스로 변환
+B. 동일 AMI ID를 다른 리전에서 직접 사용
+C. AMI를 대상 리전으로 복사
+D. EC2 인스턴스를 AMI 없이 재생성
+
+159. 한 콘텐츠 플랫폼이 사용자가 업로드한 음성 파일을 텍스트로 변환하고, 변환된 텍스트를 다시 자연스러운 음성으로 재생하는 기능을 구현하려고 합니다. 음성을 텍스트로 변환하고 텍스트를 다시 음성으로 합성하는 두 가지 기능을 각각 담당하는 AWS 서비스의 조합은 무엇입니까?
+
+A. Rekognition, Translate
+B. Transcribe, Polly
+C. Comprehend, Lex
+D. Polly, Transcribe
+
+160. 한 기업이 VPC 내부의 EC2 인스턴스에서 인터넷을 거치지 않고 AWS 스토리지 및 데이터베이스 서비스에 안전하게 접근하고자 합니다. VPC Gateway Endpoint를 통해 프라이빗 네트워크 경로로 접근할 수 있는 AWS 서비스는 무엇입니까?
+
+A. Amazon RDS, Amazon EFS
+B. Amazon EC2, Amazon EBS
+C. Amazon S3, Amazon DynamoDB
+D. Amazon Redshift, Amazon ElastiCache
+
+161. 한 기업이 AWS Organizations에 등록된 멤버 계정을 조직에서 제거하려고 합니다. 계정 제거 절차를 완료하기 위해 반드시 충족해야 하는 조건은 무엇입니까?
+
+A. 관리 계정의 루트 사용자 승인
+B. 멤버 계정의 독립 운영 정보 완비
+C. 모든 SCP 정책 삭제
+D. 조직 내 전체 계정 동의
+
+162. 한 애플리케이션 팀이 비정형 객체 데이터를 저장하고, 빠른 키-값 조회가 필요한 NoSQL 데이터베이스를 사용하며, 오래된 백업 파일을 저비용으로 장기 보관해야 하는 요구사항을 가지고 있습니다. 이 세 가지 요구사항을 각각 충족하는 AWS 서비스의 조합은 무엇입니까?
+
+A. EBS, RDS, S3 Standard
+B. S3, DynamoDB, S3 Glacier
+C. EFS, DocumentDB, S3 Standard-IA
+D. S3, Aurora, EBS
+
+163. 한 전자상거래 회사가 웹 애플리케이션에 대한 SQL 인젝션 및 크로스사이트 스크립팅(XSS) 공격을 탐지하고 차단하려고 합니다. OSI 모델의 애플리케이션 계층(Layer 7)에서 동작하며 이러한 웹 기반 공격을 방어하는 AWS 서비스는 무엇입니까?
+
+A. AWS Shield
+B. Amazon GuardDuty
+C. AWS WAF
+D. Amazon Inspector
+
+164. 한 SaaS 기업이 고객 포털 웹 애플리케이션에 악의적인 봇 트래픽과 비정상적인 HTTP 요청이 유입되는 것을 발견했습니다. 특정 IP 주소 범위를 차단하고 요청 패턴을 기반으로 트래픽을 필터링하여 애플리케이션을 보호하려고 합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. Amazon GuardDuty
+B. AWS Shield Advanced
+C. Amazon Macie
+D. AWS WAF
+
+165. 한 기업이 관계형 데이터베이스, 데이터 웨어하우스, 인메모리 캐싱 서비스를 장기간 안정적으로 운영할 계획입니다. 1년 또는 3년 약정을 통해 온디맨드 대비 비용을 절감하는 예약 인스턴스(Reserved Instance)를 적용할 수 있는 AWS 서비스의 조합은 무엇입니까?
+
+A. RDS, Redshift, ElastiCache
+B. EC2, DynamoDB, Lambda
+C. Aurora, S3, CloudFront
+D. RDS, Aurora, DynamoDB
+

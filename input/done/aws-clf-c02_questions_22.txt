@@ -1,0 +1,105 @@
+316. 한 대기업의 IT 운영팀은 AWS 클라우드 환경에서 복잡한 멀티 계정 아키텍처를 운영하고 있으며, 비용 최적화 컨설팅과 함께 전담 기술 전문가의 지속적인 지원이 필요합니다. 이 기업에 전담 TAM(Technical Account Manager)을 제공하고 아키텍처 검토 및 비용 최적화 컨설팅을 포함한 기업 수준의 지원을 제공하는 AWS Support Plan은 무엇입니까?
+
+A. Business Support Plan
+B. Enterprise On-Ramp Support Plan
+C. Enterprise Support Plan
+D. Developer Support Plan
+
+317. 한 스타트업의 개발자가 AWS 서비스를 활용하여 자동화된 이메일 발송 시스템을 구축하려 합니다. 개발을 시작하기 전, 팀 리더는 AWS에서 허용되지 않는 사용 사례와 금지된 활동(불법 콘텐츠 배포, 악의적 네트워크 활동 등)을 사전에 확인하도록 지시했습니다. 이러한 AWS 서비스의 허용 및 금지 사용 사례를 정의한 정책 문서는 무엇입니까?
+
+A. AWS Acceptable Use Policy
+B. AWS Service Terms
+C. AWS Shared Responsibility Model
+D. AWS Customer Agreement
+
+318. 한 전자상거래 회사는 AWS Auto Scaling을 사용하여 EC2 인스턴스를 운영 중입니다. 트래픽이 급증할 때 Auto Scaling이 자동으로 수행하는 확장 방식으로 올바른 것은 무엇입니까?
+
+A. 수직 확장
+B. 수평 확장
+C. 예약 확장
+D. 수동 확장
+
+319. 한 금융 서비스 회사의 보안팀은 모든 EC2 인스턴스에 최신 보안 패치와 승인된 소프트웨어가 적용된 표준 OS 이미지를 자동으로 생성하고, 이를 클라우드 및 온프레미스 환경에 일관되게 배포해야 합니다. 이 요구사항을 충족하기 위해 사용할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Systems Manager Patch Manager
+B. AWS CodeDeploy
+C. EC2 Image Builder
+D. AWS Config
+
+320. 한 기업의 보안 담당자가 자사 AWS 계정에서 발생하는 것으로 의심되는 포트 스캔 및 스팸 발송 등의 악의적인 활동을 외부로부터 신고받았습니다. 이러한 AWS 리소스를 통한 악의적 활동을 신고하고 대응을 요청하기 위해 연락해야 하는 AWS 팀은 무엇입니까?
+
+A. AWS Abuse Team
+B. AWS Security Hub
+C. AWS Trust & Safety
+D. AWS Support Team
+
+321. 한 미디어 스트리밍 회사는 매주 금요일 저녁마다 트래픽이 급격히 증가하는 예측 가능한 패턴을 가지고 있습니다. 운영팀은 트래픽이 증가하기 전에 미리 인스턴스를 확장하여 성능을 보장하고 싶습니다. 과거 트래픽 패턴을 분석하여 워크로드 증가 전에 사전적으로 인스턴스를 확장하는 Auto Scaling 정책은 무엇입니까?
+
+A. 대상 추적 조정 정책
+B. 단계 조정 정책
+C. 예약된 조정 정책
+D. 동적 조정 정책
+
+322. 한 물류 회사는 인터넷이 연결되지 않는 원격 창고에서 AWS Snowball Edge 장치를 사용하여 데이터를 수집하고 있습니다. 현장 직원들은 CLI에 익숙하지 않으며, 그래픽 인터페이스를 통해 Snow 장치를 관리하고 싶어합니다. CLI 없이 Snow Family 장치를 관리할 수 있는 GUI 기반 도구는 무엇입니까?
+
+A. AWS OpsHub
+B. AWS DataSync
+C. AWS Management Console
+D. AWS Snow Device Manager
+
+323. 한 소셜 미디어 플랫폼은 사용자 프로필 조회 요청이 매우 빈번하게 발생하여 Amazon DynamoDB의 읽기 지연 시간이 증가하는 문제를 겪고 있습니다. 추가적인 인프라 변경 없이 DynamoDB의 읽기 성능을 마이크로초 단위로 개선할 수 있는 인메모리 캐시 서비스는 무엇입니까?
+
+A. Amazon ElastiCache for Redis
+B. Amazon DAX
+C. Amazon ElastiCache for Memcached
+D. Amazon RDS Read Replica
+
+324. 한 헬스케어 회사의 보안팀은 AWS 계정에서 비정상적인 API 호출과 의심스러운 로그인 시도가 발생하고 있다는 우려가 있습니다. 별도의 에이전트 설치 없이 계정 내 위협을 자동으로 탐지하고 악의적인 활동을 모니터링할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Security Hub
+B. Amazon Inspector
+C. AWS Shield
+D. Amazon GuardDuty
+
+325. 한 교육 기관은 학생들이 고사양 그래픽 디자인 소프트웨어를 개인 컴퓨터에 설치하지 않고도 태블릿, 노트북 등 다양한 디바이스에서 브라우저를 통해 사용할 수 있도록 하고 싶습니다. 이러한 브라우저 기반 애플리케이션 스트리밍 환경을 제공하는 AWS 서비스는 무엇입니까?
+
+A. Amazon WorkSpaces
+B. AWS AppStream 2.0
+C. Amazon EC2 가상 데스크톱
+D. AWS Workspace Web
+
+326. 한 스타트업의 솔루션 아키텍트는 AWS 기반의 서버리스 데이터 처리 파이프라인을 설계하려 합니다. 처음부터 아키텍처를 설계하는 대신, AWS에서 검증된 Best Practices와 아키텍처 패턴 예시를 참고하고 싶습니다. 이러한 검증된 클라우드 솔루션 설계와 아키텍처 패턴을 제공하는 AWS 리소스는 무엇입니까?
+
+A. AWS Well-Architected Framework
+B. AWS Architecture Center
+C. AWS Whitepapers
+D. AWS Solutions Library
+
+327. 한 게임 회사는 신규 게임 출시 시 트래픽이 급증하고 이후 안정화되는 패턴을 반복합니다. 트래픽이 많을 때는 리소스를 확장하고, 수요가 줄어들면 자동으로 리소스를 축소하여 비용을 절감하는 AWS 클라우드의 핵심 특성은 무엇입니까?
+
+A. 고가용성
+B. 내결함성
+C. 탄력성
+D. 민첩성
+
+328. 한 기업의 보안 감사팀이 AWS 계정에서 발생한 모든 API 호출 기록과 계정 활동을 추적하고 감사하려 합니다. AWS CloudTrail에서 별도의 설정 없이 기본으로 활성화되어 기록되는 이벤트 유형은 무엇입니까?
+
+A. 데이터 이벤트
+B. 인사이트 이벤트
+C. 관리 이벤트
+D. S3 객체 수준 이벤트
+
+329. 한 의료 기관은 규정 준수를 위해 환자 진료 기록을 최소 10년 이상 보관해야 하며, 데이터에 대한 즉각적인 접근은 거의 필요하지 않습니다. 가장 낮은 비용으로 대용량 데이터를 장기간 보관할 수 있는 Amazon S3 스토리지 클래스는 무엇입니까?
+
+A. S3 Standard-IA
+B. S3 Glacier Instant Retrieval
+C. S3 Glacier Flexible Retrieval
+D. S3 Glacier Deep Archive
+
+330. 한 회사의 DevOps 엔지니어가 EC2 인스턴스에 대한 인바운드 웹 트래픽(포트 443)만 허용하고 다른 모든 포트의 접근을 차단하려 합니다. EC2 인스턴스 수준에서 포트와 프로토콜 기반의 인바운드 및 아웃바운드 트래픽을 제어하는 AWS 방화벽 기능은 무엇입니까?
+
+A. Network ACL
+B. AWS WAF
+C. 보안 그룹
+D. AWS Shield
+

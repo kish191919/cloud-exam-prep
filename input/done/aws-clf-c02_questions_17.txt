@@ -1,0 +1,105 @@
+241. 글로벌 전자상거래 기업이 마이크로서비스 기반으로 주문, 결제, 배송 시스템을 운영하고 있습니다. 결제 서비스에 장애가 발생했을 때 주문 및 배송 서비스가 영향을 받지 않도록 하고, 각 서비스를 독립적으로 확장할 수 있는 구조를 설계하려 합니다. 이를 위해 적용해야 할 AWS Well-Architected Framework의 핵심 설계 원칙은 무엇입니까?
+
+A. 단일 장애 지점 제거, 느슨한 결합
+B. 모놀리식 아키텍처, 강한 결합
+C. 수직 확장, 중앙 집중 처리
+D. 비용 최적화, 예약 인스턴스 활용
+
+242. 대형 금융 기업이 수백 개의 AWS 계정을 운영하고 있으며, 직원들이 각 계정에 별도 로그인 없이 단일 자격 증명으로 접근할 수 있도록 하고, 중앙에서 계정 전체를 통합 관리하려 합니다. 이 요구사항을 동시에 충족할 수 있는 AWS 서비스 조합은 무엇입니까?
+
+A. Amazon Cognito, AWS Config
+B. AWS IAM, AWS CloudTrail
+C. AWS Organizations, AWS IAM Identity Center
+D. AWS Control Tower, Amazon GuardDuty
+
+243. 스타트업 개발팀이 Amazon EBS 볼륨을 사용하여 데이터베이스 서버를 운영하고 있습니다. 팀 리더는 EBS 비용을 예측하기 위해 요금 부과 방식을 이해하려 합니다. EBS 볼륨 사용 요금이 결정되는 기준은 무엇입니까?
+
+A. EC2 인스턴스 실행 시간
+B. 저장된 실제 데이터 용량
+C. 프로비저닝된 볼륨 용량, 유형
+D. 데이터 읽기, 쓰기 횟수
+
+244. 클라우드 비용 관리를 담당하는 FinOps 팀이 AWS 사용 비용을 가장 세밀하게 분석하고, 서비스별·리소스별·시간대별로 상세한 청구 데이터를 확보하여 내부 시스템과 연동하고자 합니다. 이 목적에 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Cost Explorer
+B. AWS Budgets
+C. AWS Pricing Calculator
+D. AWS Cost and Usage Report
+
+245. 한 기업의 클라우드 운영팀이 Windows 운영체제가 설치된 Amazon EC2 온디맨드 인스턴스를 하루 중 일부 시간만 실행하고 있습니다. 인스턴스를 실행한 총 시간이 1시간 30분일 경우, AWS가 해당 인스턴스에 적용하는 청구 단위는 무엇입니까?
+
+A. 분 단위 청구
+B. 초 단위 청구
+C. 시간 단위 청구
+D. 일 단위 청구
+
+246. 보안팀이 AWS 환경에서 실행 중인 EC2 인스턴스와 컨테이너의 소프트웨어 취약점 및 의도하지 않은 네트워크 노출 여부를 자동으로 평가하려 합니다. 그러나 네트워크 트래픽을 실시간으로 감시하여 외부 침입을 탐지하는 기능은 별도 서비스를 통해 처리할 예정입니다. 취약점 평가 목적에 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon GuardDuty
+B. AWS Shield
+C. Amazon Inspector
+D. AWS Security Hub
+
+247. 제약 회사의 연구팀이 수만 개의 분자 시뮬레이션 작업을 병렬로 처리해야 하며, 각 작업은 수분에서 수시간이 소요됩니다. 고정된 서버 인프라 없이 대규모 컴퓨팅 작업을 자동으로 예약하고 실행할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Lambda
+B. Amazon ECS
+C. AWS Glue
+D. AWS Batch
+
+248. 클라우드 비용 절감을 검토 중인 재무팀이 지난 몇 달간의 EC2 및 Fargate 사용 패턴을 분석하여, 현재 사용량에 맞는 최적의 Savings Plans를 추천받고 싶어 합니다. 이 추천 기능을 제공하는 AWS 서비스는 무엇입니까?
+
+A. AWS Budgets
+B. AWS Cost Explorer
+C. AWS Trusted Advisor
+D. AWS Compute Optimizer
+
+249. 글로벌 유통 기업이 각 사업부별로 별도의 AWS 계정을 운영하고 있으며, 모든 계정의 비용을 하나의 결제 수단으로 통합하고 볼륨 할인 혜택도 받고 싶어 합니다. 이 요구사항을 충족하는 데 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Cost Explorer
+B. AWS IAM Identity Center
+C. AWS Control Tower
+D. AWS Organizations
+
+250. 미디어 기업이 수백만 개의 이미지와 동영상 파일을 Amazon S3에 저장하고 있으며, 각 파일의 접근 빈도를 사전에 예측하기 어렵습니다. 접근 패턴에 따라 자동으로 스토리지 계층을 전환하여 비용을 최적화할 수 있는 S3 스토리지 클래스는 무엇입니까?
+
+A. S3 Standard-IA
+B. S3 Glacier Instant Retrieval
+C. S3 Intelligent-Tiering
+D. S3 One Zone-IA
+
+251. 클라우드 플랫폼팀이 Python 또는 TypeScript와 같은 프로그래밍 언어를 사용하여 AWS 인프라를 코드로 정의하고, 재사용 가능한 컴포넌트로 관리하고자 합니다. 이 목적에 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS CloudFormation
+B. AWS CDK
+C. AWS Elastic Beanstalk
+D. AWS OpsWorks
+
+252. 금융 서비스 기업이 온프레미스 데이터센터와 AWS 클라우드 간에 일관된 낮은 지연 시간과 높은 대역폭을 보장하는 전용 네트워크 연결이 필요합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. AWS Site-to-Site VPN
+B. Amazon CloudFront
+C. AWS Direct Connect
+D. AWS Transit Gateway
+
+253. 헬스케어 기업이 환자 데이터를 보안 규정에 따라 자체 데이터센터에 보관하면서도, 분석 및 개발 워크로드는 AWS 퍼블릭 클라우드에서 실행하는 환경을 구성하고 있습니다. 이 기업이 채택하고 있는 클라우드 배포 모델은 무엇입니까?
+
+A. 프라이빗 클라우드
+B. 멀티 클라우드
+C. 퍼블릭 클라우드
+D. 하이브리드 클라우드
+
+254. 보안 감사팀이 AWS 계정 내 모든 IAM 사용자의 액세스 키 사용 현황, 마지막 로그인 시각, MFA 활성화 여부를 한 번에 확인하고, 특정 사용자가 실제로 사용하지 않는 권한을 파악하려 합니다. 이 두 가지 목적을 달성하는 데 활용할 수 있는 IAM 기능은 무엇입니까?
+
+A. IAM 자격 증명 보고서, 마지막 액세스 정보
+B. AWS CloudTrail, AWS Config
+C. AWS Trusted Advisor, IAM 정책 시뮬레이터
+D. Amazon GuardDuty, AWS Security Hub
+
+255. 소프트웨어 개발 기업이 개발자들이 작성한 코드의 품질 문제와 보안 취약점을 코드 리뷰 단계에서 자동으로 탐지하고, 성능 개선을 위한 구체적인 권장 사항을 받고 싶어 합니다. 이 목적에 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon CodeGuru
+B. AWS CodePipeline
+C. Amazon DevOps Guru
+D. AWS CodeBuild
+

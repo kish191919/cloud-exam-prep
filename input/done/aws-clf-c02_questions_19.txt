@@ -1,0 +1,105 @@
+271. 한 이커머스 기업이 웹 애플리케이션을 운영하고 있으며, SQL 인젝션 및 크로스 사이트 스크립팅(XSS)과 같은 악의적인 웹 공격으로부터 서비스를 보호하고자 합니다. Amazon CloudFront와 통합하여 HTTP/HTTPS 요청을 필터링하고 애플리케이션 계층의 보안을 강화할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Shield
+B. Amazon GuardDuty
+C. AWS WAF
+D. AWS Firewall Manager
+
+272. 한 금융 서비스 회사는 매월 일정한 양의 데이터 처리 작업을 수행하는 EC2 인스턴스를 3년간 지속적으로 운영할 계획입니다. 이처럼 장기적이고 예측 가능한 워크로드에서 EC2 비용을 가장 효과적으로 절감할 수 있는 구매 옵션은 무엇입니까?
+
+A. 온디맨드 인스턴스
+B. Reserved Instance
+C. Spot Instance
+D. Dedicated Host
+
+273. 한 기업이 AWS 클라우드에서 고객 개인정보가 포함된 데이터를 저장하고 있습니다. AWS 공동 책임 모델(Shared Responsibility Model)에 따르면, 저장된 데이터의 암호화에 대한 책임은 누구에게 있습니까?
+
+A. AWS
+B. AWS, 고객 공동 책임
+C. 서드파티 보안 업체
+D. 고객
+
+274. 한 스타트업이 동일한 운영 체제, 애플리케이션 구성, 보안 패치가 적용된 EC2 인스턴스를 여러 리전에 빠르게 복제하여 배포하려고 합니다. 이와 같이 동일한 서버 환경을 신속하게 복제 및 배포할 수 있도록 지원하는 AWS 서비스는 무엇입니까?
+
+A. AMI(Amazon Machine Image)
+B. AWS Elastic Beanstalk
+C. EC2 Auto Scaling
+D. AWS CloudFormation
+
+275. 한 통신사가 고객 서비스 자동화를 위해 자연어를 이해하고 대화형 인터페이스를 제공하는 챗봇을 구축하려고 합니다. 음성 및 텍스트 기반의 대화형 챗봇 개발을 지원하는 AWS 서비스는 무엇입니까?
+
+A. Amazon Polly
+B. Amazon Transcribe
+C. Amazon Comprehend
+D. Amazon Lex
+
+276. 한 기업의 IT 운영팀이 특정 AWS 리전에서 서비스 장애가 발생했다는 소식을 접했습니다. AWS 서비스의 현재 운영 상태와 과거 장애 이력을 확인하고 RSS 피드를 통해 실시간 알림을 받을 수 있는 AWS 도구는 무엇입니까?
+
+A. AWS CloudTrail
+B. AWS Service Health Dashboard
+C. Amazon CloudWatch
+D. AWS Trusted Advisor
+
+277. 한 SaaS 기업이 프로덕션 환경에서 EC2 인스턴스의 CPU 사용률, 네트워크 트래픽, 디스크 I/O 등 주요 성능 지표를 실시간으로 추적하고 임계치 초과 시 알림을 받고 싶습니다. 이러한 클라우드 리소스 모니터링 및 운영 상태 분석 기능을 제공하는 AWS 서비스는 무엇입니까?
+
+A. AWS Config
+B. AWS CloudTrail
+C. Amazon CloudWatch
+D. AWS Trusted Advisor
+
+278. 한 제약회사 데이터 과학팀이 신약 개발을 위해 대규모 데이터 전처리부터 머신러닝 모델 훈련, 최종 모델 배포까지의 전체 ML 워크플로우를 하나의 통합 플랫폼에서 관리하려고 합니다. 이러한 엔드투엔드 머신러닝 플랫폼을 제공하는 AWS 서비스는 무엇입니까?
+
+A. Amazon Rekognition
+B. Amazon SageMaker
+C. AWS Glue
+D. Amazon Comprehend
+
+279. 한 글로벌 기업의 DevOps팀이 개발, 스테이징, 프로덕션 환경에 동일한 AWS 인프라를 코드 기반으로 반복적이고 일관성 있게 배포하고 관리하려고 합니다. 인프라를 코드(IaC)로 정의하여 자동화된 방식으로 반복 배포할 수 있도록 지원하는 AWS 서비스는 무엇입니까?
+
+A. AWS CodeDeploy
+B. AWS Elastic Beanstalk
+C. AWS OpsWorks
+D. AWS CloudFormation
+
+280. 한 의료 기관이 환자 데이터를 AWS에서 처리하면서 여러 서비스에 걸쳐 사용되는 암호화 키를 중앙에서 생성, 관리, 감사할 수 있는 방법이 필요합니다. 이러한 암호화 키의 중앙 집중식 관리를 지원하는 AWS 서비스는 무엇입니까?
+
+A. AWS KMS
+B. AWS Secrets Manager
+C. AWS Certificate Manager
+D. AWS CloudHSM
+
+281. 한 전통 제조 기업이 온프레미스 데이터센터에서 AWS 클라우드로 마이그레이션을 고려하고 있습니다. 경영진이 클라우드 전환의 이점을 검토하고 있을 때, 트래픽 변화에 따른 유연한 확장성, 초기 인프라 투자 비용 절감, 전 세계 사용자 대상의 낮은 지연시간 서비스 제공, 신규 서비스의 빠른 출시 등이 주요 이점으로 제시되었습니다. 이 중 AWS 클라우드의 글로벌 인프라를 활용하여 전 세계 사용자에게 낮은 지연시간으로 서비스를 제공할 수 있는 AWS의 핵심 이점은 무엇입니까?
+
+A. 탄력적 확장성
+B. 선행 비용 제거
+C. 글로벌 리전, 엣지 로케이션 활용
+D. 빠른 시장 출시 속도
+
+282. 한 대형 IT 기업이 수백 대의 서버에 대한 소프트웨어 구성과 패치 관리를 자동화하려고 합니다. 기존에 Chef와 Puppet을 사용하던 운영팀이 AWS 환경에서도 동일한 구성 관리 도구를 계속 활용할 수 있도록 지원하는 AWS 서비스는 무엇입니까?
+
+A. AWS CloudFormation
+B. AWS OpsWorks
+C. AWS Systems Manager
+D. AWS Elastic Beanstalk
+
+283. 한 기업의 운영팀이 EC2 인스턴스에서 실행 중인 애플리케이션의 CPU 급증 현상을 정밀하게 분석하기 위해 기본 모니터링보다 더 짧은 주기로 메트릭을 수집해야 합니다. Amazon CloudWatch에서 기본 모니터링(5분 간격) 대신 1분 간격으로 메트릭을 수집하려면 어떤 모니터링 옵션을 활성화해야 합니까?
+
+A. CloudWatch Logs Insights
+B. CloudWatch Detailed Monitoring
+C. CloudWatch Custom Metrics
+D. CloudWatch Contributor Insights
+
+284. 한 금융회사가 AWS Well-Architected Framework의 보안 원칙(Security Pillar)을 준수하기 위해 AWS 계정 내 모든 API 호출과 사용자 활동에 대한 감사 로그를 수집하고 분석하려 합니다. 이러한 감사 로그 수집 및 보안 이벤트 추적을 지원하는 AWS 서비스는 무엇입니까?
+
+A. Amazon CloudWatch
+B. AWS Config
+C. Amazon GuardDuty
+D. AWS CloudTrail
+
+285. 한 기업의 시스템 관리자가 운영 중인 EC2 인스턴스에 연결된 Amazon EBS 볼륨의 용량이 부족하여 저장 공간을 늘리고, 동시에 볼륨 타입을 변경하여 IOPS 성능을 향상시키려 합니다. 인스턴스를 중지하지 않고 온라인 상태에서 EBS 볼륨을 수정할 때, Amazon EBS Elastic Volumes 기능으로 수행할 수 없는 작업은 무엇입니까?
+
+A. 볼륨 크기 증가
+B. 볼륨 타입 변경
+C. 볼륨 크기 축소
+D. IOPS 성능 수치 조정
+

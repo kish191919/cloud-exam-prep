@@ -1,0 +1,105 @@
+226. 전자상거래 기업이 운영하는 온라인 쇼핑몰은 상품 카탈로그 조회와 같은 읽기 집약적인 데이터베이스 요청이 폭증하여 데이터베이스 서버의 부하가 심각한 수준에 달했습니다. 데이터베이스에 대한 직접적인 읽기 요청을 줄이고 응답 속도를 개선하기 위해 인메모리 캐싱 계층을 추가하려고 합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. Amazon RDS Read Replica
+B. Amazon ElastiCache
+C. Amazon DynamoDB Accelerator
+D. AWS Global Accelerator
+
+227. 금융 서비스 기업의 클라우드 운영팀은 AWS 환경에서 보안 그룹 규칙 변경, IAM 정책 수정, S3 버킷 설정 변경 등 리소스 구성의 변경 이력을 지속적으로 추적하고 규정 준수 여부를 자동으로 평가해야 합니다. 이러한 리소스 구성 변경 모니터링 및 규정 준수 감사 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. AWS Config
+B. AWS CloudTrail
+C. Amazon GuardDuty
+D. AWS Security Hub
+
+228. 한 스타트업의 DevOps 팀은 AWS Well-Architected Framework의 Operational Excellence 원칙에 따라 인프라를 코드로 정의하고 반복 가능한 배포와 지속적인 운영 개선을 실현하고자 합니다. 이 원칙에서 권장하는 핵심 실천 방법은 무엇입니까?
+
+A. 멀티 AZ 배포, 자동 장애 조치
+B. 비용 태그 지정, 예산 알림 설정
+C. Infrastructure as Code, 운영 자동화
+D. 데이터 암호화, IAM 최소 권한 적용
+
+229. 모바일 애플리케이션 개발팀은 외부 파트너사 직원들이 특정 AWS 리소스에 일정 시간 동안만 접근할 수 있도록 허용해야 합니다. 장기적인 IAM 사용자 자격 증명을 생성하지 않고 제한된 기간 동안만 유효한 접근 권한을 부여하기 위해 사용할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS IAM Identity Center
+B. Amazon Cognito 자격 증명 풀
+C. IAM 액세스 키, 시크릿 키 발급
+D. AWS STS 임시 자격 증명
+
+230. 대형 온라인 스트리밍 서비스 기업의 신뢰성 엔지니어링팀은 프로덕션 환경과 유사한 조건에서 서버 장애, 네트워크 지연 등의 오류 상황을 의도적으로 발생시켜 시스템의 복원력을 검증하고자 합니다. 이러한 카오스 엔지니어링 기반의 장애 시뮬레이션을 수행하는 데 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Fault Injection Service
+B. Amazon CloudWatch Synthetics
+C. AWS X-Ray
+D. AWS Resilience Hub
+
+231. 중소기업의 IT 관리자는 AWS 사용 중 기술적인 문제가 발생할 때마다 AWS 지원팀에 문의하고 있습니다. 현재 Basic Support 플랜을 사용 중인데, 비용을 최소화하면서 기술 지원 케이스를 생성하고 클라우드 전문가의 지원을 받을 수 있는 가장 낮은 수준의 AWS Support 플랜은 무엇입니까?
+
+A. Enterprise Support
+B. Business Support
+C. Developer Support
+D. Basic Support
+
+232. 헬스케어 스타트업이 개발 중인 모바일 앱은 수백만 명의 환자가 이메일, 소셜 로그인, 자체 계정 등 다양한 방법으로 로그인할 수 있어야 합니다. 별도의 인증 인프라를 구축하지 않고 사용자 등록, 로그인, 계정 관리 기능을 제공하는 데 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS IAM
+B. AWS Directory Service
+C. AWS Single Sign-On
+D. Amazon Cognito
+
+233. 소프트웨어 개발 팀이 웹 애플리케이션을 AWS에 배포하려고 합니다. 팀원들은 인프라 프로비저닝, 로드 밸런싱, 오토 스케일링과 같은 인프라 관리 작업 없이 애플리케이션 코드 개발에만 집중하고 싶어합니다. 이러한 PaaS 방식의 애플리케이션 배포 환경을 제공하는 AWS 서비스는 무엇입니까?
+
+A. Amazon EC2 Auto Scaling
+B. AWS Elastic Beanstalk
+C. AWS CloudFormation
+D. Amazon ECS
+
+234. 제조 기업의 네트워크 엔지니어는 사내 온프레미스 데이터센터와 AWS VPC를 인터넷을 통해 암호화된 터널로 연결하는 Site-to-Site VPN을 구성하려고 합니다. 이 구성에서 온프레미스 측 VPN 장비를 AWS에 등록하기 위해 생성해야 하는 리소스는 무엇입니까?
+
+A. Virtual Private Gateway
+B. Customer Gateway
+C. Transit Gateway
+D. Internet Gateway
+
+235. 한 기업의 CTO는 클라우드 서비스 도입을 검토하면서 개발팀이 운영체제, 미들웨어, 런타임 환경 관리는 클라우드 공급자에게 맡기고 애플리케이션 개발과 데이터 관리에만 집중할 수 있는 서비스 모델을 찾고 있습니다. 이 요구사항에 해당하는 클라우드 서비스 모델은 무엇입니까?
+
+A. IaaS
+B. SaaS
+C. PaaS
+D. On-Premises
+
+236. 기업의 클라우드 아키텍트팀은 AWS 환경에 3-Tier 웹 애플리케이션 아키텍처를 신속하게 구축해야 합니다. AWS 베스트 프랙티스를 기반으로 검증된 아키텍처를 자동화된 템플릿 형태로 제공하여 수동 구성 없이 빠르게 배포할 수 있도록 지원하는 AWS 솔루션은 무엇입니까?
+
+A. AWS CloudFormation StackSets
+B. AWS Quick Starts
+C. AWS Service Catalog
+D. AWS Launch Wizard
+
+237. 동영상 렌더링 작업을 처리하는 기업에서 단일 EC2 인스턴스의 CPU와 메모리 리소스가 부족하여 처리 속도가 저하되고 있습니다. 인스턴스 수를 늘리는 대신 기존 인스턴스를 더 높은 사양의 인스턴스 유형으로 변경하여 성능을 향상시키려고 합니다. 이러한 방식의 스케일링을 무엇이라고 합니까?
+
+A. 수평 스케일링
+B. 오토 스케일링
+C. 수직 스케일링
+D. 탄력적 스케일링
+
+238. 의료 기관이 AWS S3에 저장된 대용량 데이터에서 환자의 이름, 주민등록번호, 의료 기록 번호 등 개인 식별 정보(PII)가 포함된 파일을 자동으로 탐지하고 분류하여 데이터 보안 정책을 강화하려고 합니다. 이 요구사항에 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon Inspector
+B. Amazon GuardDuty
+C. AWS Security Hub
+D. Amazon Macie
+
+239. 글로벌 미디어 기업이 전 세계 사용자에게 동영상 스트리밍 서비스를 제공하고 있습니다. 지리적으로 분산된 사용자들이 콘텐츠를 빠르게 로드할 수 있도록 사용자와 가까운 위치의 엣지 서버에서 콘텐츠를 캐싱하여 전달하고자 합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. AWS Global Accelerator
+B. Amazon CloudFront
+C. Amazon Route 53
+D. AWS Outposts
+
+240. 규제 산업에 속한 기업의 보안팀은 Amazon S3 버킷에 저장된 객체에 대한 모든 접근 요청, 즉 누가 언제 어떤 객체에 접근했는지를 상세히 기록하여 보안 감사 및 이상 접근 탐지에 활용하려고 합니다. 이를 위해 활성화해야 하는 S3 기능은 무엇입니까?
+
+A. S3 버전 관리
+B. S3 서버 액세스 로깅
+C. S3 이벤트 알림
+D. S3 객체 잠금
+

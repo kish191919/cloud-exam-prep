@@ -1,0 +1,105 @@
+181. 글로벌 물류 스타트업이 마이크로서비스 아키텍처로 전환하면서 여러 컨테이너화된 애플리케이션을 안정적으로 배포하고 관리해야 합니다. 운영팀은 별도의 클러스터 관리 인프라를 구축하지 않고 컨테이너 오케스트레이션을 완전 관리형으로 처리하고자 합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. Amazon ECS on EC2
+B. AWS Elastic Beanstalk
+C. Amazon EKS on Fargate
+D. AWS Lambda
+
+182. 한 중소기업이 자체 데이터센터를 운영하다가 AWS 클라우드로 전환을 검토하고 있습니다. 재무팀은 AWS가 수많은 고객에게 서비스를 제공하기 때문에 개별 기업이 자체 인프라를 운영하는 것보다 더 낮은 단가로 서비스를 제공할 수 있다고 설명을 들었습니다. AWS가 이처럼 낮은 비용으로 서비스를 제공할 수 있는 클라우드 컴퓨팅의 경제적 원리는 무엇입니까?
+
+A. 글로벌 인프라 확장
+B. 규모의 경제
+C. 탄력적 프로비저닝
+D. 종량제 과금 모델
+
+183. 제조업체가 일부 워크로드는 온프레미스 서버에서, 나머지는 AWS EC2 인스턴스에서 운영하는 하이브리드 환경을 유지하고 있습니다. IT 팀은 두 환경의 서버를 단일 콘솔에서 통합 관리하고, 패치 적용 및 명령 실행을 중앙에서 수행하고자 합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. AWS Config
+B. Amazon CloudWatch
+C. AWS OpsWorks
+D. AWS Systems Manager
+
+184. 소규모 이커머스 회사가 HTML, CSS, JavaScript로 구성된 제품 카탈로그 웹사이트를 운영하려 합니다. 별도의 웹 서버를 프로비저닝하거나 서버를 직접 관리하지 않고 저렴한 비용으로 웹사이트를 호스팅하고자 합니다. 이 요구사항에 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon S3 정적 웹사이트 호스팅
+B. Amazon EC2 + Nginx
+C. AWS Amplify Hosting
+D. Amazon Lightsail
+
+185. 금융 기관이 온프레미스 데이터센터에 대용량 데이터를 보관하면서 동시에 AWS 클라우드 스토리지와 원활하게 연동하여 데이터를 백업하고 아카이빙하고자 합니다. 기존 온프레미스 애플리케이션의 변경 없이 클라우드 스토리지를 로컬 스토리지처럼 사용하려면 어떤 AWS 서비스가 적합합니까?
+
+A. AWS DataSync
+B. AWS Snowball Edge
+C. Amazon S3 Transfer Acceleration
+D. AWS Storage Gateway
+
+186. 한 기업이 AWS 클라우드 환경을 운영하고 있습니다. AWS 공동 책임 모델(Shared Responsibility Model)에 따라 IAM 관련 보안 책임 중 고객이 직접 관리해야 하는 항목은 무엇입니까?
+
+A. IAM 서비스 인프라 보안
+B. IAM API 엔드포인트 암호화
+C. IAM 사용자, 역할, 정책 관리
+D. IAM 글로벌 가용성 유지
+
+187. 대기업이 여러 부서별로 독립된 VPC를 운영하고 있으며, 본사 온프레미스 데이터센터와도 안정적인 전용 네트워크 연결이 필요합니다. 모든 VPC 간 트래픽과 온프레미스 연결을 중앙 허브 방식으로 단순하게 관리하고자 할 때, 이 아키텍처에 가장 적합한 AWS 서비스 조합은 무엇입니까?
+
+A. VPC Peering, AWS VPN
+B. AWS Transit Gateway, AWS Direct Connect
+C. AWS PrivateLink, Internet Gateway
+D. AWS Direct Connect, VPC Peering
+
+188. 개발팀이 새로운 EC2 인스턴스를 시작할 때마다 필요한 소프트웨어 설치, 환경 변수 설정, 애플리케이션 구성 작업을 수동으로 반복 수행하고 있습니다. 인스턴스 시작 시 이러한 초기화 작업을 자동으로 실행하도록 스크립트를 지정할 수 있는 EC2 기능은 무엇입니까?
+
+A. EC2 Instance Profile
+B. EC2 User Data
+C. AMI 사용자 정의
+D. EC2 Launch Template
+
+189. 글로벌 스트리밍 서비스 회사가 급증하는 사용자 트래픽에 대응하기 위해 AWS 아키텍처를 재검토하고 있습니다. 아키텍처 팀은 워크로드 특성에 맞는 최적의 컴퓨팅 유형과 스토리지를 선택하고 불필요한 리소스를 제거하여 성능을 극대화하고자 합니다. 이러한 접근 방식은 AWS Well-Architected Framework의 어느 원칙에 해당합니까?
+
+A. 운영 우수성
+B. 안정성
+C. 비용 최적화
+D. 성능 효율성
+
+190. 스타트업이 트래픽 변동이 심한 웹 애플리케이션을 운영하려 합니다. 초기 투자 비용 없이 필요한 만큼 컴퓨팅 자원을 사용하고, 실제 사용한 시간만큼만 비용을 지불하는 EC2 구매 방식은 무엇입니까?
+
+A. Reserved Instance
+B. Savings Plans
+C. Spot Instance
+D. On-Demand Instance
+
+191. 핀테크 기업이 결제 처리 시스템과 마케팅 분석 시스템을 AWS에서 운영하면서 두 시스템 간의 네트워크 트래픽을 완전히 격리하고, 각 시스템에 대한 접근 제어를 독립적으로 설정하고자 합니다. 이를 위해 사용해야 하는 AWS 네트워크 격리 서비스는 무엇입니까?
+
+A. AWS WAF
+B. Amazon VPC
+C. Security Group
+D. AWS Shield
+
+192. 클라우드 운영팀이 AWS 환경에서 오랫동안 사용되지 않은 EC2 인스턴스, 연결되지 않은 EBS 볼륨, 유휴 상태의 로드 밸런서 등을 식별하여 불필요한 비용을 절감하고자 합니다. 이러한 미사용 리소스를 자동으로 탐지하고 비용 최적화 권고안을 제공하는 AWS 서비스는 무엇입니까?
+
+A. AWS Cost Explorer
+B. AWS Budgets
+C. AWS Trusted Advisor
+D. Amazon CloudWatch
+
+193. 글로벌 미디어 기업이 대규모 DDoS 공격으로부터 CloudFront 배포, Route 53 호스팅 영역, Elastic Load Balancer를 보호하고, 공격 발생 시 전문가 지원과 비용 보호를 받고자 합니다. 이 요구사항에 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS WAF
+B. AWS Shield Advanced
+C. Amazon GuardDuty
+D. AWS Firewall Manager
+
+194. 보안 감사팀이 AWS 계정의 루트 사용자 보안 상태를 점검하고 있습니다. 루트 계정을 보호하기 위한 AWS 보안 모범 사례로 권장되는 조치는 무엇입니까?
+
+A. 루트 계정으로 일상 작업 수행
+B. 루트 계정 Access Key 생성 및 보관
+C. MFA 활성화, 일상 작업 금지
+D. 루트 계정을 팀원과 공유 관리
+
+195. 대형 유통 그룹이 각 계열사별로 별도의 AWS 계정을 운영하면서 전체 계정에 일관된 보안 정책을 적용하고, 모든 계열사의 AWS 사용 비용을 하나의 청구서로 통합하여 관리하고자 합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. AWS Control Tower
+B. AWS Organizations
+C. AWS IAM Identity Center
+D. AWS Config
+

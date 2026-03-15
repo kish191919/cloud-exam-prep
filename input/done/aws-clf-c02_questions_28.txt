@@ -1,0 +1,105 @@
+1101. 한 전자상거래 회사는 주문 접수, 재고 확인, 결제 처리, 배송 요청 등 여러 단계로 구성된 주문 처리 워크플로우를 마이크로서비스 기반으로 구축하려 합니다. 각 단계는 순서대로 실행되어야 하며, 특정 단계에서 오류가 발생하면 자동으로 재시도하고 실패 시 대체 흐름을 실행해야 합니다. 이 요구사항을 충족하는 서버리스 워크플로우 오케스트레이션 서비스는 무엇입니까?
+
+A. Amazon SQS
+B. AWS Step Functions
+C. Amazon EventBridge
+D. AWS Lambda
+
+1102. 한 금융 서비스 회사는 고객 데이터를 처리하는 웹 애플리케이션을 AWS에서 운영하고 있습니다. 최근 보안 감사에서 SQL Injection 및 Cross-Site Scripting(XSS) 공격에 대한 취약점이 발견되었습니다. 애플리케이션 코드 수정 없이 이러한 웹 애플리케이션 공격을 탐지하고 차단할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Shield
+B. Amazon Inspector
+C. Amazon GuardDuty
+D. AWS WAF
+
+1103. 한 대형 제조업체는 온프레미스 데이터 센터에서 AWS로 대용량 데이터를 주기적으로 전송해야 합니다. 공용 인터넷을 통한 전송 시 속도 저하와 보안 문제가 우려되며, 안정적이고 일관된 네트워크 성능이 반드시 보장되어야 합니다. 이 요구사항을 충족하는 전용 네트워크 연결 서비스는 무엇입니까?
+
+A. AWS Direct Connect
+B. AWS VPN
+C. Amazon CloudFront
+D. AWS Transit Gateway
+
+1104. 한 글로벌 SaaS 기업은 특정 AWS 리전에서 대규모 장애가 발생하더라도 서비스를 중단 없이 계속 제공해야 합니다. 리전 수준의 장애에도 빠른 복구와 지속적인 서비스 가용성을 보장하기 위한 아키텍처 설계 방식으로 가장 적합합니까?
+
+A. 단일 리전 다중 AZ 배포
+B. Amazon CloudFront 캐싱 활용
+C. 멀티 리전 액티브-액티브 아키텍처
+D. Auto Scaling 그룹 구성
+
+1105. 한 유통 기업은 온프레미스의 Oracle 데이터베이스를 Amazon RDS로 이전하려 합니다. 데이터베이스 마이그레이션 중에도 서비스 중단을 최소화하고, 마이그레이션이 완료될 때까지 원본 데이터베이스의 변경 사항이 지속적으로 복제되어야 합니다. 이 요구사항에 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Snowball
+B. AWS DataSync
+C. AWS DMS
+D. AWS Backup
+
+1106. 한 스마트 공장 기업은 수천 개의 IoT 센서 장치를 AWS에 안전하게 연결하고, 각 장치를 인증 및 등록하여 실시간으로 수집되는 온도, 압력, 진동 데이터를 처리하려 합니다. 이러한 IoT 디바이스 연결 및 데이터 수집 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. Amazon Kinesis
+B. AWS IoT Core
+C. Amazon SNS
+D. AWS Greengrass
+
+1107. 한 스타트업의 DevOps 엔지니어는 Amazon EC2 인스턴스에 대해 특정 포트와 프로토콜을 기준으로 인바운드 및 아웃바운드 트래픽을 제어하려 합니다. 또한 허용된 연결에 대한 응답 트래픽은 별도의 규칙 없이 자동으로 허용되어야 합니다. 이 요구사항에 해당하는 AWS 기능은 무엇입니까?
+
+A. 네트워크 ACL
+B. AWS WAF
+C. VPC 엔드포인트
+D. 보안 그룹
+
+1108. 한 의료 기관의 보안 팀은 AWS 계정에서 발생하는 모든 API 호출 기록과 리소스 변경 이력을 감사 목적으로 보관해야 합니다. 누가 언제 어떤 작업을 수행했는지 추적할 수 있는 계정 활동 로그를 제공하는 AWS 서비스는 무엇입니까?
+
+A. AWS CloudTrail
+B. Amazon CloudWatch
+C. AWS Config
+D. AWS Trusted Advisor
+
+1109. 한 IT 기업은 기존 온프레미스에서 Kubernetes 기반으로 운영하던 컨테이너 워크로드를 AWS로 이전하려 합니다. Kubernetes 컨트롤 플레인 관리에 대한 부담을 줄이면서도 기존 Kubernetes 환경과의 호환성을 유지하고 싶습니다. 이 요구사항에 가장 적합한 AWS 관리형 서비스는 무엇입니까?
+
+A. AWS Fargate
+B. Amazon ECS
+C. AWS Lambda
+D. Amazon EKS
+
+1110. 한 미디어 회사는 Amazon S3에 저장되는 콘텐츠 파일을 생성 후 30일간은 자주 접근하지만, 이후에는 거의 접근하지 않습니다. 접근 빈도에 따라 스토리지 계층을 자동으로 이동시켜 비용을 최적화하려 할 때, 이를 자동화할 수 있는 S3 기능은 무엇입니까?
+
+A. S3 버전 관리
+B. S3 수명 주기 정책
+C. S3 Replication
+D. S3 Object Lock
+
+1111. 한 기업의 클라우드 관리자는 AWS 환경의 비용 절감 기회, 보안 취약점, 성능 개선 가능성을 한 곳에서 파악하고 싶습니다. AWS 모범 사례를 기반으로 계정 전반의 비용 최적화, 보안, 성능을 자동으로 분석하고 권장사항을 제공하는 AWS 서비스는 무엇입니까?
+
+A. AWS Cost Explorer
+B. Amazon Inspector
+C. AWS Trusted Advisor
+D. AWS Config
+
+1112. 한 핀테크 기업은 여러 마이크로서비스에서 공통으로 사용하는 데이터베이스 연결 문자열, API 키, 환경 변수 등의 설정 값을 안전하게 중앙에서 관리하고 서비스 간에 공유하려 합니다. 이러한 애플리케이션 설정 관리 요구사항에 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Systems Manager Parameter Store
+B. AWS Secrets Manager
+C. Amazon S3
+D. AWS KMS
+
+1113. 한 물류 회사는 전국 창고에 설치된 수백 대의 CCTV 카메라에서 실시간으로 영상 데이터를 수집하고, 이를 저장하여 이후 영상 분석 및 이상 징후 탐지에 활용하려 합니다. 실시간 비디오 스트리밍 수집 및 저장 요구사항에 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon Kinesis Data Streams
+B. Amazon Rekognition
+C. Amazon Kinesis Video Streams
+D. AWS Elemental MediaLive
+
+1114. 한 기업의 보안 팀은 AWS 계정에서 발생하는 비정상적인 API 호출 패턴, 의심스러운 IP 접근, 잠재적인 계정 침해 시도를 자동으로 탐지하고 싶습니다. 별도의 에이전트 설치 없이 머신러닝을 활용하여 위협을 지속적으로 모니터링하는 AWS 서비스는 무엇입니까?
+
+A. AWS CloudTrail
+B. Amazon GuardDuty
+C. AWS Security Hub
+D. Amazon Inspector
+
+1115. 한 데이터 분석팀은 Amazon S3에 저장된 수 테라바이트 규모의 로그 데이터를 별도의 데이터 웨어하우스로 이동하지 않고 직접 SQL로 분석하려 합니다. 서버 프로비저닝 없이 S3 데이터에 대해 즉시 쿼리를 실행할 수 있는 AWS 서비스는 무엇입니까?
+
+A. Amazon Redshift
+B. Amazon RDS
+C. AWS Glue
+D. Amazon Athena
+

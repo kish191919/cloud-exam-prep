@@ -1,0 +1,105 @@
+196. 한 스타트업이 자체 소프트웨어를 개발할 역량이 부족하여 보안, 모니터링, 데이터 분석 등 다양한 써드파티 소프트웨어를 신속하게 도입하려고 합니다. AWS 환경에서 통합 라이선싱과 함께 써드파티 소프트웨어를 검색, 구매, 배포할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Service Catalog
+B. AWS Marketplace
+C. AWS Partner Network
+D. AWS AppExchange
+
+197. 한 기업의 클라우드 재무팀이 매월 AWS 사용 비용이 예상보다 높아지는 문제를 겪고 있습니다. 팀은 과거 비용 데이터를 분석하여 향후 지출을 예측하고, 특정 예산 한도를 초과할 경우 자동으로 알림을 받고 싶습니다. 비용 분석 및 예측에는 AWS Cost Explorer를, 예산 초과 알림 설정에는 어떤 AWS 서비스를 사용하는 것이 적합합니까?
+
+A. AWS Budgets
+B. AWS Cost Anomaly Detection
+C. AWS Pricing Calculator
+D. AWS Trusted Advisor
+
+198. 글로벌 전자상거래 기업이 한국어로 작성된 상품 설명 및 고객 리뷰를 영어, 스페인어, 일본어 등 다양한 언어로 자동 변환하여 각 국가 고객에게 제공하려고 합니다. 별도의 번역 인력 없이 다국어 콘텐츠를 자동으로 변환할 수 있는 AWS 서비스는 무엇입니까?
+
+A. Amazon Polly
+B. Amazon Rekognition
+C. Amazon Comprehend
+D. Amazon Translate
+
+199. 한 기업이 비용 절감을 위해 다수의 예약 인스턴스(Reserved Instance)를 구매하였습니다. 하지만 일부 RI가 충분히 활용되지 않아 비용 낭비가 발생하고 있다는 우려가 있습니다. RI 사용률이 특정 임계값 아래로 떨어질 경우 자동으로 알림을 받을 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Cost Explorer
+B. AWS Pricing Calculator
+C. AWS Budgets
+D. AWS Trusted Advisor
+
+200. 한 미디어 스트리밍 회사가 스포츠 생중계 이벤트 중 트래픽이 급격히 증가하는 상황을 경험하고 있습니다. 트래픽 증가에 따라 EC2 인스턴스 수를 자동으로 늘리고, 이벤트가 끝난 후에는 다시 줄여 비용을 최적화하고자 합니다. 이를 가능하게 하는 AWS 서비스는 무엇입니까?
+
+A. AWS Auto Scaling
+B. Elastic Load Balancing
+C. Amazon EC2 Spot Instance
+D. AWS Lambda
+
+201. 한 데이터 분석 기업이 Amazon S3에 대용량 로그 데이터를 저장하고 있습니다. 자주 접근하는 최신 데이터는 빠르게 조회할 수 있어야 하고, 오래된 데이터는 접근 빈도가 낮아 비용이 저렴한 스토리지 클래스로 자동 이동시켜 비용을 절감하고 싶습니다. 이를 위해 사용할 수 있는 S3의 기능 또는 스토리지 클래스는 무엇입니까?
+
+A. S3 Versioning
+B. S3 Replication
+C. S3 Object Lock
+D. S3 Lifecycle Policy
+
+202. 한 기업이 AWS 클라우드로 전환 후 보안 책임 범위를 명확히 하려 합니다. AWS 공동 책임 모델(Shared Responsibility Model)에 따르면, 클라우드에서 운영 중인 애플리케이션의 사용자 접근 권한 관리와 저장 데이터 암호화는 누구의 책임입니까?
+
+A. AWS 전적 책임
+B. 고객 책임
+C. AWS, 고객 공동 책임
+D. 서드파티 보안 공급자 책임
+
+203. 한 금융 회사의 보안팀이 AWS 계정 내에서 발생하는 모든 API 호출 및 사용자 활동을 기록하고, 특정 보안 이벤트(예: 루트 계정 로그인)가 발생할 경우 즉시 담당자에게 이메일 알림을 전송하고 싶습니다. 이를 구현하기 위해 AWS CloudTrail과 함께 사용해야 하는 알림 서비스는 무엇입니까?
+
+A. AWS Config
+B. Amazon CloudWatch Events
+C. Amazon SNS
+D. AWS Security Hub
+
+204. 한 기업의 보안 담당자가 AWS 계정 전반의 보안 설정 상태를 점검하려 합니다. MFA 미설정 IAM 사용자, 공개된 S3 버킷, 과도한 권한을 가진 IAM 정책 등 보안 모범 사례 위반 사항을 자동으로 탐지하고 권고 사항을 제공하는 AWS 서비스는 무엇입니까?
+
+A. AWS Trusted Advisor
+B. Amazon Inspector
+C. AWS Shield
+D. Amazon GuardDuty
+
+205. 한 대기업이 AWS Organizations를 통해 여러 AWS 계정을 중앙에서 관리하고 있습니다. 특정 계정에서 구매한 예약 인스턴스(Reserved Instance)의 할인 혜택을 조직 내 다른 계정에서도 적용받을 수 있도록 하는 AWS Organizations의 기능은 무엇입니까?
+
+A. Service Control Policy (SCP)
+B. 통합 결제 (Consolidated Billing)
+C. AWS Cost Allocation Tags
+D. AWS Resource Access Manager
+
+206. 한 기업의 보안 정책에 따라 AWS IAM 사용자 로그인 시 다중 인증(MFA)을 적용해야 합니다. 보안팀은 소프트웨어 기반 OTP 앱 대신 물리적인 하드웨어 보안 키를 사용하는 MFA 방식을 도입하려 합니다. 이에 해당하는 MFA 디바이스 유형은 무엇입니까?
+
+A. 가상 MFA 디바이스
+B. SMS 문자 인증
+C. 하드웨어 TOTP 토큰
+D. IAM Identity Center SSO
+
+207. 한 기업이 AWS 클라우드로 마이그레이션하면서 AWS 공동 책임 모델(Shared Responsibility Model)에 대해 검토하고 있습니다. 물리적 데이터센터 시설 보호, 서버 하드웨어 유지 관리, 네트워크 인프라 보안은 누구의 책임입니까?
+
+A. 고객 책임
+B. AWS, 고객 공동 책임
+C. 서드파티 감사 기관 책임
+D. AWS 책임
+
+208. 한 기업의 보안 감사팀이 AWS 계정 내 모든 IAM 사용자의 비밀번호 마지막 변경일, 액세스 키 활성화 여부, MFA 활성화 상태를 한 번에 확인하여 보안 정책 준수 여부를 점검하려 합니다. 이를 위해 사용할 수 있는 IAM 기능은 무엇입니까?
+
+A. IAM Access Analyzer
+B. IAM 자격 증명 보고서
+C. AWS Config Rules
+D. AWS CloudTrail 로그
+
+209. 한 전자상거래 플랫폼이 기존의 단일 애플리케이션(모놀리식) 구조에서 벗어나, 주문, 결제, 재고 관리 기능을 독립적으로 배포하고 운영할 수 있는 구조로 전환하려 합니다. 각 기능이 독립적으로 확장되고 장애가 다른 기능에 영향을 주지 않도록 하는 클라우드 아키텍처 설계 원칙은 무엇입니까?
+
+A. 단일 장애점 제거
+B. 마이크로서비스 아키텍처
+C. 서버리스 컴퓨팅
+D. 다중 가용 영역 배포
+
+210. 한 제조 기업이 현재 온프레미스 데이터센터에서 운영 중인 시스템을 AWS로 마이그레이션하는 것을 검토하고 있습니다. 마이그레이션 전 AWS와 온프레미스 환경의 예상 비용을 항목별로 비교하고 총 소유 비용(TCO)을 추정하려 합니다. 이를 위해 사용할 수 있는 AWS 도구는 무엇입니까?
+
+A. AWS Budgets
+B. AWS Cost Explorer
+C. AWS Migration Hub
+D. AWS 총 소유 비용 계산기
+

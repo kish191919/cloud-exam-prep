@@ -1,0 +1,105 @@
+166. 한 이커머스 기업이 고객 주문 데이터와 상품 이미지를 Amazon S3에 저장하고 있습니다. 데이터 접근이 빈번하게 발생하며, 데이터를 가져올 때마다 추가 비용이 발생하지 않도록 스토리지 클래스를 선택하려고 합니다. Retrieval 비용이 발생하지 않는 Amazon S3 스토리지 클래스는 무엇입니까?
+
+A. S3 Glacier Flexible Retrieval
+B. S3 Standard-IA
+C. S3 Standard
+D. S3 Intelligent-Tiering
+
+167. 글로벌 금융 서비스 회사가 전 세계 사용자에게 낮은 지연 시간으로 트레이딩 애플리케이션을 제공하려고 합니다. 이 회사는 Layer 3 수준에서 네트워크 트래픽을 최적화하여 전 세계 엣지 로케이션을 통해 트래픽을 라우팅하고자 합니다. 이 요구사항에 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Direct Connect
+B. Amazon CloudFront
+C. AWS Global Accelerator
+D. Amazon Route 53
+
+168. 의료 소프트웨어 회사가 HIPAA 및 PCI DSS 규정 준수 여부를 외부 감사 기관에 증명해야 합니다. AWS의 보안 인증 및 규정 준수 보고서를 무료로 다운로드하여 감사 기관에 제출할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Artifact
+B. AWS Config
+C. AWS Security Hub
+D. AWS Trusted Advisor
+
+169. 한 기업의 DevOps 팀이 AWS Support Center에 프로그래밍 방식으로 접근하여 지원 케이스를 자동으로 생성하고 관리하는 시스템을 구축하려고 합니다. AWS Support API를 사용하기 위해 최소한으로 가입해야 하는 AWS Support 플랜은 무엇입니까?
+
+A. Basic
+B. Developer
+C. Business
+D. Enterprise
+
+170. 한 소프트웨어 회사가 여러 Amazon EC2 인스턴스에 웹 애플리케이션의 새 버전을 자동으로 배포하고, 배포 진행 상태와 성공 여부를 중앙에서 모니터링하려고 합니다. 이 요구사항에 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS CodeDeploy
+B. AWS CodeBuild
+C. AWS Elastic Beanstalk
+D. AWS CloudFormation
+
+171. 한 스타트업이 AWS 클라우드에서 웹 애플리케이션을 처음 구축하려고 합니다. 네트워크를 논리적으로 격리하고, 퍼블릭 서브넷과 프라이빗 서브넷을 구성하며, 인터넷과의 통신을 제어하고, 인스턴스 수준의 트래픽을 필터링해야 합니다. Amazon VPC 구성에 필요한 핵심 요소들은 무엇입니까?
+
+A. 인터넷 게이트웨이, 라우팅 테이블, 보안 그룹, NACL
+B. CloudFront, WAF, Shield, Route 53
+C. NAT 게이트웨이, VPN, Direct Connect, Transit Gateway
+D. Elastic IP, ELB, Auto Scaling, CloudWatch
+
+172. 글로벌 미디어 회사가 전 세계 스튜디오에서 촬영한 대용량 영상 파일을 Amazon S3 버킷에 빠르게 업로드해야 합니다. 지리적으로 먼 거리에서도 업로드 속도를 향상시킬 수 있는 Amazon S3의 기능은 무엇입니까?
+
+A. S3 Replication
+B. S3 Transfer Acceleration
+C. S3 Multipart Upload
+D. AWS Direct Connect
+
+173. 대형 엔터프라이즈 기업이 수십 개의 AWS 계정과 여러 리전에 동일한 클라우드 인프라를 일관되게 배포하고 관리해야 합니다. 코드형 인프라(IaC) 방식으로 멀티 계정 및 멀티 리전 배포를 자동화할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS CloudFormation
+B. AWS Control Tower
+C. AWS CloudFormation StackSets
+D. AWS Organizations
+
+174. 한 소규모 스타트업이 AWS를 처음 사용하기 시작하면서 무료 Support 플랜을 선택했습니다. 이 회사의 개발자가 AWS 서비스 사용 방법을 학습하고 기술적인 문제를 스스로 해결하기 위해 활용할 수 있는 모든 AWS Support 플랜에 공통으로 제공되는 기능은 무엇입니까?
+
+A. 24/7 기술 지원 엔지니어 채팅
+B. Trusted Advisor 전체 항목 점검
+C. AWS 문서, 백서, 지원 포럼
+D. TAM 전담 기술 계정 관리자
+
+175. 한 회사의 애플리케이션이 Amazon EC2 인스턴스에서 실행되며 Amazon S3 및 DynamoDB에 접근해야 합니다. 보안팀은 액세스 키를 코드나 환경 변수에 하드코딩하지 않고 안전하게 AWS 서비스에 접근하도록 요구하고 있습니다. 이 요구사항을 충족하는 가장 적합한 방법은 무엇입니까?
+
+A. AWS Secrets Manager에 액세스 키 저장
+B. EC2 인스턴스에 IAM 역할 연결
+C. 환경 변수에 액세스 키 암호화 저장
+D. IAM 사용자 액세스 키를 S3에 보관
+
+176. 한 글로벌 전자상거래 회사가 대규모 DDoS 공격으로 인해 서비스 중단을 경험했습니다. AWS Shared Responsibility Model에 따르면 대규모 DDoS 공격으로부터 인프라를 보호하는 것은 누구의 책임이며, 이를 위해 AWS가 기본적으로 제공하는 서비스는 무엇입니까?
+
+A. 고객 책임, AWS WAF 직접 구성
+B. 공동 책임, AWS Shield Advanced 기본 제공
+C. AWS 책임, AWS Shield Standard 기본 제공
+D. 고객 책임, Amazon GuardDuty 기본 활성화
+
+177. 한 미디어 회사가 수백만 개의 이미지, 동영상, 문서를 인터넷을 통해 전 세계 사용자에게 제공해야 합니다. 파일을 개별 객체로 저장하고 HTTP/HTTPS를 통해 어디서든 접근할 수 있는 AWS 스토리지 서비스는 무엇입니까?
+
+A. Amazon EFS
+B. Amazon EBS
+C. AWS Storage Gateway
+D. Amazon S3
+
+178. 한 핀테크 스타트업이 서버 프로비저닝이나 운영체제 관리 없이 결제 처리 로직과 컨테이너 기반 마이크로서비스를 실행하려고 합니다. 인프라 관리 부담 없이 코드와 컨테이너를 실행할 수 있는 AWS 서버리스 서비스는 무엇입니까?
+
+A. Amazon EC2, Amazon EKS
+B. AWS Lambda, AWS Fargate
+C. AWS Batch, Amazon ECS
+D. Elastic Beanstalk, Amazon EKS
+
+179. 한 회사의 시스템 관리자가 원격지에서 Amazon EC2 Linux 인스턴스에 접속해야 합니다. 별도의 SSH 클라이언트 소프트웨어나 키 페어 파일 없이 AWS Management Console의 웹 브라우저만으로 EC2 인스턴스에 접속할 수 있는 방법은 무엇입니까?
+
+A. AWS Systems Manager Session Manager
+B. EC2 Instance Connect Endpoint
+C. AWS CloudShell
+D. Amazon AppStream 2.0
+
+180. 한 스타트업이 Amazon S3에 자주 변경되는 웹 애플리케이션 로그 파일을 저장하려고 합니다. 데이터 보관에 따른 최소 보관 기간 요금 부과 없이 유연하게 데이터를 저장하고 삭제할 수 있는 Amazon S3 스토리지 클래스는 무엇입니까?
+
+A. S3 Standard-IA
+B. S3 Glacier Instant Retrieval
+C. S3 One Zone-IA
+D. S3 Standard
+

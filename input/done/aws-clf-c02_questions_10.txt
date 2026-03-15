@@ -1,0 +1,105 @@
+1. 한 글로벌 제조 기업이 AWS로 인프라를 이전하는 과정에서, 기존 온프레미스 데이터베이스를 특정 AWS 리전에서 다른 리전으로 이동해야 하는 상황이 발생했습니다. 운영팀은 이 마이그레이션 작업의 계획 수립과 실행에 대한 책임이 누구에게 있는지 논의 중입니다. AWS 공동 책임 모델(Shared Responsibility Model)에 따르면, 리전 간 리소스 마이그레이션의 계획 및 실행 책임은 누구에게 있습니까?
+
+A. AWS와 고객 공동 책임
+B. AWS 책임
+C. 고객 책임
+D. AWS Professional Services 책임
+
+2. 한 핀테크 스타트업이 여러 개발자 팀이 협업하는 환경에서 애플리케이션 릴리스 주기를 단축하려 합니다. 현재 Amazon EC2 인스턴스와 일부 온프레미스 서버에 코드를 수동으로 배포하고 있어 오류가 자주 발생합니다. 이 회사가 EC2 및 온프레미스 서버에 대한 코드 배포를 자동화하는 데 사용할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Elastic Beanstalk
+B. AWS CodeDeploy
+C. AWS CodePipeline
+D. AWS CodeBuild
+
+3. 한 전자상거래 기업이 피크 시즌 동안 안정적인 워크로드를 처리하기 위해 Amazon EC2 인스턴스를 3년간 지속적으로 사용할 계획입니다. 현재 On-Demand 방식으로 운영 중인 인스턴스 비용을 절감하고자 할 때, EC2 Reserved Instances를 통해 받을 수 있는 최대 할인율은 얼마입니까?
+
+A. 최대 40%
+B. 최대 90%
+C. 최대 75%
+D. 최대 72%
+
+4. 한 금융 서비스 회사가 규제 기관의 감사를 대비하여 AWS 인프라의 구성 변경 이력을 추적하고 규정 준수 여부를 지속적으로 검증해야 합니다. 리소스의 구성 변경 이력 관리와 규정 준수 모니터링을 위해 사용할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS CloudTrail
+B. Amazon CloudWatch
+C. AWS Config
+D. AWS Security Hub
+
+5. 한 헬스케어 기업이 환자 정보를 저장하는 데이터베이스를 AWS로 마이그레이션하려 합니다. 보안팀은 저장된 데이터가 기본적으로 암호화되어야 한다는 요건을 제시했습니다. 추가적인 암호화 설정 없이도 저장 데이터(Encryption at Rest)를 기본으로 암호화하는 AWS 관리형 데이터베이스 서비스는 무엇입니까?
+
+A. Amazon RDS for MySQL
+B. Amazon DynamoDB
+C. Amazon RDS for PostgreSQL
+D. Amazon ElastiCache
+
+6. 한 대기업이 여러 사업부를 위한 수십 개의 AWS 계정을 운영하고 있습니다. CFO는 각 사업부별 AWS 사용 비용을 개별적으로 파악하면서도 단일 청구서로 통합 관리하기를 원합니다. 이 요구 사항을 충족하기 위해 사용할 수 있는 AWS Organizations의 기능은 무엇입니까?
+
+A. 통합 결제(Consolidated Billing)
+B. 서비스 제어 정책(SCP)
+C. AWS Cost Explorer
+D. AWS Budgets
+
+7. 한 유통 기업이 수년간 축적된 수백 테라바이트의 판매 데이터를 분석하여 계절별 트렌드와 고객 구매 패턴을 파악하려 합니다. 대규모 데이터에 대한 복잡한 OLAP 쿼리를 빠르게 실행할 수 있는 AWS 데이터 웨어하우스 서비스는 무엇입니까?
+
+A. Amazon Aurora
+B. Amazon RDS
+C. Amazon Redshift
+D. Amazon DynamoDB
+
+8. 한 미디어 회사가 컨테이너 기반 애플리케이션을 AWS에서 운영하려 합니다. 운영팀은 컨테이너가 실행되는 기반 인프라에 직접 접근하여 커스텀 설정을 적용해야 합니다. 이 요구 사항을 충족하기 위해 사용해야 하는 Amazon ECS의 실행 유형(launch type)은 무엇입니까?
+
+A. AWS Fargate
+B. EC2 launch type
+C. AWS Lambda
+D. Amazon EKS
+
+9. 한 영상 편집 스튜디오가 여러 워크스테이션과 Amazon EC2 인스턴스에서 동일한 대용량 영상 파일에 동시에 접근하고 편집해야 합니다. 여러 인스턴스와 워크스테이션이 동시에 접근할 수 있는 공유 파일 스토리지를 제공하는 AWS 서비스는 무엇입니까?
+
+A. Amazon S3
+B. Amazon EBS
+C. AWS Storage Gateway
+D. Amazon EFS
+
+10. 한 병원이 수십 년간 온프레미스에 보관해온 약 80TB의 의료 영상 데이터를 AWS S3로 이전해야 합니다. 현재 인터넷 대역폭이 제한적이어서 네트워크를 통한 전송이 현실적으로 불가능한 상황입니다. 이 대용량 데이터를 오프라인으로 AWS에 마이그레이션하는 데 적합한 서비스는 무엇입니까?
+
+A. AWS DataSync
+B. AWS Snowball
+C. AWS Direct Connect
+D. AWS Transfer Family
+
+11. 한 이커머스 플랫폼이 고객이 Amazon S3 버킷에 이미지를 업로드할 때마다 자동으로 썸네일을 생성해야 합니다. 별도의 서버를 운영하지 않고 S3 업로드 이벤트를 트리거로 이미지 처리 코드를 실행하려 할 때 가장 적합한 아키텍처는 무엇입니까?
+
+A. S3 이벤트 + Amazon EC2
+B. S3 이벤트 + Amazon ECS
+C. S3 이벤트 + AWS Lambda
+D. S3 이벤트 + AWS Batch
+
+12. 한 온라인 교육 플랫폼이 시험 기간에 급증하는 트래픽을 안정적으로 처리하면서도 평상시에는 비용을 최소화하고자 합니다. 가용 영역 장애가 발생하더라도 서비스가 중단되지 않도록 설계하려 할 때, 이 요구 사항을 동시에 충족하는 AWS 고가용성 아키텍처 구성 요소의 조합은 무엇입니까?
+
+A. Auto Scaling, Multi-AZ ELB
+B. Reserved Instances, CloudFront
+C. Elastic IP, Single-AZ RDS
+D. AWS Shield, AWS WAF
+
+13. 한 제조 기업이 노후화된 온프레미스 데이터센터를 AWS로 전환하는 것을 검토하고 있습니다. 경영진은 마이그레이션 전에 현재 온프레미스 환경 대비 AWS 전환 시 예상되는 비용 절감 효과를 데이터 기반으로 분석하고 싶어 합니다. 이 비용 분석을 지원하는 AWS 서비스는 무엇입니까?
+
+A. AWS Cost Explorer
+B. AWS Pricing Calculator
+C. AWS Migration Evaluator
+D. AWS Budgets
+
+14. 한 글로벌 SaaS 기업이 AWS 클라우드와 온프레미스 환경에서 발생하는 애플리케이션 로그를 한 곳에서 통합 모니터링하고 장애 발생 시 즉시 알림을 받고자 합니다. 이 로그 중앙화 및 통합 모니터링 요구 사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. AWS CloudTrail
+B. Amazon CloudWatch
+C. AWS X-Ray
+D. Amazon EventBridge
+
+15. 한 소셜 미디어 플랫폼이 Amazon EC2 Auto Scaling Group을 사용하여 트래픽 변화에 따라 인스턴스 수를 자동으로 조정하고 있습니다. 운영팀은 트래픽이 없는 새벽에도 최소 2대, 피크 시에는 최대 20대, 평상시에는 5대를 유지하도록 설정하려 합니다. 이때 Auto Scaling Group에서 설정해야 하는 세 가지 용량 값은 무엇입니까?
+
+A. 최소 2, 최대 20, 희망 용량 5
+B. 최소 1, 최대 10, 희망 용량 5
+C. 최소 2, 최대 20, 예약 용량 5
+D. 최소 0, 최대 20, 희망 용량 2
+

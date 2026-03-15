@@ -1,0 +1,104 @@
+361. 한 스타트업이 AWS에서 운영하는 서비스의 재해 복구(DR) 전략을 수립하려고 합니다. 이 회사는 예산이 매우 제한적이며, 재해 발생 시 복구 시간이 다소 길어지더라도 감수할 수 있고, 일부 데이터 손실도 허용 가능한 상황입니다. 이 요구 사항을 충족하는 가장 비용 효율적인 AWS 재해 복구 전략은 무엇입니까?
+
+A. Warm Standby
+B. Multi-Site Active/Active
+C. Backup and Restore
+D. Pilot Light
+
+362. 한 중소기업이 별도의 소프트웨어 설치나 서버 인프라 관리 없이 직원들이 웹 브라우저만으로 바로 사용할 수 있는 업무용 애플리케이션 도입을 검토하고 있습니다. 서비스 제공자가 애플리케이션의 운영과 유지보수를 모두 담당하는 이 클라우드 서비스 모델은 무엇입니까?
+
+A. IaaS
+B. PaaS
+C. On-Premises
+D. SaaS
+
+363. 한 금융 회사가 온프레미스 데이터센터와 AWS 클라우드 환경을 연결할 때 공개 인터넷을 사용하지 않고 안정적이고 일관된 네트워크 성능을 보장하는 전용 연결 방식을 도입하려고 합니다. 이 요구 사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. AWS VPN
+B. AWS Direct Connect
+C. Amazon CloudFront
+D. AWS Transit Gateway
+
+364. 한 기업이 현재 AWS Developer Support 플랜을 사용하고 있으나, 사업이 성장하면서 더 빠른 응답 시간과 더 많은 기술 지원이 필요해졌습니다. 이 기업이 현재 플랜에서 단계적으로 업그레이드할 수 있는 다음 AWS Support 플랜은 무엇입니까?
+
+A. Enterprise Support
+B. Basic Support
+C. Business Support
+D. Enterprise On-Ramp
+
+365. 한 글로벌 전자상거래 기업이 새로운 AWS 리전에 서비스를 배포하려고 합니다. 리전 선택 시 고객에 대한 응답 속도, 해당 국가의 데이터 보호 법규 준수, 필요한 AWS 서비스의 가용 여부, 그리고 운영 비용을 모두 고려해야 합니다. 이 기업이 AWS 리전을 선택할 때 검토해야 할 요소 중 데이터 주권 및 법적 요건과 관련된 기준은 무엇입니까?
+
+A. 엣지 로케이션 수
+B. 데이터 레지던시, 규정 준수
+C. 가용 영역 개수
+D. 네트워크 지연 시간
+
+366. 한 소규모 자영업자가 기술적인 클라우드 인프라 지식 없이도 WordPress 기반의 쇼핑몰 웹사이트를 빠르게 구축하고 운영하고 싶어합니다. 서버 설정이나 복잡한 네트워크 구성 없이 간단하게 웹 애플리케이션을 호스팅할 수 있는 AWS 서비스는 무엇입니까?
+
+A. Amazon EC2
+B. AWS Elastic Beanstalk
+C. Amazon Lightsail
+D. AWS Lambda
+
+367. 한 엔터프라이즈 기업의 클라우드 팀이 보안, 고가용성, 확장성이 검증된 AWS 아키텍처를 처음부터 직접 설계하지 않고, CloudFormation 템플릿을 기반으로 산업별 참조 아키텍처를 자동으로 배포할 수 있는 AWS 솔루션을 찾고 있습니다. 이 요구 사항에 적합한 AWS 서비스는 무엇입니까?
+
+A. AWS Service Catalog
+B. AWS CloudFormation StackSets
+C. AWS Solutions Library
+D. AWS CDK
+
+368. 한 제조 기업이 공장 내 수천 개의 센서 장치로부터 실시간 데이터를 수집하고 클라우드로 전송하는 시스템을 구축하려고 합니다. 서버를 직접 관리하지 않고 대규모 IoT 디바이스를 안전하게 연결하고 데이터를 수집할 수 있는 AWS 서비스는 무엇입니까?
+
+A. AWS Greengrass
+B. Amazon Kinesis
+C. AWS IoT Core
+D. Amazon SNS
+
+369. 한 기업이 AWS 클라우드에서 개발 환경과 운영 환경을 논리적으로 분리하고, 각 환경에 대해 독립적인 IP 주소 범위와 서브넷을 직접 설정하여 네트워크를 제어하고 싶어합니다. 이를 가능하게 해주는 AWS 서비스는 무엇입니까?
+
+A. Amazon Route 53
+B. AWS Direct Connect
+C. Amazon CloudFront
+D. Amazon VPC
+
+370. 한 기업이 EC2 인스턴스, AWS Lambda, AWS Fargate를 혼합하여 워크로드를 운영하고 있으며, 특정 인스턴스 타입이나 리전에 종속되지 않으면서 컴퓨팅 비용을 유연하게 절감하고 싶어합니다. 이 요구 사항에 가장 적합한 AWS 비용 절감 옵션은 무엇입니까?
+
+A. EC2 Reserved Instances
+B. Compute Savings Plans
+C. Spot Instances
+D. EC2 Instance Savings Plans
+
+371. 한 기업의 클라우드 관리자가 AWS 계정의 사용자 권한과 접근을 관리하는 서비스를 설정하려고 합니다. 이 서비스는 특정 AWS 리전에 종속되지 않고 전 세계 어디서나 동일하게 적용됩니다. 이처럼 리전에 독립적으로 동작하는 AWS 글로벌 서비스의 대표적인 예는 무엇입니까?
+
+A. Amazon EC2
+B. Amazon RDS
+C. AWS IAM
+D. Amazon S3
+
+372. 한 개인 개발자가 AWS를 처음 사용하기 시작했으며 추가 비용 없이 기본적인 AWS 고객 서비스 지원과 제한된 AWS Trusted Advisor 기능을 사용하고 싶어합니다. 이 개발자에게 적합한 AWS Support 플랜은 무엇입니까?
+
+A. Developer Support
+B. Basic Support
+C. Business Support
+D. Enterprise On-Ramp
+
+373. 한 기업의 보안 담당자가 AWS 계정 보안을 강화하기 위해 루트 계정 사용을 최소화하고, 개별 업무에 맞는 IAM 사용자를 생성하며, 로그인 시 추가 인증 수단을 도입하려고 합니다. 이 보안 강화 조치 중 로그인 과정에서 비밀번호 외에 추가 인증을 요구하는 IAM 보안 모범 사례는 무엇입니까?
+
+A. IAM 역할 전환
+B. 액세스 키 교체
+C. MFA 활성화
+D. 최소 권한 정책 적용
+
+374. 한 기업이 온프레미스 환경에서 MySQL 데이터베이스로 운영하던 애플리케이션을 AWS로 마이그레이션하려고 합니다. 데이터베이스 서버의 운영체제 패치, 백업, 고가용성 설정 등의 관리 부담을 줄이면서 기존 MySQL 기반 애플리케이션을 그대로 사용하려면 어떤 AWS 서비스가 적합합니까?
+
+A. Amazon DynamoDB
+B. Amazon Redshift
+C. Amazon RDS for MySQL
+D. EC2에 MySQL 직접 설치
+
+375. 한 모바일 게임 회사가 수백만 명의 사용자 프로필, 게임 아이템, 점수 데이터를 저장해야 합니다. 데이터 구조가 자주 변경될 수 있고, 트래픽 급증 시에도 자동으로 확장 가능한 고성능 NoSQL 데이터베이스 서비스가 필요합니다. 이 요구 사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. Amazon Aurora
+B. Amazon DynamoDB
+C. Amazon ElastiCache
+D. Amazon RDS

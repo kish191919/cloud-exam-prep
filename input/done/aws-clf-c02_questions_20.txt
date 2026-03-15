@@ -1,0 +1,105 @@
+286. 한 데이터 엔지니어링 팀이 매일 수백만 건의 고객 거래 데이터를 온프레미스 데이터베이스에서 AWS 클라우드로 이전하여 분석에 활용하려 합니다. 별도의 서버 프로비저닝 없이 데이터를 추출, 변환, 적재하는 ETL 작업을 자동화하고 싶을 때, 이에 가장 적합한 AWS 서버리스 데이터 통합 서비스는 무엇입니까?
+
+A. Amazon Redshift
+B. AWS Glue
+C. AWS Data Pipeline
+D. Amazon EMR
+
+287. 한 기업이 Amazon EC2 인스턴스에서 자사 애플리케이션을 운영하고 있습니다. AWS 공동 책임 모델(Shared Responsibility Model)에 따라 EC2 인스턴스의 운영체제 패치 적용 및 인스턴스 보안 설정 관리에 대한 책임은 누구에게 있습니까?
+
+A. AWS
+B. AWS와 고객 공동 책임
+C. 고객
+D. AWS Support 팀
+
+288. 한 글로벌 전자상거래 기업이 고객의 구매 이력과 클릭 행동 데이터를 기반으로 개인화된 상품 추천 기능을 자사 웹사이트에 도입하려 합니다. 별도의 머신러닝 전문 인력 없이도 빠르게 구현할 수 있는 AWS 관리형 추천 시스템 서비스는 무엇입니까?
+
+A. Amazon SageMaker
+B. Amazon Forecast
+C. Amazon Rekognition
+D. Amazon Personalize
+
+289. 한 스타트업이 대용량 이미지 렌더링 작업을 주기적으로 수행해야 합니다. 작업이 중단되더라도 재시작이 가능하며, 가능한 한 EC2 온디맨드 인스턴스 대비 최대한 낮은 비용으로 컴퓨팅 자원을 활용하고자 할 때 가장 적합한 EC2 구매 옵션은 무엇입니까?
+
+A. 스팟 인스턴스
+B. 온디맨드 인스턴스
+C. Dedicated Host
+D. Savings Plans
+
+290. 한 대기업이 AWS Organizations를 사용하여 여러 AWS 계정을 중앙에서 관리하고 있습니다. 특정 계정에서 구매한 Reserved Instance를 조직 내 다른 계정에서도 활용하여 전체 클라우드 비용을 최적화하려면 어떤 기능을 활성화하는 것이 적합합니까?
+
+A. 통합 결제
+B. SCP 정책 적용
+C. AWS Cost Explorer
+D. IAM 계정 연동
+
+291. 한 보안 담당자가 자사 인프라를 대상으로 AWS 소유의 IP 주소에서 비정상적인 포트 스캔 및 악성 트래픽이 발생하고 있음을 탐지했습니다. 이러한 AWS 리소스 악용 사례를 신고하기 위해 연락해야 하는 AWS 공식 창구는 무엇입니까?
+
+A. AWS Support 센터
+B. AWS Abuse 팀
+C. AWS Security Hub
+D. AWS Inspector
+
+292. 한 금융 기관이 규정에 따라 10년 이상 장기 보관해야 하는 감사 로그 데이터를 AWS에 저장하려 합니다. 데이터 검색 빈도는 매우 낮고, 스토리지 비용을 최대한 절감하는 것이 최우선 요건일 때, 가장 적합한 Amazon S3 스토리지 클래스는 무엇입니까?
+
+A. S3 Standard
+B. S3 Intelligent-Tiering
+C. S3 Standard-IA
+D. S3 Glacier Deep Archive
+
+293. 한 제조 기업이 24시간 365일 중단 없이 운영되어야 하는 ERP 시스템을 AWS EC2에서 구동하고 있습니다. 향후 3년간 안정적으로 동일한 인스턴스 유형을 사용할 계획이며, 온디맨드 대비 비용을 크게 절감하고자 할 때 가장 적합한 EC2 구매 옵션은 무엇입니까?
+
+A. 스팟 인스턴스
+B. 온디맨드 인스턴스
+C. Reserved Instance
+D. Dedicated Instance
+
+294. 한 의료 서비스 기업이 환자 예약 시스템을 AWS 클라우드에서 운영하고 있습니다. 데이터베이스 장애 발생 시 서비스 중단을 최소화하고 자동으로 다른 가용 영역의 복제본으로 전환되는 고가용성 데이터베이스 구성을 원할 때, 가장 적합한 AWS 데이터베이스 서비스 구성은 무엇입니까?
+
+A. Amazon RDS 읽기 전용 복제본
+B. Amazon RDS Multi-AZ 배포
+C. Amazon DynamoDB 글로벌 테이블
+D. Amazon ElastiCache 클러스터
+
+295. 한 기업이 Amazon Aurora를 사용하여 데이터베이스를 운영하고 있습니다. AWS 공동 책임 모델에 따라 Aurora 데이터베이스의 기본 운영체제 패치 및 유지 관리에 대한 책임은 누구에게 있습니까?
+
+A. 고객
+B. AWS와 고객 공동 책임
+C. 제3자 감사 기관
+D. AWS
+
+296. 한 클라우드 아키텍트가 AWS Well-Architected Framework의 안정성(Reliability) 원칙에 따라 트래픽 급증에도 안정적으로 대응할 수 있는 시스템을 설계하려 합니다. 고정된 서버 사양을 높이는 방식 외에, 동일한 사양의 인스턴스를 필요에 따라 자동으로 추가하거나 제거하는 확장 방식은 무엇입니까?
+
+A. 수직 확장
+B. 수평 확장
+C. 예약 확장
+D. 멀티 리전 배포
+
+297. 한 기업의 컴플라이언스 담당자가 클라우드 감사를 위해 AWS의 ISO 인증서, SOC 보고서 등 규정 준수 관련 공식 문서를 다운로드해야 합니다. 이러한 AWS 규정 준수 문서와 보안 인증 자료를 제공하는 AWS 서비스는 무엇입니까?
+
+A. AWS Config
+B. AWS Audit Manager
+C. AWS Artifact
+D. AWS Trusted Advisor
+
+298. 한 기업이 AWS 클라우드 인프라를 사용하고 있습니다. AWS 공동 책임 모델에 따라 물리적 데이터센터 시설 보안 및 글로벌 네트워크 인프라 보호에 대한 책임은 누구에게 있습니까?
+
+A. 고객
+B. AWS
+C. AWS와 고객 공동 책임
+D. AWS 파트너사
+
+299. 한 스타트업이 AWS Basic Support 플랜을 사용하고 있으며, AWS Trusted Advisor를 통해 클라우드 환경의 보안 및 비용 최적화 상태를 점검하고 싶습니다. Basic 및 Developer 플랜에서 Trusted Advisor를 통해 이용할 수 있는 검사 범위는 무엇입니까?
+
+A. 전체 카테고리 무제한 검사
+B. 보안, 비용 최적화 검사만 제공
+C. 핵심 보안, 서비스 한도 검사만 제공
+D. 성능, 내결함성 검사만 제공
+
+300. 한 헬스케어 기업이 Amazon S3에 수백만 건의 환자 관련 문서를 저장하고 있습니다. 이 데이터에 이름, 주민등록번호 등 개인 식별 정보(PII)가 포함되어 있는지 자동으로 탐지하고 보안 위험을 식별하는 데 가장 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon Inspector
+B. Amazon GuardDuty
+C. AWS Shield
+D. Amazon Macie
+

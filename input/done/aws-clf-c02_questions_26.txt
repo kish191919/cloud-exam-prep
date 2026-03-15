@@ -1,0 +1,105 @@
+376. 한 금융 서비스 기업의 보안 팀이 AWS 환경에서 특정 S3 버킷의 설정이 변경된 사실을 발견했습니다. 보안 팀은 누가 언제 해당 변경 작업을 수행했는지 정확히 파악하고, 향후 감사(Audit) 목적으로 모든 API 호출 기록을 추적하고자 합니다. 이 요구사항을 충족하는 AWS 서비스는 무엇입니까?
+
+A. AWS Config
+B. Amazon CloudWatch
+C. AWS CloudTrail
+D. AWS Security Hub
+
+377. 한 전자상거래 기업이 블랙프라이데이 행사 기간 동안 초당 수백만 건의 클릭 이벤트와 구매 로그를 실시간으로 수집하고 분석하는 시스템을 구축하려고 합니다. 대규모 이벤트 스트림을 지연 없이 처리하고 실시간 데이터 파이프라인을 구성할 수 있는 AWS 서비스는 무엇입니까?
+
+A. Amazon Kinesis
+B. Amazon SQS
+C. AWS Glue
+D. Amazon Redshift
+
+378. 한 물류 기업이 주문 접수 시스템과 배송 처리 시스템을 분리하여 운영하고자 합니다. 주문량이 급증하더라도 배송 처리 시스템에 과부하가 걸리지 않도록 두 시스템 사이에 비동기 통신 방식으로 느슨한 결합(Decoupling)을 구현하려 합니다. 이 요구사항에 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon SNS
+B. AWS Step Functions
+C. Amazon EventBridge
+D. Amazon SQS
+
+379. 한 스타트업이 AWS에서 운영 중인 웹 애플리케이션 아키텍처가 AWS 모범 사례를 따르고 있는지 점검하고, 잠재적인 개선 영역과 권고사항을 체계적으로 파악하고자 합니다. AWS가 제공하는 워크로드 리뷰 기반의 아키텍처 평가 도구는 무엇입니까?
+
+A. AWS Trusted Advisor
+B. AWS Well-Architected Tool
+C. AWS Config
+D. AWS Systems Manager
+
+380. 한 기업의 클라우드 보안 담당자가 AWS 공동 책임 모델(Shared Responsibility Model)을 검토하고 있습니다. 물리적 데이터센터 보안, 네트워크 인프라 관리, 하이퍼바이저 보안은 누구의 책임 영역에 해당합니까?
+
+A. 고객
+B. AWS와 고객 공동
+C. 제3자 보안 업체
+D. AWS
+
+381. 한 대기업이 수십 개의 AWS 계정을 중앙에서 일관되게 관리하고, 각 계정에 조직 전체 수준의 권한 정책을 적용하여 Landing Zone을 구축하려고 합니다. 다중 계정 거버넌스 관리와 Service Control Policies(SCP) 적용을 지원하는 AWS 서비스는 무엇입니까?
+
+A. AWS IAM Identity Center
+B. AWS Organizations
+C. AWS Control Tower
+D. AWS Config
+
+382. 한 미디어 기업이 수백만 개의 이미지 파일을 AWS에 저장하고 있습니다. 일부 파일은 자주 접근되지만 나머지는 접근 빈도가 불규칙하여 예측하기 어렵습니다. 접근 패턴에 따라 자동으로 스토리지 티어를 이동하여 비용을 최적화할 수 있는 Amazon S3 스토리지 클래스는 무엇입니까?
+
+A. S3 Standard-IA
+B. S3 Glacier
+C. S3 Intelligent-Tiering
+D. S3 One Zone-IA
+
+383. 한 SaaS 기업이 고객 데이터를 저장하는 관계형 데이터베이스를 AWS에서 운영하고자 합니다. 자동 백업 기능과 Multi-AZ 구성을 통한 고가용성을 지원하며, 데이터베이스 엔진 패치 및 유지 관리를 AWS가 대신 처리해 주는 관리형 데이터베이스 서비스는 무엇입니까?
+
+A. Amazon DynamoDB
+B. Amazon RDS
+C. Amazon Redshift
+D. Amazon ElastiCache
+
+384. 한 연구 기관이 전 세계 연구원들이 인터넷을 통해 대용량 데이터 파일을 언제든지 업로드하고 다운로드할 수 있는 스토리지 환경을 구축하려 합니다. 데이터 용량 제한 없이 무제한으로 확장 가능하며 웹 기반으로 접근할 수 있는 객체 스토리지 서비스는 무엇입니까?
+
+A. Amazon EFS
+B. Amazon EBS
+C. AWS Storage Gateway
+D. Amazon S3
+
+385. 한 핀테크 기업이 매일 자정에 전날의 거래 데이터를 집계하는 배치 작업을 실행하려 합니다. 별도의 서버를 프로비저닝하거나 관리하지 않고, 특정 이벤트나 스케줄에 따라 코드를 자동으로 실행할 수 있는 서버리스 AWS 서비스는 무엇입니까?
+
+A. AWS Lambda
+B. Amazon EC2
+C. AWS Batch
+D. Amazon ECS
+
+386. 한 글로벌 스트리밍 서비스 기업이 전 세계 사용자들에게 동영상 콘텐츠를 빠르게 제공하고자 합니다. 사용자와 가장 가까운 엣지 로케이션에 콘텐츠를 캐싱하여 지연 시간을 최소화할 수 있는 AWS 콘텐츠 전송 네트워크(CDN) 서비스는 무엇입니까?
+
+A. AWS Global Accelerator
+B. Amazon Route 53
+C. Amazon CloudFront
+D. AWS Direct Connect
+
+387. 한 소규모 스타트업이 HTML, CSS, JavaScript로 구성된 회사 소개 웹사이트를 운영하려 합니다. 별도의 웹 서버나 인프라를 관리하지 않고 저렴한 비용으로 정적 웹사이트를 인터넷에 공개할 수 있는 AWS 서비스 기능은 무엇입니까?
+
+A. Amazon EC2 + Nginx
+B. AWS Elastic Beanstalk
+C. Amazon S3 정적 웹사이트 호스팅
+D. Amazon Lightsail
+
+388. 한 게임 기업이 MySQL 기반의 기존 데이터베이스를 AWS 클라우드로 마이그레이션하려 합니다. MySQL과 완벽하게 호환되면서도 자동 확장과 고성능을 지원하는 완전 관리형 AWS 데이터베이스 서비스는 무엇입니까?
+
+A. Amazon RDS for MySQL
+B. Amazon DynamoDB
+C. Amazon Redshift
+D. Amazon Aurora
+
+389. 한 IoT 기업이 센서에서 수집된 이상 감지 알림을 운영팀 이메일, 관리자 SMS, 그리고 외부 모니터링 시스템의 HTTP 엔드포인트에 동시에 전송하는 알림 시스템을 구축하려 합니다. 다양한 구독 채널에 메시지를 동시에 전달할 수 있는 AWS Pub/Sub 메시징 서비스는 무엇입니까?
+
+A. Amazon SQS
+B. Amazon SNS
+C. AWS EventBridge
+D. Amazon Pinpoint
+
+390. 한 커머스 플랫폼이 주문 서비스, 재고 서비스, 결제 서비스를 각각 독립적인 마이크로서비스로 운영하고 있습니다. 각 서비스 간의 직접적인 의존성을 제거하고 비동기 방식으로 메시지를 전달하여 시스템 전체의 안정성을 높이려 할 때 적합한 AWS 서비스는 무엇입니까?
+
+A. Amazon SNS
+B. AWS AppSync
+C. Amazon SQS
+D. AWS Step Functions
+
